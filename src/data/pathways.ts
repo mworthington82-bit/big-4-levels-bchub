@@ -717,14 +717,6 @@ export const learningPathways: Record<string, LearningPathway> = {
         'Creates draft resources that you can adapt and personalise',
         'Supports consistency and high expectations through quality starting points'
       ],
-      externalLinks: [
-        {
-          title: 'Microsoft Learn CPD Collection',
-          url: 'https://learn.microsoft.com/en-us/collections/778ea8tj5ww7d2?&sharingId=96CA0696F41DC6E3',
-          description: 'Access a curated collection of professional development resources on Microsoft Learn'
-        }
-      ],
-      additionalInfo: '**Leaders**: Keep an eye on the Go Digital page for updates and instructions on applying to become a Microsoft Innovative Educator Expert (MIEE).'
     },
     mainContent: {
       howToUse: 'At Explorer level, learn to access Microsoft Copilot and write simple, clear prompts. Focus on using it for basic planning tasks: generating learning objectives, creating simple lesson plan outlines, drafting starter activities, or producing quiz questions. Always review and adapt the output to suit your students and context.',
@@ -912,14 +904,6 @@ export const learningPathways: Record<string, LearningPathway> = {
         'Drive innovation in digital teaching strategies',
         'Support colleagues in developing their Edpuzzle skills'
       ],
-      externalLinks: [
-        {
-          title: 'Microsoft Learn CPD Collection',
-          url: 'https://learn.microsoft.com/en-us/collections/778ea8tj5ww7d2?&sharingId=96CA0696F41DC6E3',
-          description: 'Access a curated collection of professional development resources to enhance your digital teaching skills'
-        }
-      ],
-      additionalInfo: '**Important for Leaders**: All staff at Leader level need to apply for MIEE (Microsoft Innovative Educator Expert). Keep an eye on the Go Digital page for updates and application instructions. Complete the Microsoft Learn CPD collection as part of your professional development.'
     },
     mainContent: {
       howToUse: 'At Leader level, create sophisticated interactive video lessons, share best practices with colleagues, and lead training sessions on effective Edpuzzle implementation.',
@@ -961,14 +945,6 @@ export const learningPathways: Record<string, LearningPathway> = {
         'Mentor staff in developing AI literacy',
         'Contribute to college-wide AI strategy and policies'
       ],
-      externalLinks: [
-        {
-          title: 'Microsoft Learn CPD Collection',
-          url: 'https://learn.microsoft.com/en-us/collections/778ea8tj5ww7d2?&sharingId=96CA0696F41DC6E3',
-          description: 'Access a curated collection of professional development resources to enhance your digital teaching skills'
-        }
-      ],
-      additionalInfo: '**Important for Leaders**: All staff at Leader level need to apply for MIEE (Microsoft Innovative Educator Expert). Keep an eye on the Go Digital page for updates and application instructions. Complete the Microsoft Learn CPD collection as part of your professional development.'
     },
     mainContent: {
       howToUse: 'At Leader level, develop advanced prompting techniques, create AI-enhanced teaching resources, and lead professional development on AI integration in education.',
