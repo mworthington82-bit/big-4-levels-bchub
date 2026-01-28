@@ -888,9 +888,17 @@ const Training = () => {
                           </Button>
                         </>
                       )}
-                      {selectedTool === 'edpuzzle' && (
+                      {selectedTool === 'edpuzzle' && selectedLevel === 'explorer' && (
                         <Button asChild variant="default" className="bg-primary hover:bg-primary/90 flex-1">
                           <a href="https://edpuzzle.com/professional/join/696fe293b370d6481cb68098?schoolCode=bnc9r6" target="_blank" rel="noopener noreferrer">
+                            Edpuzzle Training
+                            <ArrowRight className="ml-2 h-4 w-4" />
+                          </a>
+                        </Button>
+                      )}
+                      {selectedTool === 'edpuzzle' && selectedLevel === 'practitioner' && (
+                        <Button asChild variant="default" className="bg-primary hover:bg-primary/90 flex-1">
+                          <a href="https://edpuzzle.com/professional/join/697a50396dc975e0ebe7aabb?schoolCode=bnc9r6" target="_blank" rel="noopener noreferrer">
                             Edpuzzle Training
                             <ArrowRight className="ml-2 h-4 w-4" />
                           </a>
