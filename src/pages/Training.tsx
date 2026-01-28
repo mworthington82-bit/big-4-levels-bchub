@@ -34,7 +34,7 @@ import teamsLogo from "@/assets/teams-logo.png";
 import canvaLogo from "@/assets/canva-logo.jpg";
 import edpuzzleLogo from "@/assets/edpuzzle-logo.png";
 import copilotLogo from "@/assets/copilot-logo.png";
-import microsoftEducatorBadge from "@/assets/microsoft-educator-badge.png";
+
 import formsLogo from "@/assets/forms-logo.jpg";
 type Stage = 'level-entry' | 'home' | 'tool-select' | 'level-select' | 'intro' | 'learning' | 'benefits' | 'reflection' | 'quiz' | 'badge' | 'leader-hub';
 
@@ -475,97 +475,6 @@ const Training = () => {
                   <ToolCard tool={tool.id} title={tool.title} tagline={tool.tagline} description={tool.description} icon={tool.icon} onSelect={() => handleToolSelect(tool.id)} />
                 </div>)}
             </div>
-
-            {/* Microsoft Educator Path - Only for Practitioner Level */}
-            {selectedLevel === 'practitioner' && (
-              <div className="max-w-2xl mx-auto mb-10 animate-fade-in" style={{ animationDelay: '400ms' }}>
-                <Card className="group cursor-pointer transition-all duration-300 hover:shadow-[var(--shadow-lift)] hover:-translate-y-1 border-border bg-gradient-to-b from-card to-muted/30">
-                  <CardHeader>
-                    <div className="mb-4 flex h-20 w-20 items-center justify-center">
-                      <img src={microsoftEducatorBadge} alt="Microsoft Educator badge" className="h-full w-full object-contain" />
-                    </div>
-                    <CardTitle className="text-card-foreground mb-3 text-2xl">Microsoft Educator Path</CardTitle>
-                    <p className="text-sm font-medium text-accent mb-3 italic">📚 Your professional growth journey starts here</p>
-                    <CardDescription className="text-base text-muted-foreground leading-relaxed">
-                      Transform your teaching practice with Microsoft's educator resources. Complete all 6 modules to build your skills as a lifelong learner and adopt new technologies for blended and hybrid learning environments.
-                    </CardDescription>
-                    <div className="mt-4">
-                      <p className="text-sm font-semibold text-card-foreground mb-2">You will learn about:</p>
-                      <ul className="text-sm text-muted-foreground space-y-1">
-                        <li>• Best strategies for hybrid, remote, and blended learning</li>
-                        <li>• Build the foundation for inclusive learning</li>
-                        <li>• Empower every student with an inclusive classroom</li>
-                        <li>• Microsoft Teams for Education</li>
-                        <li>• Flipped instruction with PowerPoint Recorder</li>
-                        <li>• Get started with OneNote for education</li>
-                      </ul>
-                    </div>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <Alert className="border-accent/30 bg-accent/5">
-                      <AlertDescription className="text-sm">
-                        <strong>Before you begin:</strong> Please remember to sign in using your college email and college password.
-                      </AlertDescription>
-                    </Alert>
-                    <Button 
-                      variant="secondary" 
-                      className="w-full group-hover:bg-accent group-hover:text-accent-foreground transition-all duration-300 font-semibold text-base py-6 rounded-xl shadow-sm"
-                      onClick={() => window.open('https://learn.microsoft.com/en-us/training/paths/microsoft-educator-academy/', '_blank')}
-                    >
-                      Start Microsoft Educator Path
-                      <ArrowRight className="ml-2 h-5 w-5" />
-                    </Button>
-                  </CardContent>
-                </Card>
-              </div>
-            )}
-
-            {/* Microsoft Innovative Educator Expert - Only for Leader Level */}
-            {selectedLevel === 'leader' && (
-              <div className="max-w-2xl mx-auto mb-10 animate-fade-in" style={{ animationDelay: '400ms' }}>
-                <Card className="group cursor-pointer transition-all duration-300 hover:shadow-[var(--shadow-lift)] hover:-translate-y-1 border-border bg-gradient-to-b from-card to-muted/30">
-                  <CardHeader>
-                    <div className="mb-4 flex h-20 w-20 items-center justify-center">
-                      <img src={microsoftEducatorBadge} alt="Microsoft Innovative Educator Expert badge" className="h-full w-full object-contain" />
-                    </div>
-                    <CardTitle className="text-card-foreground mb-3 text-2xl">Microsoft Innovative Educator Expert (MIEE)</CardTitle>
-                    <p className="text-sm font-medium text-accent mb-3 italic">🌟 Join a global community of visionary educators</p>
-                    <CardDescription className="text-base text-muted-foreground leading-relaxed">
-                      All staff members at Leader level are expected to complete training required for MIEE. MIE Experts are visionary educators who use Microsoft technologies and innovative teaching practices to enhance student engagement, creativity, and collaboration. They share their expertise with other educators through local training events, conferences, blogs, and social media.
-                    </CardDescription>
-                    <div className="mt-4">
-                      <p className="text-sm font-semibold text-card-foreground mb-2">Benefits of becoming an MIEE:</p>
-                      <ul className="text-sm text-muted-foreground space-y-1">
-                        <li>• Join a global community of like-minded professionals</li>
-                        <li>• Access exclusive resources and opportunities</li>
-                        <li>• Receive recognition from Microsoft</li>
-                        <li>• Make a positive impact on education</li>
-                      </ul>
-                    </div>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <Alert className="border-accent/30 bg-accent/5">
-                      <AlertDescription className="text-sm">
-                        <strong>Before you begin:</strong> Please remember to sign in using your college email and college password before starting any training.
-                      </AlertDescription>
-                    </Alert>
-                    <Alert className="border-yellow-500/30 bg-yellow-50">
-                      <AlertDescription className="text-sm">
-                        <strong>Important:</strong> The application window usually opens in June. Keep an eye on the website and Go Digital page for updates.
-                      </AlertDescription>
-                    </Alert>
-                    <Button 
-                      variant="secondary" 
-                      className="w-full group-hover:bg-accent group-hover:text-accent-foreground transition-all duration-300 font-semibold text-base py-6 rounded-xl shadow-sm"
-                      onClick={() => window.open('https://learn.microsoft.com/en-us/training/educator-center/programs/microsoft-educator/', '_blank')}
-                    >
-                      Visit MIEE Program Website
-                      <ArrowRight className="ml-2 h-5 w-5" />
-                    </Button>
-                  </CardContent>
-                </Card>
-              </div>
-            )}
 
             <div className="text-center animate-fade-in">
               <Button variant="outline" onClick={handleRestart} className="border-border hover:bg-accent hover:text-accent-foreground hover:border-accent transition-all px-8 py-6 text-base rounded-xl">
