@@ -123,12 +123,12 @@ export const learningObjectives: Record<Level, ToolObjectives[]> = {
     },
     {
       tool: 'immersive' as Tool,
-      toolName: 'Immersive Room',
+      toolName: 'Immersive Learning',
       objectives: [
-        { id: 'ip1', text: 'Attend an introduction session', icon: '👋', description: 'Experience the immersive room and learn about its capabilities firsthand' },
-        { id: 'ip2', text: 'Design a session using provided tools or themes', icon: '🎭', description: 'Plan an immersive learning experience using available resources and settings' },
-        { id: 'ip3', text: 'Book and deliver a session', icon: '📅', description: 'Reserve the space and facilitate an engaging immersive lesson' },
-        { id: 'ip4', text: 'Link the session to learning or soft skills outcomes', icon: '🎯', description: 'Connect immersive experiences to curriculum objectives and employability skills' },
+        { id: 'ip1', text: 'Attend an introduction session', icon: '👋', description: 'Book a short training session with Clark Mitton (c.mitton@bradfordcollege.ac.uk) or Monika Worthington (m.worthington@bradfordcollege.ac.uk) before using the room to teach' },
+        { id: 'ip2', text: 'Design a session using available tools and themes', icon: '🎭', description: 'Plan an immersive learning experience using available resources and settings - no headset required' },
+        { id: 'ip3', text: 'Book and deliver a session to your learners', icon: '📅', description: 'Reserve the space using the booking form and facilitate an engaging immersive lesson' },
+        { id: 'ip4', text: 'Embed into wider learning objectives', icon: '🎯', description: 'Connect immersive sessions to curriculum objectives or soft skills development plans - put all 4 apps from this training into practice' },
       ],
     },
   ],
