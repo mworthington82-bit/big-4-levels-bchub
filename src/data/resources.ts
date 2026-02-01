@@ -81,7 +81,7 @@ export const resources: Resource[] = [
     title: 'Using Breakout Rooms',
     description: 'Enable collaborative small group work in online lessons',
     type: 'video',
-    url: 'https://www.youtube.com/watch?v=qaLy4apNEKE',
+    url: 'https://www.youtube.com/watch?v=vwZgJH07XSA',
     function: 'Use Breakout Rooms',
     level: 'practitioner',
   },
