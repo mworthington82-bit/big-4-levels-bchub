@@ -241,7 +241,7 @@ export const resources: Resource[] = [
     title: 'Getting Started with Microsoft Copilot',
     description: 'Access and navigate the Copilot interface',
     type: 'video',
-    url: 'https://www.youtube.com/watch?v=vJPhDitlko4',
+    url: 'https://www.youtube.com/watch?v=JbOJliF-Cn4',
     function: 'Access Copilot',
     level: 'explorer',
   },
