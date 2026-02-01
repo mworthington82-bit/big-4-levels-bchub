@@ -570,13 +570,6 @@ export const learningPathways: Record<string, LearningPathway> = {
         'Structured Teams channels provide organised spaces for content delivery and student collaboration',
         'Rubrics in Assignments ensure consistent, transparent assessment with clear success criteria',
         'Branching Forms create adaptive assessments that respond to individual student needs'
-      ],
-      externalLinks: [
-        {
-          title: 'Breakout Rooms Professional Development Course',
-          url: 'https://edpuzzle.com/professional/join/697f61e10bc0b32a9541b132?schoolCode=bnc9r6',
-          description: 'Complete this course to enhance your Breakout Rooms skills'
-        }
       ]
     },
     mainContent: {

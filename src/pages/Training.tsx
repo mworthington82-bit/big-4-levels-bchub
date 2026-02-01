@@ -869,7 +869,7 @@ const Training = () => {
                       {selectedTool === 'teams' && selectedLevel === 'practitioner' && (
                         <>
                           <Button asChild variant="default" className="bg-primary hover:bg-primary/90 flex-1 min-w-[200px]">
-                            <a href="#" target="_blank" rel="noopener noreferrer">
+                            <a href="https://edpuzzle.com/professional/join/697f61e10bc0b32a9541b132?schoolCode=bnc9r6" target="_blank" rel="noopener noreferrer">
                               Breakout Rooms
                               <ArrowRight className="ml-2 h-4 w-4" />
                             </a>
