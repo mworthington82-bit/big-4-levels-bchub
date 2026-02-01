@@ -86,6 +86,16 @@ export const resources: Resource[] = [
     level: 'practitioner',
   },
   {
+    id: 'teams-8b',
+    tool: 'teams',
+    title: 'Manage Breakout Rooms in Microsoft Teams',
+    description: 'Official Microsoft guide to managing breakout rooms',
+    type: 'link',
+    url: 'https://support.microsoft.com/en-us/office/manage-breakout-rooms-in-microsoft-teams-7de1f48a-da07-466c-a5ab-4ebace28e461',
+    function: 'Use Breakout Rooms',
+    level: 'practitioner',
+  },
+  {
     id: 'teams-9',
     tool: 'teams',
     title: 'Creating and Applying Rubrics',
