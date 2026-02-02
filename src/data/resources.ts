@@ -304,10 +304,10 @@ export const resources: Resource[] = [
     title: 'Staff Guidelines for Immersive Room',
     description: 'Essential guidelines for staff using the immersive learning space. Before using the room, book a training session with Clark Mitton (c.mitton@bradfordcollege.ac.uk) or Monika Worthington (m.worthington@bradfordcollege.ac.uk)',
     type: 'pdf',
-    url: 'https://pdfhost.io/edit?doc=692e40c8-61a7-4e26-ba79-098f8714db5c',
+    url: 'https://pdfhost.io/v/n9ZaN49B93_Immersive_Room_Staff_Guidelines__1_',
     function: 'Design a session using available tools',
     level: 'practitioner',
-    pdfUrl: 'https://pdfhost.io/edit?doc=692e40c8-61a7-4e26-ba79-098f8714db5c',
+    pdfUrl: 'https://pdfhost.io/v/n9ZaN49B93_Immersive_Room_Staff_Guidelines__1_',
   },
 ];
 
