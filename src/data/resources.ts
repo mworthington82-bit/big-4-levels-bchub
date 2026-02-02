@@ -86,16 +86,6 @@ export const resources: Resource[] = [
     level: 'practitioner',
   },
   {
-    id: 'teams-8b',
-    tool: 'teams',
-    title: 'Manage Breakout Rooms in Microsoft Teams',
-    description: 'Official Microsoft guide to managing breakout rooms',
-    type: 'link',
-    url: 'https://support.microsoft.com/en-us/office/manage-breakout-rooms-in-microsoft-teams-7de1f48a-da07-466c-a5ab-4ebace28e461',
-    function: 'Use Breakout Rooms',
-    level: 'practitioner',
-  },
-  {
     id: 'teams-9',
     tool: 'teams',
     title: 'Creating and Applying Rubrics',
@@ -169,16 +159,6 @@ export const resources: Resource[] = [
     type: 'video',
     url: 'https://www.youtube.com/watch?v=zJSgUx5K6V0',
     function: 'Use a provided template',
-    level: 'explorer',
-  },
-  {
-    id: 'canva-2',
-    tool: 'canva',
-    title: 'Creating Starter Activities',
-    description: 'Design engaging lesson starters with Canva',
-    type: 'link',
-    url: 'https://ior.ad/bcIB',
-    function: 'Create a simple starter activity',
     level: 'explorer',
   },
   {
