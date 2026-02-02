@@ -294,7 +294,7 @@ export const resources: Resource[] = [
     title: 'Book the Immersive Room',
     description: 'Complete the booking form to reserve the immersive room for your learners',
     type: 'link',
-    url: 'https://forms.office.com/e/immersive-room-booking',
+    url: 'https://forms.office.com/pages/responsepage.aspx?id=7ACxezLnGEGVoPw4WOs6XsPATjPLlsFLkgDBsoQJl3tUMVVJTlQ4MDdWN0syNlJUS1M5R1pETllKTyQlQCNjPTEu&route=shorturl',
     function: 'Book and deliver a session',
     level: 'practitioner',
   },
