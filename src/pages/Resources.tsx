@@ -70,6 +70,7 @@ const Resources = () => {
     { id: 'canva' as ToolFilter, name: 'Canva', logo: canvaLogo },
     { id: 'edpuzzle' as ToolFilter, name: 'Edpuzzle', logo: edpuzzleLogo },
     { id: 'copilot' as ToolFilter, name: 'Copilot', logo: copilotLogo },
+    { id: 'immersive' as ToolFilter, name: 'Immersive Room', logo: null },
   ];
 
   const handleToolSelect = (tool: ToolFilter) => {
@@ -143,7 +144,7 @@ const Resources = () => {
         </div>
 
         {/* Tool Filter Boxes */}
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-8 max-w-4xl mx-auto">
+        <div className="grid grid-cols-2 md:grid-cols-6 gap-4 mb-8 max-w-5xl mx-auto">
           {toolButtons.map((tool) => (
             <button
               key={tool.id}
@@ -154,12 +155,16 @@ const Resources = () => {
                   : 'border-border bg-card hover:border-accent/50 hover:shadow-sm'
               }`}
             >
-              <div className="h-12 w-12 rounded-lg bg-white p-2 shadow-sm">
-                <img
-                  src={tool.logo}
-                  alt={tool.name}
-                  className="h-full w-full object-contain"
-                />
+              <div className="h-12 w-12 rounded-lg bg-white p-2 shadow-sm flex items-center justify-center">
+                {tool.logo ? (
+                  <img
+                    src={tool.logo}
+                    alt={tool.name}
+                    className="h-full w-full object-contain"
+                  />
+                ) : (
+                  <span className="text-2xl">🌐</span>
+                )}
               </div>
               <span className="text-sm font-medium text-card-foreground">{tool.name}</span>
             </button>
