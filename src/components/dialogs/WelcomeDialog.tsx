@@ -37,7 +37,7 @@ const WelcomeDialog = () => {
             </div>
           </div>
           <DialogTitle className="text-2xl">
-            Welcome to The Big Four Digital Levels
+            Welcome to The Big 4: Level Up
           </DialogTitle>
           <DialogDescription className="text-base text-left space-y-4">
             <p>

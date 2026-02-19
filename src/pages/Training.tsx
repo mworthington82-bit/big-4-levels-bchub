@@ -236,97 +236,86 @@ const Training = () => {
         <header className="border-b border-border bg-card shadow-sm">
           <div className="container mx-auto px-4 py-6">
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-              <img src={bradfordLogo} alt="Bradford College logo - a modern design representing educational excellence" className="h-12 object-contain" />
-              <h1 className="text-xl text-muted-foreground md:text-3xl font-bold text-left my-0 py-0">The Big Four - Digital Levels</h1>
+              <img src={bradfordLogo} alt="Bradford College logo" className="h-12 object-contain" />
+              <h1 className="font-display text-xl text-muted-foreground md:text-3xl font-bold text-left my-0 py-0">The Big 4: Level Up</h1>
             </div>
           </div>
         </header>
 
         <main className="container mx-auto px-4 py-8 md:py-12">
-          <div className="max-w-4xl mx-auto">
+          <div className="max-w-3xl mx-auto">
             {/* Question */}
-            <div className="text-center mb-12 animate-fade-in">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4 text-foreground">
-                What level were you assigned in your Digital Self-Assessment?
+            <div className="text-center mb-8 animate-fade-in">
+              <h2 className="font-display text-3xl md:text-4xl font-bold mb-4 text-foreground">
+                What level were you assigned?
               </h2>
               <p className="text-lg text-muted-foreground">
                 Select your assigned level to continue to your personalised training pathway
               </p>
             </div>
 
-            {/* Level Selection Cards */}
-            <div className="grid md:grid-cols-3 gap-6 mb-8">
+            {/* Gold reassurance note */}
+            <div className="bg-[#F5A623]/10 border border-[#F5A623]/30 rounded-xl px-5 py-3 mb-6 text-center animate-fade-in">
+              <p className="text-sm text-foreground">
+                <span className="font-semibold">Not sure which level?</span> Your self-assessment result will have said Explorer, Practitioner, or Leader.
+              </p>
+            </div>
+
+            {/* Vertical stacked level rows */}
+            <div className="space-y-3 mb-8 animate-fade-in">
               {/* Explorer */}
-              <Card 
-                className="group cursor-pointer transition-all duration-300 hover:shadow-[var(--shadow-hover)] hover:-translate-y-1 border-2 border-border hover:border-accent bg-card"
+              <div
+                className="group flex items-center gap-4 md:gap-6 bg-card rounded-2xl border-2 border-border hover:border-t-4 hover:border-t-[#F5A623] cursor-pointer transition-all duration-300 hover:shadow-[var(--shadow-hover)] p-5"
                 onClick={() => handleLevelEntry('explorer')}
               >
-                <CardHeader className="text-center">
-                  <div className="text-5xl mb-4"><Star className="w-12 h-12 text-accent mx-auto" /></div>
-                  <CardTitle className="text-2xl text-card-foreground">Explorer</CardTitle>
-                  <CardDescription className="text-base mt-2">
-                    Beginners - Discover and build confidence with core digital tools
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <Button 
-                    variant="secondary"
-                    className="w-full group-hover:bg-accent group-hover:text-accent-foreground transition-colors"
-                  >
-                    Select Explorer Level
-                  </Button>
-                </CardContent>
-              </Card>
+                <span className="text-4xl flex-shrink-0">⭐</span>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-3 mb-1">
+                    <h3 className="font-display text-xl font-bold text-foreground">Explorer</h3>
+                    <span className="text-xs font-semibold px-3 py-1 rounded-full bg-[#F5A623]/15 text-[#B8860B]">Beginner</span>
+                  </div>
+                  <p className="text-sm text-muted-foreground">Discover and build confidence with core digital tools</p>
+                </div>
+                <ArrowRight className="h-5 w-5 text-muted-foreground group-hover:text-[#F5A623] group-hover:translate-x-1 transition-all flex-shrink-0" />
+              </div>
 
               {/* Practitioner */}
-              <Card 
-                className="group cursor-pointer transition-all duration-300 hover:shadow-[var(--shadow-hover)] hover:-translate-y-1 border-2 border-border hover:border-accent bg-card"
+              <div
+                className="group flex items-center gap-4 md:gap-6 bg-card rounded-2xl border-2 border-border hover:border-t-4 hover:border-t-[#5B5FC7] cursor-pointer transition-all duration-300 hover:shadow-[var(--shadow-hover)] p-5"
                 onClick={() => handleLevelEntry('practitioner')}
               >
-                <CardHeader className="text-center">
-                  <div className="text-5xl mb-4"><Rocket className="w-12 h-12 text-accent mx-auto" /></div>
-                  <CardTitle className="text-2xl text-card-foreground">Practitioner</CardTitle>
-                  <CardDescription className="text-base mt-2">
-                    Developing - Apply digital tools purposefully to enhance teaching
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <Button 
-                    variant="secondary"
-                    className="w-full group-hover:bg-accent group-hover:text-accent-foreground transition-colors"
-                  >
-                    Select Practitioner Level
-                  </Button>
-                </CardContent>
-              </Card>
+                <span className="text-4xl flex-shrink-0">🚀</span>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-3 mb-1">
+                    <h3 className="font-display text-xl font-bold text-foreground">Practitioner</h3>
+                    <span className="text-xs font-semibold px-3 py-1 rounded-full bg-[#5B5FC7]/15 text-[#5B5FC7]">Developing</span>
+                  </div>
+                  <p className="text-sm text-muted-foreground">Apply digital tools purposefully to enhance teaching</p>
+                </div>
+                <ArrowRight className="h-5 w-5 text-muted-foreground group-hover:text-[#5B5FC7] group-hover:translate-x-1 transition-all flex-shrink-0" />
+              </div>
 
               {/* Leader */}
-              <Card 
-                className="group cursor-pointer transition-all duration-300 hover:shadow-[var(--shadow-hover)] hover:-translate-y-1 border-2 border-border hover:border-accent bg-card"
+              <div
+                className="group flex items-center gap-4 md:gap-6 bg-card rounded-2xl border-2 border-border hover:border-t-4 hover:border-t-[#22C55E] cursor-pointer transition-all duration-300 hover:shadow-[var(--shadow-hover)] p-5"
                 onClick={() => handleLevelEntry('leader')}
               >
-                <CardHeader className="text-center">
-                  <div className="text-5xl mb-4"><Crown className="w-12 h-12 text-accent mx-auto" /></div>
-                  <CardTitle className="text-2xl text-card-foreground">Leader</CardTitle>
-                  <CardDescription className="text-base mt-2">
-                    Expert - Lead with confidence, creativity, and mentor others
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <Button 
-                    variant="secondary"
-                    className="w-full group-hover:bg-accent group-hover:text-accent-foreground transition-colors"
-                  >
-                    Select Leader Level
-                  </Button>
-                </CardContent>
-              </Card>
+                <span className="text-4xl flex-shrink-0">👑</span>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-3 mb-1">
+                    <h3 className="font-display text-xl font-bold text-foreground">Leader</h3>
+                    <span className="text-xs font-semibold px-3 py-1 rounded-full bg-[#22C55E]/15 text-[#22C55E]">Expert</span>
+                  </div>
+                  <p className="text-sm text-muted-foreground">Lead with confidence, creativity, and mentor others</p>
+                </div>
+                <ArrowRight className="h-5 w-5 text-muted-foreground group-hover:text-[#22C55E] group-hover:translate-x-1 transition-all flex-shrink-0" />
+              </div>
             </div>
 
             {/* Back Button */}
             <div className="text-center animate-fade-in">
-              <Button 
-                variant="outline" 
+              <Button
+                variant="outline"
                 onClick={() => navigate("/")}
                 className="border-border hover:bg-muted hover:text-foreground px-8 py-6 text-base rounded-xl"
               >
@@ -348,7 +337,7 @@ const Training = () => {
           <div className="container mx-auto px-4 py-6">
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
               <img src={bradfordLogo} alt="Bradford College logo - a modern design representing educational excellence" className="h-12 object-contain" />
-              <h1 className="text-xl text-muted-foreground md:text-3xl font-bold text-left my-0 py-0">The Big Four - Digital Levels</h1>
+              <h1 className="font-display text-xl text-muted-foreground md:text-3xl font-bold text-left my-0 py-0">The Big 4: Level Up</h1>
             </div>
           </div>
         </header>
@@ -468,11 +457,11 @@ const Training = () => {
               </p>
             </div>
 
-            <div className="grid md:grid-cols-2 gap-8 mb-10 animate-fade-in">
+            <div className="space-y-4 mb-10 animate-fade-in">
               {tools.map((tool, index) => <div key={tool.id} className="animate-fade-in" style={{
               animationDelay: `${index * 100}ms`
             }}>
-                  <ToolCard tool={tool.id} title={tool.title} tagline={tool.tagline} description={tool.description} icon={tool.icon} onSelect={() => handleToolSelect(tool.id)} />
+                  <ToolCard tool={tool.id} title={tool.title} tagline={tool.tagline} description={tool.description} icon={tool.icon} onSelect={() => handleToolSelect(tool.id)} moduleNumber={index + 1} />
                 </div>)}
             </div>
 
