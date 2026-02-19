@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import LearningSummary from "@/components/LearningSummary";
+import ModuleHeroBanner from "@/components/ModuleHeroBanner";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import ToolCard from "@/components/ToolCard";
@@ -212,6 +213,14 @@ const Training = () => {
     };
     return toolMap[tool];
   };
+  const brandColors: Record<string, string> = {
+    teams: '#5B5FC7',
+    canva: '#7D2AE8',
+    edpuzzle: '#E8384F',
+    copilot: '#0078D4',
+  };
+  const currentBrandColor = selectedTool ? brandColors[selectedTool] : '#F5A623';
+
   const progressSteps = ['Intro', 'Learn', 'Outcomes', 'Reflect', 'Assess'];
   const getCurrentStep = () => {
     const stageMap: Record<string, number> = {
@@ -222,6 +231,28 @@ const Training = () => {
       quiz: 4,
     };
     return stageMap[stage] || 0;
+  };
+
+  const getSectionInfo = () => {
+    const sections = [
+      { num: 1, name: 'Introduction' },
+      { num: 2, name: 'Learn' },
+      { num: 3, name: 'Outcomes' },
+      { num: 4, name: 'Reflect' },
+      { num: 5, name: 'Assess' },
+    ];
+    const step = getCurrentStep();
+    return sections[step] || sections[0];
+  };
+
+  const getNextStageName = () => {
+    const names: Record<string, string> = {
+      intro: 'Section 2',
+      learning: 'Section 3',
+      benefits: 'Section 4',
+      reflection: 'Section 5',
+    };
+    return names[stage] || 'Next';
   };
 
   const allToolsCompleted = completedTools.size >= 4;
@@ -647,183 +678,160 @@ const Training = () => {
   }
 
   if (!pathway) return null;
+  const sectionInfo = getSectionInfo();
+
   return <div className="min-h-screen bg-background">
       <ResourceBankButton />
       <NavigationButtons onBack={handleBack} />
       <AccessibilityPanel />
       <header className="border-b border-border bg-card shadow-sm sticky top-0 z-10">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between mb-4">
-            <img src={bradfordLogo} alt="Bradford College logo - a modern design representing educational excellence" className="h-10 object-contain" />
+        <div className="container mx-auto px-4 py-3">
+          <div className="flex items-center justify-between mb-2">
+            <img src={bradfordLogo} alt="Bradford College logo" className="h-10 object-contain" />
             <Button variant="outline" size="sm" onClick={handleRestart} className="border-border hover:bg-accent hover:text-accent-foreground">
               <Home className="mr-2 h-4 w-4" />
               Exit
             </Button>
           </div>
-          <ProgressTracker currentStep={getCurrentStep()} steps={progressSteps} />
+          <ProgressTracker currentStep={getCurrentStep()} steps={progressSteps} brandColor={currentBrandColor} />
         </div>
       </header>
 
       <main className="container mx-auto px-4 py-12">
         {stage === 'intro' && <div className="max-w-4xl mx-auto space-y-6 animate-fade-in">
-            <div className="relative rounded-2xl overflow-hidden shadow-[var(--shadow-card)] mb-6">
-              {selectedTool === 'teams' ? (
-                <div className="w-full h-64 bg-gradient-to-r from-primary/20 to-accent/20 flex items-center justify-center gap-8">
-                  <div className="h-32 w-32 rounded-xl bg-white p-4 shadow-lg">
-                    <img src={teamsLogo} alt="MS Teams logo" className="h-full w-full object-contain" />
-                  </div>
-                  <div className="h-32 w-32 rounded-xl bg-white p-4 shadow-lg">
-                    <img src={formsLogo} alt="MS Forms logo" className="h-full w-full object-contain" />
-                  </div>
-                </div>
-              ) : (
-                <img src={toolIllustrations[selectedTool!]} alt={`${pathway.intro.title} illustration`} className="w-full h-64 object-cover" />
-              )}
-              <div className="absolute inset-0 bg-gradient-to-t from-primary/90 to-transparent flex items-end">
-                <div className="p-8 text-white w-full">
-                  <h2 className="text-4xl font-bold mb-2">{pathway.intro.title}</h2>
-                  <p className="text-xl opacity-90">{getToolDisplayName(selectedTool!)} - {selectedLevel} Level</p>
-                </div>
-              </div>
-            </div>
+            <ModuleHeroBanner tool={selectedTool!} level={selectedLevel!} brandColor={currentBrandColor} />
             
             {/* Learning Objectives - Single Row Under Banner */}
             {selectedTool && selectedLevel && <LearningObjectivesCarousel tool={selectedTool} level={selectedLevel} />}
             
-            <Card className="border-border bg-card shadow-[var(--shadow-card)]">
+            {/* Section pill */}
+            <div className="flex items-center gap-2">
+              <span
+                className="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full text-white"
+                style={{ backgroundColor: currentBrandColor }}
+              >
+                📍 Section {sectionInfo.num} of 5 — {sectionInfo.name}
+              </span>
+            </div>
+
+            <Card className="border-border bg-card shadow-[var(--shadow-card)] rounded-3xl overflow-hidden">
               <CardHeader>
                 <div className="flex items-start justify-between gap-4">
-                  <div className="flex-1">
-                    <CardDescription className="text-lg text-muted-foreground pt-2">
-                      {pathway.intro.description}
-                    </CardDescription>
-                  </div>
+                  <CardTitle className="font-display text-2xl md:text-3xl text-card-foreground">
+                    {pathway.intro.title}
+                  </CardTitle>
                   <ReadAloudButton text={`${pathway.intro.title}. ${pathway.intro.description}`} />
                 </div>
               </CardHeader>
               <CardContent className="space-y-6">
-                
+                <p className="text-[15px] leading-[1.75] text-[#52526E]">
+                  {pathway.intro.description}
+                </p>
+
+                {pathway.intro.additionalInfo && (
+                  <div
+                    className="rounded-xl p-4 border-l-4"
+                    style={{ borderColor: currentBrandColor, backgroundColor: `${currentBrandColor}08` }}
+                  >
+                    <p className="text-sm text-[#52526E] leading-relaxed">
+                      💡 {pathway.intro.additionalInfo}
+                    </p>
+                  </div>
+                )}
+
                 {pathway.intro.externalLinks && pathway.intro.externalLinks.length > 0 && (
                   <div className="space-y-3">
-                    <h3 className="text-xl font-semibold mb-4 text-accent flex items-center gap-2">
-                      <Lightbulb className="w-6 h-6" />
+                    <h3 className="font-display text-lg font-semibold flex items-center gap-2" style={{ color: currentBrandColor }}>
+                      <Lightbulb className="w-5 h-5" />
                       Additional Resources
                     </h3>
                     {pathway.intro.externalLinks.map((link, index) => (
-                      <Alert key={index} className="border-accent/30 bg-accent/5">
-                        <AlertDescription>
-                          <div className="space-y-2">
-                            <p className="font-semibold text-card-foreground">{link.title}</p>
-                            <p className="text-sm text-muted-foreground">{link.description}</p>
-                            <Button 
-                              variant="outline" 
-                              size="sm" 
-                              className="mt-2"
-                              onClick={() => window.open(link.url, '_blank')}
-                            >
-                              Access Resource
-                              <ArrowRight className="ml-2 h-4 w-4" />
-                            </Button>
-                          </div>
-                        </AlertDescription>
-                      </Alert>
+                      <div key={index} className="border border-border rounded-xl p-4 bg-muted/20">
+                        <p className="font-semibold text-card-foreground mb-1">{link.title}</p>
+                        <p className="text-sm text-muted-foreground mb-2">{link.description}</p>
+                        <Button 
+                          variant="outline" 
+                          size="sm"
+                          onClick={() => window.open(link.url, '_blank')}
+                        >
+                          Access Resource
+                          <ArrowRight className="ml-2 h-4 w-4" />
+                        </Button>
+                      </div>
                     ))}
                   </div>
                 )}
 
-                {pathway.intro.additionalInfo && (
-                  <Alert className="border-accent/30 bg-accent/5">
-                    <Star className="h-5 w-5 text-accent" />
-                    <AlertDescription className="text-muted-foreground ml-2">
-                      {pathway.intro.additionalInfo}
-                    </AlertDescription>
-                  </Alert>
-                )}
-
-                {/* Training Requirements Section */}
-                <Card className="border-primary/30 bg-primary/5">
-                  <CardHeader className="pb-3">
-                    <CardTitle className="text-lg text-primary flex items-center gap-2">
-                      <Target className="w-5 h-5" />
-                      Complete Your Training
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <p className="text-muted-foreground">
-                      To earn your digital skills certificate, you must complete all sections of this training module. Your progress is tracked throughout, and certificates are only awarded upon successful completion of the full pathway.
-                    </p>
-                    <div className="space-y-2">
-                      <p className="font-medium text-card-foreground">Your training pathway includes:</p>
-                      <ul className="space-y-2">
-                        <li className="flex items-start gap-3">
-                          <CheckCircle className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
-                          <span className="text-muted-foreground"><strong>Introduction</strong> – Overview and key learning objectives</span>
-                        </li>
-                        <li className="flex items-start gap-3">
-                          <CheckCircle className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
-                          <span className="text-muted-foreground"><strong>Learn</strong> – Practical guidance with real FE examples</span>
-                        </li>
-                        <li className="flex items-start gap-3">
-                          <CheckCircle className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
-                          <span className="text-muted-foreground"><strong>Outcomes</strong> – Impact on students, staff, and the college</span>
-                        </li>
-                        <li className="flex items-start gap-3">
-                          <CheckCircle className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
-                          <span className="text-muted-foreground"><strong>Reflect</strong> – Share your thoughts and learn from colleagues</span>
-                        </li>
-                        <li className="flex items-start gap-3">
-                          <CheckCircle className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
-                          <span className="text-muted-foreground"><strong>Assess</strong> – Complete the knowledge check to earn your certificate</span>
-                        </li>
-                      </ul>
-                    </div>
-                    <Alert className="border-primary/30 bg-primary/10">
-                      <Lightbulb className="h-5 w-5 text-primary" />
-                      <AlertDescription className="text-card-foreground ml-2">
-                        <strong>Please note:</strong> All sections must be completed in order to receive your certificate of completion.
-                      </AlertDescription>
-                    </Alert>
-                  </CardContent>
-                </Card>
-                
-                <Button onClick={() => setStage('learning')} className="w-full bg-accent hover:bg-accent/90" size="lg">
-                  Begin Training
-                  <ArrowRight className="ml-2 h-5 w-5" />
-                </Button>
+                {/* Training Requirements */}
+                <div
+                  className="rounded-xl p-5 border-l-4"
+                  style={{ borderColor: currentBrandColor, backgroundColor: `${currentBrandColor}08` }}
+                >
+                  <h4 className="font-display text-lg font-bold text-card-foreground mb-3 flex items-center gap-2">
+                    <Target className="w-5 h-5" style={{ color: currentBrandColor }} />
+                    Complete Your Training
+                  </h4>
+                  <p className="text-sm text-[#52526E] leading-relaxed mb-3">
+                    To earn your digital skills certificate, complete all sections of this training module.
+                  </p>
+                  <ul className="space-y-2">
+                    {progressSteps.map((step, i) => (
+                      <li key={i} className="flex items-start gap-2 text-sm text-[#52526E]">
+                        <CheckCircle className="h-4 w-4 mt-0.5 flex-shrink-0" style={{ color: currentBrandColor }} />
+                        <span><strong>{step}</strong></span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </CardContent>
             </Card>
+
+            <Button
+              onClick={() => setStage('learning')}
+              className="w-full py-6 text-base rounded-xl font-semibold transition-all hover:-translate-y-0.5 hover:shadow-lg text-white"
+              style={{ backgroundColor: currentBrandColor }}
+              size="lg"
+            >
+              Continue to {getNextStageName()} →
+            </Button>
           </div>}
 
         {stage === 'learning' && <div className="max-w-4xl mx-auto space-y-6 animate-fade-in">
-            <Card className="border-border bg-card shadow-[var(--shadow-card)]">
-              <CardHeader className="bg-gradient-to-r from-accent/10 to-transparent">
+            <ModuleHeroBanner tool={selectedTool!} level={selectedLevel!} brandColor={currentBrandColor} />
+
+            {/* Section pill */}
+            <div className="flex items-center gap-2">
+              <span
+                className="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full text-white"
+                style={{ backgroundColor: currentBrandColor }}
+              >
+                📍 Section {sectionInfo.num} of 5 — {sectionInfo.name}
+              </span>
+            </div>
+
+            <Card className="border-border bg-card shadow-[var(--shadow-card)] rounded-3xl overflow-hidden">
+              <CardHeader>
                 <div className="flex items-start justify-between gap-4">
-                  <div className="flex items-center gap-4 flex-1">
-                    <div className="h-16 w-16 rounded-xl bg-white p-2 shadow-sm flex-shrink-0">
-                      <img src={toolLogos[selectedTool!]} alt={`${getToolDisplayName(selectedTool!)} logo`} className="h-full w-full object-contain" />
-                    </div>
-                    <div>
-                      <CardTitle className="text-3xl text-card-foreground">
-                        How to Use {getToolDisplayName(selectedTool!)}
-                      </CardTitle>
-                      <CardDescription className="text-lg text-muted-foreground pt-2">
-                        {pathway.mainContent.howToUse}
-                      </CardDescription>
-                    </div>
-                  </div>
+                  <CardTitle className="font-display text-2xl md:text-3xl text-card-foreground">
+                    How to Use {getToolDisplayName(selectedTool!)}
+                  </CardTitle>
                   <ReadAloudButton text={`How to Use ${getToolDisplayName(selectedTool!)}. ${pathway.mainContent.howToUse}`} />
                 </div>
               </CardHeader>
               <CardContent className="space-y-6">
-                {/* Real FE Teaching Examples - Collapsible */}
+                <p className="text-[15px] leading-[1.75] text-[#52526E]">
+                  {pathway.mainContent.howToUse}
+                </p>
+
+                {/* Real FE Teaching Examples */}
                 <div>
                   <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-xl font-semibold text-accent">Real FE Teaching Examples</h3>
+                    <h3 className="font-display text-lg font-semibold" style={{ color: currentBrandColor }}>Real FE Teaching Examples</h3>
                     <span className="text-sm text-muted-foreground">
                       {viewedExamples.size}/{pathway.mainContent.examples.length} viewed
                     </span>
                   </div>
-                  <p className="text-sm text-muted-foreground mb-4 italic">
+                  <p className="text-sm text-[#52526E] mb-4 italic">
                     Click each tab to read the example. You must view all examples before continuing.
                   </p>
                   <Tabs 
@@ -843,9 +851,9 @@ const Training = () => {
                           <TabsTrigger 
                             key={index} 
                             value={`example-${index}`}
-                            className="flex items-center gap-1.5 text-xs px-3 py-1.5 data-[state=active]:bg-accent data-[state=active]:text-accent-foreground"
+                            className="flex items-center gap-1.5 text-xs px-3 py-1.5"
                           >
-                            {isViewed && <CheckCircle className="h-3 w-3 flex-shrink-0" />}
+                            {isViewed && <CheckCircle className="h-3 w-3 flex-shrink-0" style={{ color: currentBrandColor }} />}
                             <span className="truncate max-w-[120px]">{title}</span>
                           </TabsTrigger>
                         );
@@ -859,173 +867,150 @@ const Training = () => {
                         <TabsContent 
                           key={index} 
                           value={`example-${index}`}
-                          className="mt-4 min-h-[100px] bg-card border border-border rounded-lg p-4"
+                          className="mt-4 min-h-[100px] bg-card border border-border rounded-xl p-4"
                         >
                           <h4 className="font-semibold text-card-foreground mb-2">{title}</h4>
-                          <p className="text-sm text-muted-foreground">{content}</p>
+                          <p className="text-sm text-[#52526E]">{content}</p>
                         </TabsContent>
                       );
                     })}
                   </Tabs>
                 </div>
 
-                <Card className="border-primary bg-primary/5 shadow-md">
-                  <CardHeader className="pb-3">
-                    <CardTitle className="text-2xl text-primary flex items-center gap-3">
-                      <Target className="w-7 h-7" />
-                      🎯 Required Activity: Complete Your Training
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <Alert className="border-accent bg-accent/10">
-                      <Lightbulb className="h-5 w-5 text-accent" />
-                      <AlertDescription className="text-card-foreground ml-2">
-                        <strong>What you need to do:</strong> Watch the training video(s) below and complete the embedded questions. This interactive content will help you apply {getToolDisplayName(selectedTool!)} in your teaching practice.
-                      </AlertDescription>
-                    </Alert>
-                    
-                    <div className="bg-card border border-border rounded-lg p-4 space-y-3">
-                      <h4 className="font-semibold text-card-foreground flex items-center gap-2">
-                        <CheckCircle className="h-5 w-5 text-primary" />
-                        Why this matters:
-                      </h4>
-                      <ul className="space-y-2 text-muted-foreground">
-                        <li className="flex items-start gap-2">
-                          <ArrowRight className="h-4 w-4 mt-1 text-primary flex-shrink-0" />
-                          <span>Completing this activity is <strong>required</strong> to earn your digital skills certificate</span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <ArrowRight className="h-4 w-4 mt-1 text-primary flex-shrink-0" />
-                          <span>Your certificate will be <strong>shared with your department manager</strong> as evidence of your professional development</span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <ArrowRight className="h-4 w-4 mt-1 text-primary flex-shrink-0" />
-                          <span>Progress is tracked centrally to support Bradford College's digital skills initiative</span>
-                        </li>
-                      </ul>
-                    </div>
-
-                    <p className="text-muted-foreground text-sm italic">
-                      Click the button(s) below to open the training in a new tab. Once complete, return here to continue.
-                    </p>
-                    
-                    <div className="flex flex-col sm:flex-row flex-wrap gap-3">
-                      {selectedTool === 'teams' && selectedLevel === 'explorer' && (
-                        <>
-                          <Button asChild variant="default" className="bg-primary hover:bg-primary/90 flex-1">
-                            <a href="https://edpuzzle.com/professional/join/69008e0ce724165a4bba4ea0?schoolCode=bnc9r6" target="_blank" rel="noopener noreferrer">
-                              MS Teams Training
-                              <ArrowRight className="ml-2 h-4 w-4" />
-                            </a>
-                          </Button>
-                          <Button asChild variant="default" className="bg-primary hover:bg-primary/90 flex-1">
-                            <a href="https://edpuzzle.com/professional/join/695ff984d2d550b2d19a4c8e?schoolCode=bnc9r6" target="_blank" rel="noopener noreferrer">
-                              MS Forms Training
-                              <ArrowRight className="ml-2 h-4 w-4" />
-                            </a>
-                          </Button>
-                        </>
-                      )}
-                      {selectedTool === 'teams' && selectedLevel === 'practitioner' && (
-                        <>
-                          <Button asChild variant="default" className="bg-primary hover:bg-primary/90 flex-1 min-w-[200px]">
-                            <a href="https://edpuzzle.com/professional/join/697f61e10bc0b32a9541b132?schoolCode=bnc9r6" target="_blank" rel="noopener noreferrer">
-                              Breakout Rooms
-                              <ArrowRight className="ml-2 h-4 w-4" />
-                            </a>
-                          </Button>
-                          <Button asChild variant="default" className="bg-primary hover:bg-primary/90 flex-1 min-w-[200px]">
-                            <a href="#" target="_blank" rel="noopener noreferrer">
-                              Feedback
-                              <ArrowRight className="ml-2 h-4 w-4" />
-                            </a>
-                          </Button>
-                          <Button asChild variant="default" className="bg-primary hover:bg-primary/90 flex-1 min-w-[200px]">
-                            <a href="#" target="_blank" rel="noopener noreferrer">
-                              MS Forms - Branching
-                              <ArrowRight className="ml-2 h-4 w-4" />
-                            </a>
-                          </Button>
-                        </>
-                      )}
-                      {selectedTool === 'edpuzzle' && selectedLevel === 'explorer' && (
-                        <Button asChild variant="default" className="bg-primary hover:bg-primary/90 flex-1">
-                          <a href="https://edpuzzle.com/professional/join/696fe293b370d6481cb68098?schoolCode=bnc9r6" target="_blank" rel="noopener noreferrer">
-                            Edpuzzle Training
-                            <ArrowRight className="ml-2 h-4 w-4" />
+                {/* Required Activity callout */}
+                <div
+                  className="rounded-xl p-5 border-l-4"
+                  style={{ borderColor: currentBrandColor, backgroundColor: `${currentBrandColor}08` }}
+                >
+                  <h4 className="font-display text-lg font-bold text-card-foreground mb-3 flex items-center gap-2">
+                    <Target className="w-5 h-5" style={{ color: currentBrandColor }} />
+                    🎯 Required Activity
+                  </h4>
+                  <p className="text-sm text-[#52526E] leading-relaxed mb-3">
+                    Watch the training video(s) below and complete the embedded questions. This interactive content will help you apply {getToolDisplayName(selectedTool!)} in your teaching practice.
+                  </p>
+                  
+                  <div className="flex flex-col sm:flex-row flex-wrap gap-3">
+                    {selectedTool === 'teams' && selectedLevel === 'explorer' && (
+                      <>
+                        <Button asChild className="flex-1 text-white" style={{ backgroundColor: currentBrandColor }}>
+                          <a href="https://edpuzzle.com/professional/join/69008e0ce724165a4bba4ea0?schoolCode=bnc9r6" target="_blank" rel="noopener noreferrer">
+                            MS Teams Training <ArrowRight className="ml-2 h-4 w-4" />
                           </a>
                         </Button>
-                      )}
-                      {selectedTool === 'edpuzzle' && selectedLevel === 'practitioner' && (
-                        <Button asChild variant="default" className="bg-primary hover:bg-primary/90 flex-1">
-                          <a href="https://edpuzzle.com/professional/join/697a50396dc975e0ebe7aabb?schoolCode=bnc9r6" target="_blank" rel="noopener noreferrer">
-                            Edpuzzle Training
-                            <ArrowRight className="ml-2 h-4 w-4" />
+                        <Button asChild className="flex-1 text-white" style={{ backgroundColor: currentBrandColor }}>
+                          <a href="https://edpuzzle.com/professional/join/695ff984d2d550b2d19a4c8e?schoolCode=bnc9r6" target="_blank" rel="noopener noreferrer">
+                            MS Forms Training <ArrowRight className="ml-2 h-4 w-4" />
                           </a>
                         </Button>
-                      )}
-                      {selectedTool === 'canva' && (
-                        <Button asChild variant="default" className="bg-primary hover:bg-primary/90 flex-1">
-                          <a href="https://www.canva.com/designschool/courses/canva-for-the-classroom/" target="_blank" rel="noopener noreferrer">
-                            Canva Training
-                            <ArrowRight className="ml-2 h-4 w-4" />
+                      </>
+                    )}
+                    {selectedTool === 'teams' && selectedLevel === 'practitioner' && (
+                      <>
+                        <Button asChild className="flex-1 min-w-[200px] text-white" style={{ backgroundColor: currentBrandColor }}>
+                          <a href="https://edpuzzle.com/professional/join/697f61e10bc0b32a9541b132?schoolCode=bnc9r6" target="_blank" rel="noopener noreferrer">
+                            Breakout Rooms <ArrowRight className="ml-2 h-4 w-4" />
                           </a>
                         </Button>
-                      )}
-                      {selectedTool === 'copilot' && (
-                        <Button asChild variant="default" className="bg-primary hover:bg-primary/90 flex-1">
-                          <a href="https://learn.microsoft.com/en-us/collections/778ea8tj5ww7d2?&sharingId=96CA0696F41DC6E3" target="_blank" rel="noopener noreferrer">
-                            Microsoft Copilot Training
-                            <ArrowRight className="ml-2 h-4 w-4" />
+                        <Button asChild className="flex-1 min-w-[200px] text-white" style={{ backgroundColor: currentBrandColor }}>
+                          <a href="#" target="_blank" rel="noopener noreferrer">
+                            Feedback <ArrowRight className="ml-2 h-4 w-4" />
                           </a>
                         </Button>
-                      )}
-                    </div>
-                  </CardContent>
-                </Card>
+                        <Button asChild className="flex-1 min-w-[200px] text-white" style={{ backgroundColor: currentBrandColor }}>
+                          <a href="#" target="_blank" rel="noopener noreferrer">
+                            MS Forms - Branching <ArrowRight className="ml-2 h-4 w-4" />
+                          </a>
+                        </Button>
+                      </>
+                    )}
+                    {selectedTool === 'edpuzzle' && selectedLevel === 'explorer' && (
+                      <Button asChild className="flex-1 text-white" style={{ backgroundColor: currentBrandColor }}>
+                        <a href="https://edpuzzle.com/professional/join/696fe293b370d6481cb68098?schoolCode=bnc9r6" target="_blank" rel="noopener noreferrer">
+                          Edpuzzle Training <ArrowRight className="ml-2 h-4 w-4" />
+                        </a>
+                      </Button>
+                    )}
+                    {selectedTool === 'edpuzzle' && selectedLevel === 'practitioner' && (
+                      <Button asChild className="flex-1 text-white" style={{ backgroundColor: currentBrandColor }}>
+                        <a href="https://edpuzzle.com/professional/join/697a50396dc975e0ebe7aabb?schoolCode=bnc9r6" target="_blank" rel="noopener noreferrer">
+                          Edpuzzle Training <ArrowRight className="ml-2 h-4 w-4" />
+                        </a>
+                      </Button>
+                    )}
+                    {selectedTool === 'canva' && (
+                      <Button asChild className="flex-1 text-white" style={{ backgroundColor: currentBrandColor }}>
+                        <a href="https://www.canva.com/designschool/courses/canva-for-the-classroom/" target="_blank" rel="noopener noreferrer">
+                          Canva Training <ArrowRight className="ml-2 h-4 w-4" />
+                        </a>
+                      </Button>
+                    )}
+                    {selectedTool === 'copilot' && (
+                      <Button asChild className="flex-1 text-white" style={{ backgroundColor: currentBrandColor }}>
+                        <a href="https://learn.microsoft.com/en-us/collections/778ea8tj5ww7d2?&sharingId=96CA0696F41DC6E3" target="_blank" rel="noopener noreferrer">
+                          Microsoft Copilot Training <ArrowRight className="ml-2 h-4 w-4" />
+                        </a>
+                      </Button>
+                    )}
+                  </div>
+                </div>
                 
                 <Button 
                   onClick={() => setStage('benefits')} 
-                  className="w-full bg-accent hover:bg-accent/90" 
+                  className="w-full py-6 text-base rounded-xl font-semibold transition-all hover:-translate-y-0.5 hover:shadow-lg text-white"
+                  style={{ backgroundColor: currentBrandColor }}
                   size="lg"
                   disabled={viewedExamples.size < pathway.mainContent.examples.length}
                 >
                   {viewedExamples.size < pathway.mainContent.examples.length 
                     ? `View all examples to continue (${viewedExamples.size}/${pathway.mainContent.examples.length})`
-                    : "I've Completed the Training – Continue"
+                    : `Continue to ${getNextStageName()} →`
                   }
-                  <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
               </CardContent>
             </Card>
           </div>}
 
         {stage === 'benefits' && <div className="max-w-4xl mx-auto space-y-6 animate-fade-in">
-            <Card className="border-border bg-card shadow-[var(--shadow-card)]">
-              <CardHeader className="bg-gradient-to-r from-accent/10 to-transparent">
+            <ModuleHeroBanner tool={selectedTool!} level={selectedLevel!} brandColor={currentBrandColor} />
+
+            <div className="flex items-center gap-2">
+              <span
+                className="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full text-white"
+                style={{ backgroundColor: currentBrandColor }}
+              >
+                📍 Section {sectionInfo.num} of 5 — {sectionInfo.name}
+              </span>
+            </div>
+
+            <Card className="border-border bg-card shadow-[var(--shadow-card)] rounded-3xl overflow-hidden">
+              <CardHeader>
                 <div className="flex items-start justify-between gap-4">
-                  <div className="flex-1">
-                    <CardTitle className="text-3xl text-card-foreground flex items-center gap-3">
-                      <Star className="w-8 h-8 text-accent" />
-                      The Impact
-                    </CardTitle>
-                    <CardDescription className="text-lg text-muted-foreground pt-2">
-                      How this tool benefits students, staff, and Bradford College
-                    </CardDescription>
-                  </div>
+                  <CardTitle className="font-display text-2xl md:text-3xl text-card-foreground flex items-center gap-3">
+                    <Star className="w-7 h-7" style={{ color: currentBrandColor }} />
+                    The Impact
+                  </CardTitle>
                   <ReadAloudButton text="The Impact. How this tool benefits students, staff, and Bradford College" />
                 </div>
               </CardHeader>
               <CardContent className="space-y-6">
+                <p className="text-[15px] leading-[1.75] text-[#52526E]">
+                  How {getToolDisplayName(selectedTool!)} benefits students, staff, and Bradford College
+                </p>
+
                 <ImpactCarousel 
                   studentBenefits={pathway.benefits.students}
                   staffBenefits={pathway.benefits.staff}
                   collegeBenefits={pathway.benefits.college}
                 />
                 
-                <Button onClick={() => setStage('reflection')} className="w-full bg-accent hover:bg-accent/90" size="lg">
-                  Continue to Reflection
-                  <ArrowRight className="ml-2 h-5 w-5" />
+                <Button 
+                  onClick={() => setStage('reflection')} 
+                  className="w-full py-6 text-base rounded-xl font-semibold transition-all hover:-translate-y-0.5 hover:shadow-lg text-white"
+                  style={{ backgroundColor: currentBrandColor }}
+                  size="lg"
+                >
+                  Continue to {getNextStageName()} →
                 </Button>
               </CardContent>
             </Card>
