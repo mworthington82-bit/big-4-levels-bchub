@@ -14,6 +14,7 @@ export interface ToolCardProps {
   onSelect: () => void;
   moduleNumber?: number;
   isCompleted?: boolean;
+  duration?: string;
 }
 
 const logoMap = {
@@ -39,6 +40,7 @@ const ToolCard = ({
   onSelect,
   moduleNumber,
   isCompleted = false,
+  duration = "~15 min",
 }: ToolCardProps) => {
   const logo = logoMap[icon];
   const colors = brandColors[icon];
@@ -66,7 +68,7 @@ const ToolCard = ({
         </p>
         <h3 className="font-display text-lg md:text-xl font-bold text-foreground mb-1 truncate">{title}</h3>
         <p className="text-sm text-muted-foreground line-clamp-1">{description}</p>
-        <p className="text-xs text-muted-foreground/70 mt-1">~15 min</p>
+        <p className="text-xs text-muted-foreground/70 mt-1">{duration}</p>
       </div>
 
       {/* CTA Button */}
