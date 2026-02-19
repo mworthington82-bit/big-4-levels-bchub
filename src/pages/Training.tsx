@@ -63,6 +63,7 @@ const Training = () => {
   const [quizScore, setQuizScore] = useState(0);
   const [currentSection, setCurrentSection] = useState(0);
   const [viewedExamples, setViewedExamples] = useState<Set<number>>(new Set());
+  const [completedTools, setCompletedTools] = useState<Set<Tool>>(new Set());
 
   // Scroll to top on stage change
   useEffect(() => {
@@ -192,6 +193,10 @@ const Training = () => {
   };
 
   const handleContinueLearning = () => {
+    // Mark the completed tool
+    if (selectedTool) {
+      setCompletedTools(prev => new Set([...prev, selectedTool]));
+    }
     // Go back to tool selection at the same level
     setStage('tool-select');
     setSelectedTool(null);
@@ -207,9 +212,7 @@ const Training = () => {
     };
     return toolMap[tool];
   };
-  const progressSteps = selectedLevel === 'leader' 
-    ? ['Intro', 'Learn', 'Outcomes', 'Reflect', 'Assess']
-    : ['Intro', 'Learn', 'Outcomes', 'Reflect', 'Assess', 'Summary'];
+  const progressSteps = ['Intro', 'Learn', 'Outcomes', 'Reflect', 'Assess'];
   const getCurrentStep = () => {
     const stageMap: Record<string, number> = {
       intro: 0,
@@ -217,10 +220,11 @@ const Training = () => {
       benefits: 2,
       reflection: 3,
       quiz: 4,
-      summary: 5,
     };
     return stageMap[stage] || 0;
   };
+
+  const allToolsCompleted = completedTools.size >= 4;
 
   // Level Entry Page
   if (stage === 'level-entry') {
@@ -465,9 +469,46 @@ const Training = () => {
               {tools.map((tool, index) => <div key={tool.id} className="animate-fade-in" style={{
               animationDelay: `${index * 100}ms`
             }}>
-                  <ToolCard tool={tool.id} title={tool.title} tagline={tool.tagline} description={tool.description} icon={tool.icon} onSelect={() => handleToolSelect(tool.id)} moduleNumber={index + 1} />
+                  <ToolCard tool={tool.id} title={tool.title} tagline={tool.tagline} description={tool.description} icon={tool.icon} onSelect={() => handleToolSelect(tool.id)} moduleNumber={index + 1} isCompleted={completedTools.has(tool.id)} />
                 </div>)}
             </div>
+
+            {/* My Learning Summary - appears after all 4 modules complete */}
+            {selectedLevel && selectedLevel !== 'leader' && (
+              <div
+                className={`mb-10 animate-fade-in rounded-2xl border-2 transition-all duration-300 ${
+                  allToolsCompleted
+                    ? 'border-[#F5A623] bg-[#F5A623]/5 cursor-pointer hover:shadow-[var(--shadow-hover)]'
+                    : 'border-border bg-muted/30 opacity-60'
+                }`}
+                onClick={() => allToolsCompleted && setStage('summary')}
+              >
+                <div className="flex items-center gap-4 md:gap-6 p-6">
+                  <span className="text-4xl flex-shrink-0">📋</span>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-3 mb-1">
+                      <h3 className="font-display text-xl font-bold text-foreground">My Learning Summary</h3>
+                      {allToolsCompleted ? (
+                        <span className="text-xs font-semibold px-3 py-1 rounded-full bg-[#F5A623]/15 text-[#B8860B]">Ready!</span>
+                      ) : (
+                        <span className="text-xs font-semibold px-3 py-1 rounded-full bg-muted text-muted-foreground">
+                          {completedTools.size}/4 modules complete
+                        </span>
+                      )}
+                    </div>
+                    <p className="text-sm text-muted-foreground">
+                      {allToolsCompleted
+                        ? 'All modules complete — review what you\'ve learned and plan your next steps'
+                        : 'Complete all 4 modules above to unlock your learning summary'
+                      }
+                    </p>
+                  </div>
+                  {allToolsCompleted && (
+                    <ArrowRight className="h-5 w-5 text-[#F5A623] flex-shrink-0" />
+                  )}
+                </div>
+              </div>
+            )}
 
             <div className="text-center animate-fade-in">
               <Button variant="outline" onClick={handleRestart} className="border-border hover:bg-accent hover:text-accent-foreground hover:border-accent transition-all px-8 py-6 text-base rounded-xl">
@@ -579,6 +620,32 @@ const Training = () => {
         </main>
       </div>;
   }
+
+  // Summary as standalone page (accessed from tool-select after all modules complete)
+  if (stage === 'summary' && selectedLevel) {
+    return (
+      <div className="min-h-screen bg-background">
+        <ResourceBankButton />
+        <NavigationButtons onBack={() => setStage('tool-select')} />
+        <AccessibilityPanel />
+        <header className="border-b border-border bg-card shadow-sm">
+          <div className="container mx-auto px-4 py-6">
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+              <img src={bradfordLogo} alt="Bradford College logo" className="h-12 object-contain" />
+              <h1 className="font-display text-xl text-muted-foreground md:text-3xl font-bold text-left my-0 py-0">The Big 4: Level Up</h1>
+            </div>
+          </div>
+        </header>
+        <main className="container mx-auto px-4 py-8 md:py-12">
+          <LearningSummary
+            level={selectedLevel}
+            onContinue={() => setStage('tool-select')}
+          />
+        </main>
+      </div>
+    );
+  }
+
   if (!pathway) return null;
   return <div className="min-h-screen bg-background">
       <ResourceBankButton />
@@ -969,19 +1036,9 @@ const Training = () => {
         {stage === 'quiz' && <Quiz questions={pathway.quiz} onComplete={(score, name) => {
         setQuizScore(score);
         if (name) setUserName(name);
-        if (selectedLevel === 'leader') {
-          setStage('badge');
-        } else {
-          setStage('summary');
-        }
+        setStage('badge');
       }} />}
 
-        {stage === 'summary' && selectedLevel && (
-          <LearningSummary
-            level={selectedLevel}
-            onContinue={() => setStage('badge')}
-          />
-        )}
       </main>
     </div>;
 };

@@ -1,11 +1,11 @@
 import { Button } from "@/components/ui/button";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, CheckCircle } from "lucide-react";
 import teamsLogo from "@/assets/teams-logo.png";
 import copilotLogo from "@/assets/copilot-logo.png";
 import edpuzzleLogo from "@/assets/edpuzzle-logo.png";
 import canvaLogo from "@/assets/canva-logo.jpg";
 
-interface ToolCardProps {
+export interface ToolCardProps {
   tool: string;
   title: string;
   description: string;
@@ -13,6 +13,7 @@ interface ToolCardProps {
   icon: 'teams' | 'canva' | 'edpuzzle' | 'copilot';
   onSelect: () => void;
   moduleNumber?: number;
+  isCompleted?: boolean;
 }
 
 const logoMap = {
@@ -37,6 +38,7 @@ const ToolCard = ({
   icon,
   onSelect,
   moduleNumber,
+  isCompleted = false,
 }: ToolCardProps) => {
   const logo = logoMap[icon];
   const colors = brandColors[icon];
@@ -69,12 +71,19 @@ const ToolCard = ({
 
       {/* CTA Button */}
       <div className="flex-shrink-0 pr-4 py-4">
-        <Button
-          className={`${colors.btn} rounded-full px-5 font-semibold text-sm group-hover:scale-105 transition-transform`}
-        >
-          Start Learning
-          <ArrowRight className="ml-1.5 h-4 w-4" />
-        </Button>
+        {isCompleted ? (
+          <div className="flex items-center gap-2 text-green-600 font-semibold text-sm px-5">
+            <CheckCircle className="h-5 w-5" />
+            Complete
+          </div>
+        ) : (
+          <Button
+            className={`${colors.btn} rounded-full px-5 font-semibold text-sm group-hover:scale-105 transition-transform`}
+          >
+            Start Learning
+            <ArrowRight className="ml-1.5 h-4 w-4" />
+          </Button>
+        )}
       </div>
     </div>
   );

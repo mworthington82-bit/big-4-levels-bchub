@@ -171,7 +171,7 @@ const LearningSummary = ({ level, onContinue }: LearningSummaryProps) => {
           onClick={onContinue}
           className="flex-1 bg-accent hover:bg-accent/90 text-accent-foreground py-6 text-base rounded-xl font-semibold group"
         >
-          Continue to Certificate
+          Back to Modules
           <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
         </Button>
       </div>
