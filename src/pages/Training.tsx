@@ -819,49 +819,44 @@ const Training = () => {
                     </span>
                   </div>
                   <p className="text-sm text-[#52526E] mb-4 italic">
-                    Click each tab to read the example. You must view all examples before continuing.
+                    Click each heading to expand the example. You must view all examples before continuing.
                   </p>
-                  <Tabs 
-                    defaultValue="example-0" 
-                    className="w-full"
-                    onValueChange={(value) => {
-                      const index = parseInt(value.replace('example-', ''));
-                      setViewedExamples(prev => new Set([...prev, index]));
+                  <Accordion 
+                    type="multiple" 
+                    className="w-full space-y-2"
+                    onValueChange={(values) => {
+                      const newViewed = new Set(viewedExamples);
+                      values.forEach(v => {
+                        const index = parseInt(v.replace('example-', ''));
+                        newViewed.add(index);
+                      });
+                      setViewedExamples(newViewed);
                     }}
                   >
-                    <TabsList className="w-full h-auto flex-wrap justify-start gap-1 bg-muted/50 p-2">
-                      {pathway.mainContent.examples.map((example, index) => {
-                        const colonIndex = example.indexOf(':');
-                        const title = colonIndex > -1 ? example.substring(0, colonIndex) : `Example ${index + 1}`;
-                        const isViewed = viewedExamples.has(index);
-                        return (
-                          <TabsTrigger 
-                            key={index} 
-                            value={`example-${index}`}
-                            className="flex items-center gap-1.5 text-xs px-3 py-1.5"
-                          >
-                            {isViewed && <CheckCircle className="h-3 w-3 flex-shrink-0" style={{ color: currentBrandColor }} />}
-                            <span className="truncate max-w-[120px]">{title}</span>
-                          </TabsTrigger>
-                        );
-                      })}
-                    </TabsList>
                     {pathway.mainContent.examples.map((example, index) => {
                       const colonIndex = example.indexOf(':');
                       const title = colonIndex > -1 ? example.substring(0, colonIndex) : `Example ${index + 1}`;
                       const content = colonIndex > -1 ? example.substring(colonIndex + 1).trim() : example;
+                      const isViewed = viewedExamples.has(index);
                       return (
-                        <TabsContent 
+                        <AccordionItem 
                           key={index} 
                           value={`example-${index}`}
-                          className="mt-4 min-h-[100px] bg-card border border-border rounded-xl p-4"
+                          className="border border-border rounded-xl overflow-hidden bg-card px-4"
                         >
-                          <h4 className="font-semibold text-card-foreground mb-2">{title}</h4>
-                          <p className="text-sm text-[#52526E]">{content}</p>
-                        </TabsContent>
+                          <AccordionTrigger className="hover:no-underline py-3">
+                            <span className="flex items-center gap-2 text-sm font-semibold text-card-foreground text-left">
+                              {isViewed && <CheckCircle className="h-4 w-4 flex-shrink-0" style={{ color: currentBrandColor }} />}
+                              {title}
+                            </span>
+                          </AccordionTrigger>
+                          <AccordionContent>
+                            <p className="text-sm text-[#52526E] leading-relaxed">{content}</p>
+                          </AccordionContent>
+                        </AccordionItem>
                       );
                     })}
-                  </Tabs>
+                  </Accordion>
                 </div>
 
                 {/* Required Activity callout */}
