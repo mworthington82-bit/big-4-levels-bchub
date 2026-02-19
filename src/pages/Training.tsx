@@ -38,6 +38,9 @@ import edpuzzleLogo from "@/assets/edpuzzle-logo.png";
 import copilotLogo from "@/assets/copilot-logo.png";
 
 import formsLogo from "@/assets/forms-logo.jpg";
+import emblemExplorer from "@/assets/emblem-explorer.svg";
+import emblemPractitioner from "@/assets/emblem-practitioner.svg";
+import emblemLeader from "@/assets/emblem-leader.svg";
 type Stage = 'level-entry' | 'home' | 'tool-select' | 'level-select' | 'intro' | 'learning' | 'benefits' | 'reflection' | 'quiz' | 'summary' | 'badge' | 'leader-hub';
 
 const Training = () => {
@@ -307,7 +310,7 @@ const Training = () => {
                 className="group flex items-center gap-4 md:gap-6 bg-card rounded-2xl border-2 border-border hover:border-t-4 hover:border-t-[#F5A623] cursor-pointer transition-all duration-300 hover:shadow-[var(--shadow-hover)] p-5"
                 onClick={() => handleLevelEntry('explorer')}
               >
-                <span className="text-4xl flex-shrink-0">⭐</span>
+                <img src={emblemExplorer} alt="Explorer emblem" className="h-12 w-12 flex-shrink-0" />
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-3 mb-1">
                     <h3 className="font-display text-xl font-bold text-foreground">Explorer</h3>
@@ -323,7 +326,7 @@ const Training = () => {
                 className="group flex items-center gap-4 md:gap-6 bg-card rounded-2xl border-2 border-border hover:border-t-4 hover:border-t-[#5B5FC7] cursor-pointer transition-all duration-300 hover:shadow-[var(--shadow-hover)] p-5"
                 onClick={() => handleLevelEntry('practitioner')}
               >
-                <span className="text-4xl flex-shrink-0">🚀</span>
+                <img src={emblemPractitioner} alt="Practitioner emblem" className="h-12 w-12 flex-shrink-0" />
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-3 mb-1">
                     <h3 className="font-display text-xl font-bold text-foreground">Practitioner</h3>
@@ -339,7 +342,7 @@ const Training = () => {
                 className="group flex items-center gap-4 md:gap-6 bg-card rounded-2xl border-2 border-border hover:border-t-4 hover:border-t-[#22C55E] cursor-pointer transition-all duration-300 hover:shadow-[var(--shadow-hover)] p-5"
                 onClick={() => handleLevelEntry('leader')}
               >
-                <span className="text-4xl flex-shrink-0">👑</span>
+                <img src={emblemLeader} alt="Leader emblem" className="h-12 w-12 flex-shrink-0" />
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-3 mb-1">
                     <h3 className="font-display text-xl font-bold text-foreground">Leader</h3>
