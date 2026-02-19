@@ -162,6 +162,16 @@ export const resources: Resource[] = [
     level: 'explorer',
   },
   {
+    id: 'canva-code-design-school',
+    tool: 'canva',
+    title: 'Learning with Canva Code - Canva Design School',
+    description: 'Discover how Canva Code combines creativity, real-time data, and personalisation to help students take ownership of their learning',
+    type: 'link',
+    url: 'https://www.canva.com/design-school/lessons/learning-with-canva-code',
+    function: 'Learn Canva Code fundamentals',
+    level: 'explorer',
+  },
+  {
     id: 'canva-2b',
     tool: 'canva',
     title: 'Sharing with Links and QR Codes',
