@@ -934,9 +934,16 @@ const Training = () => {
                         </a>
                       </Button>
                     )}
-                    {selectedTool === 'canva' && (
+                    {selectedTool === 'canva' && selectedLevel === 'explorer' && (
                       <Button asChild className="flex-1 text-white" style={{ backgroundColor: currentBrandColor }}>
                         <a href="https://www.canva.com/design-school/resources/learning-with-canva-code" target="_blank" rel="noopener noreferrer">
+                          Canva Training <ArrowRight className="ml-2 h-4 w-4" />
+                        </a>
+                      </Button>
+                    )}
+                    {selectedTool === 'canva' && selectedLevel === 'practitioner' && (
+                      <Button asChild className="flex-1 text-white" style={{ backgroundColor: currentBrandColor }}>
+                        <a href="https://www.canva.com/design-school/courses/ai-in-the-classroom" target="_blank" rel="noopener noreferrer">
                           Canva Training <ArrowRight className="ml-2 h-4 w-4" />
                         </a>
                       </Button>
