@@ -157,6 +157,23 @@ const LearningSummary = ({ level, onContinue }: LearningSummaryProps) => {
         );
       })}
 
+      {/* Help box */}
+      <div className="bg-muted/40 border border-border rounded-xl px-6 py-5 text-center space-y-2">
+        <p className="text-sm font-semibold text-foreground">
+          💬 Need extra support or want to go further?
+        </p>
+        <p className="text-sm text-muted-foreground leading-relaxed">
+          Get in touch with our team to book a one-to-one session or explore additional training opportunities.
+          We're here to support you at every step of your digital journey.
+        </p>
+        <a
+          href="mailto:immersive@bradfordcollege.ac.uk"
+          className="inline-block text-sm font-semibold text-[#0078D4] hover:underline mt-1"
+        >
+          immersive@bradfordcollege.ac.uk
+        </a>
+      </div>
+
       {/* Action buttons */}
       <div className="flex flex-col sm:flex-row gap-3 no-print">
         <Button
