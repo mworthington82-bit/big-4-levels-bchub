@@ -64,11 +64,12 @@ export const learningObjectives: Record<Level, ToolObjectives[]> = {
     },
     {
       tool: 'canva',
-      toolName: 'Canva (incl. Canva Code)',
+      toolName: 'Canva Code',
       objectives: [
-        { id: 'ca1', text: 'Use a provided template', icon: '🎨', description: 'Start with professional pre-made designs and customise them for your needs' },
-        { id: 'ca2', text: 'Create a simple starter activity', icon: '🚀', description: 'Design engaging warm-up activities to capture student attention' },
-        { id: 'ca3', text: 'Publish and share with students (link or QR code)', icon: '📱', description: 'Make your designs accessible to students via shareable links or scannable codes' },
+        { id: 'ca1', text: 'Open the Canva Code panel', icon: '💻', description: 'Learn how to access the Code feature within Canva to start adding interactivity' },
+        { id: 'ca2', text: 'Add interactive elements to a design', icon: '🖱️', description: 'Insert buttons, input fields, and clickable elements to make activities engaging' },
+        { id: 'ca3', text: 'Create a personalised starter activity', icon: '🚀', description: 'Build an interactive warm-up activity that greets students by name or responds to their input' },
+        { id: 'ca4', text: 'Share your activity via link or QR code', icon: '📱', description: 'Publish your interactive activity so students can access it instantly on any device' },
       ],
     },
   ],

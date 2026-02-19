@@ -128,67 +128,67 @@ const teamsPractitionerQuiz: QuizQuestion[] = [
   }
 ];
 
-// Quiz questions for Canva - Explorer
+// Quiz questions for Canva Code - Explorer
 const canvaExplorerQuiz: QuizQuestion[] = [
   {
     id: 'ce1',
-    question: 'What is the main advantage of using Canva templates for creating learning materials?',
+    question: 'What is Canva Code primarily used for in education?',
     options: [
-      'They require advanced design skills',
-      'They save time and provide professionally designed starting points',
-      'They can only be used once',
-      'They are only available in one subject area'
+      'Writing programming assignments for students',
+      'Creating interactive and personalised lesson activities within Canva',
+      'Building college websites',
+      'Replacing all other design tools'
     ],
     correctAnswer: 1,
-    explanation: 'Canva templates provide professional designs that staff can quickly customise without design expertise.'
+    explanation: 'Canva Code lets you add interactivity to your Canva designs, turning static resources into engaging, personalised activities for students.'
   },
   {
     id: 'ce2',
-    question: 'How can Canva support visual learning for students?',
+    question: 'How does Canva Code help personalise learning for students?',
     options: [
-      'By making all resources text-only',
-      'By creating engaging, visually appealing materials that aid understanding',
-      'By removing all images',
-      'By only creating certificates'
+      'It automatically creates individual timetables',
+      'It allows you to build activities that respond to student input, such as name fields or choice-based paths',
+      'It removes the need for teacher involvement',
+      'It only works for one subject area'
     ],
     correctAnswer: 1,
-    explanation: 'Visual materials help engage students and support different learning preferences.'
+    explanation: 'Canva Code enables personalised touches like greeting students by name or offering different pathways based on their choices.'
   },
   {
     id: 'ce3',
-    question: 'What is one way to share a Canva creation with students?',
+    question: 'What type of interactive element can you add using Canva Code?',
     options: [
-      'Print only',
-      'Share via link or QR code',
-      'Email individual files to each student',
-      'Post on social media only'
+      'Only static text boxes',
+      'Clickable buttons, input fields, timers, and animated feedback',
+      'Only pre-made templates',
+      'Audio recordings only'
     ],
     correctAnswer: 1,
-    explanation: 'Links and QR codes make sharing quick, accessible, and suitable for digital or blended learning.'
+    explanation: 'Canva Code supports a range of interactive elements that make activities more engaging and game-like.'
   },
   {
     id: 'ce4',
-    question: 'How does using Canva support consistency across the college?',
+    question: 'What is a good first activity to create with Canva Code?',
     options: [
-      'Everyone creates completely unique materials',
-      'Staff can use branded templates maintaining professional standards',
-      'It prevents all creativity',
-      'Only one person can use it'
+      'A full online course',
+      'A simple interactive starter activity such as a quiz wheel or name-based welcome screen',
+      'A printable worksheet',
+      'A video lesson'
     ],
     correctAnswer: 1,
-    explanation: 'Branded templates ensure consistency whilst still allowing creative flexibility.'
+    explanation: 'Starting with a simple interactive starter helps you learn the basics of Canva Code before building more complex activities.'
   },
   {
     id: 'ce5',
-    question: 'What type of learning activity could you create with Canva?',
+    question: 'How do you share a Canva Code activity with students?',
     options: [
-      'Only posters',
-      'Starter activities, worksheets, presentations, and interactive materials',
-      'Just certificates',
-      'Only social media posts'
+      'Email the raw code to each student',
+      'Share via a Canva link or QR code so students can interact with it on any device',
+      'Print the code on paper',
+      'Students must install special software'
     ],
     correctAnswer: 1,
-    explanation: 'Canva is versatile and can create many types of educational materials.'
+    explanation: 'Canva Code activities are shared just like any Canva design — via link or QR code — making them easy to access on any device.'
   }
 ];
 
@@ -610,43 +610,43 @@ export const learningPathways: Record<string, LearningPathway> = {
     tool: 'canva',
     level: 'explorer',
     intro: {
-      title: 'Canva - Explorer Level',
-      description: 'Canva is a user-friendly design tool that enables staff to create professional, visually engaging learning materials without needing design expertise. From worksheets to presentations, Canva helps make learning more visual and appealing.',
+      title: 'Canva Code - Explorer Level',
+      description: 'Canva Code is a powerful feature within Canva that lets you create interactive, personalised lesson activities for your students. No coding experience is needed \u2014 you will learn how to turn simple designs into engaging, clickable experiences that make learning feel fun and tailored to every learner.',
       whyItMatters: [
-        'Visual materials engage students and support different learning preferences',
-        'Professional-looking resources raise expectations and standards',
-        'Quick to create materials that would take hours in other software',
-        'Templates ensure consistency whilst allowing creativity'
+        'Interactive activities boost student engagement and motivation',
+        'Personalised touches (like using student names) make learners feel valued',
+        'Activities can be shared instantly via link or QR code on any device',
+        'No coding experience required — the interface guides you step by step'
       ]
     },
     mainContent: {
-      howToUse: 'At Explorer level, start by using ready-made templates to create starter activities, worksheets, or visual resources. Focus on customising templates rather than designing from scratch. Learn to share your creations via links or QR codes for easy student access.',
+      howToUse: 'At Explorer level, you will learn the basics of Canva Code: how to open the Code panel, add simple interactive elements like buttons and input fields, and create your first personalised starter activity. Focus on building one simple activity you can use with your students straight away.',
       examples: [
-        'For starter activities: Use a Canva template to create a visual "Do Now" activity - e.g., match the image to the keyword, sparking curiosity as students settle',
-        'For differentiation: Create visual knowledge organisers at different reading levels, using images and colour to support comprehension',
-        'For engagement: Design visually appealing worksheets that look professional, raising expectations and student motivation',
-        'For blended learning: Create infographics summarising key concepts that students can access via QR code in class or at home',
-        'For celebration: Design certificates or achievement badges to recognise student progress and effort'
+        'Welcome screen: Create a personalised greeting that asks students for their name and welcomes them to the lesson with a custom message',
+        'Interactive quiz starter: Build a "Do Now" activity with clickable answer options that reveal instant feedback',
+        'Choice board: Design a simple menu where students tap to choose their preferred learning activity for the lesson',
+        'Timer activity: Add a countdown timer to a group challenge slide, making starters feel exciting and purposeful',
+        'Reveal activity: Create a "tap to reveal" card where students uncover key terms, definitions, or images one at a time'
       ]
     },
     benefits: {
       students: [
-        'Access to visually engaging materials that aid memory and understanding',
-        'Resources designed with accessibility in mind (clear fonts, good contrast)',
-        'Materials that look professional and value their learning',
-        'Different visual formats to support varied learning preferences'
+        'Activities feel personalised and relevant to them as individuals',
+        'Interactive elements make learning more engaging than static handouts',
+        'Accessible on any device — phones, tablets, or laptops',
+        'Instant feedback helps students check their own understanding'
       ],
       staff: [
-        'Create professional materials quickly without design skills',
-        'Save time using templates that can be adapted and reused',
-        'Increase student engagement through visual appeal',
-        'Build a library of reusable, high-quality resources'
+        'Create interactive resources without any coding knowledge',
+        'Reuse and adapt activities across different classes and topics',
+        'Increase engagement from the very start of lessons',
+        'Stand out with professional, modern learning experiences'
       ],
       college: [
-        'Consistent visual standards across teaching materials',
-        'Enhanced professional image of teaching quality',
-        'Improved student engagement and outcomes through better resources',
-        'Staff able to create branded materials efficiently'
+        'Innovative use of technology enhancing the student experience',
+        'Staff developing future-ready digital skills',
+        'Consistent, high-quality interactive resources across departments',
+        'Demonstrates commitment to personalised learning approaches'
       ]
     },
     quiz: canvaExplorerQuiz
