@@ -504,39 +504,26 @@ const Training = () => {
                 </div>)}
             </div>
 
-            {/* My Learning Summary - appears after all 4 modules complete */}
+            {/* My Learning Summary - always accessible */}
             {selectedLevel && selectedLevel !== 'leader' && (
               <div
-                className={`mb-10 animate-fade-in rounded-2xl border-2 transition-all duration-300 ${
-                  allToolsCompleted
-                    ? 'border-[#F5A623] bg-[#F5A623]/5 cursor-pointer hover:shadow-[var(--shadow-hover)]'
-                    : 'border-border bg-muted/30 opacity-60'
-                }`}
-                onClick={() => allToolsCompleted && setStage('summary')}
+                className="mb-10 animate-fade-in rounded-2xl border-2 border-[#F5A623] bg-[#F5A623]/5 cursor-pointer hover:shadow-[var(--shadow-hover)] transition-all duration-300"
+                onClick={() => setStage('summary')}
               >
                 <div className="flex items-center gap-4 md:gap-6 p-6">
                   <span className="text-4xl flex-shrink-0">📋</span>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-3 mb-1">
                       <h3 className="font-display text-xl font-bold text-foreground">My Learning Summary</h3>
-                      {allToolsCompleted ? (
-                        <span className="text-xs font-semibold px-3 py-1 rounded-full bg-[#F5A623]/15 text-[#B8860B]">Ready!</span>
-                      ) : (
-                        <span className="text-xs font-semibold px-3 py-1 rounded-full bg-muted text-muted-foreground">
-                          {completedTools.size}/4 modules complete
-                        </span>
-                      )}
+                      <span className="text-xs font-semibold px-3 py-1 rounded-full bg-[#F5A623]/15 text-[#B8860B]">
+                        {completedTools.size}/4 modules complete
+                      </span>
                     </div>
                     <p className="text-sm text-muted-foreground">
-                      {allToolsCompleted
-                        ? 'All modules complete — review what you\'ve learned and plan your next steps'
-                        : 'Complete all 4 modules above to unlock your learning summary'
-                      }
+                      Review what you've learned and plan your next steps
                     </p>
                   </div>
-                  {allToolsCompleted && (
-                    <ArrowRight className="h-5 w-5 text-[#F5A623] flex-shrink-0" />
-                  )}
+                  <ArrowRight className="h-5 w-5 text-[#F5A623] flex-shrink-0" />
                 </div>
               </div>
             )}
