@@ -27,7 +27,7 @@ const logoMap = {
 const brandColors: Record<string, { stripe: string; text: string; bg: string; btn: string }> = {
   teams: { stripe: "bg-[#5B5FC7]", text: "text-[#5B5FC7]", bg: "bg-[#5B5FC7]/10", btn: "bg-[#5B5FC7] hover:bg-[#5B5FC7]/90 text-white" },
   canva: { stripe: "bg-[#7D2AE8]", text: "text-[#7D2AE8]", bg: "bg-[#7D2AE8]/10", btn: "bg-[#7D2AE8] hover:bg-[#7D2AE8]/90 text-white" },
-  edpuzzle: { stripe: "bg-[#E8384F]", text: "text-[#E8384F]", bg: "bg-[#E8384F]/10", btn: "bg-[#E8384F] hover:bg-[#E8384F]/90 text-white" },
+  edpuzzle: { stripe: "bg-[#1DA1F2]", text: "text-[#1DA1F2]", bg: "bg-[#1DA1F2]/10", btn: "bg-[#1DA1F2] hover:bg-[#1DA1F2]/90 text-white" },
   copilot: { stripe: "bg-[#0078D4]", text: "text-[#0078D4]", bg: "bg-[#0078D4]/10", btn: "bg-[#0078D4] hover:bg-[#0078D4]/90 text-white" },
 };
 

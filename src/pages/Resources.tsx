@@ -28,7 +28,7 @@ const toolBrandColors: Record<string, { header: string; text: string }> = {
   teams: { header: "bg-[#5B5FC7]", text: "text-white" },
   forms: { header: "bg-[#5B5FC7]", text: "text-white" },
   canva: { header: "bg-[#7D2AE8]", text: "text-white" },
-  edpuzzle: { header: "bg-[#E8384F]", text: "text-white" },
+  edpuzzle: { header: "bg-[#1DA1F2]", text: "text-white" },
   copilot: { header: "bg-[#0078D4]", text: "text-white" },
   notebook: { header: "bg-[#5B5FC7]", text: "text-white" },
   immersive: { header: "bg-accent", text: "text-accent-foreground" },
@@ -73,7 +73,7 @@ const Resources = () => {
     { id: 'teams' as ToolFilter, name: 'MS Teams', logo: teamsLogo, color: '#5B5FC7' },
     { id: 'forms' as ToolFilter, name: 'MS Forms', logo: formsLogo, color: '#5B5FC7' },
     { id: 'canva' as ToolFilter, name: 'Canva', logo: canvaLogo, color: '#7D2AE8' },
-    { id: 'edpuzzle' as ToolFilter, name: 'Edpuzzle', logo: edpuzzleLogo, color: '#E8384F' },
+    { id: 'edpuzzle' as ToolFilter, name: 'Edpuzzle', logo: edpuzzleLogo, color: '#1DA1F2' },
     { id: 'copilot' as ToolFilter, name: 'Copilot', logo: copilotLogo, color: '#0078D4' },
     { id: 'immersive' as ToolFilter, name: 'Immersive', logo: null, color: '#F5A623' },
   ];

@@ -232,7 +232,7 @@ const edpuzzleExplorerQuiz: QuizQuestion[] = [
   },
   {
     id: 'ee4',
-    question: 'How does Edpuzzle support differentiation?',
+    question: 'How does Edpuzzle support adaptive teaching and learning?',
     options: [
       'All students must watch identical content',
       'Teachers can assign different videos to different students based on need',
@@ -240,7 +240,7 @@ const edpuzzleExplorerQuiz: QuizQuestion[] = [
       'Only works with one learning style'
     ],
     correctAnswer: 1,
-    explanation: 'Different videos or video segments can be assigned to support varied learning needs.'
+    explanation: 'Different videos or video segments can be assigned to support adaptive teaching and learning approaches.'
   },
   {
     id: 'ee5',
@@ -663,7 +663,7 @@ export const learningPathways: Record<string, LearningPathway> = {
         'Turns passive watching into active learning with checks for understanding',
         'Provides analytics showing who watched and how well they understood',
         'Supports independent and blended learning approaches',
-        'Helps differentiate by allowing students to learn at their own pace'
+        'Supports adaptive teaching and learning by allowing students to learn at their own pace'
       ],
       externalLinks: []
     },

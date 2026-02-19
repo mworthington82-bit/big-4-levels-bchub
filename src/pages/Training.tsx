@@ -223,7 +223,7 @@ const Training = () => {
   const brandColors: Record<string, string> = {
     teams: '#5B5FC7',
     canva: '#7D2AE8',
-    edpuzzle: '#E8384F',
+    edpuzzle: '#1DA1F2',
     copilot: '#0078D4',
   };
   const currentBrandColor = selectedTool ? brandColors[selectedTool] : '#F5A623';
