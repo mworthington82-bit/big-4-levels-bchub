@@ -613,20 +613,21 @@ export const learningPathways: Record<string, LearningPathway> = {
       title: 'Canva Code - Explorer Level',
       description: 'Canva Code is a powerful feature within Canva that lets you create interactive, personalised lesson activities for your students. No coding experience is needed \u2014 you will learn how to turn simple designs into engaging, clickable experiences that make learning feel fun and tailored to every learner.',
       whyItMatters: [
-        'Interactive activities boost student engagement and motivation',
-        'Personalised touches (like using student names) make learners feel valued',
-        'Activities can be shared instantly via link or QR code on any device',
+        'Interactive starter activities boost student engagement from the very first minute',
+        'Adaptive learning pathways let students progress based on their own responses and choices',
+        'Supports blended learning — students can access activities on any device, anytime',
         'No coding experience required — the interface guides you step by step'
       ]
     },
     mainContent: {
-      howToUse: 'At Explorer level, you will learn the basics of Canva Code: how to open the Code panel, add simple interactive elements like buttons and input fields, and create your first personalised starter activity. Focus on building one simple activity you can use with your students straight away.',
+      howToUse: 'At Explorer level, you will learn the basics of Canva Code: how to open the Code panel, add simple interactive elements like buttons and input fields, and create your first personalised starter activity. Use Canva Code to build engaging starter activities, support adaptive learning pathways, and enhance blended learning — all without any coding experience.',
       examples: [
-        'Welcome screen: Create a personalised greeting that asks students for their name and welcomes them to the lesson with a custom message',
-        'Interactive quiz starter: Build a "Do Now" activity with clickable answer options that reveal instant feedback',
-        'Choice board: Design a simple menu where students tap to choose their preferred learning activity for the lesson',
-        'Timer activity: Add a countdown timer to a group challenge slide, making starters feel exciting and purposeful',
-        'Reveal activity: Create a "tap to reveal" card where students uncover key terms, definitions, or images one at a time'
+        'Vocational Scenario Simulators: A construction or engineering tutor could build an interactive "what would you do?" scenario tool where students are presented with a real workplace problem (e.g., a faulty wiring situation) and choose from multiple responses. The app gives instant feedback on their decision, explaining why it was right or wrong — mimicking real on-the-job decision-making without the risk.',
+        'Personalised Revision Flashcard Builders: A health and social care tutor could create a flashcard app where students type in their own key terms and definitions, and the app turns them into a randomised quiz they can keep revisiting. Because students input their own content, it feels relevant to their own notes and learning style rather than generic revision.',
+        'Industry Maths Calculators: A catering or hospitality tutor could build a food costing calculator where students enter ingredients and quantities, and the tool calculates portion costs, profit margins, and selling prices. This makes functional maths feel directly relevant to their career, rather than abstract.',
+        'Exam Technique Timers: An English or Science tutor could build a timed exam practice tool where students select a question type, the app sets the recommended time, and guides them through a structured response framework (e.g., Point, Evidence, Explain). It coaches students on pacing themselves under pressure — a skill that\'s just as important as the content knowledge itself.',
+        'Apprenticeship Portfolio Checklists: A work-based learning coordinator could create an interactive progress tracker where apprentices tick off completed evidence criteria against their qualification standards. The app highlights gaps, reminds them what\'s outstanding, and gives them a visual sense of how close they are to completion — great for keeping apprentices motivated between workplace visits.',
+        'GCSE Resit Diagnostic Tools: A maths resit tutor could build a quick diagnostic quiz where students answer 10 questions covering different topics, and the app automatically tells them which areas they\'re strong in and which need the most work. Rather than giving every student the same revision plan, it instantly points each student toward their personal priority areas.'
       ]
     },
     benefits: {
