@@ -79,25 +79,29 @@ const Training = () => {
     title: 'MS Teams & Forms',
     tagline: '💬 Collaborate and assess in one place',
     description: 'Digital classroom hub for communication, content, and quick assessments',
-    icon: 'teams' as const
+    icon: 'teams' as const,
+    duration: '~45 min'
   }, {
     id: 'canva' as Tool,
     title: 'Canva',
     tagline: '🎨 Code for me - creating bespoke learning activities',
     description: 'Create professional, visually engaging learning materials with ease',
-    icon: 'canva' as const
+    icon: 'canva' as const,
+    duration: '~60 min'
   }, {
     id: 'edpuzzle' as Tool,
     title: 'Edpuzzle',
     tagline: '🎥 Turn videos into learning moments',
     description: 'Transform videos into interactive learning experiences',
-    icon: 'edpuzzle' as const
+    icon: 'edpuzzle' as const,
+    duration: '~40 min'
   }, {
     id: 'copilot' as Tool,
     title: 'Microsoft Copilot',
     tagline: '🤖 Your AI resource creation partner',
     description: 'AI-powered assistant for resource creation',
-    icon: 'copilot' as const
+    icon: 'copilot' as const,
+    duration: '~50 min'
   }];
   const levels = [{
     id: 'explorer' as Level,
@@ -503,7 +507,7 @@ const Training = () => {
               {tools.map((tool, index) => <div key={tool.id} className="animate-fade-in" style={{
               animationDelay: `${index * 100}ms`
             }}>
-                  <ToolCard tool={tool.id} title={tool.title} tagline={tool.tagline} description={tool.description} icon={tool.icon} onSelect={() => handleToolSelect(tool.id)} moduleNumber={index + 1} isCompleted={completedTools.has(tool.id)} />
+                  <ToolCard tool={tool.id} title={tool.title} tagline={tool.tagline} description={tool.description} icon={tool.icon} onSelect={() => handleToolSelect(tool.id)} moduleNumber={index + 1} isCompleted={completedTools.has(tool.id)} duration={tool.duration} />
                 </div>)}
             </div>
 
