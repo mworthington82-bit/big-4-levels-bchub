@@ -936,7 +936,7 @@ const Training = () => {
                     )}
                     {selectedTool === 'canva' && (
                       <Button asChild className="flex-1 text-white" style={{ backgroundColor: currentBrandColor }}>
-                        <a href="https://www.canva.com/designschool/courses/canva-for-the-classroom/" target="_blank" rel="noopener noreferrer">
+                        <a href="https://www.canva.com/design-school/resources/learning-with-canva-code" target="_blank" rel="noopener noreferrer">
                           Canva Training <ArrowRight className="ml-2 h-4 w-4" />
                         </a>
                       </Button>
