@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import LearningSummary from "@/components/LearningSummary";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import ToolCard from "@/components/ToolCard";
@@ -36,7 +37,7 @@ import edpuzzleLogo from "@/assets/edpuzzle-logo.png";
 import copilotLogo from "@/assets/copilot-logo.png";
 
 import formsLogo from "@/assets/forms-logo.jpg";
-type Stage = 'level-entry' | 'home' | 'tool-select' | 'level-select' | 'intro' | 'learning' | 'benefits' | 'reflection' | 'quiz' | 'badge' | 'leader-hub';
+type Stage = 'level-entry' | 'home' | 'tool-select' | 'level-select' | 'intro' | 'learning' | 'benefits' | 'reflection' | 'quiz' | 'summary' | 'badge' | 'leader-hub';
 
 const Training = () => {
   const navigate = useNavigate();
@@ -206,14 +207,17 @@ const Training = () => {
     };
     return toolMap[tool];
   };
-  const progressSteps = ['Intro', 'Learn', 'Outcomes', 'Reflect', 'Assess'];
+  const progressSteps = selectedLevel === 'leader' 
+    ? ['Intro', 'Learn', 'Outcomes', 'Reflect', 'Assess']
+    : ['Intro', 'Learn', 'Outcomes', 'Reflect', 'Assess', 'Summary'];
   const getCurrentStep = () => {
     const stageMap: Record<string, number> = {
       intro: 0,
       learning: 1,
       benefits: 2,
       reflection: 3,
-      quiz: 4
+      quiz: 4,
+      summary: 5,
     };
     return stageMap[stage] || 0;
   };
@@ -965,8 +969,19 @@ const Training = () => {
         {stage === 'quiz' && <Quiz questions={pathway.quiz} onComplete={(score, name) => {
         setQuizScore(score);
         if (name) setUserName(name);
-        setStage('badge');
+        if (selectedLevel === 'leader') {
+          setStage('badge');
+        } else {
+          setStage('summary');
+        }
       }} />}
+
+        {stage === 'summary' && selectedLevel && (
+          <LearningSummary
+            level={selectedLevel}
+            onContinue={() => setStage('badge')}
+          />
+        )}
       </main>
     </div>;
 };
