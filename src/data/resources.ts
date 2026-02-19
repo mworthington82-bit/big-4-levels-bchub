@@ -167,7 +167,7 @@ export const resources: Resource[] = [
     title: 'Learning with Canva Code - Canva Design School',
     description: 'Discover how Canva Code combines creativity, real-time data, and personalisation to help students take ownership of their learning',
     type: 'link',
-    url: 'https://www.canva.com/design-school/lessons/learning-with-canva-code',
+    url: 'https://www.canva.com/design-school/resources/learning-with-canva-code',
     function: 'Learn Canva Code fundamentals',
     level: 'explorer',
   },
