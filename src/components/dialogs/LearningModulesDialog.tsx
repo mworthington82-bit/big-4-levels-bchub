@@ -110,7 +110,7 @@ const LearningModulesDialog = ({ level }: LearningModulesDialogProps) => {
 
         <div className="bg-secondary/30 rounded-lg p-3 text-center">
           <p className="text-sm text-muted-foreground">
-            📚 Select any of the Big Four tools below to begin your training
+            📚 Select any of the Big 4 tools below to begin your training
           </p>
         </div>
 

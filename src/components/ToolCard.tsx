@@ -1,9 +1,10 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { ArrowRight } from "lucide-react";
 import teamsLogo from "@/assets/teams-logo.png";
 import copilotLogo from "@/assets/copilot-logo.png";
 import edpuzzleLogo from "@/assets/edpuzzle-logo.png";
 import canvaLogo from "@/assets/canva-logo.jpg";
+
 interface ToolCardProps {
   tool: string;
   title: string;
@@ -11,38 +12,72 @@ interface ToolCardProps {
   tagline: string;
   icon: 'teams' | 'canva' | 'edpuzzle' | 'copilot';
   onSelect: () => void;
+  moduleNumber?: number;
 }
+
 const logoMap = {
   teams: teamsLogo,
   canva: canvaLogo,
   edpuzzle: edpuzzleLogo,
   copilot: copilotLogo
 };
+
+const brandColors: Record<string, { stripe: string; text: string; bg: string; btn: string }> = {
+  teams: { stripe: "bg-[#5B5FC7]", text: "text-[#5B5FC7]", bg: "bg-[#5B5FC7]/10", btn: "bg-[#5B5FC7] hover:bg-[#5B5FC7]/90 text-white" },
+  canva: { stripe: "bg-[#7D2AE8]", text: "text-[#7D2AE8]", bg: "bg-[#7D2AE8]/10", btn: "bg-[#7D2AE8] hover:bg-[#7D2AE8]/90 text-white" },
+  edpuzzle: { stripe: "bg-[#E8384F]", text: "text-[#E8384F]", bg: "bg-[#E8384F]/10", btn: "bg-[#E8384F] hover:bg-[#E8384F]/90 text-white" },
+  copilot: { stripe: "bg-[#0078D4]", text: "text-[#0078D4]", bg: "bg-[#0078D4]/10", btn: "bg-[#0078D4] hover:bg-[#0078D4]/90 text-white" },
+};
+
 const ToolCard = ({
   tool,
   title,
   description,
   tagline,
   icon,
-  onSelect
+  onSelect,
+  moduleNumber,
 }: ToolCardProps) => {
   const logo = logoMap[icon];
-  return <Card className="group cursor-pointer transition-all duration-300 hover:shadow-[var(--shadow-lift)] hover:-translate-y-1 border-border bg-gradient-to-b from-card to-muted/30 h-full flex flex-col" onClick={onSelect}>
-      <CardHeader className="flex-1">
-        <div className="mb-6 flex h-20 w-20 items-center justify-center rounded-2xl transition-transform duration-300 group-hover:scale-110 bg-white p-2">
+  const colors = brandColors[icon];
+  const moduleNum = moduleNumber || (['teams', 'canva', 'edpuzzle', 'copilot'].indexOf(icon) + 1);
+
+  return (
+    <div
+      className="group flex items-center gap-4 md:gap-6 bg-card rounded-2xl border border-border shadow-sm hover:shadow-[var(--shadow-hover)] transition-all duration-300 cursor-pointer overflow-hidden"
+      onClick={onSelect}
+    >
+      {/* Colored left stripe */}
+      <div className={`w-1.5 self-stretch ${colors.stripe} flex-shrink-0 rounded-l-2xl`} />
+
+      {/* Logo */}
+      <div className="flex-shrink-0 py-4">
+        <div className={`h-14 w-14 rounded-xl ${colors.bg} p-2.5 flex items-center justify-center`}>
           <img src={logo} alt={`${title} logo`} className="h-full w-full object-contain" />
         </div>
-        <CardTitle className="text-card-foreground mb-3 text-3xl">{title}</CardTitle>
-        <p className="text-sm font-medium text-accent mb-3 italic">{tagline}</p>
-        <CardDescription className="text-base text-muted-foreground leading-relaxed">
-          {description}
-        </CardDescription>
-      </CardHeader>
-      <CardContent className="pt-0">
-        <Button variant="secondary" className="w-full group-hover:bg-accent group-hover:text-accent-foreground transition-all duration-300 font-semibold text-base py-6 rounded-xl shadow-sm">
+      </div>
+
+      {/* Content */}
+      <div className="flex-1 py-4 min-w-0">
+        <p className={`text-xs font-semibold uppercase tracking-wider ${colors.text} mb-1`}>
+          Module {moduleNum}
+        </p>
+        <h3 className="font-display text-lg md:text-xl font-bold text-foreground mb-1 truncate">{title}</h3>
+        <p className="text-sm text-muted-foreground line-clamp-1">{description}</p>
+        <p className="text-xs text-muted-foreground/70 mt-1">~15 min</p>
+      </div>
+
+      {/* CTA Button */}
+      <div className="flex-shrink-0 pr-4 py-4">
+        <Button
+          className={`${colors.btn} rounded-full px-5 font-semibold text-sm group-hover:scale-105 transition-transform`}
+        >
           Start Learning
+          <ArrowRight className="ml-1.5 h-4 w-4" />
         </Button>
-      </CardContent>
-    </Card>;
+      </div>
+    </div>
+  );
 };
+
 export default ToolCard;

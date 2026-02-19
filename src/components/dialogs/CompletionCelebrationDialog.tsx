@@ -78,7 +78,7 @@ const CompletionCelebrationDialog = ({
             </p>
             <p className="flex items-start gap-2">
               <span className="text-accent">✓</span>
-              Keep building your skills with more Big Four pathways
+              Keep building your skills with more Big 4 pathways
             </p>
           </div>
 
