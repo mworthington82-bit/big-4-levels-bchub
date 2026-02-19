@@ -6,8 +6,11 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { PartyPopper, Award, Download, ArrowRight } from "lucide-react";
+import { PartyPopper, Download, ArrowRight } from "lucide-react";
 import { Level } from "@/types/learning";
+import emblemExplorer from "@/assets/emblem-explorer.svg";
+import emblemPractitioner from "@/assets/emblem-practitioner.svg";
+import emblemLeader from "@/assets/emblem-leader.svg";
 
 interface CompletionCelebrationDialogProps {
   open: boolean;
@@ -51,7 +54,11 @@ const CompletionCelebrationDialog = ({
 
         <div className="space-y-4 py-4">
           <div className="bg-gradient-to-r from-accent/10 to-secondary/10 rounded-lg p-4 text-center">
-            <Award className="h-8 w-8 text-accent mx-auto mb-2" />
+            <img 
+              src={level === 'explorer' ? emblemExplorer : level === 'practitioner' ? emblemPractitioner : emblemLeader} 
+              alt={`${levelNames[level]} emblem`} 
+              className="h-16 w-16 mx-auto mb-2" 
+            />
             <p className="font-medium text-foreground">
               You've earned your {levelNames[level]} Badge!
             </p>

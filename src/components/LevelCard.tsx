@@ -1,6 +1,8 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Compass, TrendingUp, Award } from "lucide-react";
+import emblemExplorer from "@/assets/emblem-explorer.svg";
+import emblemPractitioner from "@/assets/emblem-practitioner.svg";
+import emblemLeader from "@/assets/emblem-leader.svg";
 
 interface LevelCardProps {
   level: 'explorer' | 'practitioner' | 'leader';
@@ -11,22 +13,22 @@ interface LevelCardProps {
 
 const levelConfig = {
   explorer: {
-    icon: Compass,
+    emblem: emblemExplorer,
     color: 'from-blue-500 to-cyan-500',
   },
   practitioner: {
-    icon: TrendingUp,
+    emblem: emblemPractitioner,
     color: 'from-secondary to-accent',
   },
   leader: {
-    icon: Award,
+    emblem: emblemLeader,
     color: 'from-purple-500 to-pink-500',
   },
 };
 
 const LevelCard = ({ level, title, description, onSelect }: LevelCardProps) => {
   const config = levelConfig[level];
-  const Icon = config.icon;
+  
   
   return (
     <Card 
@@ -34,8 +36,8 @@ const LevelCard = ({ level, title, description, onSelect }: LevelCardProps) => {
       onClick={onSelect}
     >
       <CardHeader>
-        <div className={`mb-4 flex h-16 w-16 items-center justify-center rounded-lg bg-gradient-to-br ${config.color}`}>
-          <Icon className="h-8 w-8 text-white" />
+        <div className="mb-4 flex h-20 w-20 items-center justify-center">
+          <img src={config.emblem} alt={`${level} emblem`} className="h-20 w-20" />
         </div>
         <CardTitle className="text-xl text-card-foreground">{title}</CardTitle>
         <CardDescription className="text-muted-foreground">{description}</CardDescription>

@@ -1,10 +1,13 @@
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Award, Download, Home, ArrowRight } from "lucide-react";
+import { Download, Home, ArrowRight } from "lucide-react";
 import CompletionCelebrationDialog from "@/components/dialogs/CompletionCelebrationDialog";
 import { Level } from "@/types/learning";
 import bradfordLogo from "@/assets/bradford-college-logo.jpg";
+import emblemExplorer from "@/assets/emblem-explorer.svg";
+import emblemPractitioner from "@/assets/emblem-practitioner.svg";
+import emblemLeader from "@/assets/emblem-leader.svg";
 
 interface BadgeProps {
   level: string;
@@ -143,9 +146,11 @@ const Badge = ({ level, toolName, score, userName, onRestart, onContinueLearning
         <Card className="w-full max-w-2xl border-border bg-card shadow-[var(--shadow-card)] text-center">
           <CardHeader className="space-y-6 pt-12">
             <div className="flex justify-center">
-              <div className="rounded-full bg-gradient-to-br from-secondary to-accent p-8">
-                <Award className="h-24 w-24 text-white" />
-              </div>
+              <img 
+                src={level === 'explorer' ? emblemExplorer : level === 'practitioner' ? emblemPractitioner : emblemLeader} 
+                alt={`${level} emblem badge`} 
+                className="h-32 w-32"
+              />
             </div>
             
             <CardTitle className="text-4xl font-bold text-card-foreground">
