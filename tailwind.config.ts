@@ -13,6 +13,10 @@ export default {
       },
     },
     extend: {
+      fontFamily: {
+        display: ['Fraunces', 'Georgia', 'Times New Roman', 'serif'],
+        sans: ['DM Sans', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Helvetica Neue', 'Arial', 'sans-serif'],
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -59,9 +63,35 @@ export default {
         },
         tool: {
           teams: "hsl(var(--tool-teams))",
+          "teams-bg": "hsl(var(--tool-teams-bg))",
           canva: "hsl(var(--tool-canva))",
+          "canva-bg": "hsl(var(--tool-canva-bg))",
           edpuzzle: "hsl(var(--tool-edpuzzle))",
+          "edpuzzle-bg": "hsl(var(--tool-edpuzzle-bg))",
           copilot: "hsl(var(--tool-copilot))",
+          "copilot-bg": "hsl(var(--tool-copilot-bg))",
+        },
+        gold: {
+          DEFAULT: "hsl(var(--gold))",
+          dark: "hsl(var(--gold-dark))",
+          light: "hsl(var(--gold-light))",
+        },
+        ink: {
+          DEFAULT: "hsl(var(--ink))",
+          mid: "hsl(var(--ink-mid))",
+          soft: "hsl(var(--ink-soft))",
+        },
+        explorer: {
+          DEFAULT: "hsl(var(--explorer))",
+          bg: "hsl(var(--explorer-bg))",
+        },
+        practitioner: {
+          DEFAULT: "hsl(var(--practitioner))",
+          bg: "hsl(var(--practitioner-bg))",
+        },
+        leader: {
+          DEFAULT: "hsl(var(--leader))",
+          bg: "hsl(var(--leader-bg))",
         },
       },
       borderRadius: {
