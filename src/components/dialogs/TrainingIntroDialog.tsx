@@ -37,9 +37,9 @@ const levelTasks = {
       'Complete the knowledge check to earn your badge',
     ],
     canva: [
-      'Navigate the Canva interface and templates',
-      'Create basic visual resources for your lessons',
-      'Learn to customize templates for your subject',
+      'Learn how to open and use the Canva Code panel',
+      'Add interactive elements like buttons and input fields to designs',
+      'Create a personalised starter activity for your students',
       'Complete the knowledge check to earn your badge',
     ],
     edpuzzle: [
