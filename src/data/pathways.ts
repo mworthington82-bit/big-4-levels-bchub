@@ -147,12 +147,12 @@ const canvaExplorerQuiz: QuizQuestion[] = [
     question: 'How does Canva Code help personalise learning for students?',
     options: [
       'It automatically creates individual timetables',
-      'It allows you to build activities that respond to student input, such as name fields or choice-based paths',
+      'You write a prompt describing what your students need — their topic, gaps in learning, and preferences — and the activity is tailored specifically to them',
       'It removes the need for teacher involvement',
       'It only works for one subject area'
     ],
     correctAnswer: 1,
-    explanation: 'Canva Code enables personalised touches like greeting students by name or offering different pathways based on their choices.'
+    explanation: 'With Canva Code, you write a prompt where you discuss what your students really need — the topic you\'re covering, gaps in learning, and more — and the activity will be tailored to their specific needs.'
   },
   {
     id: 'ce3',
