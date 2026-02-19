@@ -914,7 +914,7 @@ const Training = () => {
                           </a>
                         </Button>
                         <Button asChild className="flex-1 min-w-[200px] text-white" style={{ backgroundColor: currentBrandColor }}>
-                          <a href="#" target="_blank" rel="noopener noreferrer">
+                          <a href="https://edpuzzle.com/professional/join/699751712632f6d2eacb4d6f?schoolCode=bnc9r6" target="_blank" rel="noopener noreferrer">
                             MS Forms - Branching <ArrowRight className="ml-2 h-4 w-4" />
                           </a>
                         </Button>

@@ -336,15 +336,15 @@ const canvaPractitionerQuiz: QuizQuestion[] = [
   },
   {
     id: 'cp2',
-    question: 'How can Canva Code be used to enhance learning activities?',
+    question: 'What is the benefit of using Canva templates to create teaching materials?',
     options: [
-      'It only creates static documents',
-      'It enables interactive elements like clickable buttons, animations, and gamified activities',
-      'It replaces the need for any other digital tools',
-      'It is only used for coding courses'
+      'Templates cannot be customised',
+      'They provide a professional starting point that you can tailor to your subject and students',
+      'They replace the need for any other digital tools',
+      'Templates are only used for posters'
     ],
     correctAnswer: 1,
-    explanation: 'Canva Code adds interactivity to designs, allowing you to create engaging, game-like learning activities.'
+    explanation: 'Canva templates give you a polished, professional foundation that you can quickly customise with your own content, branding, and subject-specific materials.'
   },
   {
     id: 'cp3',
@@ -751,43 +751,43 @@ export const learningPathways: Record<string, LearningPathway> = {
     level: 'practitioner',
     intro: {
       title: 'Canva - Practitioner Level',
-      description: 'At Practitioner level, you will move beyond templates to create original, purposeful designs and build interactive learning activities using Canva Code. Focus on adapting resources for accessibility and differentiation whilst developing your creative design skills.',
+      description: 'At Practitioner level, you will use Canva to create professional-quality presentations, quizzes, posters, and learning materials using templates. Focus on adapting designs for your subject, making resources accessible, and building a consistent visual identity for your teaching materials.',
       whyItMatters: [
-        'Original designs can be precisely tailored to your curriculum and learner needs',
-        'Interactive activities using Canva Code increase engagement and active learning',
+        'Templates help you create polished, professional resources quickly',
+        'Presentations and posters can be tailored precisely to your curriculum',
         'Accessible design ensures all learners can benefit from your resources',
-        'Differentiated materials support inclusive teaching for diverse classrooms'
+        'Consistent visual materials support your professional teaching identity'
       ]
     },
     mainContent: {
-      howToUse: 'At Practitioner level, design resources from scratch rather than relying solely on templates. Learn to use Canva Code to add interactivity such as clickable elements, simple animations, and gamified activities. Focus on creating accessible designs with proper contrast, readable fonts, and alt text. Develop differentiated versions of resources for varied learner needs.',
+      howToUse: 'At Practitioner level, use Canva\'s template library to create presentations, quizzes, posters, and other teaching materials. Customise templates with your subject content, college branding, and accessibility features like proper contrast and readable fonts. Build a library of go-to templates that you can reuse and adapt across topics.',
       examples: [
-        'For interactive learning: Create a "choose your own adventure" style activity using Canva Code where students click to navigate through scenarios related to your subject',
-        'For gamification: Design an interactive quiz game where students click answers and receive immediate visual feedback through animations',
-        'For accessibility: Develop a worksheet with high contrast colours, dyslexia-friendly fonts, and clear visual hierarchy for students with additional needs',
-        'For differentiation: Create three versions of a knowledge organiser - foundation (more images, simpler text), core, and higher (extended vocabulary, deeper concepts)',
-        'For engagement: Build an interactive timeline where students click on events to reveal information, supporting independent exploration',
-        'For assessment: Design a peer assessment resource with clear success criteria and visual examples of different achievement levels'
+        'For presentations: Use a Canva template to create a visually engaging lesson presentation with consistent branding, clear headings, and embedded images',
+        'For quizzes: Design an interactive quiz poster or worksheet using Canva templates, with clear questions and visual answer options',
+        'For posters: Create classroom display posters for key vocabulary, processes, or success criteria using professional templates',
+        'For accessibility: Adapt a template with high contrast colours, dyslexia-friendly fonts, and clear visual hierarchy for students with additional needs',
+        'For consistency: Build a set of branded templates for your department that all staff can use for handouts, slides, and displays',
+        'For student resources: Create revision guides, knowledge organisers, or infographics using templates tailored to your topic'
       ]
     },
     benefits: {
       students: [
-        'Engage with interactive, game-like learning activities',
-        'Access resources designed for their specific needs and abilities',
+        'Access professionally designed learning materials tailored to their course',
+        'Benefit from clear, visually consistent resources across lessons',
         'Experience inclusive materials that work for different learning preferences',
-        'Develop digital literacy through interacting with well-designed resources'
+        'Engage with well-designed presentations, posters, and revision resources'
       ],
       staff: [
-        'Create unique resources perfectly matched to your curriculum',
-        'Build a library of interactive activities that increase engagement',
+        'Create professional-quality resources quickly using templates',
+        'Build a reusable library of presentations and materials for your subject',
         'Develop valuable design skills transferable across all teaching',
-        'Save time by creating differentiated resources efficiently'
+        'Maintain consistent, branded materials across your department'
       ],
       college: [
-        'Innovative, high-quality learning resources across departments',
+        'Professional, high-quality learning resources across departments',
         'Improved accessibility and inclusion in teaching materials',
-        'Staff developing advanced digital creation skills',
-        'Enhanced student engagement through interactive content'
+        'Staff developing confident digital design skills',
+        'Consistent visual identity in teaching and learning materials'
       ]
     },
     quiz: canvaPractitionerQuiz
