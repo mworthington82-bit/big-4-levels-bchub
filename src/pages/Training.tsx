@@ -922,7 +922,7 @@ const Training = () => {
                     )}
                     {selectedTool === 'edpuzzle' && selectedLevel === 'explorer' && (
                       <Button asChild className="flex-1 text-white" style={{ backgroundColor: currentBrandColor }}>
-                        <a href="https://edpuzzle.com/professional/join/696fe293b370d6481cb68098?schoolCode=bnc9r6" target="_blank" rel="noopener noreferrer">
+                        <a href="https://edpuzzle.com/professional/courses/68cc1d00e0854d323d0d4e45" target="_blank" rel="noopener noreferrer">
                           Edpuzzle Training <ArrowRight className="ml-2 h-4 w-4" />
                         </a>
                       </Button>

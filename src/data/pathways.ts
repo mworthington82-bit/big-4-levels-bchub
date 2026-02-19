@@ -665,20 +665,14 @@ export const learningPathways: Record<string, LearningPathway> = {
         'Supports independent and blended learning approaches',
         'Helps differentiate by allowing students to learn at their own pace'
       ],
-      externalLinks: [
-        {
-          title: 'Edpuzzle Professional Development Course',
-          url: 'https://edpuzzle.com/professional/courses/68cc1d00e0854d323d0d4e45',
-          description: 'Complete this course to enhance your Edpuzzle skills'
-        }
-      ]
+      externalLinks: []
     },
     mainContent: {
       howToUse: 'At Explorer level, start by finding and assigning pre-made interactive videos from Edpuzzle\'s library. Create a class, assign videos, and track basic engagement (who watched, who completed). Focus on using this as a tool for independent learning or flipped classroom approaches.',
       examples: [
         'For Launch (LEAD): Assign an Edpuzzle video to introduce a new topic, with questions embedded to check initial understanding before the lesson',
         'For independent learning: Set an interactive video for homework, allowing students to pause, rewind, and learn at their own pace',
-        'For differentiation: Assign different videos to different students based on their starting points or learning needs',
+        'For adaptive learning: Assign different videos to different students based on their starting points or learning needs, allowing each learner to progress at the right level',
         'For checking understanding: Use analytics to identify which students need additional support on specific concepts',
         'For engagement: Choose visually engaging, age-appropriate videos that bring topics to life beyond the textbook'
       ]
