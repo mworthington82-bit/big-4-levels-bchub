@@ -494,6 +494,13 @@ const Training = () => {
         <main className="container mx-auto px-4 py-8 md:py-12">
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-8 animate-fade-in">
+              <div className="flex justify-center mb-4">
+                <img
+                  src={selectedLevel === 'explorer' ? emblemExplorer : selectedLevel === 'practitioner' ? emblemPractitioner : emblemLeader}
+                  alt={`${selectedLevel} emblem`}
+                  className="h-20 w-20"
+                />
+              </div>
               <h2 className="text-4xl md:text-5xl font-bold mb-3 text-foreground relative inline-block">
                 Your Learning Modules
                 <span className="absolute -bottom-2 left-0 right-0 h-1 bg-accent rounded-full"></span>
