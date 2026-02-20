@@ -103,6 +103,31 @@ const ImmersiveLearningSection = ({ checklist, onBack }: ImmersiveLearningProps)
             </ul>
           </div>
 
+          {/* Useful Links */}
+          <div className="mt-4 space-y-2">
+            <h4 className="font-semibold text-foreground mb-2">🔗 Useful Links</h4>
+            <ul className="space-y-2 mb-4">
+              <li className="flex items-start gap-2">
+                <span className="text-rose-600 mt-1">📋</span>
+                <a href="https://forms.office.com/e/QRrA7LfAUh" target="_blank" rel="noopener noreferrer" className="text-accent underline hover:text-accent/80">
+                  Book the Immersive Room or Training Session
+                </a>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-rose-600 mt-1">🌐</span>
+                <a href="https://www.thinglink.com/scene/1959585229274350436" target="_blank" rel="noopener noreferrer" className="text-accent underline hover:text-accent/80">
+                  360° Interactive Guide to the Immersive Room
+                </a>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-rose-600 mt-1">📄</span>
+                <a href="/resources/Immersive_Room_Staff_Guidelines.pdf" target="_blank" rel="noopener noreferrer" className="text-accent underline hover:text-accent/80">
+                  Staff Guidelines for Immersive Room (PDF)
+                </a>
+              </li>
+            </ul>
+          </div>
+
           {/* Padlet Embed for Immersive Learning */}
           <div className="mt-4">
             <h4 className="font-semibold text-foreground mb-2">📌 Share Your Practice</h4>

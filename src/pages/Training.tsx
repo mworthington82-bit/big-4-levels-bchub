@@ -579,6 +579,30 @@ const Training = () => {
                                 Staff develop confidence in immersive delivery and begin embedding immersive experiences within their teaching practice.
                               </p>
                             </div>
+                            {/* Useful Links */}
+                            <div className="mt-4 space-y-2">
+                              <h4 className="font-semibold text-foreground">Useful Links:</h4>
+                              <ul className="space-y-2">
+                                <li className="flex items-start gap-2">
+                                  <span className="text-rose-600 mt-1">📋</span>
+                                  <a href="https://forms.office.com/e/QRrA7LfAUh" target="_blank" rel="noopener noreferrer" className="text-accent underline hover:text-accent/80">
+                                    Book the Immersive Room or Training Session
+                                  </a>
+                                </li>
+                                <li className="flex items-start gap-2">
+                                  <span className="text-rose-600 mt-1">🌐</span>
+                                  <a href="https://www.thinglink.com/scene/1959585229274350436" target="_blank" rel="noopener noreferrer" className="text-accent underline hover:text-accent/80">
+                                    360° Interactive Guide to the Immersive Room
+                                  </a>
+                                </li>
+                                <li className="flex items-start gap-2">
+                                  <span className="text-rose-600 mt-1">📄</span>
+                                  <a href="/resources/Immersive_Room_Staff_Guidelines.pdf" target="_blank" rel="noopener noreferrer" className="text-accent underline hover:text-accent/80">
+                                    Staff Guidelines for Immersive Room (PDF)
+                                  </a>
+                                </li>
+                              </ul>
+                            </div>
                           </>
                         ) : (
                           <>
@@ -610,6 +634,30 @@ const Training = () => {
                               <p className="text-foreground text-sm">
                                 Immersive sessions are well-managed, engaging, and safe, leading to high-quality learning experiences.
                               </p>
+                            </div>
+                            {/* Useful Links */}
+                            <div className="mt-4 space-y-2">
+                              <h4 className="font-semibold text-foreground">Useful Links:</h4>
+                              <ul className="space-y-2">
+                                <li className="flex items-start gap-2">
+                                  <span className="text-rose-600 mt-1">📋</span>
+                                  <a href="https://forms.office.com/e/QRrA7LfAUh" target="_blank" rel="noopener noreferrer" className="text-accent underline hover:text-accent/80">
+                                    Book the Immersive Room or Training Session
+                                  </a>
+                                </li>
+                                <li className="flex items-start gap-2">
+                                  <span className="text-rose-600 mt-1">🌐</span>
+                                  <a href="https://www.thinglink.com/scene/1959585229274350436" target="_blank" rel="noopener noreferrer" className="text-accent underline hover:text-accent/80">
+                                    360° Interactive Guide to the Immersive Room
+                                  </a>
+                                </li>
+                                <li className="flex items-start gap-2">
+                                  <span className="text-rose-600 mt-1">📄</span>
+                                  <a href="/resources/Immersive_Room_Staff_Guidelines.pdf" target="_blank" rel="noopener noreferrer" className="text-accent underline hover:text-accent/80">
+                                    Staff Guidelines for Immersive Room (PDF)
+                                  </a>
+                                </li>
+                              </ul>
                             </div>
                           </>
                         )}
