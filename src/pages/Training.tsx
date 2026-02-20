@@ -227,6 +227,7 @@ const Training = () => {
     copilot: '#0078D4',
   };
   const currentBrandColor = selectedTool ? brandColors[selectedTool] : '#F5A623';
+  const currentDuration = selectedTool ? tools.find(t => t.id === selectedTool)?.duration || '~15 min' : '~15 min';
 
   const progressSteps = ['Intro', 'Learn', 'Outcomes', 'Reflect', 'Assess'];
   const getCurrentStep = () => {
@@ -700,7 +701,7 @@ const Training = () => {
 
       <main className="container mx-auto px-4 py-12">
         {stage === 'intro' && <div className="max-w-4xl mx-auto space-y-6 animate-fade-in">
-            <ModuleHeroBanner tool={selectedTool!} level={selectedLevel!} brandColor={currentBrandColor} />
+            <ModuleHeroBanner tool={selectedTool!} level={selectedLevel!} brandColor={currentBrandColor} duration={currentDuration} />
             
             {/* Learning Objectives - Single Row Under Banner */}
             {selectedTool && selectedLevel && <LearningObjectivesCarousel tool={selectedTool} level={selectedLevel} />}
@@ -798,7 +799,7 @@ const Training = () => {
           </div>}
 
         {stage === 'learning' && <div className="max-w-4xl mx-auto space-y-6 animate-fade-in">
-            <ModuleHeroBanner tool={selectedTool!} level={selectedLevel!} brandColor={currentBrandColor} />
+            <ModuleHeroBanner tool={selectedTool!} level={selectedLevel!} brandColor={currentBrandColor} duration={currentDuration} />
 
             {/* Section pill */}
             <div className="flex items-center gap-2">
@@ -975,7 +976,7 @@ const Training = () => {
           </div>}
 
         {stage === 'benefits' && <div className="max-w-4xl mx-auto space-y-6 animate-fade-in">
-            <ModuleHeroBanner tool={selectedTool!} level={selectedLevel!} brandColor={currentBrandColor} />
+            <ModuleHeroBanner tool={selectedTool!} level={selectedLevel!} brandColor={currentBrandColor} duration={currentDuration} />
 
             <div className="flex items-center gap-2">
               <span

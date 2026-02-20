@@ -10,6 +10,7 @@ interface ModuleHeroBannerProps {
   tool: Tool;
   level: Level;
   brandColor: string;
+  duration?: string;
 }
 
 const logoMap: Record<string, string> = {
@@ -33,7 +34,7 @@ const moduleNumbers: Record<string, number> = {
   copilot: 4,
 };
 
-const ModuleHeroBanner = ({ tool, level, brandColor }: ModuleHeroBannerProps) => {
+const ModuleHeroBanner = ({ tool, level, brandColor, duration = '~15 min' }: ModuleHeroBannerProps) => {
   const names = toolNames[tool];
   const moduleNum = moduleNumbers[tool];
   const levelLabel = level.charAt(0).toUpperCase() + level.slice(1);
@@ -65,7 +66,7 @@ const ModuleHeroBanner = ({ tool, level, brandColor }: ModuleHeroBannerProps) =>
           <div className="flex flex-wrap gap-2">
             <span className="inline-flex items-center gap-1.5 bg-white/15 text-white text-xs font-medium px-3 py-1.5 rounded-full backdrop-blur-sm">
               <Clock className="h-3.5 w-3.5" />
-              ~15 min
+              {duration}
             </span>
             <span className="inline-flex items-center gap-1.5 bg-white/15 text-white text-xs font-medium px-3 py-1.5 rounded-full backdrop-blur-sm">
               <Layers className="h-3.5 w-3.5" />
