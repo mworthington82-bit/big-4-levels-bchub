@@ -68,7 +68,7 @@ const Landing = () => {
                   { logo: copilotLogo, name: "Copilot" },
                 ].map((app) => (
                   <div key={app.name} className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/15 backdrop-blur-sm border border-white/10">
-                    <img src={app.logo} alt={app.name} className="h-6 w-6 rounded object-contain" />
+                    <img src={app.logo} alt={app.name} className="h-6 w-6 rounded-md object-contain bg-white/90 p-0.5" />
                     <span className="text-sm font-medium text-white">{app.name}</span>
                   </div>
                 ))}
