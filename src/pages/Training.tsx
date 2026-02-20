@@ -523,6 +523,83 @@ const Training = () => {
                 </div>)}
             </div>
 
+            {/* Immersive Learning Section */}
+            {selectedLevel && selectedLevel !== 'leader' && (
+              <div className="mb-6 animate-fade-in">
+                <Accordion type="single" collapsible className="w-full">
+                  <AccordionItem
+                    value="immersive-learning"
+                    className="border-2 border-rose-500/30 rounded-2xl px-6 bg-gradient-to-br from-rose-500/10 to-rose-500/5 data-[state=open]:bg-rose-500/10"
+                  >
+                    <AccordionTrigger className="hover:no-underline py-6">
+                      <div className="flex items-center gap-4">
+                        <div className="p-3 rounded-xl bg-rose-500/10">
+                          <Target className="w-6 h-6 text-rose-500" />
+                        </div>
+                        <div className="text-left">
+                          <div className="flex items-center gap-2">
+                            <h3 className="font-display text-xl font-bold text-foreground">Immersive Learning</h3>
+                            <span className="px-2 py-0.5 text-xs font-semibold bg-rose-100 text-rose-700 rounded">Required</span>
+                          </div>
+                          <p className="text-sm text-muted-foreground font-normal mt-1">
+                            {selectedLevel === 'explorer'
+                              ? 'Explore how immersive technology can support curriculum delivery and student engagement'
+                              : 'Deliver purposeful and creative immersive experiences that maximise the potential of the immersive space and VR technology'}
+                          </p>
+                        </div>
+                      </div>
+                    </AccordionTrigger>
+                    <AccordionContent>
+                      <div className="pt-2 pl-16 space-y-4 pb-4">
+                        {selectedLevel === 'explorer' ? (
+                          <>
+                            <p className="text-foreground leading-relaxed">
+                              Staff begin developing awareness and confidence in using the Immersive Room to enhance teaching and learning.
+                            </p>
+                            <div className="space-y-2">
+                              <h4 className="font-semibold text-foreground">Key Practices:</h4>
+                              <ul className="space-y-2">
+                                <li className="flex items-start gap-2 text-muted-foreground"><span className="text-rose-500 mt-1">•</span><span>Book and attend Immersive Learning Practitioner training</span></li>
+                                <li className="flex items-start gap-2 text-muted-foreground"><span className="text-rose-500 mt-1">•</span><span>Plan and deliver 2–3 immersive sessions using the technology available in the Immersive Room</span></li>
+                                <li className="flex items-start gap-2 text-muted-foreground"><span className="text-rose-500 mt-1">•</span><span>Explore how immersive experiences align with curriculum objectives</span></li>
+                                <li className="flex items-start gap-2 text-muted-foreground"><span className="text-rose-500 mt-1">•</span><span>Book a coaching conversation with a Digital Lead to discuss lesson ideas and next steps (if needed)</span></li>
+                                <li className="flex items-start gap-2 text-muted-foreground"><span className="text-rose-500 mt-1">•</span><span>Reflect on the impact of immersive sessions on student engagement</span></li>
+                              </ul>
+                            </div>
+                            <div className="p-3 rounded-lg bg-rose-500/10 border border-rose-500/20">
+                              <h4 className="font-semibold text-rose-600 mb-1">Impact:</h4>
+                              <p className="text-foreground text-sm">Staff develop confidence in immersive delivery and begin embedding immersive experiences within their teaching practice.</p>
+                            </div>
+                          </>
+                        ) : (
+                          <>
+                            <p className="text-foreground leading-relaxed">
+                              Staff confidently and independently use the Immersive Room to enhance teaching and learning.
+                            </p>
+                            <div className="space-y-2">
+                              <h4 className="font-semibold text-foreground">Key Practices:</h4>
+                              <ul className="space-y-2">
+                                <li className="flex items-start gap-2 text-muted-foreground"><span className="text-rose-500 mt-1">•</span><span>Set up and manage the Immersive Room independently</span></li>
+                                <li className="flex items-start gap-2 text-muted-foreground"><span className="text-rose-500 mt-1">•</span><span>Use the immersive space creatively to enhance curriculum delivery</span></li>
+                                <li className="flex items-start gap-2 text-muted-foreground"><span className="text-rose-500 mt-1">•</span><span>Operate VR headsets safely and confidently</span></li>
+                                <li className="flex items-start gap-2 text-muted-foreground"><span className="text-rose-500 mt-1">•</span><span>Manage pacing, transitions, and student behaviour in immersive sessions</span></li>
+                                <li className="flex items-start gap-2 text-muted-foreground"><span className="text-rose-500 mt-1">•</span><span>Ensure student wellbeing and safe use of equipment</span></li>
+                              </ul>
+                            </div>
+                            <div className="p-3 rounded-lg bg-rose-500/10 border border-rose-500/20">
+                              <h4 className="font-semibold text-rose-600 mb-1">Impact:</h4>
+                              <p className="text-foreground text-sm">Immersive sessions are well-managed, engaging, and safe, leading to high-quality learning experiences.</p>
+                            </div>
+                          </>
+                        )}
+                      </div>
+                    </AccordionContent>
+                  </AccordionItem>
+                </Accordion>
+              </div>
+            )}
+
+
             {/* My Learning Summary - always accessible */}
             {selectedLevel && selectedLevel !== 'leader' && (
               <div

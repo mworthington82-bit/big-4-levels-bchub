@@ -55,17 +55,17 @@ const LeaderOverview = () => {
     {
       icon: Target,
       title: "Immersive Learning",
-      description: "Design and deliver immersive lessons independently, including confident use of VR headsets",
+      description: "Lead immersive practice within curriculum areas and support colleagues in developing confidence",
       elaboration: {
-        overview: "Create memorable learning experiences using virtual reality, augmented reality, and 360-degree content that transport students beyond the classroom.",
+        overview: "Staff demonstrate advanced and strategic use of immersive learning to drive innovation and share best practice across departments.",
         keyPoints: [
-          "Identify curriculum topics that benefit most from immersive experiences - virtual field trips, simulations, or visualising abstract concepts",
-          "Master the technical setup and troubleshooting of VR headsets to ensure smooth lesson delivery",
-          "Design activities that combine VR experiences with reflection, discussion, and follow-up tasks",
-          "Create inclusive experiences by providing alternative activities for students who cannot use VR",
-          "Develop or curate 360-degree content using tools like ThingLink to create interactive virtual environments"
+          "Design and deliver high-impact immersive experiences aligned to curriculum intent",
+          "Support and mentor colleagues in planning and delivering immersive sessions",
+          "Share best practice through departmental showcases, CPD, or internal platforms",
+          "Evaluate and evidence the impact of immersive learning on student progress and engagement",
+          "Contribute to the development of immersive strategy across the college"
         ],
-        impact: "Students engage with content in ways that create lasting memories and deeper understanding, particularly for concepts that are difficult to experience in traditional classrooms."
+        impact: "Immersive learning is embedded strategically within departments, improving student outcomes and fostering a culture of innovation and collaboration."
       }
     },
     {
