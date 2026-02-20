@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight, CheckCircle } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import WelcomeDialog from "@/components/dialogs/WelcomeDialog";
+import StudentQuoteCarousel from "@/components/StudentQuoteCarousel";
 import ResourceBankButton from "@/components/ResourceBankButton";
 import bradfordLogo from "@/assets/bradford-college-logo.jpg";
 import teamsLogo from "@/assets/teams-logo.png";
@@ -54,6 +55,9 @@ const Landing = () => {
               <h1 className="font-display text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6 animate-fade-in leading-tight">
                 The Big 4: <span className="text-[#F5A623]">Level Up</span>
               </h1>
+
+              {/* Student quote carousel */}
+              <StudentQuoteCarousel />
 
               {/* App logo pills */}
               <div className="flex flex-wrap justify-center gap-3 mt-10 animate-fade-in" style={{ animationDelay: '200ms' }}>
