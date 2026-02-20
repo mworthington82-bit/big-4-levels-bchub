@@ -87,7 +87,7 @@ const Training = () => {
     tagline: '🎨 Code for me - creating bespoke learning activities',
     description: 'Create professional, visually engaging learning materials with ease',
     icon: 'canva' as const,
-    duration: '~60 min'
+    duration: '~30 min'
   }, {
     id: 'edpuzzle' as Tool,
     title: 'Edpuzzle',
@@ -227,7 +227,11 @@ const Training = () => {
     copilot: '#0078D4',
   };
   const currentBrandColor = selectedTool ? brandColors[selectedTool] : '#F5A623';
-  const currentDuration = selectedTool ? tools.find(t => t.id === selectedTool)?.duration || '~15 min' : '~15 min';
+  const levelDurationOverrides: Record<string, Record<string, string>> = {
+    canva: { explorer: '~30 min', practitioner: '~75 min' },
+  };
+  const baseDuration = selectedTool ? tools.find(t => t.id === selectedTool)?.duration || '~15 min' : '~15 min';
+  const currentDuration = (selectedTool && selectedLevel && levelDurationOverrides[selectedTool]?.[selectedLevel]) || baseDuration;
 
   const progressSteps = ['Intro', 'Learn', 'Outcomes', 'Reflect', 'Assess'];
   const getCurrentStep = () => {
@@ -937,7 +941,7 @@ const Training = () => {
                     )}
                     {selectedTool === 'canva' && selectedLevel === 'explorer' && (
                       <Button asChild className="flex-1 text-white" style={{ backgroundColor: currentBrandColor }}>
-                        <a href="https://www.canva.com/design-school/resources/learning-with-canva-code" target="_blank" rel="noopener noreferrer">
+                        <a href="https://www.canva.com/design-school/courses/transform-your-classroom-with-canva-code" target="_blank" rel="noopener noreferrer">
                           Canva Training <ArrowRight className="ml-2 h-4 w-4" />
                         </a>
                       </Button>
