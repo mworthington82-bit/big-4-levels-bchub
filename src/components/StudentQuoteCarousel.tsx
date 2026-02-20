@@ -49,14 +49,6 @@ const StudentQuoteCarousel = () => {
           minHeight: 140,
         }}
       >
-        {/* Decorative quote mark */}
-        <span
-          className="absolute top-3 left-5 font-display select-none pointer-events-none"
-          style={{ fontSize: 80, color: "rgba(245,166,35,0.4)", lineHeight: 1 }}
-          aria-hidden="true"
-        >
-          "
-        </span>
 
         <p
           className="font-display italic text-white/[0.92] relative z-10 transition-all duration-[400ms]"
