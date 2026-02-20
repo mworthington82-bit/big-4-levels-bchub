@@ -1,6 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { Crown, Users, Lightbulb, Monitor, Share2, GraduationCap, Sparkles, Target } from "lucide-react";
+import { Users, Lightbulb, Monitor, Share2, GraduationCap, Sparkles, Target } from "lucide-react";
+import emblemLeader from "@/assets/emblem-leader.svg";
 
 const LeaderOverview = () => {
   const coreFocusAreas = [
@@ -107,7 +108,7 @@ const LeaderOverview = () => {
       {/* Hero Section */}
       <div className="text-center space-y-4">
         <div className="flex items-center justify-center gap-3">
-          <Crown className="w-12 h-12 text-accent" />
+          <img src={emblemLeader} alt="Leader emblem" className="w-14 h-14" />
           <h1 className="text-4xl md:text-5xl font-bold text-foreground">
             Leader Level
           </h1>
