@@ -6,9 +6,12 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { GraduationCap, ClipboardCheck, Star, Rocket, Crown } from "lucide-react";
+import { GraduationCap, ClipboardCheck } from "lucide-react";
 import { Level } from "@/types/learning";
 import bradfordBIcon from "@/assets/bradford-b-icon.png";
+import emblemExplorer from "@/assets/emblem-explorer.svg";
+import emblemPractitioner from "@/assets/emblem-practitioner.svg";
+import emblemLeader from "@/assets/emblem-leader.svg";
 
 interface LevelConfirmationDialogProps {
   open: boolean;
@@ -20,19 +23,19 @@ interface LevelConfirmationDialogProps {
 const levelInfo = {
   explorer: {
     title: 'Explorer',
-    icon: Star,
+    emblem: emblemExplorer,
     previousLevel: null,
     description: 'Discover and build confidence with core digital tools',
   },
   practitioner: {
     title: 'Practitioner',
-    icon: Rocket,
+    emblem: emblemPractitioner,
     previousLevel: 'Explorer',
     description: 'Apply digital tools purposefully to enhance teaching',
   },
   leader: {
     title: 'Leader',
-    icon: Crown,
+    emblem: emblemLeader,
     previousLevel: 'Practitioner',
     description: 'Lead with confidence, creativity, and mentor others',
   },
@@ -45,7 +48,6 @@ const LevelConfirmationDialog = ({
   onCancel,
 }: LevelConfirmationDialogProps) => {
   const info = levelInfo[level];
-  const Icon = info.icon;
 
   return (
     <Dialog open={open} onOpenChange={(isOpen) => !isOpen && onCancel()}>
@@ -53,9 +55,7 @@ const LevelConfirmationDialog = ({
         <DialogHeader className="text-center space-y-4">
           <div className="flex justify-center items-center gap-3">
             <img src={bradfordBIcon} alt="" className="h-8 w-8" />
-            <div className="rounded-full bg-accent/10 p-3">
-              <Icon className="h-8 w-8 text-accent" />
-            </div>
+            <img src={info.emblem} alt={`${info.title} emblem`} className="h-12 w-12" />
           </div>
           <DialogTitle className="text-2xl">
             Confirm {info.title} Level
