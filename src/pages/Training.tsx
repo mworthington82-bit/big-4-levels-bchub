@@ -563,7 +563,7 @@ const Training = () => {
                                   'Book and attend Immersive Learning Practitioner training',
                                   'Plan and deliver 2–3 immersive sessions using the technology available in the Immersive Room',
                                   'Explore how immersive experiences align with curriculum objectives',
-                                  'Book a coaching conversation with a Digital Lead to discuss lesson ideas and next steps (if needed)',
+                                  'Book a coaching conversation with one of the Digital Leads to discuss lesson ideas and next steps (if needed)',
                                   'Reflect on the impact of immersive sessions on student engagement'
                                 ].map((point, i) => (
                                   <li key={i} className="flex items-start gap-2 text-muted-foreground">
