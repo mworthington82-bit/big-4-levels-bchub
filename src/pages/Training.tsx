@@ -203,7 +203,7 @@ const Training = () => {
   const handleContinueLearning = () => {
     // Mark the completed tool
     if (selectedTool) {
-      setCompletedTools(prev => new Set([...prev, selectedTool]));
+      setCompletedTools((prev) => new Set([...prev, selectedTool]));
     }
     // Go back to tool selection at the same level
     setStage('tool-select');
@@ -224,14 +224,14 @@ const Training = () => {
     teams: '#5B5FC7',
     canva: '#7D2AE8',
     edpuzzle: '#1DA1F2',
-    copilot: '#0078D4',
+    copilot: '#0078D4'
   };
   const currentBrandColor = selectedTool ? brandColors[selectedTool] : '#F5A623';
   const levelDurationOverrides: Record<string, Record<string, string>> = {
-    canva: { explorer: '~30 min', practitioner: '~75 min' },
+    canva: { explorer: '~30 min', practitioner: '~75 min' }
   };
-  const baseDuration = selectedTool ? tools.find(t => t.id === selectedTool)?.duration || '~15 min' : '~15 min';
-  const currentDuration = (selectedTool && selectedLevel && levelDurationOverrides[selectedTool]?.[selectedLevel]) || baseDuration;
+  const baseDuration = selectedTool ? tools.find((t) => t.id === selectedTool)?.duration || '~15 min' : '~15 min';
+  const currentDuration = selectedTool && selectedLevel && levelDurationOverrides[selectedTool]?.[selectedLevel] || baseDuration;
 
   const progressSteps = ['Intro', 'Learn', 'Outcomes', 'Reflect', 'Assess'];
   const getCurrentStep = () => {
@@ -240,19 +240,19 @@ const Training = () => {
       learning: 1,
       benefits: 2,
       reflection: 3,
-      quiz: 4,
+      quiz: 4
     };
     return stageMap[stage] || 0;
   };
 
   const getSectionInfo = () => {
     const sections = [
-      { num: 1, name: 'Introduction' },
-      { num: 2, name: 'Learn' },
-      { num: 3, name: 'Outcomes' },
-      { num: 4, name: 'Reflect' },
-      { num: 5, name: 'Assess' },
-    ];
+    { num: 1, name: 'Introduction' },
+    { num: 2, name: 'Learn' },
+    { num: 3, name: 'Outcomes' },
+    { num: 4, name: 'Reflect' },
+    { num: 5, name: 'Assess' }];
+
     const step = getCurrentStep();
     return sections[step] || sections[0];
   };
@@ -262,7 +262,7 @@ const Training = () => {
       intro: 'Section 2',
       learning: 'Section 3',
       benefits: 'Section 4',
-      reflection: 'Section 5',
+      reflection: 'Section 5'
     };
     return names[stage] || 'Next';
   };
@@ -274,14 +274,14 @@ const Training = () => {
     return (
       <div className="min-h-screen bg-background">
         <ResourceBankButton />
-        {pendingLevel && (
-          <LevelConfirmationDialog
-            open={showLevelConfirmation}
-            level={pendingLevel}
-            onConfirm={handleLevelConfirm}
-            onCancel={handleLevelConfirmCancel}
-          />
-        )}
+        {pendingLevel &&
+        <LevelConfirmationDialog
+          open={showLevelConfirmation}
+          level={pendingLevel}
+          onConfirm={handleLevelConfirm}
+          onCancel={handleLevelConfirmCancel} />
+
+        }
         <NavigationButtons showBack={false} />
         <AccessibilityPanel />
         <header className="border-b border-border bg-card shadow-sm">
@@ -317,8 +317,8 @@ const Training = () => {
               {/* Explorer */}
               <div
                 className="group flex items-center gap-4 md:gap-6 bg-card rounded-2xl border-2 border-border hover:border-t-4 hover:border-t-[#F5A623] cursor-pointer transition-all duration-300 hover:shadow-[var(--shadow-hover)] p-5"
-                onClick={() => handleLevelEntry('explorer')}
-              >
+                onClick={() => handleLevelEntry('explorer')}>
+
                 <img src={emblemExplorer} alt="Explorer emblem" className="h-12 w-12 flex-shrink-0" />
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-3 mb-1">
@@ -333,8 +333,8 @@ const Training = () => {
               {/* Practitioner */}
               <div
                 className="group flex items-center gap-4 md:gap-6 bg-card rounded-2xl border-2 border-border hover:border-t-4 hover:border-t-[#5B5FC7] cursor-pointer transition-all duration-300 hover:shadow-[var(--shadow-hover)] p-5"
-                onClick={() => handleLevelEntry('practitioner')}
-              >
+                onClick={() => handleLevelEntry('practitioner')}>
+
                 <img src={emblemPractitioner} alt="Practitioner emblem" className="h-12 w-12 flex-shrink-0" />
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-3 mb-1">
@@ -349,8 +349,8 @@ const Training = () => {
               {/* Leader */}
               <div
                 className="group flex items-center gap-4 md:gap-6 bg-card rounded-2xl border-2 border-border hover:border-t-4 hover:border-t-[#22C55E] cursor-pointer transition-all duration-300 hover:shadow-[var(--shadow-hover)] p-5"
-                onClick={() => handleLevelEntry('leader')}
-              >
+                onClick={() => handleLevelEntry('leader')}>
+
                 <img src={emblemLeader} alt="Leader emblem" className="h-12 w-12 flex-shrink-0" />
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-3 mb-1">
@@ -368,16 +368,16 @@ const Training = () => {
               <Button
                 variant="outline"
                 onClick={() => navigate("/")}
-                className="border-border hover:bg-muted hover:text-foreground px-8 py-6 text-base rounded-xl"
-              >
+                className="border-border hover:bg-muted hover:text-foreground px-8 py-6 text-base rounded-xl">
+
                 <Home className="mr-2 h-5 w-5" />
                 Back to Home
               </Button>
             </div>
           </div>
         </main>
-      </div>
-    );
+      </div>);
+
   }
 
   if (stage === 'home') {
@@ -501,10 +501,10 @@ const Training = () => {
             <div className="text-center mb-8 animate-fade-in">
               <div className="flex justify-center mb-4">
                 <img
-                  src={selectedLevel === 'explorer' ? emblemExplorer : selectedLevel === 'practitioner' ? emblemPractitioner : emblemLeader}
-                  alt={`${selectedLevel} emblem`}
-                  className="h-20 w-20"
-                />
+                src={selectedLevel === 'explorer' ? emblemExplorer : selectedLevel === 'practitioner' ? emblemPractitioner : emblemLeader}
+                alt={`${selectedLevel} emblem`}
+                className="h-20 w-20" />
+
               </div>
               <h2 className="text-4xl md:text-5xl font-bold mb-3 text-foreground relative inline-block">
                 Your Learning Modules
@@ -523,89 +523,12 @@ const Training = () => {
                 </div>)}
             </div>
 
-            {/* Immersive Learning Section */}
-            {selectedLevel && selectedLevel !== 'leader' && (
-              <div className="mb-6 animate-fade-in">
-                <Accordion type="single" collapsible className="w-full">
-                  <AccordionItem
-                    value="immersive-learning"
-                    className="border-2 border-rose-500/30 rounded-2xl px-6 bg-gradient-to-br from-rose-500/10 to-rose-500/5 data-[state=open]:bg-rose-500/10"
-                  >
-                    <AccordionTrigger className="hover:no-underline py-6">
-                      <div className="flex items-center gap-4">
-                        <div className="p-3 rounded-xl bg-rose-500/10">
-                          <Target className="w-6 h-6 text-rose-500" />
-                        </div>
-                        <div className="text-left">
-                          <div className="flex items-center gap-2">
-                            <h3 className="font-display text-xl font-bold text-foreground">Immersive Learning</h3>
-                            <span className="px-2 py-0.5 text-xs font-semibold bg-rose-100 text-rose-700 rounded">Required</span>
-                          </div>
-                          <p className="text-sm text-muted-foreground font-normal mt-1">
-                            {selectedLevel === 'explorer'
-                              ? 'Explore how immersive technology can support curriculum delivery and student engagement'
-                              : 'Deliver purposeful and creative immersive experiences that maximise the potential of the immersive space and VR technology'}
-                          </p>
-                        </div>
-                      </div>
-                    </AccordionTrigger>
-                    <AccordionContent>
-                      <div className="pt-2 pl-16 space-y-4 pb-4">
-                        {selectedLevel === 'explorer' ? (
-                          <>
-                            <p className="text-foreground leading-relaxed">
-                              Staff begin developing awareness and confidence in using the Immersive Room to enhance teaching and learning.
-                            </p>
-                            <div className="space-y-2">
-                              <h4 className="font-semibold text-foreground">Key Practices:</h4>
-                              <ul className="space-y-2">
-                                <li className="flex items-start gap-2 text-muted-foreground"><span className="text-rose-500 mt-1">•</span><span>Book and attend Immersive Learning Practitioner training</span></li>
-                                <li className="flex items-start gap-2 text-muted-foreground"><span className="text-rose-500 mt-1">•</span><span>Plan and deliver 2–3 immersive sessions using the technology available in the Immersive Room</span></li>
-                                <li className="flex items-start gap-2 text-muted-foreground"><span className="text-rose-500 mt-1">•</span><span>Explore how immersive experiences align with curriculum objectives</span></li>
-                                <li className="flex items-start gap-2 text-muted-foreground"><span className="text-rose-500 mt-1">•</span><span>Book a coaching conversation with a Digital Lead to discuss lesson ideas and next steps (if needed)</span></li>
-                                <li className="flex items-start gap-2 text-muted-foreground"><span className="text-rose-500 mt-1">•</span><span>Reflect on the impact of immersive sessions on student engagement</span></li>
-                              </ul>
-                            </div>
-                            <div className="p-3 rounded-lg bg-rose-500/10 border border-rose-500/20">
-                              <h4 className="font-semibold text-rose-600 mb-1">Impact:</h4>
-                              <p className="text-foreground text-sm">Staff develop confidence in immersive delivery and begin embedding immersive experiences within their teaching practice.</p>
-                            </div>
-                          </>
-                        ) : (
-                          <>
-                            <p className="text-foreground leading-relaxed">
-                              Staff confidently and independently use the Immersive Room to enhance teaching and learning.
-                            </p>
-                            <div className="space-y-2">
-                              <h4 className="font-semibold text-foreground">Key Practices:</h4>
-                              <ul className="space-y-2">
-                                <li className="flex items-start gap-2 text-muted-foreground"><span className="text-rose-500 mt-1">•</span><span>Set up and manage the Immersive Room independently</span></li>
-                                <li className="flex items-start gap-2 text-muted-foreground"><span className="text-rose-500 mt-1">•</span><span>Use the immersive space creatively to enhance curriculum delivery</span></li>
-                                <li className="flex items-start gap-2 text-muted-foreground"><span className="text-rose-500 mt-1">•</span><span>Operate VR headsets safely and confidently</span></li>
-                                <li className="flex items-start gap-2 text-muted-foreground"><span className="text-rose-500 mt-1">•</span><span>Manage pacing, transitions, and student behaviour in immersive sessions</span></li>
-                                <li className="flex items-start gap-2 text-muted-foreground"><span className="text-rose-500 mt-1">•</span><span>Ensure student wellbeing and safe use of equipment</span></li>
-                              </ul>
-                            </div>
-                            <div className="p-3 rounded-lg bg-rose-500/10 border border-rose-500/20">
-                              <h4 className="font-semibold text-rose-600 mb-1">Impact:</h4>
-                              <p className="text-foreground text-sm">Immersive sessions are well-managed, engaging, and safe, leading to high-quality learning experiences.</p>
-                            </div>
-                          </>
-                        )}
-                      </div>
-                    </AccordionContent>
-                  </AccordionItem>
-                </Accordion>
-              </div>
-            )}
-
-
             {/* My Learning Summary - always accessible */}
-            {selectedLevel && selectedLevel !== 'leader' && (
-              <div
-                className="mb-10 animate-fade-in rounded-2xl border-2 border-[#F5A623] bg-[#F5A623]/5 cursor-pointer hover:shadow-[var(--shadow-hover)] transition-all duration-300"
-                onClick={() => setStage('summary')}
-              >
+            {selectedLevel && selectedLevel !== 'leader' &&
+          <div
+            className="mb-10 animate-fade-in rounded-2xl border-2 border-[#F5A623] bg-[#F5A623]/5 cursor-pointer hover:shadow-[var(--shadow-hover)] transition-all duration-300"
+            onClick={() => setStage('summary')}>
+
                 <div className="flex items-center gap-4 md:gap-6 p-6">
                   <span className="text-4xl flex-shrink-0">📋</span>
                   <div className="flex-1 min-w-0">
@@ -622,7 +545,7 @@ const Training = () => {
                   <ArrowRight className="h-5 w-5 text-[#F5A623] flex-shrink-0" />
                 </div>
               </div>
-            )}
+          }
 
             <div className="text-center animate-fade-in">
               <Button variant="outline" onClick={handleRestart} className="border-border hover:bg-accent hover:text-accent-foreground hover:border-accent transition-all px-8 py-6 text-base rounded-xl">
@@ -639,11 +562,11 @@ const Training = () => {
         <ResourceBankButton />
         <NavigationButtons onBack={handleBack} />
         <AccessibilityPanel />
-        <header className="border-b border-border bg-card shadow-sm">
-          <div className="container mx-auto px-4 py-6">
-            <img src={bradfordLogo} alt="Bradford College logo - a modern design representing educational excellence" className="h-12 object-contain" />
-          </div>
-        </header>
+        
+
+
+
+
 
         <main className="container mx-auto px-4 py-12">
           <div className="max-w-6xl mx-auto">
@@ -660,7 +583,7 @@ const Training = () => {
             </div>
 
             <div className="grid md:grid-cols-3 gap-6 mb-8">
-              {levels.map(level => <LevelCard key={level.id} level={level.id} title={level.title} description={level.description} onSelect={() => handleLevelSelect(level.id)} />)}
+              {levels.map((level) => <LevelCard key={level.id} level={level.id} title={level.title} description={level.description} onSelect={() => handleLevelSelect(level.id)} />)}
             </div>
 
             <div className="text-center">
@@ -702,8 +625,8 @@ const Training = () => {
             }} />
           </div>
         </main>
-      </div>
-    );
+      </div>);
+
   }
 
   if (stage === 'badge') {
@@ -753,11 +676,11 @@ const Training = () => {
         <main className="container mx-auto px-4 py-8 md:py-12">
           <LearningSummary
             level={selectedLevel}
-            onContinue={() => setStage('tool-select')}
-          />
+            onContinue={() => setStage('tool-select')} />
+
         </main>
-      </div>
-    );
+      </div>);
+
   }
 
   if (!pathway) return null;
@@ -790,9 +713,9 @@ const Training = () => {
             {/* Section pill */}
             <div className="flex items-center gap-2">
               <span
-                className="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full text-white"
-                style={{ backgroundColor: currentBrandColor }}
-              >
+            className="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full text-white"
+            style={{ backgroundColor: currentBrandColor }}>
+
                 📍 Section {sectionInfo.num} of 5 — {sectionInfo.name}
               </span>
             </div>
@@ -811,45 +734,45 @@ const Training = () => {
                   {pathway.intro.description}
                 </p>
 
-                {pathway.intro.additionalInfo && (
-                  <div
-                    className="rounded-xl p-4 border-l-4"
-                    style={{ borderColor: currentBrandColor, backgroundColor: `${currentBrandColor}08` }}
-                  >
+                {pathway.intro.additionalInfo &&
+            <div
+              className="rounded-xl p-4 border-l-4"
+              style={{ borderColor: currentBrandColor, backgroundColor: `${currentBrandColor}08` }}>
+
                     <p className="text-sm text-[#52526E] leading-relaxed">
                       💡 {pathway.intro.additionalInfo}
                     </p>
                   </div>
-                )}
+            }
 
-                {pathway.intro.externalLinks && pathway.intro.externalLinks.length > 0 && (
-                  <div className="space-y-3">
+                {pathway.intro.externalLinks && pathway.intro.externalLinks.length > 0 &&
+            <div className="space-y-3">
                     <h3 className="font-display text-lg font-semibold flex items-center gap-2" style={{ color: currentBrandColor }}>
                       <Lightbulb className="w-5 h-5" />
                       Additional Resources
                     </h3>
-                    {pathway.intro.externalLinks.map((link, index) => (
-                      <div key={index} className="border border-border rounded-xl p-4 bg-muted/20">
+                    {pathway.intro.externalLinks.map((link, index) =>
+              <div key={index} className="border border-border rounded-xl p-4 bg-muted/20">
                         <p className="font-semibold text-card-foreground mb-1">{link.title}</p>
                         <p className="text-sm text-muted-foreground mb-2">{link.description}</p>
-                        <Button 
-                          variant="outline" 
-                          size="sm"
-                          onClick={() => window.open(link.url, '_blank')}
-                        >
+                        <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => window.open(link.url, '_blank')}>
+
                           Access Resource
                           <ArrowRight className="ml-2 h-4 w-4" />
                         </Button>
                       </div>
-                    ))}
+              )}
                   </div>
-                )}
+            }
 
                 {/* Training Requirements */}
                 <div
-                  className="rounded-xl p-5 border-l-4"
-                  style={{ borderColor: currentBrandColor, backgroundColor: `${currentBrandColor}08` }}
-                >
+              className="rounded-xl p-5 border-l-4"
+              style={{ borderColor: currentBrandColor, backgroundColor: `${currentBrandColor}08` }}>
+
                   <h4 className="font-display text-lg font-bold text-card-foreground mb-3 flex items-center gap-2">
                     <Target className="w-5 h-5" style={{ color: currentBrandColor }} />
                     Complete Your Training
@@ -858,23 +781,23 @@ const Training = () => {
                     To earn your digital skills certificate, complete all sections of this training module.
                   </p>
                   <ul className="space-y-2">
-                    {progressSteps.map((step, i) => (
-                      <li key={i} className="flex items-start gap-2 text-sm text-[#52526E]">
+                    {progressSteps.map((step, i) =>
+                <li key={i} className="flex items-start gap-2 text-sm text-[#52526E]">
                         <CheckCircle className="h-4 w-4 mt-0.5 flex-shrink-0" style={{ color: currentBrandColor }} />
                         <span><strong>{step}</strong></span>
                       </li>
-                    ))}
+                )}
                   </ul>
                 </div>
               </CardContent>
             </Card>
 
             <Button
-              onClick={() => setStage('learning')}
-              className="w-full py-6 text-base rounded-xl font-semibold transition-all hover:-translate-y-0.5 hover:shadow-lg text-white"
-              style={{ backgroundColor: currentBrandColor }}
-              size="lg"
-            >
+          onClick={() => setStage('learning')}
+          className="w-full py-6 text-base rounded-xl font-semibold transition-all hover:-translate-y-0.5 hover:shadow-lg text-white"
+          style={{ backgroundColor: currentBrandColor }}
+          size="lg">
+
               Continue to {getNextStageName()} →
             </Button>
           </div>}
@@ -885,9 +808,9 @@ const Training = () => {
             {/* Section pill */}
             <div className="flex items-center gap-2">
               <span
-                className="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full text-white"
-                style={{ backgroundColor: currentBrandColor }}
-              >
+            className="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full text-white"
+            style={{ backgroundColor: currentBrandColor }}>
+
                 📍 Section {sectionInfo.num} of 5 — {sectionInfo.name}
               </span>
             </div>
@@ -917,29 +840,29 @@ const Training = () => {
                   <p className="text-sm text-[#52526E] mb-4 italic">
                     Click each heading to expand the example. You must view all examples before continuing.
                   </p>
-                  <Accordion 
-                    type="multiple" 
-                    className="w-full space-y-2"
-                    onValueChange={(values) => {
-                      const newViewed = new Set(viewedExamples);
-                      values.forEach(v => {
-                        const index = parseInt(v.replace('example-', ''));
-                        newViewed.add(index);
-                      });
-                      setViewedExamples(newViewed);
-                    }}
-                  >
+                  <Accordion
+                type="multiple"
+                className="w-full space-y-2"
+                onValueChange={(values) => {
+                  const newViewed = new Set(viewedExamples);
+                  values.forEach((v) => {
+                    const index = parseInt(v.replace('example-', ''));
+                    newViewed.add(index);
+                  });
+                  setViewedExamples(newViewed);
+                }}>
+
                     {pathway.mainContent.examples.map((example, index) => {
-                      const colonIndex = example.indexOf(':');
-                      const title = colonIndex > -1 ? example.substring(0, colonIndex) : `Example ${index + 1}`;
-                      const content = colonIndex > -1 ? example.substring(colonIndex + 1).trim() : example;
-                      const isViewed = viewedExamples.has(index);
-                      return (
-                        <AccordionItem 
-                          key={index} 
-                          value={`example-${index}`}
-                          className="border border-border rounded-xl overflow-hidden bg-card px-4"
-                        >
+                  const colonIndex = example.indexOf(':');
+                  const title = colonIndex > -1 ? example.substring(0, colonIndex) : `Example ${index + 1}`;
+                  const content = colonIndex > -1 ? example.substring(colonIndex + 1).trim() : example;
+                  const isViewed = viewedExamples.has(index);
+                  return (
+                    <AccordionItem
+                      key={index}
+                      value={`example-${index}`}
+                      className="border border-border rounded-xl overflow-hidden bg-card px-4">
+
                           <AccordionTrigger className="hover:no-underline py-3">
                             <span className="flex items-center gap-2 text-sm font-semibold text-card-foreground text-left">
                               {isViewed && <CheckCircle className="h-4 w-4 flex-shrink-0" style={{ color: currentBrandColor }} />}
@@ -949,17 +872,17 @@ const Training = () => {
                           <AccordionContent>
                             <p className="text-sm text-[#52526E] leading-relaxed">{content}</p>
                           </AccordionContent>
-                        </AccordionItem>
-                      );
-                    })}
+                        </AccordionItem>);
+
+                })}
                   </Accordion>
                 </div>
 
                 {/* Required Activity callout */}
                 <div
-                  className="rounded-xl p-5 border-l-4"
-                  style={{ borderColor: currentBrandColor, backgroundColor: `${currentBrandColor}08` }}
-                >
+              className="rounded-xl p-5 border-l-4"
+              style={{ borderColor: currentBrandColor, backgroundColor: `${currentBrandColor}08` }}>
+
                   <h4 className="font-display text-lg font-bold text-card-foreground mb-3 flex items-center gap-2">
                     <Target className="w-5 h-5" style={{ color: currentBrandColor }} />
                     🎯 Required Activity
@@ -969,8 +892,8 @@ const Training = () => {
                   </p>
                   
                   <div className="flex flex-col sm:flex-row flex-wrap gap-3">
-                    {selectedTool === 'teams' && selectedLevel === 'explorer' && (
-                      <>
+                    {selectedTool === 'teams' && selectedLevel === 'explorer' &&
+                <>
                         <Button asChild className="flex-1 text-white" style={{ backgroundColor: currentBrandColor }}>
                           <a href="https://edpuzzle.com/professional/join/69008e0ce724165a4bba4ea0?schoolCode=bnc9r6" target="_blank" rel="noopener noreferrer">
                             MS Teams Training <ArrowRight className="ml-2 h-4 w-4" />
@@ -982,9 +905,9 @@ const Training = () => {
                           </a>
                         </Button>
                       </>
-                    )}
-                    {selectedTool === 'teams' && selectedLevel === 'practitioner' && (
-                      <>
+                }
+                    {selectedTool === 'teams' && selectedLevel === 'practitioner' &&
+                <>
                         <Button asChild className="flex-1 min-w-[200px] text-white" style={{ backgroundColor: currentBrandColor }}>
                           <a href="https://edpuzzle.com/professional/join/697f61e10bc0b32a9541b132?schoolCode=bnc9r6" target="_blank" rel="noopener noreferrer">
                             Breakout Rooms <ArrowRight className="ml-2 h-4 w-4" />
@@ -1001,56 +924,56 @@ const Training = () => {
                           </a>
                         </Button>
                       </>
-                    )}
-                    {selectedTool === 'edpuzzle' && selectedLevel === 'explorer' && (
-                      <Button asChild className="flex-1 text-white" style={{ backgroundColor: currentBrandColor }}>
+                }
+                    {selectedTool === 'edpuzzle' && selectedLevel === 'explorer' &&
+                <Button asChild className="flex-1 text-white" style={{ backgroundColor: currentBrandColor }}>
                         <a href="https://edpuzzle.com/professional/courses/68cc1d00e0854d323d0d4e45" target="_blank" rel="noopener noreferrer">
                           Edpuzzle Training <ArrowRight className="ml-2 h-4 w-4" />
                         </a>
                       </Button>
-                    )}
-                    {selectedTool === 'edpuzzle' && selectedLevel === 'practitioner' && (
-                      <Button asChild className="flex-1 text-white" style={{ backgroundColor: currentBrandColor }}>
+                }
+                    {selectedTool === 'edpuzzle' && selectedLevel === 'practitioner' &&
+                <Button asChild className="flex-1 text-white" style={{ backgroundColor: currentBrandColor }}>
                         <a href="https://edpuzzle.com/professional/join/697a50396dc975e0ebe7aabb?schoolCode=bnc9r6" target="_blank" rel="noopener noreferrer">
                           Edpuzzle Training <ArrowRight className="ml-2 h-4 w-4" />
                         </a>
                       </Button>
-                    )}
-                    {selectedTool === 'canva' && selectedLevel === 'explorer' && (
-                      <Button asChild className="flex-1 text-white" style={{ backgroundColor: currentBrandColor }}>
+                }
+                    {selectedTool === 'canva' && selectedLevel === 'explorer' &&
+                <Button asChild className="flex-1 text-white" style={{ backgroundColor: currentBrandColor }}>
                         <a href="https://www.canva.com/design-school/courses/transform-your-classroom-with-canva-code" target="_blank" rel="noopener noreferrer">
                           Canva Training <ArrowRight className="ml-2 h-4 w-4" />
                         </a>
                       </Button>
-                    )}
-                    {selectedTool === 'canva' && selectedLevel === 'practitioner' && (
-                      <Button asChild className="flex-1 text-white" style={{ backgroundColor: currentBrandColor }}>
+                }
+                    {selectedTool === 'canva' && selectedLevel === 'practitioner' &&
+                <Button asChild className="flex-1 text-white" style={{ backgroundColor: currentBrandColor }}>
                         <a href="https://www.canva.com/design-school/courses/ai-in-the-classroom" target="_blank" rel="noopener noreferrer">
                           Canva Training <ArrowRight className="ml-2 h-4 w-4" />
                         </a>
                       </Button>
-                    )}
-                    {selectedTool === 'copilot' && (
-                      <Button asChild className="flex-1 text-white" style={{ backgroundColor: currentBrandColor }}>
+                }
+                    {selectedTool === 'copilot' &&
+                <Button asChild className="flex-1 text-white" style={{ backgroundColor: currentBrandColor }}>
                         <a href="https://learn.microsoft.com/en-us/collections/778ea8tj5ww7d2?&sharingId=96CA0696F41DC6E3" target="_blank" rel="noopener noreferrer">
                           Microsoft Copilot Training <ArrowRight className="ml-2 h-4 w-4" />
                         </a>
                       </Button>
-                    )}
+                }
                   </div>
                 </div>
                 
-                <Button 
-                  onClick={() => setStage('benefits')} 
-                  className="w-full py-6 text-base rounded-xl font-semibold transition-all hover:-translate-y-0.5 hover:shadow-lg text-white"
-                  style={{ backgroundColor: currentBrandColor }}
-                  size="lg"
-                  disabled={viewedExamples.size < pathway.mainContent.examples.length}
-                >
-                  {viewedExamples.size < pathway.mainContent.examples.length 
-                    ? `View all examples to continue (${viewedExamples.size}/${pathway.mainContent.examples.length})`
-                    : `Continue to ${getNextStageName()} →`
-                  }
+                <Button
+              onClick={() => setStage('benefits')}
+              className="w-full py-6 text-base rounded-xl font-semibold transition-all hover:-translate-y-0.5 hover:shadow-lg text-white"
+              style={{ backgroundColor: currentBrandColor }}
+              size="lg"
+              disabled={viewedExamples.size < pathway.mainContent.examples.length}>
+
+                  {viewedExamples.size < pathway.mainContent.examples.length ?
+              `View all examples to continue (${viewedExamples.size}/${pathway.mainContent.examples.length})` :
+              `Continue to ${getNextStageName()} →`
+              }
                 </Button>
               </CardContent>
             </Card>
@@ -1061,9 +984,9 @@ const Training = () => {
 
             <div className="flex items-center gap-2">
               <span
-                className="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full text-white"
-                style={{ backgroundColor: currentBrandColor }}
-              >
+            className="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full text-white"
+            style={{ backgroundColor: currentBrandColor }}>
+
                 📍 Section {sectionInfo.num} of 5 — {sectionInfo.name}
               </span>
             </div>
@@ -1083,18 +1006,18 @@ const Training = () => {
                   How {getToolDisplayName(selectedTool!)} benefits students, staff, and Bradford College
                 </p>
 
-                <ImpactCarousel 
-                  studentBenefits={pathway.benefits.students}
-                  staffBenefits={pathway.benefits.staff}
-                  collegeBenefits={pathway.benefits.college}
-                />
+                <ImpactCarousel
+              studentBenefits={pathway.benefits.students}
+              staffBenefits={pathway.benefits.staff}
+              collegeBenefits={pathway.benefits.college} />
+
                 
-                <Button 
-                  onClick={() => setStage('reflection')} 
-                  className="w-full py-6 text-base rounded-xl font-semibold transition-all hover:-translate-y-0.5 hover:shadow-lg text-white"
-                  style={{ backgroundColor: currentBrandColor }}
-                  size="lg"
-                >
+                <Button
+              onClick={() => setStage('reflection')}
+              className="w-full py-6 text-base rounded-xl font-semibold transition-all hover:-translate-y-0.5 hover:shadow-lg text-white"
+              style={{ backgroundColor: currentBrandColor }}
+              size="lg">
+
                   Continue to {getNextStageName()} →
                 </Button>
               </CardContent>
