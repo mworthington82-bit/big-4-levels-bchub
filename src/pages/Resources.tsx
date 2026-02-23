@@ -10,6 +10,9 @@ import canvaLogo from '@/assets/canva-logo.jpg';
 import edpuzzleLogo from '@/assets/edpuzzle-logo.png';
 import copilotLogo from '@/assets/copilot-logo.png';
 import formsLogo from '@/assets/forms-logo.jpg';
+import emblemExplorer from '@/assets/emblem-explorer.svg';
+import emblemPractitioner from '@/assets/emblem-practitioner.svg';
+import emblemLeader from '@/assets/emblem-leader.svg';
 
 type ToolFilter = 'all' | 'teams' | 'forms' | 'canva' | 'edpuzzle' | 'copilot' | 'notebook' | 'immersive';
 type LevelFilter = 'all' | 'explorer' | 'practitioner' | 'leader';
@@ -78,11 +81,11 @@ const Resources = () => {
     { id: 'immersive' as ToolFilter, name: 'Immersive', logo: null, color: '#F5A623' },
   ];
 
-  const levelButtons: { id: LevelFilter; name: string; emoji: string; color: string; activeColor: string }[] = [
-    { id: 'all' as LevelFilter, name: 'All Levels', emoji: '📚', color: 'border-border', activeColor: 'border-accent bg-accent/10' },
-    { id: 'explorer', name: 'Explorer', emoji: '⭐', color: 'border-border', activeColor: 'border-[#F5A623] bg-[#F5A623]/10' },
-    { id: 'practitioner', name: 'Practitioner', emoji: '🚀', color: 'border-border', activeColor: 'border-[#5B5FC7] bg-[#5B5FC7]/10' },
-    { id: 'leader', name: 'Leader', emoji: '👑', color: 'border-border', activeColor: 'border-[#22C55E] bg-[#22C55E]/10' },
+  const levelButtons: { id: LevelFilter; name: string; icon: string | null; color: string; activeColor: string }[] = [
+    { id: 'all' as LevelFilter, name: 'All Levels', icon: null, color: 'border-border', activeColor: 'border-accent bg-accent/10' },
+    { id: 'explorer', name: 'Explorer', icon: emblemExplorer, color: 'border-border', activeColor: 'border-[#F5A623] bg-[#F5A623]/10' },
+    { id: 'practitioner', name: 'Practitioner', icon: emblemPractitioner, color: 'border-border', activeColor: 'border-[#16a085] bg-[#16a085]/10' },
+    { id: 'leader', name: 'Leader', icon: emblemLeader, color: 'border-border', activeColor: 'border-[#2E86DE] bg-[#2E86DE]/10' },
   ];
 
   const handleToolSelect = (tool: ToolFilter) => setSelectedTool(selectedTool === tool ? 'all' : tool);
@@ -153,7 +156,7 @@ const Resources = () => {
                 selectedLevel === level.id ? level.activeColor : level.color + ' bg-card hover:border-accent/50'
               }`}
             >
-              <span>{level.emoji}</span>
+              {level.icon ? <img src={level.icon} alt={level.name} className="h-5 w-5" /> : <span>📚</span>}
               {level.name}
             </button>
           ))}
