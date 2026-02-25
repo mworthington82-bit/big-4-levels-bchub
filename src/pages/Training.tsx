@@ -540,8 +540,8 @@ const Training = () => {
                           </div>
                           <p className="text-sm text-muted-foreground">
                             {selectedLevel === 'explorer'
-                              ? 'Begin developing awareness and confidence in using the Immersive Room'
-                              : 'Confidently and independently use the Immersive Room to enhance teaching'}
+                              ? 'Familiarise yourself with the Immersive Room via the 360° interactive guide'
+                              : 'Book training, plan your session, and prepare to use the Immersive Room'}
                           </p>
                         </div>
                       </div>
@@ -551,20 +551,18 @@ const Training = () => {
                         {selectedLevel === 'explorer' ? (
                           <>
                             <p className="text-foreground leading-relaxed">
-                              Staff begin developing awareness and confidence in using the Immersive Room to enhance teaching and learning.
+                              At Explorer level, your goal is simply to familiarise yourself with the Immersive Room — what it looks like, what's available, and how it works.
                             </p>
                             <p className="text-muted-foreground leading-relaxed">
-                              Explore how immersive technology can support curriculum delivery and student engagement.
+                              Use the 360° interactive guide below to explore the room virtually and learn about its functions and systems.
                             </p>
                             <div className="space-y-2">
                               <h4 className="font-semibold text-foreground">Key Practices:</h4>
                               <ul className="space-y-2">
                                 {[
-                                  'Book and attend Immersive Learning Practitioner training',
-                                  'Plan and deliver 2–3 immersive sessions using the technology available in the Immersive Room',
-                                  'Explore how immersive experiences align with curriculum objectives',
-                                  'Book a coaching conversation with one of the Digital Leads to discuss lesson ideas and next steps (if needed)',
-                                  'Reflect on the impact of immersive sessions on student engagement'
+                                  'Explore the 360° interactive tour of the Immersive Room to understand the space and its capabilities',
+                                  'Familiarise yourself with the different systems, functions, and technology available in the room',
+                                  'Consider how immersive technology might support your teaching in the future'
                                 ].map((point, i) => (
                                   <li key={i} className="flex items-start gap-2 text-muted-foreground">
                                     <span className="text-rose-600 mt-1">•</span>
@@ -576,7 +574,7 @@ const Training = () => {
                             <div className="p-3 rounded-lg bg-rose-100/50 dark:bg-rose-900/20 border border-rose-200 dark:border-rose-800">
                               <h4 className="font-semibold text-rose-700 dark:text-rose-400 mb-1">Impact:</h4>
                               <p className="text-foreground text-sm">
-                                Staff develop confidence in immersive delivery and begin embedding immersive experiences within their teaching practice.
+                                Staff develop an awareness of the Immersive Room and begin to see the potential for immersive technology in their teaching.
                               </p>
                             </div>
                             {/* Useful Links */}
@@ -584,21 +582,9 @@ const Training = () => {
                               <h4 className="font-semibold text-foreground">Useful Links:</h4>
                               <ul className="space-y-2">
                                 <li className="flex items-start gap-2">
-                                  <span className="text-rose-600 mt-1">📋</span>
-                                  <a href="https://forms.office.com/e/QRrA7LfAUh" target="_blank" rel="noopener noreferrer" className="text-accent underline hover:text-accent/80">
-                                    Book the Immersive Room or Training Session
-                                  </a>
-                                </li>
-                                <li className="flex items-start gap-2">
                                   <span className="text-rose-600 mt-1">🌐</span>
-                                  <a href="https://www.thinglink.com/scene/1959585229274350436" target="_blank" rel="noopener noreferrer" className="text-accent underline hover:text-accent/80">
+                                  <a href="https://www.thinglink.com/view/scene/1959585229274350436" target="_blank" rel="noopener noreferrer" className="text-accent underline hover:text-accent/80">
                                     360° Interactive Guide to the Immersive Room
-                                  </a>
-                                </li>
-                                <li className="flex items-start gap-2">
-                                  <span className="text-rose-600 mt-1">📄</span>
-                                  <a href="/resources/Immersive_Room_Staff_Guidelines.pdf" target="_blank" rel="noopener noreferrer" className="text-accent underline hover:text-accent/80">
-                                    Staff Guidelines for Immersive Room (PDF)
                                   </a>
                                 </li>
                               </ul>
@@ -607,20 +593,20 @@ const Training = () => {
                         ) : (
                           <>
                             <p className="text-foreground leading-relaxed">
-                              Staff confidently and independently use the Immersive Room to enhance teaching and learning.
+                              At Practitioner level, you move from awareness to action — book training, start planning, and prepare to use the Immersive Room in your teaching.
                             </p>
                             <p className="text-muted-foreground leading-relaxed">
-                              Deliver purposeful and creative immersive experiences that maximise the potential of the immersive space and VR technology.
+                              Reflect on how the room's functions and digital apps could enhance your sessions, and design an immersive learning experience.
                             </p>
                             <div className="space-y-2">
                               <h4 className="font-semibold text-foreground">Key Practices:</h4>
                               <ul className="space-y-2">
                                 {[
-                                  'Set up and manage the Immersive Room independently',
-                                  'Use the immersive space creatively to enhance curriculum delivery',
-                                  'Operate VR headsets safely and confidently',
-                                  'Manage pacing, transitions, and student behaviour in immersive sessions',
-                                  'Ensure student wellbeing and safe use of equipment'
+                                  'Book and attend Immersive Room training to build your confidence',
+                                  'Reflect on how you could use the room in your teaching — what functions and digital apps would work best?',
+                                  'Design an immersive session plan aligned with your curriculum',
+                                  'Book a 1-to-1 with one of the Digital Leads if you need support or ideas',
+                                  'Read the Staff Guidelines for the Immersive Room'
                                 ].map((point, i) => (
                                   <li key={i} className="flex items-start gap-2 text-muted-foreground">
                                     <span className="text-rose-600 mt-1">•</span>
@@ -632,7 +618,7 @@ const Training = () => {
                             <div className="p-3 rounded-lg bg-rose-100/50 dark:bg-rose-900/20 border border-rose-200 dark:border-rose-800">
                               <h4 className="font-semibold text-rose-700 dark:text-rose-400 mb-1">Impact:</h4>
                               <p className="text-foreground text-sm">
-                                Immersive sessions are well-managed, engaging, and safe, leading to high-quality learning experiences.
+                                Staff are trained, confident, and ready to deliver immersive sessions with a clear plan for how to use the technology effectively.
                               </p>
                             </div>
                             {/* Useful Links */}
@@ -647,7 +633,7 @@ const Training = () => {
                                 </li>
                                 <li className="flex items-start gap-2">
                                   <span className="text-rose-600 mt-1">🌐</span>
-                                  <a href="https://www.thinglink.com/scene/1959585229274350436" target="_blank" rel="noopener noreferrer" className="text-accent underline hover:text-accent/80">
+                                  <a href="https://www.thinglink.com/view/scene/1959585229274350436" target="_blank" rel="noopener noreferrer" className="text-accent underline hover:text-accent/80">
                                     360° Interactive Guide to the Immersive Room
                                   </a>
                                 </li>

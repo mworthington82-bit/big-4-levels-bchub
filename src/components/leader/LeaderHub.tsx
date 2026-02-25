@@ -104,12 +104,12 @@ const LeaderHub = ({ onBack }: LeaderHubProps) => {
   };
 
   const immersiveChecklist = [
-    "I can independently plan and deliver immersive lessons",
-    "I confidently set up and manage the Immersive Room",
-    "I use VR headsets safely and appropriately",
-    "I have delivered at least three immersive sessions",
-    "I have shared evidence for each session (lesson, activity, photos, or video)",
-    "I can clearly explain the impact of immersive learning on students"
+    "I have delivered 2–3 sessions in the Immersive Room",
+    "I have reflected on what worked well and what could be improved after each session",
+    "I have identified areas for improvement and delivered again with adjustments",
+    "I have shared best practice with colleagues (e.g. via Padlet, CPD, or team meetings)",
+    "I have shared a lesson plan or talked through my immersive session with others",
+    "I can clearly explain the impact of immersive learning on student engagement and outcomes"
   ];
 
   if (currentSection === 'immersive') {
