@@ -18,10 +18,10 @@ const ImmersiveLearningSection = ({ checklist, onBack }: ImmersiveLearningProps)
     setCheckedItems(newCheckedItems);
   };
   const bestPracticeExamples = [
-    "A lesson plan showing how immersive technology enhanced learning objectives",
-    "Photos or screenshots from an immersive session with student engagement",
-    "A short video walkthrough of your immersive lesson setup",
-    "A reflection on how VR headsets supported specific learning outcomes"
+    "A lesson plan from one of your immersive sessions",
+    "Photos or screenshots showing student engagement during a session",
+    "A short reflection on what worked, what didn't, and what you changed for the next session",
+    "A video walkthrough or talk-through of your immersive lesson"
   ];
 
   return (
@@ -50,7 +50,7 @@ const ImmersiveLearningSection = ({ checklist, onBack }: ImmersiveLearningProps)
                 </span>
               </div>
               <CardDescription className="text-base">
-                VR and immersive technology leadership
+                Deliver 2–3 sessions, reflect on your delivery, and share best practice
               </CardDescription>
             </div>
           </div>
@@ -115,7 +115,7 @@ const ImmersiveLearningSection = ({ checklist, onBack }: ImmersiveLearningProps)
               </li>
               <li className="flex items-start gap-2">
                 <span className="text-rose-600 mt-1">🌐</span>
-                <a href="https://www.thinglink.com/scene/1959585229274350436" target="_blank" rel="noopener noreferrer" className="text-accent underline hover:text-accent/80">
+                <a href="https://www.thinglink.com/view/scene/1959585229274350436" target="_blank" rel="noopener noreferrer" className="text-accent underline hover:text-accent/80">
                   360° Interactive Guide to the Immersive Room
                 </a>
               </li>
