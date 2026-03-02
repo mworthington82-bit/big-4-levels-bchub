@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, CheckCircle } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
 import WelcomeDialog from "@/components/dialogs/WelcomeDialog";
 import StudentQuoteCarousel from "@/components/StudentQuoteCarousel";
 import ResourceBankButton from "@/components/ResourceBankButton";
@@ -10,6 +11,32 @@ import teamsLogo from "@/assets/teams-logo.png";
 import canvaLogo from "@/assets/canva-logo.jpg";
 import edpuzzleLogo from "@/assets/edpuzzle-logo.png";
 import copilotLogo from "@/assets/copilot-logo.png";
+import emblemExplorer from "@/assets/emblem-explorer.svg";
+import emblemPractitioner from "@/assets/emblem-practitioner.svg";
+import emblemLeader from "@/assets/emblem-leader.svg";
+
+const toolLevelInfo: Record<string, { explorer: string; practitioner: string; leader: string }> = {
+  "MS Teams": {
+    explorer: "Learn to share resources, create simple quizzes with Forms, and communicate with your class via Teams.",
+    practitioner: "Use Breakout Rooms, Rubrics, structured channels, and branching Forms for adaptive assessments.",
+    leader: "Share best practice, mentor colleagues on digital collaboration, and lead departmental transformation.",
+  },
+  Canva: {
+    explorer: "Build interactive starter activities using Canva Code — no coding experience needed.",
+    practitioner: "Create professional presentations, quizzes, and posters using templates with accessible design.",
+    leader: "Train colleagues, develop department-wide design standards, and share creative resource evidence.",
+  },
+  Edpuzzle: {
+    explorer: "Find and assign interactive videos, track student engagement, and support independent learning.",
+    practitioner: "Add voiceovers, embed strategic questions, and use analytics to inform responsive teaching.",
+    leader: "Create comprehensive video lesson series and mentor colleagues in effective video-based pedagogy.",
+  },
+  Copilot: {
+    explorer: "Write simple prompts to generate lesson plans, quiz questions, and starter activities using AI.",
+    practitioner: "Craft advanced prompts for differentiated resources and explore building Copilot Agents.",
+    leader: "Lead ethical AI discussions, pioneer innovative applications, and contribute to college AI strategy.",
+  },
+};
 
 const Landing = () => {
   const navigate = useNavigate();
@@ -23,6 +50,13 @@ const Landing = () => {
     { logo: canvaLogo, name: "Canva", desc: "Create engaging materials", color: "bg-[#7D2AE8]/10 border-[#7D2AE8]/30" },
     { logo: edpuzzleLogo, name: "Edpuzzle", desc: "Interactive video learning", color: "bg-[#1DA1F2]/10 border-[#1DA1F2]/30" },
     { logo: copilotLogo, name: "Microsoft Copilot", desc: "AI-powered assistance", color: "bg-[#0078D4]/10 border-[#0078D4]/30" },
+  ];
+
+  const heroApps = [
+    { logo: teamsLogo, name: "MS Teams", key: "MS Teams" },
+    { logo: canvaLogo, name: "Canva", key: "Canva" },
+    { logo: edpuzzleLogo, name: "Edpuzzle", key: "Edpuzzle" },
+    { logo: copilotLogo, name: "Copilot", key: "Copilot" },
   ];
 
   return (
@@ -41,36 +75,57 @@ const Landing = () => {
       <main>
         {/* Dark Hero Section */}
         <section className="relative bg-[#1C1C2E] overflow-hidden">
-          {/* Radial gold gradient overlay */}
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_hsl(39_90%_56%_/_0.15)_0%,_transparent_70%)]" />
           
           <div className="container mx-auto px-4 py-16 md:py-24 relative z-10">
             <div className="max-w-3xl mx-auto text-center">
-              {/* Pill badge */}
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 mb-8 animate-fade-in">
-                <span className="text-sm text-white/90 font-medium">👋 Welcome to The Big 4: Level Up</span>
+                <span className="text-sm text-white/90 font-medium">Welcome to The Big 4: Level Up</span>
               </div>
 
-              {/* Main heading */}
               <h1 className="font-display text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6 animate-fade-in leading-tight">
                 The Big 4: <span className="text-[#F5A623]">Level Up</span>
               </h1>
 
-              {/* Student quote carousel */}
               <StudentQuoteCarousel />
 
-              {/* App logo pills */}
+              {/* Hoverable App logo pills */}
               <div className="flex flex-wrap justify-center gap-3 mt-10 animate-fade-in" style={{ animationDelay: '200ms' }}>
-                {[
-                  { logo: teamsLogo, name: "MS Teams" },
-                  { logo: canvaLogo, name: "Canva" },
-                  { logo: edpuzzleLogo, name: "Edpuzzle" },
-                  { logo: copilotLogo, name: "Copilot" },
-                ].map((app) => (
-                  <div key={app.name} className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/15 backdrop-blur-sm border border-white/10">
-                    <img src={app.logo} alt={app.name} className="h-6 w-6 rounded-md object-contain bg-white/90 p-0.5" />
-                    <span className="text-sm font-medium text-white">{app.name}</span>
-                  </div>
+                {heroApps.map((app) => (
+                  <HoverCard key={app.name} openDelay={100} closeDelay={100}>
+                    <HoverCardTrigger asChild>
+                      <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/15 backdrop-blur-sm border border-white/10 cursor-pointer hover:bg-white/25 transition-colors">
+                        <img src={app.logo} alt={app.name} className="h-6 w-6 rounded-md object-contain bg-white/90 p-0.5" />
+                        <span className="text-sm font-medium text-white">{app.name}</span>
+                      </div>
+                    </HoverCardTrigger>
+                    <HoverCardContent className="w-80 bg-card border-border shadow-xl" side="bottom">
+                      <h4 className="font-display font-bold text-foreground mb-3">{app.name}</h4>
+                      <div className="space-y-2.5">
+                        <div className="flex items-start gap-2">
+                          <img src={emblemExplorer} alt="Explorer" className="h-5 w-5 mt-0.5 flex-shrink-0" />
+                          <div>
+                            <span className="text-xs font-semibold text-[#F5A623]">Explorer</span>
+                            <p className="text-xs text-muted-foreground leading-relaxed">{toolLevelInfo[app.key].explorer}</p>
+                          </div>
+                        </div>
+                        <div className="flex items-start gap-2">
+                          <img src={emblemPractitioner} alt="Practitioner" className="h-5 w-5 mt-0.5 flex-shrink-0" />
+                          <div>
+                            <span className="text-xs font-semibold text-[#16a085]">Practitioner</span>
+                            <p className="text-xs text-muted-foreground leading-relaxed">{toolLevelInfo[app.key].practitioner}</p>
+                          </div>
+                        </div>
+                        <div className="flex items-start gap-2">
+                          <img src={emblemLeader} alt="Leader" className="h-5 w-5 mt-0.5 flex-shrink-0" />
+                          <div>
+                            <span className="text-xs font-semibold text-[#2E86DE]">Leader</span>
+                            <p className="text-xs text-muted-foreground leading-relaxed">{toolLevelInfo[app.key].leader}</p>
+                          </div>
+                        </div>
+                      </div>
+                    </HoverCardContent>
+                  </HoverCard>
                 ))}
               </div>
             </div>
@@ -88,7 +143,6 @@ const Landing = () => {
                 The Big 4 Digital Skills Training is a personalised learning experience designed to help Bradford College staff develop confidence with essential digital tools.
               </p>
 
-              {/* 2x2 App Chips Grid */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6">
                 {appChips.map((chip) => (
                   <div key={chip.name} className={`flex items-center gap-3 px-4 py-3 rounded-xl border ${chip.color}`}>
@@ -109,11 +163,10 @@ const Landing = () => {
 
           {/* Action Buttons */}
           <div className="max-w-4xl mx-auto grid md:grid-cols-2 gap-6">
-            {/* First Time */}
             <div className="bg-card rounded-2xl border border-border shadow-[var(--shadow-card)] p-6 animate-fade-in hover:shadow-[var(--shadow-hover)] transition-all duration-300" style={{ animationDelay: '100ms' }}>
               <div className="flex items-center gap-3 mb-3">
                 <div className="p-3 rounded-xl bg-secondary/20">
-                  <span className="text-2xl">🎯</span>
+                  <ArrowRight className="w-6 h-6 text-muted-foreground" />
                 </div>
                 <h3 className="font-display text-xl font-bold text-foreground">First Time?</h3>
               </div>
@@ -131,7 +184,6 @@ const Landing = () => {
               </Button>
             </div>
 
-            {/* Already Assessed */}
             <div className="bg-card rounded-2xl border-2 border-primary shadow-[var(--shadow-card)] p-6 animate-fade-in hover:shadow-[var(--shadow-hover)] transition-all duration-300" style={{ animationDelay: '200ms' }}>
               <div className="flex items-center gap-3 mb-3">
                 <div className="p-3 rounded-xl bg-primary/10">

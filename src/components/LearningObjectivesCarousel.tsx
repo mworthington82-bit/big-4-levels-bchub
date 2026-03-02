@@ -39,7 +39,7 @@ const LearningObjectivesCarousel = ({ tool, level }: LearningObjectivesCarouselP
     <TooltipProvider delayDuration={200}>
       <div className="mb-4 overflow-x-auto pb-2">
         <div className="flex flex-row items-center justify-center gap-1.5 md:gap-2 min-w-max mx-auto">
-          <span className="text-xs font-semibold text-muted-foreground whitespace-nowrap mr-1">🎯 What You'll Learn:</span>
+          <span className="text-xs font-semibold text-muted-foreground whitespace-nowrap mr-1">What You'll Learn:</span>
           {allObjectives.map((objective) => (
             <Tooltip key={objective.id}>
               <TooltipTrigger asChild>

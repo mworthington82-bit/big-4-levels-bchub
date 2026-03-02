@@ -5,7 +5,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Reflection, Department } from "@/types/learning";
-import { MessageSquare, Send, Users, Star } from "lucide-react";
+import { MessageSquare, Send, Users, Star, Lightbulb, Lock } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 
 interface ReflectionWallProps {
@@ -28,6 +28,20 @@ const DEPARTMENTS: Department[] = [
   'Other'
 ];
 
+const departmentColors: Record<string, string> = {
+  'Apprenticeships': 'from-blue-400/20 to-blue-500/10 border-blue-300',
+  'Adult Skills': 'from-emerald-400/20 to-emerald-500/10 border-emerald-300',
+  'Construction': 'from-amber-400/20 to-amber-500/10 border-amber-300',
+  'Engineering & Motor Vehicle': 'from-red-400/20 to-red-500/10 border-red-300',
+  'PLW': 'from-purple-400/20 to-purple-500/10 border-purple-300',
+  'Science and Digital': 'from-cyan-400/20 to-cyan-500/10 border-cyan-300',
+  '14-16 Provision': 'from-pink-400/20 to-pink-500/10 border-pink-300',
+  'Early Years, Education and Social Care': 'from-teal-400/20 to-teal-500/10 border-teal-300',
+  'Professional & Creative': 'from-violet-400/20 to-violet-500/10 border-violet-300',
+  'LDI': 'from-orange-400/20 to-orange-500/10 border-orange-300',
+  'Other': 'from-gray-400/20 to-gray-500/10 border-gray-300',
+};
+
 const ReflectionWall = ({ toolName, level, onComplete }: ReflectionWallProps) => {
   const [reflections, setReflections] = useState<Reflection[]>([]);
   const [newReflection, setNewReflection] = useState("");
@@ -36,22 +50,17 @@ const ReflectionWall = ({ toolName, level, onComplete }: ReflectionWallProps) =>
   const [hasSubmitted, setHasSubmitted] = useState(false);
   const [starredIds, setStarredIds] = useState<Set<string>>(new Set());
 
-  const stageTitle = 'Reflect';
-
   useEffect(() => {
-    // Load reflections from localStorage
     const stored = localStorage.getItem('reflections');
     if (stored) {
       const allReflections: Reflection[] = JSON.parse(stored);
-      // Filter to show reflections for this tool
       const filtered = allReflections
         .filter(r => r.toolName === toolName)
         .sort((a, b) => b.timestamp - a.timestamp)
-        .slice(0, 50); // Show last 50
+        .slice(0, 50);
       setReflections(filtered);
     }
 
-    // Check if already submitted
     const submitted = localStorage.getItem(`submitted_reflection_${toolName}_${level}`);
     if (submitted) {
       setHasSubmitted(true);
@@ -88,14 +97,12 @@ const ReflectionWall = ({ toolName, level, onComplete }: ReflectionWallProps) =>
       timestamp: Date.now(),
     };
 
-    // Save to localStorage
     const stored = localStorage.getItem('reflections');
     const allReflections: Reflection[] = stored ? JSON.parse(stored) : [];
     allReflections.push(reflection);
     localStorage.setItem('reflections', JSON.stringify(allReflections));
     localStorage.setItem(`submitted_reflection_${toolName}_${level}`, 'true');
 
-    // Update display
     setReflections([reflection, ...reflections].slice(0, 50));
     setHasSubmitted(true);
     setNewReflection("");
@@ -120,7 +127,6 @@ const ReflectionWall = ({ toolName, level, onComplete }: ReflectionWallProps) =>
     });
   };
 
-  // Group reflections by department
   const groupedReflections = reflections.reduce((acc, reflection) => {
     const deptKey = reflection.department === 'Other' && reflection.otherDepartment 
       ? `Other: ${reflection.otherDepartment}` 
@@ -136,26 +142,46 @@ const ReflectionWall = ({ toolName, level, onComplete }: ReflectionWallProps) =>
   const sortedDepartments = Object.keys(groupedReflections).sort();
 
   return (
-    <div className="max-w-4xl mx-auto space-y-6">
-      {/* Title */}
-      <div className="text-center mb-6">
-        <h2 className="text-2xl font-bold text-card-foreground">{stageTitle}</h2>
-        <p className="text-muted-foreground mt-2">
-          Share how you'll use {toolName} in your teaching next week
+    <div className="max-w-5xl mx-auto space-y-8">
+      {/* Colourful title section */}
+      <div className="text-center mb-2">
+        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent/10 border border-accent/30 mb-4">
+          <MessageSquare className="h-5 w-5 text-accent" />
+          <span className="text-sm font-semibold text-accent">Reflection Time</span>
+        </div>
+        <h2 className="text-3xl font-bold text-foreground">Share Your Thinking</h2>
+        <p className="text-muted-foreground mt-2 max-w-xl mx-auto">
+          How will you use {toolName} in your teaching next week? Your ideas inspire colleagues across the college.
         </p>
       </div>
 
+      {/* Example reflection callout */}
+      <div className="bg-gradient-to-r from-accent/10 to-primary/10 border border-accent/20 rounded-2xl p-6 shadow-sm">
+        <div className="flex items-start gap-3">
+          <div className="p-2 rounded-lg bg-accent/20 flex-shrink-0">
+            <Lightbulb className="h-5 w-5 text-accent" />
+          </div>
+          <div>
+            <h4 className="font-semibold text-foreground mb-2">Example Reflection</h4>
+            <p className="text-sm text-muted-foreground leading-relaxed italic">
+              "Next week I'm going to try using MS Forms to create a quick exit ticket at the end of my Tuesday session with Level 2 Health & Social Care. I'll use branching so students who answer incorrectly get directed to a support resource. I think this will help me identify who needs extra help before our assignment deadline."
+            </p>
+          </div>
+        </div>
+      </div>
+
       {/* Starring guidance */}
-      <div className="bg-accent/10 border border-accent/30 rounded-lg p-4 text-center">
-        <p className="text-muted-foreground">
+      <div className="bg-secondary/30 border border-border rounded-xl p-4 text-center">
+        <p className="text-muted-foreground text-sm">
           <Star className="h-4 w-4 inline-block mr-1 text-accent" />
           <strong>Tip:</strong> Star reflections you find valuable or inspiring! This helps you bookmark ideas to try in your own teaching.
         </p>
       </div>
 
-      {/* Only show submission form if user hasn't submitted yet */}
+      {/* Submission form */}
       {!hasSubmitted && (
-        <Card className="border-border bg-card shadow-[var(--shadow-card)]">
+        <Card className="border-2 border-accent/40 bg-card shadow-lg rounded-2xl overflow-hidden">
+          <div className="h-1.5 bg-gradient-to-r from-accent via-primary to-accent" />
           <CardHeader>
             <CardTitle className="text-2xl text-card-foreground flex items-center gap-2">
               <MessageSquare className="h-6 w-6 text-accent" />
@@ -221,58 +247,84 @@ const ReflectionWall = ({ toolName, level, onComplete }: ReflectionWallProps) =>
         </Card>
       )}
 
-      {/* Reflections Gallery */}
+      {/* Reflections Gallery — Mind-map style radial cards */}
       {sortedDepartments.length > 0 && (
         <div className="space-y-6">
-          <h3 className="text-xl font-semibold text-foreground">Reflections from colleagues</h3>
+          <div className="text-center">
+            <h3 className="text-2xl font-bold text-foreground mb-1">Colleague Reflections</h3>
+            <p className="text-sm text-muted-foreground">Ideas from across the college</p>
+          </div>
           
-          {sortedDepartments.map((deptName) => (
-            <div key={deptName} className="space-y-3">
-              <div className="flex items-center gap-2 text-accent">
-                <Users className="h-5 w-5" />
-                <h4 className="text-lg font-medium">{deptName}</h4>
-                <span className="text-sm text-muted-foreground">
-                  ({groupedReflections[deptName].length} reflection{groupedReflections[deptName].length !== 1 ? 's' : ''})
-                </span>
-              </div>
-              
-              {/* Horizontal grid layout */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                {groupedReflections[deptName].map((reflection) => (
-                  <Card key={reflection.id} className="border-border bg-card h-full">
-                    <CardContent className="pt-4 pb-3">
-                      <p className="text-card-foreground mb-3 line-clamp-4">{reflection.text}</p>
-                      <div className="flex items-center justify-between">
-                        <span className="text-sm text-muted-foreground">
-                          {new Date(reflection.timestamp).toLocaleDateString('en-GB')}
-                        </span>
-                        <button
-                          onClick={() => handleStar(reflection.id)}
-                          className="flex items-center gap-1 text-muted-foreground hover:text-accent transition-colors p-1"
-                          aria-label={starredIds.has(reflection.id) ? "Unstar reflection" : "Star reflection"}
-                        >
-                          <Star 
-                            className={`h-4 w-4 ${starredIds.has(reflection.id) ? 'fill-accent text-accent' : ''}`} 
-                          />
-                        </button>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
+          {/* Radial / scattered layout */}
+          <div className="relative">
+            {/* Central prompt node */}
+            <div className="flex justify-center mb-6">
+              <div className="bg-accent text-accent-foreground rounded-full px-6 py-3 font-semibold text-sm shadow-lg">
+                How will you use {toolName}?
               </div>
             </div>
-          ))}
+
+            {/* Department clusters */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+              {sortedDepartments.map((deptName) => {
+                const baseDept = deptName.startsWith('Other:') ? 'Other' : deptName;
+                const colorClass = departmentColors[baseDept] || departmentColors['Other'];
+                
+                return (
+                  <div key={deptName} className={`bg-gradient-to-br ${colorClass} rounded-2xl p-5 border shadow-sm`}>
+                    <div className="flex items-center gap-2 mb-3">
+                      <Users className="h-4 w-4 text-foreground/70" />
+                      <h4 className="text-sm font-bold text-foreground">{deptName}</h4>
+                      <span className="text-xs text-muted-foreground ml-auto">
+                        {groupedReflections[deptName].length}
+                      </span>
+                    </div>
+                    
+                    <div className="space-y-3">
+                      {groupedReflections[deptName].map((reflection) => (
+                        <div key={reflection.id} className="bg-card/80 backdrop-blur-sm rounded-xl p-3 shadow-sm border border-white/50">
+                          <p className="text-sm text-card-foreground leading-relaxed line-clamp-4">{reflection.text}</p>
+                          <div className="flex items-center justify-between mt-2">
+                            <span className="text-xs text-muted-foreground">
+                              {new Date(reflection.timestamp).toLocaleDateString('en-GB')}
+                            </span>
+                            <button
+                              onClick={() => handleStar(reflection.id)}
+                              className="flex items-center gap-1 text-muted-foreground hover:text-accent transition-colors p-1"
+                              aria-label={starredIds.has(reflection.id) ? "Unstar reflection" : "Star reflection"}
+                            >
+                              <Star 
+                                className={`h-4 w-4 ${starredIds.has(reflection.id) ? 'fill-accent text-accent' : ''}`} 
+                              />
+                            </button>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
         </div>
       )}
 
-      {/* Continue Button - Always at the bottom */}
+      {/* Continue Button — gated */}
       <div className="pt-6 border-t border-border">
         <Button 
           onClick={onComplete}
-          className="w-full bg-accent hover:bg-accent/90"
+          className={`w-full ${hasSubmitted ? 'bg-accent hover:bg-accent/90' : 'bg-muted text-muted-foreground cursor-not-allowed'}`}
           size="lg"
+          disabled={!hasSubmitted}
         >
-          Continue to Assessment
+          {hasSubmitted ? (
+            'Continue to Assessment'
+          ) : (
+            <>
+              <Lock className="mr-2 h-4 w-4" />
+              Submit a reflection to continue
+            </>
+          )}
         </Button>
       </div>
     </div>
