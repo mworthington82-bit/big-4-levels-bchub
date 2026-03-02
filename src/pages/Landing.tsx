@@ -46,17 +46,17 @@ const Landing = () => {
   }, []);
 
   const appChips = [
-    { logo: teamsLogo, name: "MS Teams & Forms", desc: "Collaborate and assess", color: "bg-[#5B5FC7]/10 border-[#5B5FC7]/30" },
-    { logo: canvaLogo, name: "Canva", desc: "Create engaging materials", color: "bg-[#7D2AE8]/10 border-[#7D2AE8]/30" },
-    { logo: edpuzzleLogo, name: "Edpuzzle", desc: "Interactive video learning", color: "bg-[#1DA1F2]/10 border-[#1DA1F2]/30" },
-    { logo: copilotLogo, name: "Microsoft Copilot", desc: "AI-powered assistance", color: "bg-[#0078D4]/10 border-[#0078D4]/30" },
+    { logo: teamsLogo, name: "MS Teams & Forms", desc: "Collaborate and assess", color: "bg-[#5B5FC7]/10 border-[#5B5FC7]/30", key: "MS Teams" },
+    { logo: canvaLogo, name: "Canva", desc: "Create engaging materials", color: "bg-[#7D2AE8]/10 border-[#7D2AE8]/30", key: "Canva" },
+    { logo: edpuzzleLogo, name: "Edpuzzle", desc: "Interactive video learning", color: "bg-[#1DA1F2]/10 border-[#1DA1F2]/30", key: "Edpuzzle" },
+    { logo: copilotLogo, name: "Microsoft Copilot", desc: "AI-powered assistance", color: "bg-[#0078D4]/10 border-[#0078D4]/30", key: "Copilot" },
   ];
 
   const heroApps = [
-    { logo: teamsLogo, name: "MS Teams", key: "MS Teams" },
-    { logo: canvaLogo, name: "Canva", key: "Canva" },
-    { logo: edpuzzleLogo, name: "Edpuzzle", key: "Edpuzzle" },
-    { logo: copilotLogo, name: "Copilot", key: "Copilot" },
+    { logo: teamsLogo, name: "MS Teams" },
+    { logo: canvaLogo, name: "Canva" },
+    { logo: edpuzzleLogo, name: "Edpuzzle" },
+    { logo: copilotLogo, name: "Copilot" },
   ];
 
   return (
@@ -92,40 +92,10 @@ const Landing = () => {
               {/* Hoverable App logo pills */}
               <div className="flex flex-wrap justify-center gap-3 mt-10 animate-fade-in" style={{ animationDelay: '200ms' }}>
                 {heroApps.map((app) => (
-                  <HoverCard key={app.name} openDelay={100} closeDelay={100}>
-                    <HoverCardTrigger asChild>
-                      <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/15 backdrop-blur-sm border border-white/10 cursor-pointer hover:bg-white/25 transition-colors">
-                        <img src={app.logo} alt={app.name} className="h-6 w-6 rounded-md object-contain bg-white/90 p-0.5" />
-                        <span className="text-sm font-medium text-white">{app.name}</span>
-                      </div>
-                    </HoverCardTrigger>
-                    <HoverCardContent className="w-80 bg-card border-border shadow-xl" side="bottom">
-                      <h4 className="font-display font-bold text-foreground mb-3">{app.name}</h4>
-                      <div className="space-y-2.5">
-                        <div className="flex items-start gap-2">
-                          <img src={emblemExplorer} alt="Explorer" className="h-5 w-5 mt-0.5 flex-shrink-0" />
-                          <div>
-                            <span className="text-xs font-semibold text-[#F5A623]">Explorer</span>
-                            <p className="text-xs text-muted-foreground leading-relaxed">{toolLevelInfo[app.key].explorer}</p>
-                          </div>
-                        </div>
-                        <div className="flex items-start gap-2">
-                          <img src={emblemPractitioner} alt="Practitioner" className="h-5 w-5 mt-0.5 flex-shrink-0" />
-                          <div>
-                            <span className="text-xs font-semibold text-[#16a085]">Practitioner</span>
-                            <p className="text-xs text-muted-foreground leading-relaxed">{toolLevelInfo[app.key].practitioner}</p>
-                          </div>
-                        </div>
-                        <div className="flex items-start gap-2">
-                          <img src={emblemLeader} alt="Leader" className="h-5 w-5 mt-0.5 flex-shrink-0" />
-                          <div>
-                            <span className="text-xs font-semibold text-[#2E86DE]">Leader</span>
-                            <p className="text-xs text-muted-foreground leading-relaxed">{toolLevelInfo[app.key].leader}</p>
-                          </div>
-                        </div>
-                      </div>
-                    </HoverCardContent>
-                  </HoverCard>
+                  <div key={app.name} className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/15 backdrop-blur-sm border border-white/10">
+                    <img src={app.logo} alt={app.name} className="h-6 w-6 rounded-md object-contain bg-white/90 p-0.5" />
+                    <span className="text-sm font-medium text-white">{app.name}</span>
+                  </div>
                 ))}
               </div>
             </div>
@@ -145,13 +115,43 @@ const Landing = () => {
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6">
                 {appChips.map((chip) => (
-                  <div key={chip.name} className={`flex items-center gap-3 px-4 py-3 rounded-xl border ${chip.color}`}>
-                    <img src={chip.logo} alt={chip.name} className="h-8 w-8 rounded-lg object-contain flex-shrink-0" />
-                    <div>
-                      <span className="font-semibold text-foreground text-sm">{chip.name}</span>
-                      <p className="text-xs text-muted-foreground">{chip.desc}</p>
-                    </div>
-                  </div>
+                  <HoverCard key={chip.name} openDelay={100} closeDelay={100}>
+                    <HoverCardTrigger asChild>
+                      <div className={`flex items-center gap-3 px-4 py-3 rounded-xl border cursor-pointer hover:shadow-md transition-shadow ${chip.color}`}>
+                        <img src={chip.logo} alt={chip.name} className="h-8 w-8 rounded-lg object-contain flex-shrink-0" />
+                        <div>
+                          <span className="font-semibold text-foreground text-sm">{chip.name}</span>
+                          <p className="text-xs text-muted-foreground">{chip.desc}</p>
+                        </div>
+                      </div>
+                    </HoverCardTrigger>
+                    <HoverCardContent className="w-80 bg-card border-border shadow-xl" side="top">
+                      <h4 className="font-display font-bold text-foreground mb-3">{chip.name}</h4>
+                      <div className="space-y-2.5">
+                        <div className="flex items-start gap-2">
+                          <img src={emblemExplorer} alt="Explorer" className="h-5 w-5 mt-0.5 flex-shrink-0" />
+                          <div>
+                            <span className="text-xs font-semibold text-[#F5A623]">Explorer</span>
+                            <p className="text-xs text-muted-foreground leading-relaxed">{toolLevelInfo[chip.key].explorer}</p>
+                          </div>
+                        </div>
+                        <div className="flex items-start gap-2">
+                          <img src={emblemPractitioner} alt="Practitioner" className="h-5 w-5 mt-0.5 flex-shrink-0" />
+                          <div>
+                            <span className="text-xs font-semibold text-[#16a085]">Practitioner</span>
+                            <p className="text-xs text-muted-foreground leading-relaxed">{toolLevelInfo[chip.key].practitioner}</p>
+                          </div>
+                        </div>
+                        <div className="flex items-start gap-2">
+                          <img src={emblemLeader} alt="Leader" className="h-5 w-5 mt-0.5 flex-shrink-0" />
+                          <div>
+                            <span className="text-xs font-semibold text-[#2E86DE]">Leader</span>
+                            <p className="text-xs text-muted-foreground leading-relaxed">{toolLevelInfo[chip.key].leader}</p>
+                          </div>
+                        </div>
+                      </div>
+                    </HoverCardContent>
+                  </HoverCard>
                 ))}
               </div>
 
