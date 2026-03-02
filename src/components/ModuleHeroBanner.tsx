@@ -21,7 +21,7 @@ const logoMap: Record<string, string> = {
 };
 
 const toolNames: Record<string, { full: string; goldWord: string; rest: string }> = {
-  teams: { full: 'MS Teams & Forms', goldWord: 'Teams', rest: 'MS  & Forms' },
+  teams: { full: 'MS Teams and MS Forms', goldWord: 'Teams and MS Forms', rest: 'MS ' },
   canva: { full: 'Canva', goldWord: 'Canva', rest: '' },
   edpuzzle: { full: 'Edpuzzle', goldWord: 'Edpuzzle', rest: '' },
   copilot: { full: 'Microsoft Copilot', goldWord: 'Copilot', rest: 'Microsoft ' },
