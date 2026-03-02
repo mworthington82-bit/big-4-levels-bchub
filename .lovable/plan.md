@@ -1,55 +1,67 @@
 
 
-# Update Resources: Add PDF, Delete Two Resources, Improve Immersive Room Visibility
+## Plan: Multi-feature update across the platform
 
-## Summary
-I'll make three changes to the resources file and improve the visibility of Immersive Room resources:
-
-1. **Delete** "Manage Breakout Rooms in Microsoft Teams" from resources
-2. **Delete** "Creating Starter Activities" (Canva) from resources  
-3. **Ensure Staff Guidelines PDF is visible** - it already exists but the Immersive Room filter is missing from the Resources page
-4. **Copy your uploaded PDF** to ensure it's the latest version
+This is a large set of changes spanning the landing page, self-assessment page, training flow, reflection page, certificates, and several UI patterns. Here is the breakdown:
 
 ---
 
-## Changes to Make
+### 1. Landing page — hoverable Big 4 logos with level explanations
+- Replace the static app logo pills in the hero section with **tooltip/popover-powered pills** that show what each tool does at Explorer, Practitioner, and Leader level on hover
+- Use the existing `HoverCard` component for desktop-friendly hover popups
+- Content for each tool × level will be brief (1-2 sentences each)
 
-### 1. Delete Resources (in `src/data/resources.ts`)
+### 2. Self-assessment page — friendly reassurance bubble
+- Add a styled "speech bubble" card above or near the subheading reinforcing: "This is for your own learning — your results won't be shared with anyone"
+- Change the external link colour from `text-primary` to explicit blue (`text-blue-600`)
+- Warm, friendly tone with a soft background
 
-Remove these two entries:
-- **"Manage Breakout Rooms in Microsoft Teams"** (id: `teams-8b`) - lines 88-97
-- **"Creating Starter Activities"** (id: `canva-2`) - lines 174-183
+### 3. Training level-entry page — wording change
+- Change "What level were you assigned?" → **"What level are you currently working on?"**
+- Update subtitle accordingly
 
-### 2. Staff Guidelines PDF
+### 4. Required Activity pop-up on every tool/level
+- Add an **intro dialog** that appears on first visit to each tool's learning section explaining that completing the Edpuzzle activity is recorded as proof of their digital journey
+- **First tool (MS Teams)**: detailed explanation
+- **Subsequent tools**: shorter reminder version
+- Also mention the Resources tab at the top for revisiting content
+- Track which tools have shown the dialog via `sessionStorage`
 
-Good news - the **Staff Guidelines for Immersive Room** resource already exists in the resources file with the correct PDF link (`/resources/Immersive_Room_Staff_Guidelines.pdf`).
+### 5. Impact carousel — fix 3/3 → 4/4
+- The `ImpactCarousel` currently shows "3/3 viewed" but has 4 slides
+- Change `mainSlideCount` from `3` to `4` and update the check to `[0,1,2,3]`
 
-However, you may not be seeing it because:
-- There's **no "Immersive Room" filter button** on the Resources page - only Teams, Forms, Canva, Edpuzzle, and Copilot have filter buttons
-- The resource only shows when you search for "immersive" or "staff"
+### 6. "Continue to Section 3" → activity completion gate
+- Replace the plain "Continue to Section 3" button on the learning page with a confirmation: "I have completed my required activities" checkbox/clickable box
+- If yes → proceed; if no → stay on page with a message
 
-I'll also copy your uploaded PDF to ensure it's the latest version.
+### 7. Reflection page — gate the continue button + example + visual refresh
+- Disable "Continue to Assessment" until user has submitted a reflection
+- Add an example reflection in a styled callout card above the form
+- Redesign the layout: add colour, break up monotony with a mind-map-inspired radial layout for the reflection gallery — coloured cards radiating from a central prompt, different hues per department
 
-### 3. Add Immersive Room Filter Button (in `src/pages/Resources.tsx`)
+### 8. Certificate — add level badge emblem
+- In the canvas-drawn certificate (`Badge.tsx`), load and draw the appropriate level emblem SVG alongside the logo
 
-Add an "Immersive Room" option to the tool filter buttons so you can easily find all Immersive Room resources including the Staff Guidelines.
+### 9. Canva Code page — wording fix
+- In `pathways.ts`, change "simple designs" to "ideas" in the Canva explorer description
+
+### 10. Real FE Examples — horizontal flippable cards
+- Replace the current `Accordion` pattern for "Real FE Teaching Examples" with **horizontal scrollable flippable cards**
+- Front: title with tool-brand colour background; Back: example content
+- Each card uses CSS perspective/transform for a flip animation on click
+- Different brand-tinted colours per card
+- Still require all to be flipped before continuing
+
+### 11. Remove stray emojis
+- Audit and remove decorative emojis that don't add value (e.g. 🎯 next to "Required Activity", emoji section pills, tool tagline emojis)
+- Keep only functional/meaningful ones
 
 ---
 
-## Technical Details
-
-### File Changes
-
-| File | Action |
-|------|--------|
-| `src/data/resources.ts` | Remove `teams-8b` and `canva-2` entries |
-| `src/pages/Resources.tsx` | Add Immersive Room to the filter buttons |
-| `public/resources/Immersive_Room_Staff_Guidelines.pdf` | Replace with uploaded version |
-
-### Resources After Changes
-
-**Immersive Room section will contain:**
-- Introduction to Immersive Learning (ThingLink 360 tour)
-- Book the Immersive Room (Microsoft Forms booking)
-- Staff Guidelines for Immersive Room (PDF with download button)
+### Technical approach
+- **New component**: `FlippableCard.tsx` for the FE examples
+- **New component**: `ActivityCompletionGate.tsx` or inline confirmation UI
+- **Modified files**: `Landing.tsx`, `SelfAssessment.tsx`, `Training.tsx`, `ReflectionWall.tsx`, `Badge.tsx`, `ImpactCarousel.tsx`, `pathways.ts`, `ToolCard.tsx` (tagline emojis)
+- All changes are client-side React/Tailwind — no backend needed
 
