@@ -68,7 +68,7 @@ const ImpactCarousel = ({ studentBenefits, staffBenefits, collegeBenefits, onAll
     },
   ];
 
-  const mainSlideCount = 3; // First 3 slides must be viewed
+  const mainSlideCount = 4; // All 4 slides must be viewed
 
   const nextSlide = useCallback(() => {
     const next = (currentSlide + 1) % slides.length;
@@ -101,12 +101,12 @@ const ImpactCarousel = ({ studentBenefits, staffBenefits, collegeBenefits, onAll
 
   // Check if all main slides (first 3) have been viewed
   useEffect(() => {
-    const hasViewedAll = [0, 1, 2].every(i => viewedSlides.has(i));
+    const hasViewedAll = [0, 1, 2, 3].every(i => viewedSlides.has(i));
     onAllViewed?.(hasViewedAll);
   }, [viewedSlides, onAllViewed]);
 
   const currentData = slides[currentSlide];
-  const hasViewedAllMain = [0, 1, 2].every(i => viewedSlides.has(i));
+  const hasViewedAllMain = [0, 1, 2, 3].every(i => viewedSlides.has(i));
 
   return (
     <Card className="border-border bg-card shadow-lg overflow-hidden">
@@ -185,7 +185,7 @@ const ImpactCarousel = ({ studentBenefits, staffBenefits, collegeBenefits, onAll
         {!hasViewedAllMain && (
           <div className="px-6 pb-4">
             <div className="text-center text-sm text-muted-foreground bg-secondary/30 rounded-lg p-2">
-              👆 Use arrows to view all impact areas ({Math.min(viewedSlides.size, 3)}/3 viewed)
+              Use arrows to view all impact areas ({Math.min(viewedSlides.size, 4)}/4 viewed)
             </div>
           </div>
         )}

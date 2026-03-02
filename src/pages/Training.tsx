@@ -25,6 +25,8 @@ import { Tool, Level, LearningPathway } from "@/types/learning";
 import { ArrowRight, CheckCircle, Home, Settings, Lightbulb, Target, Star, Sparkles, Rocket, Crown, ChevronDown, BookOpen } from "lucide-react";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import FlippableCard from "@/components/FlippableCard";
+import RequiredActivityDialog from "@/components/dialogs/RequiredActivityDialog";
 import bradfordLogo from "@/assets/bradford-college-logo.jpg";
 import heroBanner from "@/assets/hero-banner.jpg";
 import teamsIllustration from "@/assets/teams-illustration.jpg";
@@ -74,31 +76,33 @@ const Training = () => {
     window.scrollTo(0, 0);
   }, [stage]);
 
+  const [activityConfirmed, setActivityConfirmed] = useState(false);
+
   const tools = [{
     id: 'teams' as Tool,
     title: 'MS Teams & Forms',
-    tagline: '💬 Collaborate and assess in one place',
+    tagline: 'Collaborate and assess in one place',
     description: 'Digital classroom hub for communication, content, and quick assessments',
     icon: 'teams' as const,
     duration: '~45 min'
   }, {
     id: 'canva' as Tool,
     title: 'Canva',
-    tagline: '🎨 Code for me - creating bespoke learning activities',
+    tagline: 'Code for me - creating bespoke learning activities',
     description: 'Create professional, visually engaging learning materials with ease',
     icon: 'canva' as const,
     duration: '~30 min'
   }, {
     id: 'edpuzzle' as Tool,
     title: 'Edpuzzle',
-    tagline: '🎥 Turn videos into learning moments',
+    tagline: 'Turn videos into learning moments',
     description: 'Transform videos into interactive learning experiences',
     icon: 'edpuzzle' as const,
     duration: '~40 min'
   }, {
     id: 'copilot' as Tool,
     title: 'Microsoft Copilot',
-    tagline: '🤖 Your AI resource creation partner',
+    tagline: 'Your AI resource creation partner',
     description: 'AI-powered assistant for resource creation',
     icon: 'copilot' as const,
     duration: '~50 min'
@@ -298,17 +302,17 @@ const Training = () => {
             {/* Question */}
             <div className="text-center mb-8 animate-fade-in">
               <h2 className="font-display text-3xl md:text-4xl font-bold mb-4 text-foreground">
-                What level were you assigned?
+                What level are you currently working on?
               </h2>
               <p className="text-lg text-muted-foreground">
-                Select your assigned level to continue to your personalised training pathway
+                Select your level to continue to your personalised training pathway
               </p>
             </div>
 
             {/* Gold reassurance note */}
             <div className="bg-[#F5A623]/10 border border-[#F5A623]/30 rounded-xl px-5 py-3 mb-6 text-center animate-fade-in">
               <p className="text-sm text-foreground">
-                <span className="font-semibold">Not sure which level?</span> Your self-assessment result will have said Explorer, Practitioner, or Leader.
+                <span className="font-semibold">Not sure which level?</span> Your self-assessment result will have indicated Explorer, Practitioner, or Leader.
               </p>
             </div>
 
@@ -582,7 +586,7 @@ const Training = () => {
                               <h4 className="font-semibold text-foreground">Useful Links:</h4>
                               <ul className="space-y-2">
                                 <li className="flex items-start gap-2">
-                                  <span className="text-rose-600 mt-1">🌐</span>
+                                   <span className="text-rose-600 mt-1">•</span>
                                   <a href="https://www.thinglink.com/view/scene/1959585229274350436" target="_blank" rel="noopener noreferrer" className="text-accent underline hover:text-accent/80">
                                     360° Interactive Guide to the Immersive Room
                                   </a>
@@ -626,19 +630,19 @@ const Training = () => {
                               <h4 className="font-semibold text-foreground">Useful Links:</h4>
                               <ul className="space-y-2">
                                 <li className="flex items-start gap-2">
-                                  <span className="text-rose-600 mt-1">📋</span>
+                                  <span className="text-rose-600 mt-1">•</span>
                                   <a href="https://forms.office.com/e/QRrA7LfAUh" target="_blank" rel="noopener noreferrer" className="text-accent underline hover:text-accent/80">
                                     Book the Immersive Room or Training Session
                                   </a>
                                 </li>
                                 <li className="flex items-start gap-2">
-                                  <span className="text-rose-600 mt-1">🌐</span>
+                                  <span className="text-rose-600 mt-1">•</span>
                                   <a href="https://www.thinglink.com/view/scene/1959585229274350436" target="_blank" rel="noopener noreferrer" className="text-accent underline hover:text-accent/80">
                                     360° Interactive Guide to the Immersive Room
                                   </a>
                                 </li>
                                 <li className="flex items-start gap-2">
-                                  <span className="text-rose-600 mt-1">📄</span>
+                                  <span className="text-rose-600 mt-1">•</span>
                                   <a href="/resources/Immersive_Room_Staff_Guidelines.pdf" target="_blank" rel="noopener noreferrer" className="text-accent underline hover:text-accent/80">
                                     Staff Guidelines for Immersive Room (PDF)
                                   </a>
@@ -661,7 +665,7 @@ const Training = () => {
             onClick={() => setStage('summary')}>
 
                 <div className="flex items-center gap-4 md:gap-6 p-6">
-                  <span className="text-4xl flex-shrink-0">📋</span>
+                  <BookOpen className="text-[#F5A623] flex-shrink-0 h-8 w-8" />
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-3 mb-1">
                       <h3 className="font-display text-xl font-bold text-foreground">My Learning Summary</h3>
@@ -847,7 +851,7 @@ const Training = () => {
             className="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full text-white"
             style={{ backgroundColor: currentBrandColor }}>
 
-                📍 Section {sectionInfo.num} of 5 — {sectionInfo.name}
+                Section {sectionInfo.num} of 5 — {sectionInfo.name}
               </span>
             </div>
 
@@ -871,7 +875,7 @@ const Training = () => {
               style={{ borderColor: currentBrandColor, backgroundColor: `${currentBrandColor}08` }}>
 
                     <p className="text-sm text-[#52526E] leading-relaxed">
-                      💡 {pathway.intro.additionalInfo}
+                      {pathway.intro.additionalInfo}
                     </p>
                   </div>
             }
@@ -934,6 +938,7 @@ const Training = () => {
           </div>}
 
         {stage === 'learning' && <div className="max-w-4xl mx-auto space-y-6 animate-fade-in">
+            {selectedTool && selectedLevel && <RequiredActivityDialog tool={selectedTool} level={selectedLevel} />}
             <ModuleHeroBanner tool={selectedTool!} level={selectedLevel!} brandColor={currentBrandColor} duration={currentDuration} />
 
             {/* Section pill */}
@@ -942,7 +947,7 @@ const Training = () => {
             className="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full text-white"
             style={{ backgroundColor: currentBrandColor }}>
 
-                📍 Section {sectionInfo.num} of 5 — {sectionInfo.name}
+                Section {sectionInfo.num} of 5 — {sectionInfo.name}
               </span>
             </div>
 
@@ -960,53 +965,46 @@ const Training = () => {
                   {pathway.mainContent.howToUse}
                 </p>
 
-                {/* Real FE Teaching Examples */}
+                {/* Real FE Teaching Examples - Flippable Cards */}
                 <div>
                   <div className="flex items-center justify-between mb-4">
                     <h3 className="font-display text-lg font-semibold" style={{ color: currentBrandColor }}>Real FE Teaching Examples</h3>
                     <span className="text-sm text-muted-foreground">
-                      {viewedExamples.size}/{pathway.mainContent.examples.length} viewed
+                      {viewedExamples.size}/{pathway.mainContent.examples.length} flipped
                     </span>
                   </div>
                   <p className="text-sm text-[#52526E] mb-4 italic">
-                    Click each heading to expand the example. You must view all examples before continuing.
+                    Tap each card to reveal the example. You must flip all cards before continuing.
                   </p>
-                  <Accordion
-                type="multiple"
-                className="w-full space-y-2"
-                onValueChange={(values) => {
-                  const newViewed = new Set(viewedExamples);
-                  values.forEach((v) => {
-                    const index = parseInt(v.replace('example-', ''));
-                    newViewed.add(index);
-                  });
-                  setViewedExamples(newViewed);
-                }}>
-
+                  <div className="flex gap-4 overflow-x-auto pb-4 -mx-2 px-2 snap-x snap-mandatory">
                     {pathway.mainContent.examples.map((example, index) => {
-                  const colonIndex = example.indexOf(':');
-                  const title = colonIndex > -1 ? example.substring(0, colonIndex) : `Example ${index + 1}`;
-                  const content = colonIndex > -1 ? example.substring(colonIndex + 1).trim() : example;
-                  const isViewed = viewedExamples.has(index);
-                  return (
-                    <AccordionItem
-                      key={index}
-                      value={`example-${index}`}
-                      className="border border-border rounded-xl overflow-hidden bg-card px-4">
-
-                          <AccordionTrigger className="hover:no-underline py-3">
-                            <span className="flex items-center gap-2 text-sm font-semibold text-card-foreground text-left">
-                              {isViewed && <CheckCircle className="h-4 w-4 flex-shrink-0" style={{ color: currentBrandColor }} />}
-                              {title}
-                            </span>
-                          </AccordionTrigger>
-                          <AccordionContent>
-                            <p className="text-sm text-[#52526E] leading-relaxed">{content}</p>
-                          </AccordionContent>
-                        </AccordionItem>);
-
-                })}
-                  </Accordion>
+                      const colonIndex = example.indexOf(':');
+                      const title = colonIndex > -1 ? example.substring(0, colonIndex) : `Example ${index + 1}`;
+                      const content = colonIndex > -1 ? example.substring(colonIndex + 1).trim() : example;
+                      return (
+                        <div key={index} className="snap-start">
+                          <FlippableCard
+                            title={title}
+                            content={content}
+                            index={index}
+                            brandColor={currentBrandColor}
+                            isFlipped={viewedExamples.has(index)}
+                            onFlip={() => {
+                              setViewedExamples(prev => {
+                                const updated = new Set(prev);
+                                if (updated.has(index)) {
+                                  updated.delete(index);
+                                } else {
+                                  updated.add(index);
+                                }
+                                return updated;
+                              });
+                            }}
+                          />
+                        </div>
+                      );
+                    })}
+                  </div>
                 </div>
 
                 {/* Required Activity callout */}
@@ -1016,7 +1014,7 @@ const Training = () => {
 
                   <h4 className="font-display text-lg font-bold text-card-foreground mb-3 flex items-center gap-2">
                     <Target className="w-5 h-5" style={{ color: currentBrandColor }} />
-                    🎯 Required Activity
+                    Required Activity
                   </h4>
                   <p className="text-sm text-[#52526E] leading-relaxed mb-3">
                     Watch the training video(s) below and complete the embedded questions. This interactive content will help you apply {getToolDisplayName(selectedTool!)} in your teaching practice.
@@ -1094,15 +1092,45 @@ const Training = () => {
                   </div>
                 </div>
                 
+                {/* Activity completion gate */}
+                {viewedExamples.size >= pathway.mainContent.examples.length && (
+                  <div
+                    className={`rounded-xl p-5 border-2 cursor-pointer transition-all ${
+                      activityConfirmed 
+                        ? 'border-green-500 bg-green-50 dark:bg-green-950/20' 
+                        : 'border-border bg-muted/30 hover:border-muted-foreground/50'
+                    }`}
+                    onClick={() => setActivityConfirmed(!activityConfirmed)}
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className={`h-6 w-6 rounded-md border-2 flex items-center justify-center flex-shrink-0 transition-colors ${
+                        activityConfirmed ? 'border-green-500 bg-green-500' : 'border-muted-foreground/40'
+                      }`}>
+                        {activityConfirmed && <CheckCircle className="h-4 w-4 text-white" />}
+                      </div>
+                      <p className="text-sm font-semibold text-card-foreground">
+                        I have completed my required activities
+                      </p>
+                    </div>
+                    {!activityConfirmed && (
+                      <p className="text-xs text-muted-foreground mt-2 ml-9">
+                        Please confirm you've completed the required Edpuzzle activities above before continuing.
+                      </p>
+                    )}
+                  </div>
+                )}
+
                 <Button
-              onClick={() => setStage('benefits')}
+              onClick={() => { setStage('benefits'); setActivityConfirmed(false); }}
               className="w-full py-6 text-base rounded-xl font-semibold transition-all hover:-translate-y-0.5 hover:shadow-lg text-white"
               style={{ backgroundColor: currentBrandColor }}
               size="lg"
-              disabled={viewedExamples.size < pathway.mainContent.examples.length}>
+              disabled={viewedExamples.size < pathway.mainContent.examples.length || !activityConfirmed}>
 
                   {viewedExamples.size < pathway.mainContent.examples.length ?
-              `View all examples to continue (${viewedExamples.size}/${pathway.mainContent.examples.length})` :
+              `Flip all examples to continue (${viewedExamples.size}/${pathway.mainContent.examples.length})` :
+              !activityConfirmed ?
+              'Confirm you\'ve completed your activities to continue' :
               `Continue to ${getNextStageName()} →`
               }
                 </Button>
@@ -1118,7 +1146,7 @@ const Training = () => {
             className="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full text-white"
             style={{ backgroundColor: currentBrandColor }}>
 
-                📍 Section {sectionInfo.num} of 5 — {sectionInfo.name}
+                Section {sectionInfo.num} of 5 — {sectionInfo.name}
               </span>
             </div>
 

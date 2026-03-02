@@ -611,7 +611,7 @@ export const learningPathways: Record<string, LearningPathway> = {
     level: 'explorer',
     intro: {
       title: 'Canva Code - Explorer Level',
-      description: 'Canva Code is a powerful feature within Canva that lets you create interactive, personalised lesson activities for your students. No coding experience is needed \u2014 you will learn how to turn simple designs into engaging, clickable experiences that make learning feel fun and tailored to every learner.',
+      description: 'Canva Code is a powerful feature within Canva that lets you create interactive, personalised lesson activities for your students. No coding experience is needed \u2014 you will learn how to turn your ideas into engaging, clickable experiences that make learning feel fun and tailored to every learner.',
       whyItMatters: [
         'Interactive starter activities boost student engagement from the very first minute',
         'Adaptive learning pathways let students progress based on their own responses and choices',

@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { ArrowRight, Target, Lightbulb, ExternalLink } from "lucide-react";
+import { ArrowRight, Target, Lightbulb, ExternalLink, ShieldCheck } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import NavigationButtons from "@/components/NavigationButtons";
 import AssessmentIntroDialog from "@/components/dialogs/AssessmentIntroDialog";
@@ -11,7 +11,6 @@ import bradfordLogo from "@/assets/bradford-college-logo.jpg";
 const SelfAssessment = () => {
   const navigate = useNavigate();
 
-  // Scroll to top on mount
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -31,7 +30,7 @@ const SelfAssessment = () => {
 
       <main className="container mx-auto px-4 py-8 md:py-12">
         {/* Hero Section */}
-        <div className="text-center mb-12 animate-fade-in">
+        <div className="text-center mb-8 animate-fade-in">
           <div className="flex items-center justify-center gap-3 mb-4">
             <Target className="w-8 h-8 text-accent" />
             <h2 className="text-3xl md:text-4xl font-bold text-foreground">
@@ -41,6 +40,23 @@ const SelfAssessment = () => {
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
             Complete this assessment to discover your digital skill level: Explorer, Practitioner, or Leader
           </p>
+        </div>
+
+        {/* Reassurance bubble */}
+        <div className="max-w-2xl mx-auto mb-10 animate-fade-in">
+          <div className="relative bg-green-50 dark:bg-green-950/30 border border-green-200 dark:border-green-800 rounded-2xl px-6 py-5 shadow-sm">
+            <div className="flex items-start gap-3">
+              <ShieldCheck className="h-6 w-6 text-green-600 dark:text-green-400 flex-shrink-0 mt-0.5" />
+              <div>
+                <p className="font-semibold text-green-800 dark:text-green-300 mb-1">This is just for you</p>
+                <p className="text-sm text-green-700 dark:text-green-400 leading-relaxed">
+                  Your results are <strong>completely private</strong> and won't be shared with anyone — not managers, not colleagues, not HR. This is purely for your own learning so you get the right training for where you are right now.
+                </p>
+              </div>
+            </div>
+            {/* Speech bubble tail */}
+            <div className="absolute -bottom-2 left-12 w-4 h-4 bg-green-50 dark:bg-green-950/30 border-b border-r border-green-200 dark:border-green-800 rotate-45" />
+          </div>
         </div>
 
         {/* Embedded Self-Assessment Form */}
@@ -71,7 +87,7 @@ const SelfAssessment = () => {
                 />
               </div>
               
-              {/* Alternative link */}
+              {/* Alternative link - now blue */}
               <div className="mt-4 p-4 bg-muted/50 rounded-lg border border-border">
                 <p className="text-sm text-muted-foreground mb-2">
                   <strong>Having trouble viewing the assessment?</strong> Open it directly in a new tab:
@@ -80,7 +96,7 @@ const SelfAssessment = () => {
                   href="https://bradfordcollege-handsmisconducttraining.my.canva.site/digital-levels-self-assessment"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 text-primary hover:text-primary/80 font-medium text-sm transition-colors"
+                  className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 font-medium text-sm transition-colors"
                 >
                   <ExternalLink className="h-4 w-4" />
                   Open Digital Self-Assessment in new tab
