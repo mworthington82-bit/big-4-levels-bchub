@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { createContext, useContext, useState, useEffect } from "react";
 
 type BackgroundMode = "light" | "dark" | "high-contrast";
 type FontFamily = "arial" | "opendyslexic" | "calibri";
@@ -23,10 +23,10 @@ interface AccessibilityContextType {
   isSpeaking: boolean;
 }
 
-const AccessibilityContext = React.createContext<AccessibilityContextType | undefined>(undefined);
+const AccessibilityContext = createContext<AccessibilityContextType | undefined>(undefined);
 
 export const AccessibilityProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [settings, setSettings] = React.useState<AccessibilitySettings>(() => {
+  const [settings, setSettings] = useState<AccessibilitySettings>(() => {
     const saved = localStorage.getItem("accessibility-settings");
     return saved
       ? JSON.parse(saved)
@@ -39,9 +39,9 @@ export const AccessibilityProvider: React.FC<{ children: React.ReactNode }> = ({
         };
   });
 
-  const [isSpeaking, setIsSpeaking] = React.useState(false);
+  const [isSpeaking, setIsSpeaking] = useState(false);
 
-  React.useEffect(() => {
+  useEffect(() => {
     localStorage.setItem("accessibility-settings", JSON.stringify(settings));
 
     // Apply settings to document
@@ -89,7 +89,7 @@ export const AccessibilityProvider: React.FC<{ children: React.ReactNode }> = ({
 };
 
 export const useAccessibility = () => {
-  const context = React.useContext(AccessibilityContext);
+  const context = useContext(AccessibilityContext);
   if (!context) {
     throw new Error("useAccessibility must be used within AccessibilityProvider");
   }
