@@ -230,16 +230,31 @@ const Resources = () => {
                         </span>
                       )}
                     </div>
-                    <Button
-                      size="sm"
-                      className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-full px-4 text-xs font-semibold flex-shrink-0"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        window.open(action.url, '_blank');
-                      }}
-                    >
-                      {action.label}
-                    </Button>
+                    <div className="flex items-center gap-1.5 flex-shrink-0">
+                      {resource.pdfUrl && resource.type === 'link' && (
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          className="rounded-full px-3 text-xs font-semibold border-primary/30 hover:bg-primary/10"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            window.open(resource.pdfUrl, '_blank');
+                          }}
+                        >
+                          <Download className="h-3 w-3 mr-1" /> PDF
+                        </Button>
+                      )}
+                      <Button
+                        size="sm"
+                        className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-full px-4 text-xs font-semibold"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          window.open(resource.pdfUrl && resource.type !== 'link' ? resource.pdfUrl : resource.url, '_blank');
+                        }}
+                      >
+                        {resource.type === 'video' ? 'Watch Video ▶' : resource.type === 'pdf' ? 'Download PDF ⬇' : 'Open Guide ↗'}
+                      </Button>
+                    </div>
                   </div>
                 </div>
               </div>
