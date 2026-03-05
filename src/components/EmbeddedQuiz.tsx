@@ -7,6 +7,7 @@ export const quizEmbedUrls: Record<string, string> = {
   "teams-explorer": "https://www.canva.com/design/DAHC4yxcLaQ/kzCl_eDT1ttF81B5Ggi7Sg/view?embed",
   "teams-practitioner": "https://www.canva.com/design/DAHC471SeaQ/szncJCzvtu7BWn8a-sGcMw/view?embed",
   "edpuzzle-explorer": "https://www.canva.com/design/DAHC47Xslvg/Iq7A5tggJgzIcjHIul-a4Q/view?embed",
+  "edpuzzle-practitioner": "https://www.canva.com/design/DAHC4w3kp38/OCxdE9q030vZbY8QqDo8_w/view?embed",
 };
 
 interface EmbeddedQuizProps {
