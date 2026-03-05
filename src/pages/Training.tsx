@@ -1185,11 +1185,26 @@ const Training = () => {
 
         {stage === 'reflection' && <ReflectionWall toolName={getToolDisplayName(selectedTool!)} level={selectedLevel!} onComplete={() => setStage('quiz')} />}
 
-        {stage === 'quiz' && <Quiz questions={pathway.quiz} onComplete={(score, name) => {
-        setQuizScore(score);
-        if (name) setUserName(name);
-        setStage('badge');
-      }} />}
+        {stage === 'quiz' && (
+          quizEmbedUrls[`${selectedTool}-${selectedLevel}`] ? (
+            <EmbeddedQuiz
+              tool={selectedTool!}
+              level={selectedLevel!}
+              brandColor={currentBrandColor}
+              onComplete={(score, name) => {
+                setQuizScore(score);
+                if (name) setUserName(name);
+                setStage('badge');
+              }}
+            />
+          ) : (
+            <Quiz questions={pathway.quiz} onComplete={(score, name) => {
+              setQuizScore(score);
+              if (name) setUserName(name);
+              setStage('badge');
+            }} />
+          )
+        )}
 
       </main>
     </div>;
