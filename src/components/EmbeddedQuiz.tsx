@@ -11,6 +11,7 @@ export const quizEmbedUrls: Record<string, string> = {
   "copilot-explorer": "https://www.canva.com/design/DAHC5PvQaDA/Zj_tmcezt2F-PW0fPtc1dQ/view?embed",
   "copilot-practitioner": "https://www.canva.com/design/DAHC5Pix-kw/s5g_z7T2E-RiTmqkkDT-NQ/view?embed",
   "canva-explorer": "https://www.canva.com/design/DAHC41QDTMU/8OcipJIt-loDOrmBwdHooQ/view?embed",
+  "canva-practitioner": "https://www.canva.com/design/DAHC44UMcKU/n7SUtX08ihiTyuJAGlS9nQ/view?embed",
 };
 
 interface EmbeddedQuizProps {
