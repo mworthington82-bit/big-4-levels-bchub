@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { ArrowRight, Target, Lightbulb, ExternalLink, ShieldCheck } from "lucide-react";
+import { ArrowRight, Target, Lightbulb, ExternalLink } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import NavigationButtons from "@/components/NavigationButtons";
 import AssessmentIntroDialog from "@/components/dialogs/AssessmentIntroDialog";
