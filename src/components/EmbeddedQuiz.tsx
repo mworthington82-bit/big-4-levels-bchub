@@ -5,14 +5,7 @@ import { ClipboardList, Trophy } from "lucide-react";
 // Map of tool-level to Canva embed URL
 export const quizEmbedUrls: Record<string, string> = {
   "teams-explorer": "https://www.canva.com/design/DAHC4yxcLaQ/kzCl_eDT1ttF81B5Ggi7Sg/view?embed",
-  // Add more as provided:
-  // "teams-practitioner": "",
-  // "canva-explorer": "",
-  // "canva-practitioner": "",
-  // "edpuzzle-explorer": "",
-  // "edpuzzle-practitioner": "",
-  // "copilot-explorer": "",
-  // "copilot-practitioner": "",
+  "teams-practitioner": "https://www.canva.com/design/DAHC471SeaQ/szncJCzvtu7BWn8a-sGcMw/view?embed",
 };
 
 interface EmbeddedQuizProps {
