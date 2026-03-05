@@ -9,6 +9,7 @@ export const quizEmbedUrls: Record<string, string> = {
   "edpuzzle-explorer": "https://www.canva.com/design/DAHC47Xslvg/Iq7A5tggJgzIcjHIul-a4Q/view?embed",
   "edpuzzle-practitioner": "https://www.canva.com/design/DAHC4w3kp38/OCxdE9q030vZbY8QqDo8_w/view?embed",
   "copilot-explorer": "https://www.canva.com/design/DAHC5PvQaDA/Zj_tmcezt2F-PW0fPtc1dQ/view?embed",
+  "copilot-practitioner": "https://www.canva.com/design/DAHC5Pix-kw/s5g_z7T2E-RiTmqkkDT-NQ/view?embed",
 };
 
 interface EmbeddedQuizProps {
