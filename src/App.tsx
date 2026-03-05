@@ -8,6 +8,7 @@ import SelfAssessment from "./pages/SelfAssessment";
 import Training from "./pages/Training";
 import Resources from "./pages/Resources";
 import NotFound from "./pages/NotFound";
+import GatedRoute from "./components/GatedRoute";
 
 const queryClient = new QueryClient();
 
@@ -20,8 +21,8 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Landing />} />
           <Route path="/self-assessment" element={<SelfAssessment />} />
-          <Route path="/training" element={<Training />} />
-          <Route path="/resources" element={<Resources />} />
+          <Route path="/training" element={<GatedRoute><Training /></GatedRoute>} />
+          <Route path="/resources" element={<GatedRoute><Resources /></GatedRoute>} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
