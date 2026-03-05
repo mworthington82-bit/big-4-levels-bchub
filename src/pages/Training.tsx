@@ -7,6 +7,7 @@ import ToolCard from "@/components/ToolCard";
 import LevelCard from "@/components/LevelCard";
 import ProgressTracker from "@/components/ProgressTracker";
 import Quiz from "@/components/Quiz";
+import EmbeddedQuiz, { quizEmbedUrls } from "@/components/EmbeddedQuiz";
 import Badge from "@/components/Badge";
 import ReflectionWall from "@/components/ReflectionWall";
 import { AccessibilityPanel } from "@/components/AccessibilityPanel";
