@@ -57,10 +57,6 @@ const GatedRoute = ({ children }: GatedRouteProps) => {
               learning journey.
             </p>
           </div>
-          <p className="text-muted-foreground text-sm">
-            Once you've finished, the full range of training modules and
-            resources will be unlocked for you. 🎓
-          </p>
         </div>
 
         <div className="flex flex-col sm:flex-row gap-3 justify-center">

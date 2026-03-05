@@ -42,22 +42,6 @@ const SelfAssessment = () => {
           </p>
         </div>
 
-        {/* Reassurance bubble */}
-        <div className="max-w-2xl mx-auto mb-10 animate-fade-in">
-          <div className="relative bg-green-50 dark:bg-green-950/30 border border-green-200 dark:border-green-800 rounded-2xl px-6 py-5 shadow-sm">
-            <div className="flex items-start gap-3">
-              <ShieldCheck className="h-6 w-6 text-green-600 dark:text-green-400 flex-shrink-0 mt-0.5" />
-              <div>
-                <p className="font-semibold text-green-800 dark:text-green-300 mb-1">This is just for you</p>
-                <p className="text-sm text-green-700 dark:text-green-400 leading-relaxed">
-                  Your results are <strong>completely private</strong> and won't be shared with anyone — not managers, not colleagues, not HR. This is purely for your own learning so you get the right training for where you are right now.
-                </p>
-              </div>
-            </div>
-            {/* Speech bubble tail */}
-            <div className="absolute -bottom-2 left-12 w-4 h-4 bg-green-50 dark:bg-green-950/30 border-b border-r border-green-200 dark:border-green-800 rotate-45" />
-          </div>
-        </div>
 
         {/* Embedded Self-Assessment Form */}
         <div className="max-w-5xl mx-auto mb-12 animate-fade-in">
