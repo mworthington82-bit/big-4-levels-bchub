@@ -1,8 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { ClipboardList, Trophy, User } from "lucide-react";
-import { useState } from "react";
+import { ClipboardList, Trophy } from "lucide-react";
 
 // Map of tool-level to Canva embed URL
 export const quizEmbedUrls: Record<string, string> = {
@@ -25,63 +23,11 @@ interface EmbeddedQuizProps {
 }
 
 const EmbeddedQuiz = ({ tool, level, onComplete, brandColor }: EmbeddedQuizProps) => {
-  const [showNameInput, setShowNameInput] = useState(false);
-  const [userName, setUserName] = useState("");
-
   const embedUrl = quizEmbedUrls[`${tool}-${level}`];
 
   const handleComplete = () => {
-    setShowNameInput(true);
+    onComplete(100);
   };
-
-  const handleNameSubmit = () => {
-    onComplete(100, userName.trim() || undefined);
-  };
-
-  if (showNameInput) {
-    return (
-      <Card className="w-full max-w-2xl mx-auto border-border bg-card shadow-[var(--shadow-card)] rounded-3xl">
-        <CardHeader className="text-center space-y-4">
-          <div className="flex justify-center">
-            <div className="rounded-full bg-green-100 dark:bg-green-900/30 p-4">
-              <Trophy className="h-12 w-12 text-green-600" />
-            </div>
-          </div>
-          <CardTitle className="text-2xl text-card-foreground">
-            🎉 Well Done!
-          </CardTitle>
-          <p className="text-muted-foreground text-base">
-            You've completed the knowledge check.
-          </p>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          <div className="bg-secondary/50 rounded-lg p-4 space-y-3">
-            <div className="flex items-center gap-2">
-              <User className="h-5 w-5" style={{ color: brandColor }} />
-              <h3 className="font-semibold text-card-foreground">Enter Your Name for the Certificate</h3>
-            </div>
-            <p className="text-sm text-muted-foreground">
-              This name will appear on your downloadable certificate. It will not be saved to any database.
-            </p>
-            <Input
-              placeholder="Enter your full name"
-              value={userName}
-              onChange={(e) => setUserName(e.target.value)}
-              className="border-border bg-background text-foreground"
-            />
-          </div>
-          <Button
-            onClick={handleNameSubmit}
-            className="w-full text-white"
-            style={{ backgroundColor: brandColor }}
-          >
-            <Trophy className="mr-2 h-4 w-4" />
-            Get My Certificate
-          </Button>
-        </CardContent>
-      </Card>
-    );
-  }
 
   return (
     <Card className="w-full max-w-4xl mx-auto border-border bg-card shadow-[var(--shadow-card)] rounded-3xl overflow-hidden">
