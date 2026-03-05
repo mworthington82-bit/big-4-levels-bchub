@@ -7,6 +7,7 @@ import ToolCard from "@/components/ToolCard";
 import LevelCard from "@/components/LevelCard";
 import ProgressTracker from "@/components/ProgressTracker";
 import Quiz from "@/components/Quiz";
+import EmbeddedQuiz, { quizEmbedUrls } from "@/components/EmbeddedQuiz";
 import Badge from "@/components/Badge";
 import ReflectionWall from "@/components/ReflectionWall";
 import { AccessibilityPanel } from "@/components/AccessibilityPanel";
@@ -1185,11 +1186,26 @@ const Training = () => {
 
         {stage === 'reflection' && <ReflectionWall toolName={getToolDisplayName(selectedTool!)} level={selectedLevel!} onComplete={() => setStage('quiz')} />}
 
-        {stage === 'quiz' && <Quiz questions={pathway.quiz} onComplete={(score, name) => {
-        setQuizScore(score);
-        if (name) setUserName(name);
-        setStage('badge');
-      }} />}
+        {stage === 'quiz' && (
+          quizEmbedUrls[`${selectedTool}-${selectedLevel}`] ? (
+            <EmbeddedQuiz
+              tool={selectedTool!}
+              level={selectedLevel!}
+              brandColor={currentBrandColor}
+              onComplete={(score, name) => {
+                setQuizScore(score);
+                if (name) setUserName(name);
+                setStage('badge');
+              }}
+            />
+          ) : (
+            <Quiz questions={pathway.quiz} onComplete={(score, name) => {
+              setQuizScore(score);
+              if (name) setUserName(name);
+              setStage('badge');
+            }} />
+          )
+        )}
 
       </main>
     </div>;
