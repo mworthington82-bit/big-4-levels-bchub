@@ -28,7 +28,7 @@ const AssessmentIntroDialog = () => {
 
   return (
     <Dialog open={open} onOpenChange={(isOpen) => !isOpen && handleClose()}>
-      <DialogContent className="sm:max-w-lg">
+      <DialogContent className="sm:max-w-lg max-h-[90vh] overflow-y-auto">
         <DialogHeader className="text-center space-y-4">
           <div className="flex justify-center">
             <div className="rounded-full bg-accent/10 p-4">
