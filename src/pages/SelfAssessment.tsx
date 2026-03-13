@@ -56,7 +56,7 @@ const SelfAssessment = () => {
               <div 
                 className="relative w-full overflow-hidden rounded-lg will-change-transform"
                 style={{ 
-                  paddingTop: '56.2500%', 
+                  paddingTop: '56.2225%', 
                   boxShadow: '0 2px 8px 0 rgba(63,69,81,0.16)',
                   marginTop: '1.6em',
                   marginBottom: '0.9em'
@@ -65,7 +65,7 @@ const SelfAssessment = () => {
                 <iframe 
                   loading="lazy"
                   className="absolute top-0 left-0 w-full h-full border-none p-0 m-0"
-                  src="https://www.canva.com/design/DAG36cELqts/Qm1aW4geNWKj9KFw2dhNfQ/view?embed"
+                  src="https://www.canva.com/design/DAXD0X3v8nA/DX4fP6bEhcfiFHpH4plQvA/view?embed"
                   allowFullScreen
                   allow="fullscreen"
                 />
@@ -77,7 +77,7 @@ const SelfAssessment = () => {
                   <strong>Having trouble viewing the assessment?</strong> Open it directly in a new tab:
                 </p>
                 <a 
-                  href="https://bradfordcollege-handsmisconducttraining.my.canva.site/digital-levels-self-assessment"
+                  href="https://www.canva.com/design/DAXD0X3v8nA/DX4fP6bEhcfiFHpH4plQvA/view?utm_content=DAXD0X3v8nA&utm_campaign=designshare&utm_medium=embeds&utm_source=link"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 font-medium text-sm transition-colors"
