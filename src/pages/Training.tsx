@@ -15,6 +15,7 @@ import { ReadAloudButton } from "@/components/ReadAloudButton";
 import NavigationButtons from "@/components/NavigationButtons";
 import LeaderHub from "@/components/leader/LeaderHub";
 import LevelConfirmationDialog from "@/components/dialogs/LevelConfirmationDialog";
+import PrerequisiteChecklistDialog from "@/components/dialogs/PrerequisiteChecklistDialog";
 import LearningModulesDialog from "@/components/dialogs/LearningModulesDialog";
 import LearningObjectivesCarousel from "@/components/LearningObjectivesCarousel";
 import ImpactCarousel from "@/components/ImpactCarousel";
@@ -50,6 +51,7 @@ const Training = () => {
   const navigate = useNavigate();
   const [stage, setStage] = useState<Stage>('level-entry');
   const [showLevelConfirmation, setShowLevelConfirmation] = useState(false);
+  const [showPrerequisiteChecklist, setShowPrerequisiteChecklist] = useState(false);
   const [pendingLevel, setPendingLevel] = useState<Level | null>(null);
   const [userName, setUserName] = useState<string>("");
   const toolIllustrations = {
@@ -189,8 +191,22 @@ const Training = () => {
 
   const handleLevelConfirm = (reason: 'completed' | 'assessed') => {
     if (pendingLevel) {
-      setSelectedLevel(pendingLevel);
       setShowLevelConfirmation(false);
+      // Explorer goes straight through; Practitioner & Leader need prerequisite checklist
+      if (pendingLevel === 'explorer') {
+        setSelectedLevel(pendingLevel);
+        setStage('tool-select');
+        setPendingLevel(null);
+      } else {
+        setShowPrerequisiteChecklist(true);
+      }
+    }
+  };
+
+  const handlePrerequisiteConfirm = () => {
+    if (pendingLevel) {
+      setSelectedLevel(pendingLevel);
+      setShowPrerequisiteChecklist(false);
       if (pendingLevel === 'leader') {
         setStage('leader-hub');
       } else {
@@ -198,6 +214,11 @@ const Training = () => {
       }
       setPendingLevel(null);
     }
+  };
+
+  const handlePrerequisiteCancel = () => {
+    setShowPrerequisiteChecklist(false);
+    setPendingLevel(null);
   };
 
   const handleLevelConfirmCancel = () => {
@@ -285,7 +306,13 @@ const Training = () => {
           level={pendingLevel}
           onConfirm={handleLevelConfirm}
           onCancel={handleLevelConfirmCancel} />
-
+        }
+        {pendingLevel && (pendingLevel === 'practitioner' || pendingLevel === 'leader') &&
+        <PrerequisiteChecklistDialog
+          open={showPrerequisiteChecklist}
+          level={pendingLevel}
+          onConfirm={handlePrerequisiteConfirm}
+          onCancel={handlePrerequisiteCancel} />
         }
         <NavigationButtons showBack={false} />
         <AccessibilityPanel />
