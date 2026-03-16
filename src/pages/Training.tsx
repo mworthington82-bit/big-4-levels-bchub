@@ -191,8 +191,22 @@ const Training = () => {
 
   const handleLevelConfirm = (reason: 'completed' | 'assessed') => {
     if (pendingLevel) {
-      setSelectedLevel(pendingLevel);
       setShowLevelConfirmation(false);
+      // Explorer goes straight through; Practitioner & Leader need prerequisite checklist
+      if (pendingLevel === 'explorer') {
+        setSelectedLevel(pendingLevel);
+        setStage('tool-select');
+        setPendingLevel(null);
+      } else {
+        setShowPrerequisiteChecklist(true);
+      }
+    }
+  };
+
+  const handlePrerequisiteConfirm = () => {
+    if (pendingLevel) {
+      setSelectedLevel(pendingLevel);
+      setShowPrerequisiteChecklist(false);
       if (pendingLevel === 'leader') {
         setStage('leader-hub');
       } else {
@@ -200,6 +214,11 @@ const Training = () => {
       }
       setPendingLevel(null);
     }
+  };
+
+  const handlePrerequisiteCancel = () => {
+    setShowPrerequisiteChecklist(false);
+    setPendingLevel(null);
   };
 
   const handleLevelConfirmCancel = () => {
