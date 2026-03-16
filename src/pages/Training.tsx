@@ -700,6 +700,11 @@ const Training = () => {
               </div>
             )}
 
+            {/* Progress Dashboard */}
+            <div className="mb-10 animate-fade-in">
+              <ProgressDashboard />
+            </div>
+
             {/* Department Leaderboard */}
             <div className="mb-10 animate-fade-in">
               <DepartmentLeaderboard />
