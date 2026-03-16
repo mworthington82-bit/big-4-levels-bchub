@@ -194,6 +194,14 @@ const Landing = () => {
             </div>
           </div>
 
+          {/* Staff Spotlight */}
+          <StaffSpotlight />
+
+          {/* Department Leaderboard */}
+          <div className="max-w-4xl mx-auto mb-12 animate-fade-in">
+            <DepartmentLeaderboard />
+          </div>
+
           {/* Action Buttons */}
           <div className="max-w-4xl mx-auto grid md:grid-cols-2 gap-6">
             <div className="bg-card rounded-2xl border border-border shadow-[var(--shadow-card)] p-6 animate-fade-in hover:shadow-[var(--shadow-hover)] transition-all duration-300" style={{ animationDelay: '100ms' }}>
