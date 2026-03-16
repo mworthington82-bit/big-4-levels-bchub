@@ -312,7 +312,18 @@ const Training = () => {
           open={showPrerequisiteChecklist}
           level={pendingLevel}
           onConfirm={handlePrerequisiteConfirm}
-          onCancel={handlePrerequisiteCancel} />
+          onCancel={handlePrerequisiteCancel}
+          onNavigateToContent={(tool: Tool, targetLevel: Level) => {
+            setShowPrerequisiteChecklist(false);
+            setPendingLevel(null);
+            setSelectedTool(tool);
+            setSelectedLevel(targetLevel);
+            const pathwayData = getPathway(tool, targetLevel);
+            if (pathwayData) {
+              setPathway(pathwayData);
+              setStage('intro');
+            }
+          }} />
         }
         <NavigationButtons showBack={false} />
         <AccessibilityPanel />
