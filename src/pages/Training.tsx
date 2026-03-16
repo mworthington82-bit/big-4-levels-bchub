@@ -306,7 +306,13 @@ const Training = () => {
           level={pendingLevel}
           onConfirm={handleLevelConfirm}
           onCancel={handleLevelConfirmCancel} />
-
+        }
+        {pendingLevel && (pendingLevel === 'practitioner' || pendingLevel === 'leader') &&
+        <PrerequisiteChecklistDialog
+          open={showPrerequisiteChecklist}
+          level={pendingLevel}
+          onConfirm={handlePrerequisiteConfirm}
+          onCancel={handlePrerequisiteCancel} />
         }
         <NavigationButtons showBack={false} />
         <AccessibilityPanel />
