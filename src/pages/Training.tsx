@@ -698,6 +698,11 @@ const Training = () => {
               </div>
             )}
 
+            {/* Department Leaderboard */}
+            <div className="mb-10 animate-fade-in">
+              <DepartmentLeaderboard />
+            </div>
+
             {/* My Learning Summary - always accessible */}
             {selectedLevel && selectedLevel !== 'leader' &&
           <div
