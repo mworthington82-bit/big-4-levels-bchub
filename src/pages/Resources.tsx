@@ -249,7 +249,20 @@ const Resources = () => {
 
                 {/* Card body */}
                 <div className="p-5 flex flex-col flex-1">
-                  <h3 className="font-display text-base font-bold text-foreground mb-2 line-clamp-2">{resource.title}</h3>
+                  <div className="flex items-start justify-between gap-2 mb-2">
+                    <h3 className="font-display text-base font-bold text-foreground line-clamp-2">{resource.title}</h3>
+                    <button
+                      onClick={(e) => { e.stopPropagation(); toggleBookmark(resource.id); }}
+                      className="flex-shrink-0 p-1 rounded hover:bg-muted transition-colors"
+                      aria-label={bookmarks.has(resource.id) ? "Remove from favourites" : "Add to favourites"}
+                    >
+                      {bookmarks.has(resource.id) ? (
+                        <BookmarkCheck className="h-4 w-4 text-accent" />
+                      ) : (
+                        <Bookmark className="h-4 w-4 text-muted-foreground" />
+                      )}
+                    </button>
+                  </div>
                   <p className="text-sm text-muted-foreground mb-3 line-clamp-2 flex-1">{resource.description}</p>
 
                   <div className="flex items-center justify-between gap-2 mt-auto">
