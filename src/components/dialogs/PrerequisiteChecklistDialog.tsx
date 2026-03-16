@@ -8,8 +8,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useState } from "react";
-import { Level } from "@/types/learning";
-import { AlertTriangle, ShieldCheck } from "lucide-react";
+import { Level, Tool } from "@/types/learning";
+import { AlertTriangle, ShieldCheck, ExternalLink } from "lucide-react";
 import emblemPractitioner from "@/assets/emblem-practitioner.svg";
 import emblemLeader from "@/assets/emblem-leader.svg";
 
@@ -18,17 +18,24 @@ interface PrerequisiteChecklistDialogProps {
   level: Level;
   onConfirm: () => void;
   onCancel: () => void;
+  onNavigateToContent?: (tool: Tool, level: Level) => void;
 }
 
-const prerequisitesByLevel: Record<string, { intro: string; reminder?: string; items: string[] }> = {
+interface PrerequisiteItem {
+  text: string;
+  tool?: Tool;
+  targetLevel: Level;
+}
+
+const prerequisitesByLevel: Record<string, { intro: string; reminder?: string; items: PrerequisiteItem[] }> = {
   practitioner: {
     intro: "Before accessing Practitioner content, please confirm you are familiar with all Explorer level material:",
     items: [
-      "I am familiar with Microsoft Teams for classroom communication and collaboration",
-      "I am familiar with Microsoft Forms for creating quizzes and assessments",
-      "I am familiar with Canva for creating learning materials",
-      "I am familiar with Edpuzzle for creating interactive video lessons",
-      "I am familiar with Microsoft Copilot for AI-assisted resource creation",
+      { text: "I am familiar with Microsoft Teams for classroom communication and collaboration", tool: "teams", targetLevel: "explorer" },
+      { text: "I am familiar with Microsoft Forms for creating quizzes and assessments", tool: "teams", targetLevel: "explorer" },
+      { text: "I am familiar with Canva for creating learning materials", tool: "canva", targetLevel: "explorer" },
+      { text: "I am familiar with Edpuzzle for creating interactive video lessons", tool: "edpuzzle", targetLevel: "explorer" },
+      { text: "I am familiar with Microsoft Copilot for AI-assisted resource creation", tool: "copilot", targetLevel: "explorer" },
     ],
   },
   leader: {
@@ -36,11 +43,11 @@ const prerequisitesByLevel: Record<string, { intro: string; reminder?: string; i
     reminder:
       "Being at Leader level means you are committed to continuously upskilling and ensuring you are fully familiar with all course content across every level — not just your own.",
     items: [
-      "I am familiar with all Explorer level content for MS Teams, Forms, Canva, Edpuzzle, and Copilot",
-      "I am familiar with all Practitioner level content and can apply digital tools purposefully",
-      "I understand how to use digital tools to enhance teaching and learning outcomes",
-      "I am confident in mentoring and supporting colleagues with digital tools",
-      "I am committed to continuously developing my digital skills across all levels",
+      { text: "I am familiar with all Explorer level content for MS Teams, Forms, Canva, Edpuzzle, and Copilot", targetLevel: "explorer" },
+      { text: "I am familiar with all Practitioner level content and can apply digital tools purposefully", targetLevel: "practitioner" },
+      { text: "I understand how to use digital tools to enhance teaching and learning outcomes", targetLevel: "practitioner" },
+      { text: "I am confident in mentoring and supporting colleagues with digital tools", targetLevel: "practitioner" },
+      { text: "I am committed to continuously developing my digital skills across all levels", targetLevel: "explorer" },
     ],
   },
 };
@@ -50,6 +57,7 @@ const PrerequisiteChecklistDialog = ({
   level,
   onConfirm,
   onCancel,
+  onNavigateToContent,
 }: PrerequisiteChecklistDialogProps) => {
   const [checked, setChecked] = useState<Set<number>>(new Set());
   const config = prerequisitesByLevel[level];
@@ -78,6 +86,17 @@ const PrerequisiteChecklistDialog = ({
   const handleCancel = () => {
     setChecked(new Set());
     onCancel();
+  };
+
+  const handleReviewContent = (item: PrerequisiteItem) => {
+    if (onNavigateToContent && item.tool) {
+      setChecked(new Set());
+      onNavigateToContent(item.tool, item.targetLevel);
+    } else if (onNavigateToContent) {
+      // For generic items without a specific tool, navigate to the first tool at that level
+      setChecked(new Set());
+      onNavigateToContent("teams", item.targetLevel);
+    }
   };
 
   const emblem = level === "leader" ? emblemLeader : emblemPractitioner;
@@ -109,19 +128,29 @@ const PrerequisiteChecklistDialog = ({
 
         <div className="space-y-3 py-2">
           {config.items.map((item, index) => (
-            <label
-              key={index}
-              className="flex items-start gap-3 p-3 rounded-lg border border-border hover:bg-muted/50 cursor-pointer transition-colors"
-            >
-              <Checkbox
-                checked={checked.has(index)}
-                onCheckedChange={() => toggleItem(index)}
-                className="mt-0.5"
-              />
-              <span className="text-sm text-foreground leading-relaxed">
-                {item}
-              </span>
-            </label>
+            <div key={index} className="flex items-start gap-3 p-3 rounded-lg border border-border hover:bg-muted/50 transition-colors">
+              <label className="flex items-start gap-3 cursor-pointer flex-1">
+                <Checkbox
+                  checked={checked.has(index)}
+                  onCheckedChange={() => toggleItem(index)}
+                  className="mt-0.5"
+                />
+                <span className="text-sm text-foreground leading-relaxed">
+                  {item.text}
+                </span>
+              </label>
+              {!checked.has(index) && onNavigateToContent && (
+                <Button
+                  variant="link"
+                  size="sm"
+                  className="text-xs text-primary hover:text-primary/80 px-1 h-auto py-0 whitespace-nowrap flex-shrink-0"
+                  onClick={() => handleReviewContent(item)}
+                >
+                  <ExternalLink className="h-3 w-3 mr-1" />
+                  Review
+                </Button>
+              )}
+            </div>
           ))}
         </div>
 
