@@ -107,7 +107,7 @@ const Resources = () => {
   ];
 
   const handleToolSelect = (tool: ToolFilter) => setSelectedTool(selectedTool === tool ? 'all' : tool);
-  const clearFilters = () => { setSearchQuery(''); setSelectedTool('all'); setSelectedLevel('all'); };
+  const clearFilters = () => { setSearchQuery(''); setSelectedTool('all'); setSelectedLevel('all'); setShowBookmarksOnly(false); };
 
   return (
     <div className="min-h-screen bg-muted/20">
