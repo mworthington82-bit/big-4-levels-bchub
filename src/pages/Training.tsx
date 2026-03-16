@@ -29,6 +29,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import FlippableCard from "@/components/FlippableCard";
 import RequiredActivityDialog from "@/components/dialogs/RequiredActivityDialog";
+import DepartmentLeaderboard from "@/components/DepartmentLeaderboard";
 import bradfordLogo from "@/assets/bradford-college-logo.jpg";
 import heroBanner from "@/assets/hero-banner.jpg";
 import teamsIllustration from "@/assets/teams-illustration.jpg";
@@ -696,6 +697,11 @@ const Training = () => {
                 </Accordion>
               </div>
             )}
+
+            {/* Department Leaderboard */}
+            <div className="mb-10 animate-fade-in">
+              <DepartmentLeaderboard />
+            </div>
 
             {/* My Learning Summary - always accessible */}
             {selectedLevel && selectedLevel !== 'leader' &&
