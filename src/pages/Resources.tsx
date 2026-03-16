@@ -2,8 +2,9 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Home, Search, ArrowLeft, X, ExternalLink, Play, Download } from 'lucide-react';
+import { Home, Search, ArrowLeft, X, ExternalLink, Play, Download, Bookmark, BookmarkCheck } from 'lucide-react';
 import { resources, searchResources, toolDisplayNames, Resource } from '@/data/resources';
+import CheatSheetButton from '@/components/CheatSheetButton';
 import bradfordLogo from '@/assets/bradford-college-logo.jpg';
 import teamsLogo from '@/assets/teams-logo.png';
 import canvaLogo from '@/assets/canva-logo.jpg';
@@ -61,6 +62,13 @@ const Resources = () => {
   const [selectedTool, setSelectedTool] = useState<ToolFilter>('all');
   const [selectedLevel, setSelectedLevel] = useState<LevelFilter>('all');
   const [filteredResources, setFilteredResources] = useState<Resource[]>(resources);
+  const [bookmarks, setBookmarks] = useState<Set<string>>(new Set());
+  const [showBookmarksOnly, setShowBookmarksOnly] = useState(false);
+
+  useEffect(() => {
+    const stored = localStorage.getItem('bookmarked_resources');
+    if (stored) setBookmarks(new Set(JSON.parse(stored)));
+  }, []);
 
   useEffect(() => { window.scrollTo(0, 0); }, []);
 
@@ -69,8 +77,18 @@ const Resources = () => {
     if (searchQuery.trim()) result = searchResources(searchQuery);
     if (selectedTool !== 'all') result = result.filter((r) => r.tool === selectedTool);
     if (selectedLevel !== 'all') result = result.filter((r) => r.level === selectedLevel || r.level === 'all');
+    if (showBookmarksOnly) result = result.filter((r) => bookmarks.has(r.id));
     setFilteredResources(result);
-  }, [searchQuery, selectedTool, selectedLevel]);
+  }, [searchQuery, selectedTool, selectedLevel, showBookmarksOnly, bookmarks]);
+
+  const toggleBookmark = (id: string) => {
+    setBookmarks((prev) => {
+      const updated = new Set(prev);
+      if (updated.has(id)) updated.delete(id); else updated.add(id);
+      localStorage.setItem('bookmarked_resources', JSON.stringify([...updated]));
+      return updated;
+    });
+  };
 
   const toolButtons = [
     { id: 'teams' as ToolFilter, name: 'MS Teams', logo: teamsLogo, color: '#5B5FC7' },
@@ -89,7 +107,7 @@ const Resources = () => {
   ];
 
   const handleToolSelect = (tool: ToolFilter) => setSelectedTool(selectedTool === tool ? 'all' : tool);
-  const clearFilters = () => { setSearchQuery(''); setSelectedTool('all'); setSelectedLevel('all'); };
+  const clearFilters = () => { setSearchQuery(''); setSelectedTool('all'); setSelectedLevel('all'); setShowBookmarksOnly(false); };
 
   return (
     <div className="min-h-screen bg-muted/20">
@@ -162,8 +180,25 @@ const Resources = () => {
           ))}
         </div>
 
+        {/* Bookmark filter + Cheat Sheets */}
+        <div className="flex flex-wrap justify-center gap-3 mb-6">
+          <button
+            onClick={() => setShowBookmarksOnly(!showBookmarksOnly)}
+            className={`px-5 py-2.5 rounded-full text-sm font-semibold transition-all duration-300 border-2 flex items-center gap-2 ${
+              showBookmarksOnly ? 'border-accent bg-accent/10' : 'border-border bg-card hover:border-accent/50'
+            }`}
+          >
+            {showBookmarksOnly ? <BookmarkCheck className="h-4 w-4 text-accent" /> : <Bookmark className="h-4 w-4" />}
+            My Favourites {bookmarks.size > 0 && `(${bookmarks.size})`}
+          </button>
+          <CheatSheetButton toolId="teams" />
+          <CheatSheetButton toolId="canva" />
+          <CheatSheetButton toolId="edpuzzle" />
+          <CheatSheetButton toolId="copilot" />
+        </div>
+
         {/* Active Filters */}
-        {(selectedTool !== 'all' || selectedLevel !== 'all' || searchQuery) && (
+        {(selectedTool !== 'all' || selectedLevel !== 'all' || searchQuery || showBookmarksOnly) && (
           <div className="flex items-center justify-center gap-2 mb-6">
             <span className="text-sm text-muted-foreground">Active filters:</span>
             {selectedTool !== 'all' && (
@@ -214,7 +249,20 @@ const Resources = () => {
 
                 {/* Card body */}
                 <div className="p-5 flex flex-col flex-1">
-                  <h3 className="font-display text-base font-bold text-foreground mb-2 line-clamp-2">{resource.title}</h3>
+                  <div className="flex items-start justify-between gap-2 mb-2">
+                    <h3 className="font-display text-base font-bold text-foreground line-clamp-2">{resource.title}</h3>
+                    <button
+                      onClick={(e) => { e.stopPropagation(); toggleBookmark(resource.id); }}
+                      className="flex-shrink-0 p-1 rounded hover:bg-muted transition-colors"
+                      aria-label={bookmarks.has(resource.id) ? "Remove from favourites" : "Add to favourites"}
+                    >
+                      {bookmarks.has(resource.id) ? (
+                        <BookmarkCheck className="h-4 w-4 text-accent" />
+                      ) : (
+                        <Bookmark className="h-4 w-4 text-muted-foreground" />
+                      )}
+                    </button>
+                  </div>
                   <p className="text-sm text-muted-foreground mb-3 line-clamp-2 flex-1">{resource.description}</p>
 
                   <div className="flex items-center justify-between gap-2 mt-auto">

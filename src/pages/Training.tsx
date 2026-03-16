@@ -30,6 +30,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import FlippableCard from "@/components/FlippableCard";
 import RequiredActivityDialog from "@/components/dialogs/RequiredActivityDialog";
 import DepartmentLeaderboard from "@/components/DepartmentLeaderboard";
+import ProgressDashboard from "@/components/ProgressDashboard";
+import CheatSheetButton from "@/components/CheatSheetButton";
 import bradfordLogo from "@/assets/bradford-college-logo.jpg";
 import heroBanner from "@/assets/hero-banner.jpg";
 import teamsIllustration from "@/assets/teams-illustration.jpg";
@@ -697,6 +699,11 @@ const Training = () => {
                 </Accordion>
               </div>
             )}
+
+            {/* Progress Dashboard */}
+            <div className="mb-10 animate-fade-in">
+              <ProgressDashboard />
+            </div>
 
             {/* Department Leaderboard */}
             <div className="mb-10 animate-fade-in">
