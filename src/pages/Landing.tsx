@@ -1,8 +1,11 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, CheckCircle } from "lucide-react";
+import { ArrowRight, CheckCircle, KeyRound } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { useToast } from "@/hooks/use-toast";
 import WelcomeDialog from "@/components/dialogs/WelcomeDialog";
 import StudentQuoteCarousel from "@/components/StudentQuoteCarousel";
 import ResourceBankButton from "@/components/ResourceBankButton";
@@ -41,9 +44,36 @@ const toolLevelInfo: Record<string, { explorer: string; practitioner: string; le
 const Landing = () => {
   const navigate = useNavigate();
 
+  const { toast } = useToast();
+  const [logoClickCount, setLogoClickCount] = useState(0);
+  const [showAdminDialog, setShowAdminDialog] = useState(false);
+  const [adminPassword, setAdminPassword] = useState("");
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+  const handleLogoClick = () => {
+    const newCount = logoClickCount + 1;
+    setLogoClickCount(newCount);
+    if (newCount >= 5) {
+      setShowAdminDialog(true);
+      setLogoClickCount(0);
+    }
+  };
+
+  const handleAdminLogin = () => {
+    if (adminPassword === "1610") {
+      sessionStorage.setItem("admin_access_unlocked", "true");
+      setShowAdminDialog(false);
+      setAdminPassword("");
+      toast({ title: "Welcome, Admin!", description: "Training content is now unlocked." });
+      navigate("/training");
+    } else {
+      toast({ title: "Incorrect password", description: "Please try again.", variant: "destructive" });
+      setAdminPassword("");
+    }
+  };
 
   const appChips = [
     { logo: teamsLogo, name: "MS Teams & Forms", desc: "Collaborate and assess", color: "bg-[#5B5FC7]/10 border-[#5B5FC7]/30", key: "MS Teams" },
@@ -60,6 +90,7 @@ const Landing = () => {
   ];
 
   return (
+    <>
     <div className="min-h-screen bg-background">
       <ResourceBankButton />
       <WelcomeDialog />
@@ -67,7 +98,7 @@ const Landing = () => {
       <header className="border-b border-border bg-card shadow-sm">
         <div className="container mx-auto px-4 py-6">
           <div className="flex items-center justify-between">
-            <img src={bradfordLogo} alt="Bradford College logo" className="h-12 object-contain" />
+            <img src={bradfordLogo} alt="Bradford College logo" className="h-12 object-contain cursor-pointer" onClick={handleLogoClick} />
           </div>
         </div>
       </header>
@@ -206,6 +237,29 @@ const Landing = () => {
         </div>
       </main>
     </div>
+
+    <Dialog open={showAdminDialog} onOpenChange={setShowAdminDialog}>
+      <DialogContent className="sm:max-w-sm">
+        <DialogHeader>
+          <DialogTitle className="flex items-center gap-2">
+            <KeyRound className="w-5 h-5 text-primary" />
+            Admin Access
+          </DialogTitle>
+          <DialogDescription>Enter your admin password to unlock training content.</DialogDescription>
+        </DialogHeader>
+        <form onSubmit={(e) => { e.preventDefault(); handleAdminLogin(); }} className="space-y-4">
+          <Input
+            type="password"
+            placeholder="Enter password"
+            value={adminPassword}
+            onChange={(e) => setAdminPassword(e.target.value)}
+            autoFocus
+          />
+          <Button type="submit" className="w-full">Unlock</Button>
+        </form>
+      </DialogContent>
+    </Dialog>
+  </>
   );
 };
 
