@@ -15,6 +15,7 @@ import { ReadAloudButton } from "@/components/ReadAloudButton";
 import NavigationButtons from "@/components/NavigationButtons";
 import LeaderHub from "@/components/leader/LeaderHub";
 import LevelConfirmationDialog from "@/components/dialogs/LevelConfirmationDialog";
+import PrerequisiteChecklistDialog from "@/components/dialogs/PrerequisiteChecklistDialog";
 import LearningModulesDialog from "@/components/dialogs/LearningModulesDialog";
 import LearningObjectivesCarousel from "@/components/LearningObjectivesCarousel";
 import ImpactCarousel from "@/components/ImpactCarousel";
