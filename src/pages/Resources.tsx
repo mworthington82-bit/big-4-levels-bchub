@@ -62,6 +62,13 @@ const Resources = () => {
   const [selectedTool, setSelectedTool] = useState<ToolFilter>('all');
   const [selectedLevel, setSelectedLevel] = useState<LevelFilter>('all');
   const [filteredResources, setFilteredResources] = useState<Resource[]>(resources);
+  const [bookmarks, setBookmarks] = useState<Set<string>>(new Set());
+  const [showBookmarksOnly, setShowBookmarksOnly] = useState(false);
+
+  useEffect(() => {
+    const stored = localStorage.getItem('bookmarked_resources');
+    if (stored) setBookmarks(new Set(JSON.parse(stored)));
+  }, []);
 
   useEffect(() => { window.scrollTo(0, 0); }, []);
 
