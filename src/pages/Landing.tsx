@@ -9,6 +9,8 @@ import { useToast } from "@/hooks/use-toast";
 import WelcomeDialog from "@/components/dialogs/WelcomeDialog";
 import StudentQuoteCarousel from "@/components/StudentQuoteCarousel";
 import ResourceBankButton from "@/components/ResourceBankButton";
+import StaffSpotlight from "@/components/StaffSpotlight";
+import DepartmentLeaderboard from "@/components/DepartmentLeaderboard";
 import bradfordLogo from "@/assets/bradford-college-logo.jpg";
 import teamsLogo from "@/assets/teams-logo.png";
 import canvaLogo from "@/assets/canva-logo.jpg";
