@@ -236,6 +236,29 @@ const Landing = () => {
         </div>
       </main>
     </div>
+
+    <Dialog open={showAdminDialog} onOpenChange={setShowAdminDialog}>
+      <DialogContent className="sm:max-w-sm">
+        <DialogHeader>
+          <DialogTitle className="flex items-center gap-2">
+            <KeyRound className="w-5 h-5 text-primary" />
+            Admin Access
+          </DialogTitle>
+          <DialogDescription>Enter your admin password to unlock training content.</DialogDescription>
+        </DialogHeader>
+        <form onSubmit={(e) => { e.preventDefault(); handleAdminLogin(); }} className="space-y-4">
+          <Input
+            type="password"
+            placeholder="Enter password"
+            value={adminPassword}
+            onChange={(e) => setAdminPassword(e.target.value)}
+            autoFocus
+          />
+          <Button type="submit" className="w-full">Unlock</Button>
+        </form>
+      </DialogContent>
+    </Dialog>
+  </>
   );
 };
 
