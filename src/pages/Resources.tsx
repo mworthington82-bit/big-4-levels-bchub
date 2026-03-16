@@ -77,8 +77,18 @@ const Resources = () => {
     if (searchQuery.trim()) result = searchResources(searchQuery);
     if (selectedTool !== 'all') result = result.filter((r) => r.tool === selectedTool);
     if (selectedLevel !== 'all') result = result.filter((r) => r.level === selectedLevel || r.level === 'all');
+    if (showBookmarksOnly) result = result.filter((r) => bookmarks.has(r.id));
     setFilteredResources(result);
-  }, [searchQuery, selectedTool, selectedLevel]);
+  }, [searchQuery, selectedTool, selectedLevel, showBookmarksOnly, bookmarks]);
+
+  const toggleBookmark = (id: string) => {
+    setBookmarks((prev) => {
+      const updated = new Set(prev);
+      if (updated.has(id)) updated.delete(id); else updated.add(id);
+      localStorage.setItem('bookmarked_resources', JSON.stringify([...updated]));
+      return updated;
+    });
+  };
 
   const toolButtons = [
     { id: 'teams' as ToolFilter, name: 'MS Teams', logo: teamsLogo, color: '#5B5FC7' },
