@@ -180,8 +180,25 @@ const Resources = () => {
           ))}
         </div>
 
+        {/* Bookmark filter + Cheat Sheets */}
+        <div className="flex flex-wrap justify-center gap-3 mb-6">
+          <button
+            onClick={() => setShowBookmarksOnly(!showBookmarksOnly)}
+            className={`px-5 py-2.5 rounded-full text-sm font-semibold transition-all duration-300 border-2 flex items-center gap-2 ${
+              showBookmarksOnly ? 'border-accent bg-accent/10' : 'border-border bg-card hover:border-accent/50'
+            }`}
+          >
+            {showBookmarksOnly ? <BookmarkCheck className="h-4 w-4 text-accent" /> : <Bookmark className="h-4 w-4" />}
+            My Favourites {bookmarks.size > 0 && `(${bookmarks.size})`}
+          </button>
+          <CheatSheetButton toolId="teams" />
+          <CheatSheetButton toolId="canva" />
+          <CheatSheetButton toolId="edpuzzle" />
+          <CheatSheetButton toolId="copilot" />
+        </div>
+
         {/* Active Filters */}
-        {(selectedTool !== 'all' || selectedLevel !== 'all' || searchQuery) && (
+        {(selectedTool !== 'all' || selectedLevel !== 'all' || searchQuery || showBookmarksOnly) && (
           <div className="flex items-center justify-center gap-2 mb-6">
             <span className="text-sm text-muted-foreground">Active filters:</span>
             {selectedTool !== 'all' && (
