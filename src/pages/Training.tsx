@@ -51,6 +51,7 @@ const Training = () => {
   const navigate = useNavigate();
   const [stage, setStage] = useState<Stage>('level-entry');
   const [showLevelConfirmation, setShowLevelConfirmation] = useState(false);
+  const [showPrerequisiteChecklist, setShowPrerequisiteChecklist] = useState(false);
   const [pendingLevel, setPendingLevel] = useState<Level | null>(null);
   const [userName, setUserName] = useState<string>("");
   const toolIllustrations = {
