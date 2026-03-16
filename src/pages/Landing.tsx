@@ -44,9 +44,36 @@ const toolLevelInfo: Record<string, { explorer: string; practitioner: string; le
 const Landing = () => {
   const navigate = useNavigate();
 
+  const { toast } = useToast();
+  const [logoClickCount, setLogoClickCount] = useState(0);
+  const [showAdminDialog, setShowAdminDialog] = useState(false);
+  const [adminPassword, setAdminPassword] = useState("");
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+  const handleLogoClick = () => {
+    const newCount = logoClickCount + 1;
+    setLogoClickCount(newCount);
+    if (newCount >= 5) {
+      setShowAdminDialog(true);
+      setLogoClickCount(0);
+    }
+  };
+
+  const handleAdminLogin = () => {
+    if (adminPassword === "1610") {
+      sessionStorage.setItem("admin_access_unlocked", "true");
+      setShowAdminDialog(false);
+      setAdminPassword("");
+      toast({ title: "Welcome, Admin!", description: "Training content is now unlocked." });
+      navigate("/training");
+    } else {
+      toast({ title: "Incorrect password", description: "Please try again.", variant: "destructive" });
+      setAdminPassword("");
+    }
+  };
 
   const appChips = [
     { logo: teamsLogo, name: "MS Teams & Forms", desc: "Collaborate and assess", color: "bg-[#5B5FC7]/10 border-[#5B5FC7]/30", key: "MS Teams" },
