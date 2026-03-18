@@ -210,7 +210,7 @@ const Inclusion = () => {
         {/* Intro card */}
         <div className="bg-card rounded-2xl border border-border shadow-[var(--shadow-card)] p-6 md:p-8 mb-10 border-l-4 border-l-inclusion">
           <p className="text-muted-foreground leading-relaxed">
-            This section helps you reflect on how confidently you use The Big 4 tools to support inclusion, accessibility, and differentiation for all learners — including those with SEND, ESOL needs, low confidence, or additional learning needs.
+            Welcome to the college-wide Inclusion & Accessibility hub. Here you can see how Bradford College staff are using The Big 4 tools to support every learner — browse inspiring ideas, practical tips, and real stories from colleagues. Your personal inclusion checklists and confidence ratings are embedded within each tool's training module.
           </p>
         </div>
 
