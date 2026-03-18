@@ -7,6 +7,7 @@ import Landing from "./pages/Landing";
 import SelfAssessment from "./pages/SelfAssessment";
 import Training from "./pages/Training";
 import Resources from "./pages/Resources";
+import Inclusion from "./pages/Inclusion";
 import NotFound from "./pages/NotFound";
 import GatedRoute from "./components/GatedRoute";
 
