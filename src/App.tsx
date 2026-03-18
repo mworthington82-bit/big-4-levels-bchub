@@ -24,6 +24,7 @@ const App = () => (
           <Route path="/self-assessment" element={<SelfAssessment />} />
           <Route path="/training" element={<GatedRoute><Training /></GatedRoute>} />
           <Route path="/resources" element={<GatedRoute><Resources /></GatedRoute>} />
+          <Route path="/inclusion" element={<Inclusion />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
