@@ -129,19 +129,6 @@ const Inclusion = () => {
   const [submittingStory, setSubmittingStory] = useState(false);
   const [collegeAverages, setCollegeAverages] = useState<CollegeAverages>({ avgChecked: 0, avgRating: 0, totalResponses: 0 });
 
-  // Checklist state
-  const [checkedItems, setCheckedItems] = useState<Record<string, boolean>>(() => {
-    const saved = localStorage.getItem("inclusion_checklist");
-    return saved ? JSON.parse(saved) : {};
-  });
-  const [activeChecklistTool, setActiveChecklistTool] = useState("MS Teams & Microsoft Forms");
-  const [activeChecklistLevel, setActiveChecklistLevel] = useState<"explorer" | "practitioner" | "leader">("explorer");
-
-  // Confidence ratings
-  const [ratings, setRatings] = useState<Record<string, number>>(() => {
-    const saved = localStorage.getItem("inclusion_ratings");
-    return saved ? JSON.parse(saved) : {};
-  });
 
   useEffect(() => { window.scrollTo(0, 0); }, []);
   useEffect(() => { localStorage.setItem("inclusion_checklist", JSON.stringify(checkedItems)); }, [checkedItems]);
