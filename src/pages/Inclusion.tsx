@@ -274,7 +274,7 @@ const Inclusion = () => {
       <header className="border-b border-border bg-card shadow-sm">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
-            <img src={bradfordLogo} alt="Bradford College logo" className="h-10 object-contain" />
+            <img src={bradfordLogo} alt="Bradford College logo" className="h-10 object-contain cursor-pointer" onClick={() => navigate("/")} />
             <Button variant="ghost" size="sm" onClick={() => navigate("/")} className="gap-2">
               <ArrowLeft className="w-4 h-4" /> Home
             </Button>

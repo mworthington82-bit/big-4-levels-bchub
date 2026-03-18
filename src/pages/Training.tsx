@@ -333,7 +333,7 @@ const Training = () => {
         <header className="border-b border-border bg-card shadow-sm">
           <div className="container mx-auto px-4 py-6">
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-              <img src={bradfordLogo} alt="Bradford College logo" className="h-12 object-contain" />
+              <img src={bradfordLogo} alt="Bradford College logo" className="h-12 object-contain cursor-pointer" onClick={() => navigate("/")} />
               <h1 className="font-display text-xl text-muted-foreground md:text-3xl font-bold text-left my-0 py-0">The Big 4: Level Up</h1>
             </div>
           </div>
@@ -433,7 +433,7 @@ const Training = () => {
         <header className="border-b border-border bg-card shadow-sm">
           <div className="container mx-auto px-4 py-6">
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-              <img src={bradfordLogo} alt="Bradford College logo - a modern design representing educational excellence" className="h-12 object-contain" />
+              <img src={bradfordLogo} alt="Bradford College logo" className="h-12 object-contain cursor-pointer" onClick={() => navigate("/")} />
               <h1 className="font-display text-xl text-muted-foreground md:text-3xl font-bold text-left my-0 py-0">The Big 4: Level Up</h1>
             </div>
           </div>
@@ -538,7 +538,7 @@ const Training = () => {
         <AccessibilityPanel />
         <header className="border-b border-border bg-card shadow-sm">
           <div className="container mx-auto px-4 py-6">
-            <img src={bradfordLogo} alt="Bradford College logo - a modern design representing educational excellence" className="h-12 object-contain" />
+            <img src={bradfordLogo} alt="Bradford College logo" className="h-12 object-contain cursor-pointer" onClick={() => navigate("/")} />
           </div>
         </header>
 
@@ -796,7 +796,7 @@ const Training = () => {
         <header className="border-b border-border bg-card shadow-sm">
           <div className="container mx-auto px-4 py-6">
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-              <img src={bradfordLogo} alt="Bradford College logo" className="h-12 object-contain" />
+              <img src={bradfordLogo} alt="Bradford College logo" className="h-12 object-contain cursor-pointer" onClick={() => navigate("/")} />
               <h1 className="text-xl md:text-2xl font-bold text-foreground">
                 Leader Level – The Big 4
               </h1>
@@ -823,7 +823,7 @@ const Training = () => {
         <AccessibilityPanel />
         <header className="border-b border-border bg-card shadow-sm">
           <div className="container mx-auto px-4 py-6">
-            <img src={bradfordLogo} alt="Bradford College logo - a modern design representing educational excellence" className="h-12 object-contain" />
+            <img src={bradfordLogo} alt="Bradford College logo" className="h-12 object-contain cursor-pointer" onClick={() => navigate("/")} />
           </div>
         </header>
         <main className="container mx-auto px-4 py-12">
@@ -855,7 +855,7 @@ const Training = () => {
         <header className="border-b border-border bg-card shadow-sm">
           <div className="container mx-auto px-4 py-6">
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-              <img src={bradfordLogo} alt="Bradford College logo" className="h-12 object-contain" />
+              <img src={bradfordLogo} alt="Bradford College logo" className="h-12 object-contain cursor-pointer" onClick={() => navigate("/")} />
               <h1 className="font-display text-xl text-muted-foreground md:text-3xl font-bold text-left my-0 py-0">The Big 4: Level Up</h1>
             </div>
           </div>
@@ -880,7 +880,7 @@ const Training = () => {
       <header className="border-b border-border bg-card shadow-sm sticky top-0 z-10">
         <div className="container mx-auto px-4 py-3">
           <div className="flex items-center justify-between mb-2">
-            <img src={bradfordLogo} alt="Bradford College logo" className="h-10 object-contain" />
+            <img src={bradfordLogo} alt="Bradford College logo" className="h-10 object-contain cursor-pointer" onClick={() => navigate("/")} />
             <Button variant="outline" size="sm" onClick={handleRestart} className="border-border hover:bg-accent hover:text-accent-foreground">
               <Home className="mr-2 h-4 w-4" />
               Exit

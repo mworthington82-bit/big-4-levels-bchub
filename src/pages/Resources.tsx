@@ -115,7 +115,7 @@ const Resources = () => {
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <img src={bradfordLogo} alt="Bradford College logo" className="h-10 object-contain" />
+              <img src={bradfordLogo} alt="Bradford College logo" className="h-10 object-contain cursor-pointer" onClick={() => navigate("/")} />
               <h1 className="font-display text-xl md:text-2xl font-bold text-foreground">Training Resources</h1>
             </div>
             <Button variant="outline" onClick={() => navigate('/')} className="border-border hover:bg-accent hover:text-accent-foreground">
