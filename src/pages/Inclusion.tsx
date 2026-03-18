@@ -121,15 +121,6 @@ interface CollegeAverages {
 
 const Inclusion = () => {
   const navigate = useNavigate();
-  const [checkedItems, setCheckedItems] = useState<Record<string, boolean>>(() => {
-    const saved = localStorage.getItem("inclusion_checklist");
-    return saved ? JSON.parse(saved) : {};
-  });
-  const [ratings, setRatings] = useState<Record<string, number>>(() => {
-    const saved = localStorage.getItem("inclusion_ratings");
-    return saved ? JSON.parse(saved) : {};
-  });
-
   // Stories state
   const [stories, setStories] = useState<InclusionStory[]>([]);
   const [storyName, setStoryName] = useState("");
@@ -141,12 +132,7 @@ const Inclusion = () => {
   // College averages
   const [collegeAverages, setCollegeAverages] = useState<CollegeAverages>({ avgChecked: 0, avgRating: 0, totalResponses: 0 });
 
-  // Save submitted flag
-  const [hasSubmitted, setHasSubmitted] = useState(() => !!localStorage.getItem("inclusion_submitted"));
-
   useEffect(() => { window.scrollTo(0, 0); }, []);
-  useEffect(() => { localStorage.setItem("inclusion_checklist", JSON.stringify(checkedItems)); }, [checkedItems]);
-  useEffect(() => { localStorage.setItem("inclusion_ratings", JSON.stringify(ratings)); }, [ratings]);
 
   // Load stories from DB
   const fetchStories = useCallback(async () => {
@@ -176,29 +162,7 @@ const Inclusion = () => {
     fetchAverages();
   }, [fetchStories, fetchAverages]);
 
-  const totalChecked = Object.values(checkedItems).filter(Boolean).length;
   const totalStatements = inclusionChecklist.reduce((sum, t) => sum + t.statements.length, 0);
-
-  const getCelebration = () => {
-    if (totalChecked >= 21) return { text: "You are a champion for inclusive digital practice at Bradford College.", color: "text-inclusion", icon: <PartyPopper className="w-6 h-6" /> };
-    if (totalChecked >= 13) return { text: "You are embedding inclusion confidently — well done.", color: "text-inclusion", icon: <Star className="w-6 h-6" /> };
-    if (totalChecked >= 6) return { text: "You are developing inclusive practice — keep building on this.", color: "text-inclusion", icon: <CheckCircle2 className="w-6 h-6" /> };
-    if (totalChecked >= 1) return { text: "You are making a start — every step towards inclusion matters.", color: "text-inclusion", icon: <Heart className="w-6 h-6" /> };
-    return null;
-  };
-
-  const ratingValues = Object.values(ratings);
-  const avgRating = ratingValues.length > 0 ? ratingValues.reduce((a, b) => a + b, 0) / ratingValues.length : 0;
-
-  const getConfidenceSummary = () => {
-    if (ratingValues.length < 5) return null;
-    if (avgRating <= 2) return { text: "It looks like you are at the start of your inclusion journey. Our Explorer level training will give you practical foundations to build on.", level: "Explorer", color: "text-explorer" };
-    if (avgRating <= 3) return { text: "You are developing strong inclusive habits. The Practitioner level training will help you deepen your skills further.", level: "Practitioner", color: "text-practitioner" };
-    return { text: "You are confidently embedding inclusion in your practice. Consider sharing your expertise through the Leader level Padlets and supporting colleagues.", level: "Leader", color: "text-leader" };
-  };
-
-  const celebration = getCelebration();
-  const confidenceSummary = getConfidenceSummary();
 
   // Submit responses to DB
   const handleSubmitResponses = async () => {
