@@ -880,7 +880,7 @@ const Training = () => {
       <header className="border-b border-border bg-card shadow-sm sticky top-0 z-10">
         <div className="container mx-auto px-4 py-3">
           <div className="flex items-center justify-between mb-2">
-            <img src={bradfordLogo} alt="Bradford College logo" className="h-10 object-contain" />
+            <img src={bradfordLogo} alt="Bradford College logo" className="h-10 object-contain cursor-pointer" onClick={() => navigate("/")} />
             <Button variant="outline" size="sm" onClick={handleRestart} className="border-border hover:bg-accent hover:text-accent-foreground">
               <Home className="mr-2 h-4 w-4" />
               Exit
