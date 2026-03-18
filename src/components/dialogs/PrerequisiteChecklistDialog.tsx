@@ -39,15 +39,23 @@ const prerequisitesByLevel: Record<string, { intro: string; reminder?: string; i
     ],
   },
   leader: {
-    intro: "Before accessing Leader content, please confirm you are familiar with all Explorer and Practitioner level material:",
+    intro: "Before accessing Leader content, please confirm you can do the following from Explorer and Practitioner levels:",
     reminder:
       "Being at Leader level means you are committed to continuously upskilling and ensuring you are fully familiar with all course content across every level — not just your own.",
     items: [
-      { text: "I am familiar with all Explorer level content for MS Teams, Forms, Canva, Edpuzzle, and Copilot", targetLevel: "explorer" },
-      { text: "I am familiar with all Practitioner level content and can apply digital tools purposefully", targetLevel: "practitioner" },
-      { text: "I understand how to use digital tools to enhance teaching and learning outcomes", targetLevel: "practitioner" },
-      { text: "I am confident in mentoring and supporting colleagues with digital tools", targetLevel: "practitioner" },
-      { text: "I am committed to continuously developing my digital skills across all levels", targetLevel: "explorer" },
+      // Explorer-level skills
+      { text: "I know how to share resources, set assignments, and communicate with students using MS Teams", tool: "teams", targetLevel: "explorer" },
+      { text: "I know how to create quizzes and checks for learning using Microsoft Forms", tool: "teams", targetLevel: "explorer" },
+      { text: "I know how to create interactive starter activities and personalised learning experiences using Canva Code", tool: "canva", targetLevel: "explorer" },
+      { text: "I know how to assign interactive videos and track student engagement using Edpuzzle", tool: "edpuzzle", targetLevel: "explorer" },
+      { text: "I know how to write clear prompts in Microsoft Copilot to generate lesson plans, quizzes, and resources", tool: "copilot", targetLevel: "explorer" },
+      // Practitioner-level skills
+      { text: "I know how to use Breakout Rooms, Rubrics, and branching Forms to personalise learning in Teams", tool: "teams", targetLevel: "practitioner" },
+      { text: "I know how to create professional presentations, posters, and accessible resources using Canva templates", tool: "canva", targetLevel: "practitioner" },
+      { text: "I know how to create my own Edpuzzle videos with embedded questions and use analytics to inform teaching", tool: "edpuzzle", targetLevel: "practitioner" },
+      { text: "I know how to use Copilot to create differentiated resources, model answers, and schemes of work", tool: "copilot", targetLevel: "practitioner" },
+      // Commitment
+      { text: "I am confident mentoring colleagues and committed to continuously developing my digital skills across all levels", targetLevel: "practitioner" },
     ],
   },
 };
