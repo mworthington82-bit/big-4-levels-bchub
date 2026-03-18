@@ -170,33 +170,6 @@ const Inclusion = () => {
     }
   };
 
-  // Checklist component data
-  const currentToolData = inclusionChecklist.find(t => t.tool === activeChecklistTool);
-  const currentStatements = currentToolData?.statements.filter(s => s.level === activeChecklistLevel) || [];
-  const getKey = (stmt: any) => {
-    if (!currentToolData) return "";
-    const originalIdx = currentToolData.statements.indexOf(stmt);
-    return `${activeChecklistTool}-${originalIdx}`;
-  };
-  const totalChecked = Object.values(checkedItems).filter(Boolean).length;
-
-  const getChecklistMessage = () => {
-    if (totalChecked >= 21) return "You are a champion for inclusive digital practice at Bradford College. 🏆";
-    if (totalChecked >= 13) return "You are embedding inclusion confidently — well done. ⭐";
-    if (totalChecked >= 6) return "You are developing inclusive practice — keep building on this. 🚀";
-    if (totalChecked >= 1) return "You are making a start — every step towards inclusion matters. 🌱";
-    return null;
-  };
-
-  // Confidence signposting
-  const ratingValues = Object.values(ratings);
-  const getSignpostMessage = () => {
-    if (ratingValues.length === 0) return null;
-    const avg = ratingValues.reduce((a, b) => a + b, 0) / ratingValues.length;
-    if (avg >= 4) return "🎉 You are modelling inclusive digital practice — amazing! Explore Leader level training and share your expertise on the Padlets.";
-    if (avg >= 3) return "💪 You are building confidence — great progress! Practitioner level training will take you further.";
-    return "🌱 You are beginning your inclusion journey — brilliant! Start with Explorer level training to build your foundation.";
-  };
 
   return (
     <div className="min-h-screen bg-background">
