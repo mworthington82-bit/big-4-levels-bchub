@@ -56,6 +56,11 @@ All colors MUST be HSL.
     --tool-copilot: 207 100% 42%;
     --tool-copilot-bg: 207 100% 95%;
 
+    --inclusion: 280 60% 50%;
+    --inclusion-dark: 280 55% 40%;
+    --inclusion-light: 280 65% 65%;
+    --inclusion-bg: 280 60% 96%;
+
     --gold: 39 90% 56%;
     --gold-dark: 33 76% 43%;
     --gold-light: 40 100% 96%;
