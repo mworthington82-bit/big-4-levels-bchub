@@ -22,11 +22,6 @@ const toolLogos: Record<string, string> = {
   "Copilot": copilotLogo,
 };
 
-const levelBadgeColors: Record<string, string> = {
-  explorer: "bg-explorer/20 text-explorer",
-  practitioner: "bg-practitioner/20 text-practitioner",
-  leader: "bg-leader/20 text-leader",
-};
 
 const PADLET_URL = "https://padlet.com/bradfordcollegedigitalskills";
 
