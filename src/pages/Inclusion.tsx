@@ -131,8 +131,6 @@ const Inclusion = () => {
 
 
   useEffect(() => { window.scrollTo(0, 0); }, []);
-  useEffect(() => { localStorage.setItem("inclusion_checklist", JSON.stringify(checkedItems)); }, [checkedItems]);
-  useEffect(() => { localStorage.setItem("inclusion_ratings", JSON.stringify(ratings)); }, [ratings]);
 
   const fetchStories = useCallback(async () => {
     const { data } = await supabase.from("inclusion_stories").select("*").order("created_at", { ascending: false }).limit(50);
