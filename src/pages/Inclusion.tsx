@@ -3,9 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
-import { ArrowLeft, Heart, Users, ExternalLink, PartyPopper, Star, CheckCircle2, Lightbulb, MessageSquareHeart, Send, BarChart3, TrendingUp, Sparkles, BookOpen, Palette, Video, Bot, Monitor } from "lucide-react";
-import { inclusionChecklist, confidenceSkills, confidenceScale } from "@/data/inclusionData";
-import { Checkbox } from "@/components/ui/checkbox";
+import { ArrowLeft, Heart, Users, ExternalLink, Star, Lightbulb, MessageSquareHeart, Send, BarChart3, TrendingUp, Sparkles, BookOpen, Palette, Video, Bot, Monitor } from "lucide-react";
+import { inclusionChecklist } from "@/data/inclusionData";
 import { AccessibilityPanel } from "@/components/AccessibilityPanel";
 import ResourceBankButton from "@/components/ResourceBankButton";
 import { supabase } from "@/integrations/supabase/client";
@@ -23,11 +22,6 @@ const toolLogos: Record<string, string> = {
   "Copilot": copilotLogo,
 };
 
-const levelBadgeColors: Record<string, string> = {
-  explorer: "bg-explorer/20 text-explorer",
-  practitioner: "bg-practitioner/20 text-practitioner",
-  leader: "bg-leader/20 text-leader",
-};
 
 const PADLET_URL = "https://padlet.com/bradfordcollegedigitalskills";
 
@@ -95,15 +89,6 @@ const inclusionTips = [
   { tool: "General", icon: <Sparkles className="w-5 h-5" />, tip: "Always provide content in multiple formats (text, video, audio, interactive) — multi-modal access is the foundation of inclusion.", color: "bg-inclusion/10 border-inclusion/30 text-inclusion" },
 ];
 
-// Session ID for anonymous tracking
-const getSessionId = () => {
-  let id = localStorage.getItem("inclusion_session_id");
-  if (!id) {
-    id = crypto.randomUUID();
-    localStorage.setItem("inclusion_session_id", id);
-  }
-  return id;
-};
 
 interface InclusionStory {
   id: string;
@@ -122,15 +107,6 @@ interface CollegeAverages {
 
 const Inclusion = () => {
   const navigate = useNavigate();
-  const [checkedItems, setCheckedItems] = useState<Record<string, boolean>>(() => {
-    const saved = localStorage.getItem("inclusion_checklist");
-    return saved ? JSON.parse(saved) : {};
-  });
-  const [ratings, setRatings] = useState<Record<string, number>>(() => {
-    const saved = localStorage.getItem("inclusion_ratings");
-    return saved ? JSON.parse(saved) : {};
-  });
-
   // Stories state
   const [stories, setStories] = useState<InclusionStory[]>([]);
   const [storyName, setStoryName] = useState("");
@@ -142,12 +118,7 @@ const Inclusion = () => {
   // College averages
   const [collegeAverages, setCollegeAverages] = useState<CollegeAverages>({ avgChecked: 0, avgRating: 0, totalResponses: 0 });
 
-  // Save submitted flag
-  const [hasSubmitted, setHasSubmitted] = useState(() => !!localStorage.getItem("inclusion_submitted"));
-
   useEffect(() => { window.scrollTo(0, 0); }, []);
-  useEffect(() => { localStorage.setItem("inclusion_checklist", JSON.stringify(checkedItems)); }, [checkedItems]);
-  useEffect(() => { localStorage.setItem("inclusion_ratings", JSON.stringify(ratings)); }, [ratings]);
 
   // Load stories from DB
   const fetchStories = useCallback(async () => {
@@ -177,71 +148,7 @@ const Inclusion = () => {
     fetchAverages();
   }, [fetchStories, fetchAverages]);
 
-  const totalChecked = Object.values(checkedItems).filter(Boolean).length;
   const totalStatements = inclusionChecklist.reduce((sum, t) => sum + t.statements.length, 0);
-
-  const getCelebration = () => {
-    if (totalChecked >= 21) return { text: "You are a champion for inclusive digital practice at Bradford College.", color: "text-inclusion", icon: <PartyPopper className="w-6 h-6" /> };
-    if (totalChecked >= 13) return { text: "You are embedding inclusion confidently — well done.", color: "text-inclusion", icon: <Star className="w-6 h-6" /> };
-    if (totalChecked >= 6) return { text: "You are developing inclusive practice — keep building on this.", color: "text-inclusion", icon: <CheckCircle2 className="w-6 h-6" /> };
-    if (totalChecked >= 1) return { text: "You are making a start — every step towards inclusion matters.", color: "text-inclusion", icon: <Heart className="w-6 h-6" /> };
-    return null;
-  };
-
-  const ratingValues = Object.values(ratings);
-  const avgRating = ratingValues.length > 0 ? ratingValues.reduce((a, b) => a + b, 0) / ratingValues.length : 0;
-
-  const getConfidenceSummary = () => {
-    if (ratingValues.length < 5) return null;
-    if (avgRating <= 2) return { text: "It looks like you are at the start of your inclusion journey. Our Explorer level training will give you practical foundations to build on.", level: "Explorer", color: "text-explorer" };
-    if (avgRating <= 3) return { text: "You are developing strong inclusive habits. The Practitioner level training will help you deepen your skills further.", level: "Practitioner", color: "text-practitioner" };
-    return { text: "You are confidently embedding inclusion in your practice. Consider sharing your expertise through the Leader level Padlets and supporting colleagues.", level: "Leader", color: "text-leader" };
-  };
-
-  const celebration = getCelebration();
-  const confidenceSummary = getConfidenceSummary();
-
-  // Submit responses to DB
-  const handleSubmitResponses = async () => {
-    const sessionId = getSessionId();
-    const ratingVals = Object.values(ratings);
-    const avg = ratingVals.length > 0 ? ratingVals.reduce((a, b) => a + b, 0) / ratingVals.length : 0;
-
-    // Upsert by session_id - first try update, then insert
-    const { data: existing } = await supabase
-      .from("inclusion_responses")
-      .select("id")
-      .eq("session_id", sessionId)
-      .maybeSingle();
-
-    if (existing) {
-      await supabase
-        .from("inclusion_responses")
-        .update({
-          checklist_data: checkedItems as any,
-          ratings_data: ratings as any,
-          total_checked: totalChecked,
-          avg_rating: Math.round(avg * 100) / 100,
-          updated_at: new Date().toISOString(),
-        })
-        .eq("session_id", sessionId);
-    } else {
-      await supabase
-        .from("inclusion_responses")
-        .insert({
-          session_id: sessionId,
-          checklist_data: checkedItems as any,
-          ratings_data: ratings as any,
-          total_checked: totalChecked,
-          avg_rating: Math.round(avg * 100) / 100,
-        });
-    }
-
-    localStorage.setItem("inclusion_submitted", "true");
-    setHasSubmitted(true);
-    fetchAverages();
-    toast({ title: "Responses saved!", description: "Your inclusion reflection has been recorded. Thank you!" });
-  };
 
   // Submit story
   const handleSubmitStory = async () => {
@@ -344,170 +251,7 @@ const Inclusion = () => {
           </div>
         )}
 
-        {/* ═══ PART 1 — Reflection Checklist ═══ */}
-        <div className="mb-12">
-          <div className="flex items-center gap-3 mb-6">
-            <div className="p-2.5 rounded-xl bg-inclusion/10">
-              <Heart className="w-6 h-6 text-inclusion" />
-            </div>
-            <div>
-              <h2 className="font-display text-2xl font-bold text-foreground">Part 1 — "Thanks to this, I can now..."</h2>
-              <p className="text-sm text-muted-foreground">Tick every statement that applies to your current practice</p>
-            </div>
-          </div>
-
-          <div className="space-y-6">
-            {inclusionChecklist.map((toolData) => (
-              <div key={toolData.tool} className="bg-card rounded-2xl border border-border shadow-[var(--shadow-card)] overflow-hidden">
-                <div className="flex items-center gap-3 p-5 border-b border-border bg-muted/30">
-                  {toolLogos[toolData.tool] ? (
-                    <img src={toolLogos[toolData.tool]} alt={toolData.tool} className="h-8 w-8 rounded-lg object-contain bg-white p-0.5" />
-                  ) : (
-                    <div className="h-8 w-8 rounded-lg bg-inclusion/20 flex items-center justify-center text-lg">{toolData.icon}</div>
-                  )}
-                  <h3 className="font-display font-bold text-lg text-foreground">{toolData.tool}</h3>
-                </div>
-
-                {/* Spotlight callout */}
-                <div className="mx-5 mt-4 p-4 rounded-xl bg-inclusion/5 border border-inclusion/15">
-                  <p className="text-sm text-muted-foreground leading-relaxed italic">
-                    <span className="font-semibold text-inclusion not-italic">Inclusion Spotlight:</span> {toolData.spotlight}
-                  </p>
-                </div>
-
-                <div className="p-5 space-y-3">
-                  {toolData.statements.map((stmt, idx) => {
-                    const key = `${toolData.tool}-${idx}`;
-                    return (
-                      <label key={key} className="flex items-start gap-3 p-3 rounded-xl hover:bg-muted/30 transition-colors cursor-pointer group">
-                        <Checkbox
-                          checked={!!checkedItems[key]}
-                          onCheckedChange={(checked) => setCheckedItems(prev => ({ ...prev, [key]: !!checked }))}
-                          className="mt-0.5 border-inclusion data-[state=checked]:bg-inclusion data-[state=checked]:border-inclusion"
-                        />
-                        <div className="flex-1">
-                          <p className={`text-sm leading-relaxed ${checkedItems[key] ? "text-foreground" : "text-muted-foreground"} group-hover:text-foreground transition-colors`}>
-                            {stmt.text}
-                          </p>
-                          <span className={`inline-block mt-1 text-xs px-2 py-0.5 rounded-full ${levelBadgeColors[stmt.level]}`}>
-                            {stmt.level.charAt(0).toUpperCase() + stmt.level.slice(1)}
-                          </span>
-                        </div>
-                      </label>
-                    );
-                  })}
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {/* Progress + Celebration */}
-          <div className="mt-8 bg-card rounded-2xl border border-border shadow-[var(--shadow-card)] p-6">
-            <div className="flex items-center justify-between mb-3">
-              <span className="text-sm font-medium text-muted-foreground">Your progress</span>
-              <span className="text-sm font-bold text-inclusion">{totalChecked} / {totalStatements}</span>
-            </div>
-            <div className="w-full h-3 bg-muted rounded-full overflow-hidden">
-              <div
-                className="h-full bg-gradient-to-r from-inclusion to-[hsl(var(--inclusion-light))] rounded-full transition-all duration-500"
-                style={{ width: `${(totalChecked / totalStatements) * 100}%` }}
-              />
-            </div>
-            {celebration && (
-              <div className="mt-4 flex items-center gap-3 p-4 rounded-xl bg-inclusion/10 border border-inclusion/20 animate-fade-in">
-                <span className="text-inclusion">{celebration.icon}</span>
-                <p className={`font-semibold text-sm ${celebration.color}`}>{celebration.text}</p>
-              </div>
-            )}
-          </div>
-        </div>
-
-        {/* ═══ PART 2 — Confidence Rating ═══ */}
-        <div className="mb-12">
-          <div className="flex items-center gap-3 mb-6">
-            <div className="p-2.5 rounded-xl bg-inclusion/10">
-              <Star className="w-6 h-6 text-inclusion" />
-            </div>
-            <div>
-              <h2 className="font-display text-2xl font-bold text-foreground">Part 2 — Inclusion Confidence Rating</h2>
-              <p className="text-sm text-muted-foreground">Rate how confidently you apply each skill in your practice</p>
-            </div>
-          </div>
-
-          {/* Scale legend */}
-          <div className="bg-card rounded-2xl border border-border shadow-[var(--shadow-card)] p-5 mb-6">
-            <div className="grid grid-cols-1 sm:grid-cols-5 gap-2">
-              {confidenceScale.map((s) => (
-                <div key={s.value} className="flex items-center gap-2 text-xs text-muted-foreground">
-                  <span className="font-bold text-inclusion text-sm">{s.value}</span>
-                  <span>{s.label}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="space-y-4">
-            {confidenceSkills.map((skill) => (
-              <div key={skill.id} className="bg-card rounded-2xl border border-border shadow-[var(--shadow-card)] p-5">
-                <div className="flex items-start justify-between gap-4 mb-3">
-                  <div>
-                    <span className="text-xs font-semibold text-inclusion uppercase tracking-wider">{skill.category}</span>
-                    <p className="text-sm text-foreground mt-1 leading-relaxed">{skill.text}</p>
-                  </div>
-                </div>
-                <div className="flex gap-2">
-                  {confidenceScale.map((s) => (
-                    <button
-                      key={s.value}
-                      onClick={() => setRatings(prev => ({ ...prev, [skill.id]: s.value }))}
-                      className={`flex-1 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200 border ${
-                        ratings[skill.id] === s.value
-                          ? "bg-inclusion text-white border-inclusion shadow-md scale-105"
-                          : "bg-muted/50 text-muted-foreground border-border hover:bg-inclusion/10 hover:border-inclusion/30"
-                      }`}
-                    >
-                      {s.value}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {/* Confidence Summary */}
-          {confidenceSummary && (
-            <div className="mt-8 bg-card rounded-2xl border border-border shadow-[var(--shadow-card)] p-6 border-l-4 border-l-inclusion animate-fade-in">
-              <div className="flex items-start gap-3">
-                <PartyPopper className="w-6 h-6 text-inclusion flex-shrink-0 mt-0.5" />
-                <div>
-                  <p className="font-semibold text-foreground mb-1">Your Inclusion Confidence Summary</p>
-                  <p className="text-sm text-muted-foreground leading-relaxed">{confidenceSummary.text}</p>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="mt-3 border-inclusion/30 text-inclusion hover:bg-inclusion/10"
-                    onClick={() => navigate("/training")}
-                  >
-                    Go to {confidenceSummary.level} Training
-                  </Button>
-                </div>
-              </div>
-            </div>
-          )}
-        </div>
-
-        {/* ═══ SAVE RESPONSES BUTTON ═══ */}
-        <div className="mb-12 text-center">
-          <Button
-            size="lg"
-            onClick={handleSubmitResponses}
-            className="bg-inclusion hover:bg-inclusion-dark text-white rounded-xl gap-2 py-6 px-8 text-lg font-semibold shadow-lg"
-          >
-            <CheckCircle2 className="w-5 h-5" />
-            {hasSubmitted ? "Update My Responses" : "Save My Responses"}
-          </Button>
-          <p className="text-xs text-muted-foreground mt-3">Your responses contribute to the Bradford College averages above</p>
-        </div>
+        {/* Note: Checklists and confidence ratings are now embedded in each tool's training module */}
 
         {/* ═══ INCLUSION TIPS WALL ═══ */}
         <div className="mb-12">
