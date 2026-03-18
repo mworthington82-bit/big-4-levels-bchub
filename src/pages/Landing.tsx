@@ -10,7 +10,7 @@ import WelcomeDialog from "@/components/dialogs/WelcomeDialog";
 import StudentQuoteCarousel from "@/components/StudentQuoteCarousel";
 import ResourceBankButton from "@/components/ResourceBankButton";
 import StaffSpotlight from "@/components/StaffSpotlight";
-import DepartmentLeaderboard from "@/components/DepartmentLeaderboard";
+
 import bradfordLogo from "@/assets/bradford-college-logo.jpg";
 import teamsLogo from "@/assets/teams-logo.png";
 import canvaLogo from "@/assets/canva-logo.jpg";
@@ -197,10 +197,6 @@ const Landing = () => {
           {/* Staff Spotlight */}
           <StaffSpotlight />
 
-          {/* Department Leaderboard */}
-          <div className="max-w-4xl mx-auto mb-12 animate-fade-in">
-            <DepartmentLeaderboard />
-          </div>
 
           {/* Action Buttons */}
           <div className="max-w-4xl mx-auto grid md:grid-cols-2 gap-6">
