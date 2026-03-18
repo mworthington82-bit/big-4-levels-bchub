@@ -823,7 +823,7 @@ const Training = () => {
         <AccessibilityPanel />
         <header className="border-b border-border bg-card shadow-sm">
           <div className="container mx-auto px-4 py-6">
-            <img src={bradfordLogo} alt="Bradford College logo - a modern design representing educational excellence" className="h-12 object-contain" />
+            <img src={bradfordLogo} alt="Bradford College logo" className="h-12 object-contain cursor-pointer" onClick={() => navigate("/")} />
           </div>
         </header>
         <main className="container mx-auto px-4 py-12">
