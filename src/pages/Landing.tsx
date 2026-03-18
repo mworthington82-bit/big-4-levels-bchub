@@ -244,8 +244,28 @@ const Landing = () => {
               </Button>
             </div>
           </div>
+
+          {/* Inclusion & Accessibility */}
+          <div className="max-w-4xl mx-auto mt-8 animate-fade-in" style={{ animationDelay: '300ms' }}>
+            <div
+              className="bg-card rounded-2xl border border-border shadow-[var(--shadow-card)] p-6 hover:shadow-[var(--shadow-hover)] transition-all duration-300 cursor-pointer border-l-4 border-l-inclusion"
+              onClick={() => navigate("/inclusion")}
+            >
+              <div className="flex items-center gap-4">
+                <div className="p-3 rounded-xl bg-inclusion/10">
+                  <Heart className="w-7 h-7 text-inclusion" />
+                </div>
+                <div className="flex-1">
+                  <h3 className="font-display text-xl font-bold text-foreground">Inclusion & Accessibility</h3>
+                  <p className="text-muted-foreground text-sm mt-1">
+                    Reflect on how you use digital tools to remove barriers, personalise learning, and support every student
+                  </p>
+                </div>
+                <ArrowRight className="w-5 h-5 text-inclusion flex-shrink-0" />
+              </div>
+            </div>
+          </div>
         </div>
-      </main>
     </div>
 
     <Dialog open={showAdminDialog} onOpenChange={setShowAdminDialog}>
