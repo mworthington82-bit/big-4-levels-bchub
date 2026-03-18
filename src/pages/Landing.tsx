@@ -197,10 +197,6 @@ const Landing = () => {
           {/* Staff Spotlight */}
           <StaffSpotlight />
 
-          {/* Department Leaderboard */}
-          <div className="max-w-4xl mx-auto mb-12 animate-fade-in">
-            <DepartmentLeaderboard />
-          </div>
 
           {/* Action Buttons */}
           <div className="max-w-4xl mx-auto grid md:grid-cols-2 gap-6">
