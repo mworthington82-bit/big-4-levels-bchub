@@ -164,48 +164,6 @@ const Inclusion = () => {
 
   const totalStatements = inclusionChecklist.reduce((sum, t) => sum + t.statements.length, 0);
 
-  // Submit responses to DB
-  const handleSubmitResponses = async () => {
-    const sessionId = getSessionId();
-    const ratingVals = Object.values(ratings);
-    const avg = ratingVals.length > 0 ? ratingVals.reduce((a, b) => a + b, 0) / ratingVals.length : 0;
-
-    // Upsert by session_id - first try update, then insert
-    const { data: existing } = await supabase
-      .from("inclusion_responses")
-      .select("id")
-      .eq("session_id", sessionId)
-      .maybeSingle();
-
-    if (existing) {
-      await supabase
-        .from("inclusion_responses")
-        .update({
-          checklist_data: checkedItems as any,
-          ratings_data: ratings as any,
-          total_checked: totalChecked,
-          avg_rating: Math.round(avg * 100) / 100,
-          updated_at: new Date().toISOString(),
-        })
-        .eq("session_id", sessionId);
-    } else {
-      await supabase
-        .from("inclusion_responses")
-        .insert({
-          session_id: sessionId,
-          checklist_data: checkedItems as any,
-          ratings_data: ratings as any,
-          total_checked: totalChecked,
-          avg_rating: Math.round(avg * 100) / 100,
-        });
-    }
-
-    localStorage.setItem("inclusion_submitted", "true");
-    setHasSubmitted(true);
-    fetchAverages();
-    toast({ title: "Responses saved!", description: "Your inclusion reflection has been recorded. Thank you!" });
-  };
-
   // Submit story
   const handleSubmitStory = async () => {
     if (!storyName.trim() || !storyDept || !storyTool || !storyText.trim()) {
