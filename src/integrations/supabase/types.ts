@@ -112,6 +112,72 @@ export type Database = {
         }
         Relationships: []
       }
+      inclusion_responses: {
+        Row: {
+          avg_rating: number
+          checklist_data: Json
+          created_at: string
+          department: string
+          full_name: string
+          id: string
+          ratings_data: Json
+          session_id: string
+          total_checked: number
+          updated_at: string
+        }
+        Insert: {
+          avg_rating?: number
+          checklist_data?: Json
+          created_at?: string
+          department?: string
+          full_name?: string
+          id?: string
+          ratings_data?: Json
+          session_id: string
+          total_checked?: number
+          updated_at?: string
+        }
+        Update: {
+          avg_rating?: number
+          checklist_data?: Json
+          created_at?: string
+          department?: string
+          full_name?: string
+          id?: string
+          ratings_data?: Json
+          session_id?: string
+          total_checked?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      inclusion_stories: {
+        Row: {
+          created_at: string
+          department: string
+          full_name: string
+          id: string
+          story: string
+          tool_name: string
+        }
+        Insert: {
+          created_at?: string
+          department: string
+          full_name: string
+          id?: string
+          story: string
+          tool_name: string
+        }
+        Update: {
+          created_at?: string
+          department?: string
+          full_name?: string
+          id?: string
+          story?: string
+          tool_name?: string
+        }
+        Relationships: []
+      }
       leader_evidence: {
         Row: {
           case_study_how: string | null
