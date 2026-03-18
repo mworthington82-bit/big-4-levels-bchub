@@ -88,21 +88,6 @@ const inclusionTips = [
   { tool: "General", icon: <Sparkles className="w-5 h-5" />, tip: "Always provide content in multiple formats (text, video, audio, interactive) — multi-modal access is the foundation of inclusion.", color: "bg-inclusion/10 border-inclusion/30 text-inclusion" },
 ];
 
-// All 12 confidence skills
-const ALL_CONFIDENCE_SKILLS = [
-  { id: "c1", text: "I use digital tools to ensure all learners can access materials independently", category: "Access" },
-  { id: "c2", text: "I use digital tools to give timely, personalised feedback to individual learners", category: "Feedback" },
-  { id: "c3", text: "I design resources that are visually clear and reduce cognitive overload", category: "Design" },
-  { id: "c4", text: "I use branching or adaptive tools to personalise learning pathways", category: "Personalisation" },
-  { id: "c5", text: "I use data from digital tools to identify and support struggling learners", category: "Data" },
-  { id: "c6", text: "I create differentiated or scaffolded versions of resources using digital tools", category: "Differentiation" },
-  { id: "c7", text: "I use digital tools to support ESOL learners with language and vocabulary", category: "ESOL" },
-  { id: "c8", text: "I use digital tools to build learner confidence and independence", category: "Independence" },
-  { id: "c9", text: "I embed accessibility principles into everything I create digitally", category: "Accessibility" },
-  { id: "c10", text: "I use AI tools responsibly to support learners with additional needs", category: "AI" },
-  { id: "c11", text: "I use immersive or multisensory technology to engage hard-to-reach learners", category: "Immersive" },
-  { id: "c12", text: "I model and share inclusive digital practice with colleagues", category: "Leadership" },
-];
 
 interface InclusionStory {
   id: string;
