@@ -309,6 +309,36 @@ export type Database = {
         }
         Relationships: []
       }
+      reflections: {
+        Row: {
+          created_at: string
+          department: string
+          id: string
+          level: string
+          other_department: string | null
+          reflection_text: string
+          tool_name: string
+        }
+        Insert: {
+          created_at?: string
+          department: string
+          id?: string
+          level: string
+          other_department?: string | null
+          reflection_text: string
+          tool_name: string
+        }
+        Update: {
+          created_at?: string
+          department?: string
+          id?: string
+          level?: string
+          other_department?: string | null
+          reflection_text?: string
+          tool_name?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
