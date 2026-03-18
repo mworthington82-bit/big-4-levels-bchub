@@ -1228,6 +1228,16 @@ const Training = () => {
                   <InclusionEmbed tool={selectedTool} level={selectedLevel} brandColor={currentBrandColor} />
                 )}
 
+                {/* Inclusion Idea Checker */}
+                {selectedTool && selectedLevel && (
+                  <InclusionIdeaChecker
+                    tool={selectedTool}
+                    level={selectedLevel}
+                    brandColor={currentBrandColor}
+                    onContinue={() => setStage('reflection')}
+                  />
+                )}
+
                 
                 <Button
               onClick={() => setStage('reflection')}
