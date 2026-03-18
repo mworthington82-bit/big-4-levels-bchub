@@ -89,15 +89,6 @@ const inclusionTips = [
   { tool: "General", icon: <Sparkles className="w-5 h-5" />, tip: "Always provide content in multiple formats (text, video, audio, interactive) — multi-modal access is the foundation of inclusion.", color: "bg-inclusion/10 border-inclusion/30 text-inclusion" },
 ];
 
-// Session ID for anonymous tracking
-const getSessionId = () => {
-  let id = localStorage.getItem("inclusion_session_id");
-  if (!id) {
-    id = crypto.randomUUID();
-    localStorage.setItem("inclusion_session_id", id);
-  }
-  return id;
-};
 
 interface InclusionStory {
   id: string;
