@@ -1,17 +1,28 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Reflection, Department } from "@/types/learning";
+import { Department } from "@/types/learning";
 import { MessageSquare, Send, Users, Star, Lightbulb, Lock } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
 interface ReflectionWallProps {
   toolName: string;
   level: string;
   onComplete: () => void;
+}
+
+interface ReflectionRow {
+  id: string;
+  tool_name: string;
+  level: string;
+  reflection_text: string;
+  department: string;
+  other_department: string | null;
+  created_at: string;
 }
 
 const DEPARTMENTS: Department[] = [
@@ -43,31 +54,37 @@ const departmentColors: Record<string, string> = {
 };
 
 const ReflectionWall = ({ toolName, level, onComplete }: ReflectionWallProps) => {
-  const [reflections, setReflections] = useState<Reflection[]>([]);
+  const [reflections, setReflections] = useState<ReflectionRow[]>([]);
   const [newReflection, setNewReflection] = useState("");
   const [department, setDepartment] = useState<Department | "">("");
   const [otherDepartment, setOtherDepartment] = useState("");
   const [hasSubmitted, setHasSubmitted] = useState(false);
   const [starredIds, setStarredIds] = useState<Set<string>>(new Set());
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const fetchReflections = useCallback(async () => {
+    const { data, error } = await supabase
+      .from('reflections')
+      .select('*')
+      .eq('tool_name', toolName)
+      .order('created_at', { ascending: false })
+      .limit(50);
+
+    if (!error && data) {
+      setReflections(data as ReflectionRow[]);
+    }
+  }, [toolName]);
 
   useEffect(() => {
-    const stored = localStorage.getItem('reflections');
-    if (stored) {
-      const allReflections: Reflection[] = JSON.parse(stored);
-      const filtered = allReflections
-        .filter(r => r.toolName === toolName)
-        .sort((a, b) => b.timestamp - a.timestamp)
-        .slice(0, 50);
-      setReflections(filtered);
-    }
-
+    fetchReflections();
+    // Check if user already submitted for this tool+level
     const submitted = localStorage.getItem(`submitted_reflection_${toolName}_${level}`);
     if (submitted) {
       setHasSubmitted(true);
     }
-  }, [toolName, level]);
+  }, [toolName, level, fetchReflections]);
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!newReflection.trim() || !department) {
       toast({
         title: "Please complete all fields",
@@ -86,28 +103,33 @@ const ReflectionWall = ({ toolName, level, onComplete }: ReflectionWallProps) =>
       return;
     }
 
-    const reflection: Reflection = {
-      id: Date.now().toString(),
-      toolName,
+    setIsSubmitting(true);
+
+    const { error } = await supabase.from('reflections').insert({
+      tool_name: toolName,
       level,
-      text: newReflection,
-      author: "Anonymous",
-      department: department as Department,
-      otherDepartment: department === 'Other' ? otherDepartment : undefined,
-      timestamp: Date.now(),
-    };
+      reflection_text: newReflection.trim(),
+      department: department as string,
+      other_department: department === 'Other' ? otherDepartment.trim() : null,
+    });
 
-    const stored = localStorage.getItem('reflections');
-    const allReflections: Reflection[] = stored ? JSON.parse(stored) : [];
-    allReflections.push(reflection);
-    localStorage.setItem('reflections', JSON.stringify(allReflections));
+    setIsSubmitting(false);
+
+    if (error) {
+      toast({
+        title: "Error saving reflection",
+        description: "Please try again.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     localStorage.setItem(`submitted_reflection_${toolName}_${level}`, 'true');
-
-    setReflections([reflection, ...reflections].slice(0, 50));
     setHasSubmitted(true);
     setNewReflection("");
     setDepartment("");
     setOtherDepartment("");
+    fetchReflections();
     
     toast({
       title: "Reflection added!",
@@ -128,8 +150,8 @@ const ReflectionWall = ({ toolName, level, onComplete }: ReflectionWallProps) =>
   };
 
   const groupedReflections = reflections.reduce((acc, reflection) => {
-    const deptKey = reflection.department === 'Other' && reflection.otherDepartment 
-      ? `Other: ${reflection.otherDepartment}` 
+    const deptKey = reflection.department === 'Other' && reflection.other_department 
+      ? `Other: ${reflection.other_department}` 
       : reflection.department || 'Unknown';
     
     if (!acc[deptKey]) {
@@ -137,7 +159,7 @@ const ReflectionWall = ({ toolName, level, onComplete }: ReflectionWallProps) =>
     }
     acc[deptKey].push(reflection);
     return acc;
-  }, {} as Record<string, Reflection[]>);
+  }, {} as Record<string, ReflectionRow[]>);
 
   const sortedDepartments = Object.keys(groupedReflections).sort();
 
@@ -178,76 +200,75 @@ const ReflectionWall = ({ toolName, level, onComplete }: ReflectionWallProps) =>
         </p>
       </div>
 
-      {/* Submission form */}
-      {!hasSubmitted && (
-        <Card className="border-2 border-accent/40 bg-card shadow-lg rounded-2xl overflow-hidden">
-          <div className="h-1.5 bg-gradient-to-r from-accent via-primary to-accent" />
-          <CardHeader>
-            <CardTitle className="text-2xl text-card-foreground flex items-center gap-2">
-              <MessageSquare className="h-6 w-6 text-accent" />
-              Share Your Reflection
-            </CardTitle>
-            <CardDescription className="text-muted-foreground">
-              Your reflection helps inspire colleagues across the college
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="department" className="text-card-foreground">Department</Label>
-              <Select 
-                value={department} 
-                onValueChange={(value) => setDepartment(value as Department)}
-              >
-                <SelectTrigger className="border-border bg-background text-foreground">
-                  <SelectValue placeholder="Select your department" />
-                </SelectTrigger>
-                <SelectContent className="bg-card border-border z-50">
-                  {DEPARTMENTS.map((dept) => (
-                    <SelectItem key={dept} value={dept} className="text-card-foreground">
-                      {dept}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
+      {/* Submission form — always visible */}
+      <Card className="border-2 border-accent/40 bg-card shadow-lg rounded-2xl overflow-hidden">
+        <div className="h-1.5 bg-gradient-to-r from-accent via-primary to-accent" />
+        <CardHeader>
+          <CardTitle className="text-2xl text-card-foreground flex items-center gap-2">
+            <MessageSquare className="h-6 w-6 text-accent" />
+            Share Your Reflection
+          </CardTitle>
+          <CardDescription className="text-muted-foreground">
+            Your reflection helps inspire colleagues across the college
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="department" className="text-card-foreground">Department</Label>
+            <Select 
+              value={department} 
+              onValueChange={(value) => setDepartment(value as Department)}
+            >
+              <SelectTrigger className="border-border bg-background text-foreground">
+                <SelectValue placeholder="Select your department" />
+              </SelectTrigger>
+              <SelectContent className="bg-card border-border z-50">
+                {DEPARTMENTS.map((dept) => (
+                  <SelectItem key={dept} value={dept} className="text-card-foreground">
+                    {dept}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
 
-            {department === 'Other' && (
-              <div className="space-y-2">
-                <Label htmlFor="otherDepartment" className="text-card-foreground">Please specify your department</Label>
-                <input
-                  id="otherDepartment"
-                  placeholder="Enter your department name"
-                  value={otherDepartment}
-                  onChange={(e) => setOtherDepartment(e.target.value)}
-                  className="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-                />
-              </div>
-            )}
-            
+          {department === 'Other' && (
             <div className="space-y-2">
-              <Label htmlFor="reflection" className="text-card-foreground">Your Reflection</Label>
-              <Textarea
-                id="reflection"
-                placeholder="How would YOU use this tool in your teaching next week? Share your ideas to inspire colleagues..."
-                value={newReflection}
-                onChange={(e) => setNewReflection(e.target.value)}
-                rows={4}
-                className="border-border bg-background text-foreground resize-none"
+              <Label htmlFor="otherDepartment" className="text-card-foreground">Please specify your department</Label>
+              <input
+                id="otherDepartment"
+                placeholder="Enter your department name"
+                value={otherDepartment}
+                onChange={(e) => setOtherDepartment(e.target.value)}
+                className="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
               />
             </div>
+          )}
+          
+          <div className="space-y-2">
+            <Label htmlFor="reflection" className="text-card-foreground">Your Reflection</Label>
+            <Textarea
+              id="reflection"
+              placeholder="How would YOU use this tool in your teaching next week? Share your ideas to inspire colleagues..."
+              value={newReflection}
+              onChange={(e) => setNewReflection(e.target.value)}
+              rows={4}
+              className="border-border bg-background text-foreground resize-none"
+            />
+          </div>
 
-            <Button
-              onClick={handleSubmit}
-              className="w-full bg-accent hover:bg-accent/90"
-            >
-              <Send className="mr-2 h-4 w-4" />
-              Share Reflection
-            </Button>
-          </CardContent>
-        </Card>
-      )}
+          <Button
+            onClick={handleSubmit}
+            disabled={isSubmitting}
+            className="w-full bg-accent hover:bg-accent/90"
+          >
+            <Send className="mr-2 h-4 w-4" />
+            {isSubmitting ? 'Saving...' : 'Share Reflection'}
+          </Button>
+        </CardContent>
+      </Card>
 
-      {/* Reflections Gallery — Mind-map style radial cards */}
+      {/* Reflections Gallery */}
       {sortedDepartments.length > 0 && (
         <div className="space-y-6">
           <div className="text-center">
@@ -255,16 +276,13 @@ const ReflectionWall = ({ toolName, level, onComplete }: ReflectionWallProps) =>
             <p className="text-sm text-muted-foreground">Ideas from across the college</p>
           </div>
           
-          {/* Radial / scattered layout */}
           <div className="relative">
-            {/* Central prompt node */}
             <div className="flex justify-center mb-6">
               <div className="bg-accent text-accent-foreground rounded-full px-6 py-3 font-semibold text-sm shadow-lg">
                 How will you use {toolName}?
               </div>
             </div>
 
-            {/* Department clusters */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
               {sortedDepartments.map((deptName) => {
                 const baseDept = deptName.startsWith('Other:') ? 'Other' : deptName;
@@ -283,10 +301,10 @@ const ReflectionWall = ({ toolName, level, onComplete }: ReflectionWallProps) =>
                     <div className="space-y-3">
                       {groupedReflections[deptName].map((reflection) => (
                         <div key={reflection.id} className="bg-card/80 backdrop-blur-sm rounded-xl p-3 shadow-sm border border-white/50">
-                          <p className="text-sm text-card-foreground leading-relaxed line-clamp-4">{reflection.text}</p>
+                          <p className="text-sm text-card-foreground leading-relaxed line-clamp-4">{reflection.reflection_text}</p>
                           <div className="flex items-center justify-between mt-2">
                             <span className="text-xs text-muted-foreground">
-                              {new Date(reflection.timestamp).toLocaleDateString('en-GB')}
+                              {new Date(reflection.created_at).toLocaleDateString('en-GB')}
                             </span>
                             <button
                               onClick={() => handleStar(reflection.id)}
