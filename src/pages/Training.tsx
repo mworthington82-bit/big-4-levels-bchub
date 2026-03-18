@@ -31,6 +31,7 @@ import FlippableCard from "@/components/FlippableCard";
 import RequiredActivityDialog from "@/components/dialogs/RequiredActivityDialog";
 import DepartmentLeaderboard from "@/components/DepartmentLeaderboard";
 import ProgressDashboard from "@/components/ProgressDashboard";
+import InclusionEmbed from "@/components/InclusionEmbed";
 import CheatSheetButton from "@/components/CheatSheetButton";
 import bradfordLogo from "@/assets/bradford-college-logo.jpg";
 import heroBanner from "@/assets/hero-banner.jpg";
