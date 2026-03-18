@@ -112,6 +112,54 @@ export type Database = {
         }
         Relationships: []
       }
+      inclusion_ideas: {
+        Row: {
+          ai_feedback_full: string | null
+          ai_feedback_rating: string | null
+          ai_feedback_strengths: string | null
+          ai_feedback_stretch: string | null
+          created_at: string
+          department: string
+          id: string
+          idea_text: string
+          inclusion_rating: string | null
+          level: string
+          show_name: boolean
+          staff_name: string | null
+          tool_name: string
+        }
+        Insert: {
+          ai_feedback_full?: string | null
+          ai_feedback_rating?: string | null
+          ai_feedback_strengths?: string | null
+          ai_feedback_stretch?: string | null
+          created_at?: string
+          department: string
+          id?: string
+          idea_text: string
+          inclusion_rating?: string | null
+          level: string
+          show_name?: boolean
+          staff_name?: string | null
+          tool_name: string
+        }
+        Update: {
+          ai_feedback_full?: string | null
+          ai_feedback_rating?: string | null
+          ai_feedback_strengths?: string | null
+          ai_feedback_stretch?: string | null
+          created_at?: string
+          department?: string
+          id?: string
+          idea_text?: string
+          inclusion_rating?: string | null
+          level?: string
+          show_name?: boolean
+          staff_name?: string | null
+          tool_name?: string
+        }
+        Relationships: []
+      }
       inclusion_responses: {
         Row: {
           avg_rating: number

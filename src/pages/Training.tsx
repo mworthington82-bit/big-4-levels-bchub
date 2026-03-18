@@ -32,6 +32,7 @@ import RequiredActivityDialog from "@/components/dialogs/RequiredActivityDialog"
 import DepartmentLeaderboard from "@/components/DepartmentLeaderboard";
 import ProgressDashboard from "@/components/ProgressDashboard";
 import InclusionEmbed from "@/components/InclusionEmbed";
+import InclusionIdeaChecker from "@/components/InclusionIdeaChecker";
 import CheatSheetButton from "@/components/CheatSheetButton";
 import bradfordLogo from "@/assets/bradford-college-logo.jpg";
 import heroBanner from "@/assets/hero-banner.jpg";
@@ -1226,6 +1227,16 @@ const Training = () => {
                 {/* Inclusion Embed - checklist + confidence for this tool/level */}
                 {selectedTool && selectedLevel && selectedLevel !== 'leader' && (
                   <InclusionEmbed tool={selectedTool} level={selectedLevel} brandColor={currentBrandColor} />
+                )}
+
+                {/* Inclusion Idea Checker */}
+                {selectedTool && selectedLevel && (
+                  <InclusionIdeaChecker
+                    tool={selectedTool}
+                    level={selectedLevel}
+                    brandColor={currentBrandColor}
+                    onContinue={() => setStage('reflection')}
+                  />
                 )}
 
                 
