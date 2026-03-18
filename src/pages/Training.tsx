@@ -1223,6 +1223,11 @@ const Training = () => {
               staffBenefits={pathway.benefits.staff}
               collegeBenefits={pathway.benefits.college} />
 
+                {/* Inclusion Embed - checklist + confidence for this tool/level */}
+                {selectedTool && selectedLevel && selectedLevel !== 'leader' && (
+                  <InclusionEmbed tool={selectedTool} level={selectedLevel} brandColor={currentBrandColor} />
+                )}
+
                 
                 <Button
               onClick={() => setStage('reflection')}
