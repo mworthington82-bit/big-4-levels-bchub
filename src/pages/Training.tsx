@@ -796,7 +796,7 @@ const Training = () => {
         <header className="border-b border-border bg-card shadow-sm">
           <div className="container mx-auto px-4 py-6">
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-              <img src={bradfordLogo} alt="Bradford College logo" className="h-12 object-contain" />
+              <img src={bradfordLogo} alt="Bradford College logo" className="h-12 object-contain cursor-pointer" onClick={() => navigate("/")} />
               <h1 className="text-xl md:text-2xl font-bold text-foreground">
                 Leader Level – The Big 4
               </h1>
