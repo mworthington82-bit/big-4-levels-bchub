@@ -93,6 +93,12 @@ export default {
           DEFAULT: "hsl(var(--leader))",
           bg: "hsl(var(--leader-bg))",
         },
+        inclusion: {
+          DEFAULT: "hsl(var(--inclusion))",
+          dark: "hsl(var(--inclusion-dark))",
+          light: "hsl(var(--inclusion-light))",
+          bg: "hsl(var(--inclusion-bg))",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",

@@ -7,6 +7,7 @@ import Landing from "./pages/Landing";
 import SelfAssessment from "./pages/SelfAssessment";
 import Training from "./pages/Training";
 import Resources from "./pages/Resources";
+import Inclusion from "./pages/Inclusion";
 import NotFound from "./pages/NotFound";
 import GatedRoute from "./components/GatedRoute";
 
@@ -23,6 +24,7 @@ const App = () => (
           <Route path="/self-assessment" element={<SelfAssessment />} />
           <Route path="/training" element={<GatedRoute><Training /></GatedRoute>} />
           <Route path="/resources" element={<GatedRoute><Resources /></GatedRoute>} />
+          <Route path="/inclusion" element={<Inclusion />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
