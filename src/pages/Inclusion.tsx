@@ -3,10 +3,12 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
-import { ArrowLeft, Heart, Users, ExternalLink, Star, Lightbulb, MessageSquareHeart, Send, BarChart3, TrendingUp, Sparkles, BookOpen, Palette, Video, Bot, Monitor } from "lucide-react";
-import { inclusionChecklist } from "@/data/inclusionData";
+import { Checkbox } from "@/components/ui/checkbox";
+import { ArrowLeft, Heart, Users, ExternalLink, Star, Lightbulb, MessageSquareHeart, Send, BarChart3, TrendingUp, Sparkles, BookOpen, Palette, Video, Bot, Monitor, CheckCircle2 } from "lucide-react";
+import { inclusionChecklist, confidenceSkills, confidenceScale } from "@/data/inclusionData";
 import { AccessibilityPanel } from "@/components/AccessibilityPanel";
 import ResourceBankButton from "@/components/ResourceBankButton";
+import InclusionIdeasWall from "@/components/InclusionIdeasWall";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 import bradfordLogo from "@/assets/bradford-college-logo.jpg";
@@ -21,7 +23,6 @@ const toolLogos: Record<string, string> = {
   "Canva": canvaLogo,
   "Copilot": copilotLogo,
 };
-
 
 const PADLET_URL = "https://padlet.com/bradfordcollegedigitalskills";
 
@@ -75,7 +76,6 @@ const departmentColors: Record<string, string> = {
   "Other": "bg-gray-100 text-gray-800 border-gray-200",
 };
 
-// Static inclusion tips
 const inclusionTips = [
   { tool: "MS Teams", icon: <BookOpen className="w-5 h-5" />, tip: "Pin important resources in your Teams channel so SEND and ESOL learners can always find them without scrolling.", color: "bg-[#5B5FC7]/10 border-[#5B5FC7]/30 text-[#5B5FC7]" },
   { tool: "MS Forms", icon: <BookOpen className="w-5 h-5" />, tip: "Use branching in Forms to create personalised question paths — students only see questions relevant to their level.", color: "bg-[#5B5FC7]/10 border-[#5B5FC7]/30 text-[#5B5FC7]" },
@@ -89,6 +89,21 @@ const inclusionTips = [
   { tool: "General", icon: <Sparkles className="w-5 h-5" />, tip: "Always provide content in multiple formats (text, video, audio, interactive) — multi-modal access is the foundation of inclusion.", color: "bg-inclusion/10 border-inclusion/30 text-inclusion" },
 ];
 
+// All 12 confidence skills
+const ALL_CONFIDENCE_SKILLS = [
+  { id: "c1", text: "I use digital tools to ensure all learners can access materials independently", category: "Access" },
+  { id: "c2", text: "I use digital tools to give timely, personalised feedback to individual learners", category: "Feedback" },
+  { id: "c3", text: "I design resources that are visually clear and reduce cognitive overload", category: "Design" },
+  { id: "c4", text: "I use branching or adaptive tools to personalise learning pathways", category: "Personalisation" },
+  { id: "c5", text: "I use data from digital tools to identify and support struggling learners", category: "Data" },
+  { id: "c6", text: "I create differentiated or scaffolded versions of resources using digital tools", category: "Differentiation" },
+  { id: "c7", text: "I use digital tools to support ESOL learners with language and vocabulary", category: "ESOL" },
+  { id: "c8", text: "I use digital tools to build learner confidence and independence", category: "Independence" },
+  { id: "c9", text: "I embed accessibility principles into everything I create digitally", category: "Accessibility" },
+  { id: "c10", text: "I use AI tools responsibly to support learners with additional needs", category: "AI" },
+  { id: "c11", text: "I use immersive or multisensory technology to engage hard-to-reach learners", category: "Immersive" },
+  { id: "c12", text: "I model and share inclusive digital practice with colleagues", category: "Leadership" },
+];
 
 interface InclusionStory {
   id: string;
@@ -107,34 +122,39 @@ interface CollegeAverages {
 
 const Inclusion = () => {
   const navigate = useNavigate();
-  // Stories state
   const [stories, setStories] = useState<InclusionStory[]>([]);
   const [storyName, setStoryName] = useState("");
   const [storyDept, setStoryDept] = useState("");
   const [storyTool, setStoryTool] = useState("");
   const [storyText, setStoryText] = useState("");
   const [submittingStory, setSubmittingStory] = useState(false);
-
-  // College averages
   const [collegeAverages, setCollegeAverages] = useState<CollegeAverages>({ avgChecked: 0, avgRating: 0, totalResponses: 0 });
 
-  useEffect(() => { window.scrollTo(0, 0); }, []);
+  // Checklist state
+  const [checkedItems, setCheckedItems] = useState<Record<string, boolean>>(() => {
+    const saved = localStorage.getItem("inclusion_checklist");
+    return saved ? JSON.parse(saved) : {};
+  });
+  const [activeChecklistTool, setActiveChecklistTool] = useState("MS Teams & Microsoft Forms");
+  const [activeChecklistLevel, setActiveChecklistLevel] = useState<"explorer" | "practitioner" | "leader">("explorer");
 
-  // Load stories from DB
+  // Confidence ratings
+  const [ratings, setRatings] = useState<Record<string, number>>(() => {
+    const saved = localStorage.getItem("inclusion_ratings");
+    return saved ? JSON.parse(saved) : {};
+  });
+
+  useEffect(() => { window.scrollTo(0, 0); }, []);
+  useEffect(() => { localStorage.setItem("inclusion_checklist", JSON.stringify(checkedItems)); }, [checkedItems]);
+  useEffect(() => { localStorage.setItem("inclusion_ratings", JSON.stringify(ratings)); }, [ratings]);
+
   const fetchStories = useCallback(async () => {
-    const { data } = await supabase
-      .from("inclusion_stories")
-      .select("*")
-      .order("created_at", { ascending: false })
-      .limit(50);
+    const { data } = await supabase.from("inclusion_stories").select("*").order("created_at", { ascending: false }).limit(50);
     if (data) setStories(data as InclusionStory[]);
   }, []);
 
-  // Load college averages
   const fetchAverages = useCallback(async () => {
-    const { data } = await supabase
-      .from("inclusion_responses")
-      .select("total_checked, avg_rating");
+    const { data } = await supabase.from("inclusion_responses").select("total_checked, avg_rating");
     if (data && data.length > 0) {
       const totalResponses = data.length;
       const avgChecked = data.reduce((s, r) => s + (r.total_checked || 0), 0) / totalResponses;
@@ -143,14 +163,10 @@ const Inclusion = () => {
     }
   }, []);
 
-  useEffect(() => {
-    fetchStories();
-    fetchAverages();
-  }, [fetchStories, fetchAverages]);
+  useEffect(() => { fetchStories(); fetchAverages(); }, [fetchStories, fetchAverages]);
 
   const totalStatements = inclusionChecklist.reduce((sum, t) => sum + t.statements.length, 0);
 
-  // Submit story
   const handleSubmitStory = async () => {
     if (!storyName.trim() || !storyDept || !storyTool || !storyText.trim()) {
       toast({ title: "Please complete all fields", variant: "destructive" });
@@ -158,10 +174,7 @@ const Inclusion = () => {
     }
     setSubmittingStory(true);
     const { error } = await supabase.from("inclusion_stories").insert({
-      full_name: storyName.trim(),
-      department: storyDept,
-      tool_name: storyTool,
-      story: storyText.trim(),
+      full_name: storyName.trim(), department: storyDept, tool_name: storyTool, story: storyText.trim(),
     });
     setSubmittingStory(false);
     if (error) {
@@ -171,6 +184,34 @@ const Inclusion = () => {
       setStoryName(""); setStoryDept(""); setStoryTool(""); setStoryText("");
       fetchStories();
     }
+  };
+
+  // Checklist component data
+  const currentToolData = inclusionChecklist.find(t => t.tool === activeChecklistTool);
+  const currentStatements = currentToolData?.statements.filter(s => s.level === activeChecklistLevel) || [];
+  const getKey = (stmt: any) => {
+    if (!currentToolData) return "";
+    const originalIdx = currentToolData.statements.indexOf(stmt);
+    return `${activeChecklistTool}-${originalIdx}`;
+  };
+  const totalChecked = Object.values(checkedItems).filter(Boolean).length;
+
+  const getChecklistMessage = () => {
+    if (totalChecked >= 21) return "You are a champion for inclusive digital practice at Bradford College. 🏆";
+    if (totalChecked >= 13) return "You are embedding inclusion confidently — well done. ⭐";
+    if (totalChecked >= 6) return "You are developing inclusive practice — keep building on this. 🚀";
+    if (totalChecked >= 1) return "You are making a start — every step towards inclusion matters. 🌱";
+    return null;
+  };
+
+  // Confidence signposting
+  const ratingValues = Object.values(ratings);
+  const getSignpostMessage = () => {
+    if (ratingValues.length === 0) return null;
+    const avg = ratingValues.reduce((a, b) => a + b, 0) / ratingValues.length;
+    if (avg >= 4) return "🎉 You are modelling inclusive digital practice — amazing! Explore Leader level training and share your expertise on the Padlets.";
+    if (avg >= 3) return "💪 You are building confidence — great progress! Practitioner level training will take you further.";
+    return "🌱 You are beginning your inclusion journey — brilliant! Start with Explorer level training to build your foundation.";
   };
 
   return (
@@ -202,7 +243,7 @@ const Inclusion = () => {
               Inclusion & <span className="text-[hsl(39,90%,70%)]">Accessibility</span>
             </h1>
             <p className="text-white/85 text-base md:text-lg leading-relaxed max-w-2xl mx-auto">
-              Digital tools are not just about efficiency — they are one of the most powerful ways we can remove barriers, personalise learning, and ensure every student can access, engage with, and succeed in their education.
+              Digital tools are not just about efficiency — they are one of the most powerful ways we can remove barriers, personalise learning, and ensure every learner can access, engage with, and succeed in their education.
             </p>
           </div>
         </div>
@@ -251,7 +292,125 @@ const Inclusion = () => {
           </div>
         )}
 
-        {/* Note: Checklists and confidence ratings are now embedded in each tool's training module */}
+        {/* ═══ COMPONENT 1 — CHECKLIST ═══ */}
+        <div className="mb-12">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="p-2.5 rounded-xl bg-inclusion/10">
+              <CheckCircle2 className="w-6 h-6 text-inclusion" />
+            </div>
+            <div>
+              <h2 className="font-display text-2xl font-bold text-foreground">"Thanks to this, I can now..."</h2>
+              <p className="text-sm text-muted-foreground">Tick every statement that applies to your current practice</p>
+            </div>
+          </div>
+
+          {/* Tool tabs */}
+          <div className="flex flex-wrap gap-2 mb-4">
+            {inclusionChecklist.map(t => (
+              <button
+                key={t.tool}
+                onClick={() => setActiveChecklistTool(t.tool)}
+                className={`px-3 py-1.5 rounded-full text-xs font-semibold transition-all border ${
+                  activeChecklistTool === t.tool
+                    ? "bg-inclusion text-white border-inclusion"
+                    : "bg-card text-muted-foreground border-border hover:border-inclusion/30"
+                }`}
+              >
+                {t.tool}
+              </button>
+            ))}
+          </div>
+
+          {/* Level tabs */}
+          <div className="flex gap-2 mb-4">
+            {(["explorer", "practitioner", "leader"] as const).map(l => (
+              <button
+                key={l}
+                onClick={() => setActiveChecklistLevel(l)}
+                className={`px-3 py-1.5 rounded-full text-xs font-semibold capitalize transition-all border ${
+                  activeChecklistLevel === l
+                    ? "bg-inclusion/20 text-inclusion border-inclusion/30"
+                    : "bg-card text-muted-foreground border-border hover:border-inclusion/30"
+                }`}
+              >
+                {l}
+              </button>
+            ))}
+          </div>
+
+          <div className="bg-card rounded-2xl border border-border shadow-[var(--shadow-card)] p-5 space-y-3">
+            {currentStatements.length > 0 ? currentStatements.map(stmt => {
+              const key = getKey(stmt);
+              return (
+                <label key={key} className="flex items-start gap-3 p-3 rounded-xl hover:bg-muted/30 transition-colors cursor-pointer group">
+                  <Checkbox
+                    checked={!!checkedItems[key]}
+                    onCheckedChange={(checked) => setCheckedItems(prev => ({ ...prev, [key]: !!checked }))}
+                    className="mt-0.5 border-inclusion data-[state=checked]:bg-inclusion data-[state=checked]:border-inclusion"
+                  />
+                  <p className={`text-sm leading-relaxed flex-1 ${checkedItems[key] ? "text-foreground" : "text-muted-foreground"} group-hover:text-foreground transition-colors`}>
+                    {stmt.text}
+                  </p>
+                </label>
+              );
+            }) : (
+              <p className="text-sm text-muted-foreground text-center py-4">No statements available for this tool and level combination.</p>
+            )}
+          </div>
+
+          {getChecklistMessage() && (
+            <p className="text-sm font-semibold text-inclusion mt-4 text-center">{getChecklistMessage()}</p>
+          )}
+        </div>
+
+        {/* ═══ COMPONENT 2 — CONFIDENCE RATING ═══ */}
+        <div className="mb-12">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="p-2.5 rounded-xl bg-inclusion/10">
+              <Star className="w-6 h-6 text-inclusion" />
+            </div>
+            <div>
+              <h2 className="font-display text-2xl font-bold text-foreground">Inclusion Confidence Rating</h2>
+              <p className="text-sm text-muted-foreground">Rate how confidently you apply each skill (1 = Not yet, 5 = I model this)</p>
+            </div>
+          </div>
+
+          <div className="bg-card rounded-2xl border border-border shadow-[var(--shadow-card)] p-5 space-y-5">
+            {ALL_CONFIDENCE_SKILLS.map(skill => (
+              <div key={skill.id}>
+                <div className="mb-2">
+                  <span className="text-[10px] font-semibold text-inclusion uppercase tracking-wider">{skill.category}</span>
+                  <p className="text-sm text-foreground leading-relaxed">{skill.text}</p>
+                </div>
+                <div className="flex gap-2">
+                  {confidenceScale.map(s => (
+                    <button
+                      key={s.value}
+                      onClick={() => setRatings(prev => ({ ...prev, [skill.id]: s.value }))}
+                      className={`flex-1 py-2 rounded-xl text-xs font-semibold transition-all duration-200 border ${
+                        ratings[skill.id] === s.value
+                          ? "bg-inclusion text-white border-inclusion shadow-md scale-105"
+                          : "bg-muted/50 text-muted-foreground border-border hover:bg-inclusion/10 hover:border-inclusion/30"
+                      }`}
+                      aria-label={`Rate ${s.value} - ${s.label}`}
+                    >
+                      {s.value}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {getSignpostMessage() && (
+            <p className="text-sm font-semibold text-inclusion mt-4 text-center">{getSignpostMessage()}</p>
+          )}
+        </div>
+
+        {/* ═══ COMPONENT 3 — IDEAS WALL ═══ */}
+        <div className="mb-12">
+          <InclusionIdeasWall />
+        </div>
 
         {/* ═══ INCLUSION TIPS WALL ═══ */}
         <div className="mb-12">
@@ -286,11 +445,10 @@ const Inclusion = () => {
             </div>
             <div>
               <h2 className="font-display text-2xl font-bold text-foreground">Share Your Inclusion Story</h2>
-              <p className="text-sm text-muted-foreground">Tell us how you have used digital tools to make learning more inclusive for your students</p>
+              <p className="text-sm text-muted-foreground">Tell us how you have used digital tools to make learning more inclusive for your learners</p>
             </div>
           </div>
 
-          {/* Submission form */}
           <div className="bg-card rounded-2xl border border-border shadow-[var(--shadow-card)] p-6 mb-6">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
               <div>
@@ -299,11 +457,7 @@ const Inclusion = () => {
               </div>
               <div>
                 <label className="text-xs font-semibold text-muted-foreground mb-1.5 block">Department</label>
-                <select
-                  value={storyDept}
-                  onChange={(e) => setStoryDept(e.target.value)}
-                  className="w-full h-10 rounded-xl border border-input bg-background px-3 text-sm"
-                >
+                <select value={storyDept} onChange={(e) => setStoryDept(e.target.value)} className="w-full h-10 rounded-xl border border-input bg-background px-3 text-sm">
                   <option value="">Select department...</option>
                   {DEPARTMENTS.map(d => <option key={d} value={d}>{d}</option>)}
                 </select>
@@ -311,23 +465,14 @@ const Inclusion = () => {
             </div>
             <div className="mb-4">
               <label className="text-xs font-semibold text-muted-foreground mb-1.5 block">Which tool did you use?</label>
-              <select
-                value={storyTool}
-                onChange={(e) => setStoryTool(e.target.value)}
-                className="w-full h-10 rounded-xl border border-input bg-background px-3 text-sm"
-              >
+              <select value={storyTool} onChange={(e) => setStoryTool(e.target.value)} className="w-full h-10 rounded-xl border border-input bg-background px-3 text-sm">
                 <option value="">Select tool...</option>
                 {TOOL_OPTIONS.map(t => <option key={t} value={t}>{t}</option>)}
               </select>
             </div>
             <div className="mb-4">
               <label className="text-xs font-semibold text-muted-foreground mb-1.5 block">Your Inclusion Story</label>
-              <Textarea
-                value={storyText}
-                onChange={(e) => setStoryText(e.target.value)}
-                placeholder="Share how you used a digital tool to remove a barrier, support a learner, or make your teaching more accessible..."
-                className="rounded-xl min-h-[100px]"
-              />
+              <Textarea value={storyText} onChange={(e) => setStoryText(e.target.value)} placeholder="Share how you used a digital tool to remove a barrier, support a learner, or make your teaching more accessible..." className="rounded-xl min-h-[100px]" />
             </div>
             <Button onClick={handleSubmitStory} disabled={submittingStory} className="bg-inclusion hover:bg-inclusion-dark text-white rounded-xl gap-2">
               <Send className="w-4 h-4" />
@@ -335,7 +480,6 @@ const Inclusion = () => {
             </Button>
           </div>
 
-          {/* Stories display */}
           {stories.length > 0 && (
             <div className="space-y-4">
               <p className="text-sm font-semibold text-muted-foreground">{stories.length} inclusion {stories.length === 1 ? 'story' : 'stories'} shared by staff</p>
@@ -376,7 +520,7 @@ const Inclusion = () => {
           )}
         </div>
 
-        {/* Share on Padlet button */}
+        {/* Share on Padlet */}
         <div className="text-center pb-12">
           <a href={PADLET_URL} target="_blank" rel="noopener noreferrer">
             <Button size="lg" variant="outline" className="border-inclusion/30 text-inclusion hover:bg-inclusion/10 rounded-xl gap-2 py-6 px-8 text-lg font-semibold">
