@@ -1233,21 +1233,6 @@ const Training = () => {
               staffBenefits={pathway.benefits.staff}
               collegeBenefits={pathway.benefits.college} />
 
-                {/* Inclusion Embed - checklist + confidence for this tool/level */}
-                {selectedTool && selectedLevel && selectedLevel !== 'leader' && (
-                  <InclusionEmbed tool={selectedTool} level={selectedLevel} brandColor={currentBrandColor} />
-                )}
-
-                {/* Inclusion Idea Checker */}
-                {selectedTool && selectedLevel && (
-                  <InclusionIdeaChecker
-                    tool={selectedTool}
-                    level={selectedLevel}
-                    brandColor={currentBrandColor}
-                    onContinue={() => setStage('reflection')}
-                  />
-                )}
-
                 
                 <Button
               onClick={() => setStage('reflection')}
