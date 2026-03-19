@@ -29,8 +29,6 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import FlippableCard from "@/components/FlippableCard";
 import RequiredActivityDialog from "@/components/dialogs/RequiredActivityDialog";
-import DepartmentLeaderboard from "@/components/DepartmentLeaderboard";
-import ProgressDashboard from "@/components/ProgressDashboard";
 import InclusionEmbed from "@/components/InclusionEmbed";
 import InclusionIdeaChecker from "@/components/InclusionIdeaChecker";
 import CheatSheetButton from "@/components/CheatSheetButton";
