@@ -29,8 +29,6 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import FlippableCard from "@/components/FlippableCard";
 import RequiredActivityDialog from "@/components/dialogs/RequiredActivityDialog";
-import DepartmentLeaderboard from "@/components/DepartmentLeaderboard";
-import ProgressDashboard from "@/components/ProgressDashboard";
 import InclusionEmbed from "@/components/InclusionEmbed";
 import InclusionIdeaChecker from "@/components/InclusionIdeaChecker";
 import CheatSheetButton from "@/components/CheatSheetButton";
@@ -702,15 +700,26 @@ const Training = () => {
               </div>
             )}
 
-            {/* Progress Dashboard */}
-            <div className="mb-10 animate-fade-in">
-              <ProgressDashboard />
-            </div>
+            {/* Inclusion Section - after Immersive Learning */}
+            {selectedTool && selectedLevel && selectedLevel !== 'leader' && (
+              <div className="mb-10 animate-fade-in">
+                <InclusionEmbed tool={selectedTool} level={selectedLevel} brandColor="#7C3AED" />
+              </div>
+            )}
 
-            {/* Department Leaderboard */}
-            <div className="mb-10 animate-fade-in">
-              <DepartmentLeaderboard />
-            </div>
+            {selectedTool && selectedLevel && (
+              <div className="mb-10 animate-fade-in">
+                <InclusionIdeaChecker
+                  tool={selectedTool}
+                  level={selectedLevel}
+                  brandColor="#7C3AED"
+                  onContinue={() => {
+                    const toolData = tools.find(t => t.id === selectedTool);
+                    if (toolData) handleToolSelect(selectedTool);
+                  }}
+                />
+              </div>
+            )}
 
             {/* My Learning Summary - always accessible */}
             {selectedLevel && selectedLevel !== 'leader' &&
@@ -1223,21 +1232,6 @@ const Training = () => {
               studentBenefits={pathway.benefits.students}
               staffBenefits={pathway.benefits.staff}
               collegeBenefits={pathway.benefits.college} />
-
-                {/* Inclusion Embed - checklist + confidence for this tool/level */}
-                {selectedTool && selectedLevel && selectedLevel !== 'leader' && (
-                  <InclusionEmbed tool={selectedTool} level={selectedLevel} brandColor={currentBrandColor} />
-                )}
-
-                {/* Inclusion Idea Checker */}
-                {selectedTool && selectedLevel && (
-                  <InclusionIdeaChecker
-                    tool={selectedTool}
-                    level={selectedLevel}
-                    brandColor={currentBrandColor}
-                    onContinue={() => setStage('reflection')}
-                  />
-                )}
 
                 
                 <Button
