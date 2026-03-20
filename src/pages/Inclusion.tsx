@@ -1,13 +1,11 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
-import { ArrowLeft, Heart, Users, ExternalLink, Star, Lightbulb, MessageSquareHeart, Send, BarChart3, TrendingUp, Sparkles, BookOpen, Palette, Video, Bot, Monitor } from "lucide-react";
-import { inclusionChecklist } from "@/data/inclusionData";
+import { ArrowLeft, Heart, Users, ExternalLink, Star, Lightbulb, MessageSquareHeart, Send, Sparkles, BookOpen, Palette, Video, Bot, Monitor, ChevronDown, ChevronUp } from "lucide-react";
 import { AccessibilityPanel } from "@/components/AccessibilityPanel";
 import ResourceBankButton from "@/components/ResourceBankButton";
-import InclusionIdeasWall from "@/components/InclusionIdeasWall";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 import bradfordLogo from "@/assets/bradford-college-logo.jpg";
