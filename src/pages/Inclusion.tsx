@@ -3,33 +3,14 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
-import { ArrowLeft, Heart, Users, ExternalLink, Star, Lightbulb, MessageSquareHeart, Send, Sparkles, BookOpen, Palette, Video, Bot, Monitor, ChevronDown, ChevronUp } from "lucide-react";
+import { ArrowLeft, Users, ExternalLink, Lightbulb, MessageSquareHeart, Send, Sparkles, BookOpen, Palette, Video, Bot, Monitor, ChevronDown, ChevronUp } from "lucide-react";
 import { AccessibilityPanel } from "@/components/AccessibilityPanel";
 import ResourceBankButton from "@/components/ResourceBankButton";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 import bradfordLogo from "@/assets/bradford-college-logo.jpg";
-import teamsLogo from "@/assets/teams-logo.png";
-import canvaLogo from "@/assets/canva-logo.jpg";
-import edpuzzleLogo from "@/assets/edpuzzle-logo.png";
-import copilotLogo from "@/assets/copilot-logo.png";
-
-const toolLogos: Record<string, string> = {
-  "MS Teams & Microsoft Forms": teamsLogo,
-  "Edpuzzle": edpuzzleLogo,
-  "Canva": canvaLogo,
-  "Copilot": copilotLogo,
-};
 
 const PADLET_URL = "https://padlet.com/bradfordcollegedigitalskills";
-
-const toolIcons: Record<string, React.ReactNode> = {
-  "MS Teams & Microsoft Forms": <BookOpen className="w-4 h-4" />,
-  "Edpuzzle": <Video className="w-4 h-4" />,
-  "Canva": <Palette className="w-4 h-4" />,
-  "Copilot": <Bot className="w-4 h-4" />,
-  "Immersive Room & VR": <Monitor className="w-4 h-4" />,
-};
 
 const TOOL_OPTIONS = [
   "MS Teams & Microsoft Forms",
@@ -74,18 +55,77 @@ const departmentColors: Record<string, string> = {
 };
 
 const inclusionTips = [
-  { tool: "MS Teams", icon: <BookOpen className="w-5 h-5" />, tip: "Pin important resources in your Teams channel so SEND and ESOL learners can always find them without scrolling.", color: "bg-[#5B5FC7]/10 border-[#5B5FC7]/30 text-[#5B5FC7]" },
-  { tool: "MS Forms", icon: <BookOpen className="w-5 h-5" />, tip: "Use branching in Forms to create personalised question paths — students only see questions relevant to their level.", color: "bg-[#5B5FC7]/10 border-[#5B5FC7]/30 text-[#5B5FC7]" },
-  { tool: "Edpuzzle", icon: <Video className="w-5 h-5" />, tip: "Add embedded questions at key moments in videos so ESOL learners can pause and process before continuing.", color: "bg-[#1DA1F2]/10 border-[#1DA1F2]/30 text-[#1DA1F2]" },
-  { tool: "Edpuzzle", icon: <Video className="w-5 h-5" />, tip: "Set Edpuzzle tasks as pre-lesson homework so learners with additional needs can prepare and arrive more confident.", color: "bg-[#1DA1F2]/10 border-[#1DA1F2]/30 text-[#1DA1F2]" },
-  { tool: "Canva", icon: <Palette className="w-5 h-5" />, tip: "Use Canva's accessibility checker to ensure your resources have strong contrast and readable fonts for dyslexic learners.", color: "bg-[#7D2AE8]/10 border-[#7D2AE8]/30 text-[#7D2AE8]" },
-  { tool: "Canva", icon: <Palette className="w-5 h-5" />, tip: "Replace text-heavy handouts with visual Canva infographics — images and icons help all learners, especially those with low literacy.", color: "bg-[#7D2AE8]/10 border-[#7D2AE8]/30 text-[#7D2AE8]" },
-  { tool: "Copilot", icon: <Bot className="w-5 h-5" />, tip: "Ask Copilot to 'simplify this text to ESOL Entry 3 level' to instantly create accessible versions of complex resources.", color: "bg-[#0078D4]/10 border-[#0078D4]/30 text-[#0078D4]" },
-  { tool: "Copilot", icon: <Bot className="w-5 h-5" />, tip: "Prompt Copilot to generate a scaffolded AND an extended version of the same task — instant differentiation.", color: "bg-[#0078D4]/10 border-[#0078D4]/30 text-[#0078D4]" },
-  { tool: "Immersive Room", icon: <Monitor className="w-5 h-5" />, tip: "Use the Immersive Room to simulate real-world scenarios for learners who struggle with abstract classroom instruction.", color: "bg-[hsl(340,70%,50%)]/10 border-[hsl(340,70%,50%)]/30 text-[hsl(340,70%,50%)]" },
-  { tool: "General", icon: <Sparkles className="w-5 h-5" />, tip: "Always provide content in multiple formats (text, video, audio, interactive) — multi-modal access is the foundation of inclusion.", color: "bg-inclusion/10 border-inclusion/30 text-inclusion" },
+  {
+    tool: "MS Teams",
+    icon: <BookOpen className="w-5 h-5" />,
+    tip: "Pin important resources in your Teams channel so SEND and ESOL learners can always find them without scrolling.",
+    extended: "Create a dedicated 'Key Resources' tab at the top of your channel. Organise files by topic or week, and add short descriptions so learners know what each resource is for. This is especially helpful for learners with working memory difficulties or those who join sessions late.",
+    color: "bg-[#5B5FC7]/10 border-[#5B5FC7]/30 text-[#5B5FC7]",
+  },
+  {
+    tool: "MS Forms",
+    icon: <BookOpen className="w-5 h-5" />,
+    tip: "Use branching in Forms to create personalised question paths — students only see questions relevant to their level.",
+    extended: "Set up branching logic so that learners who answer correctly move to more challenging questions, while those who need support get scaffolded alternatives. This removes the stigma of differentiation because every learner sees a personalised experience.",
+    color: "bg-[#5B5FC7]/10 border-[#5B5FC7]/30 text-[#5B5FC7]",
+  },
+  {
+    tool: "Edpuzzle",
+    icon: <Video className="w-5 h-5" />,
+    tip: "Add embedded questions at key moments in videos so ESOL learners can pause and process before continuing.",
+    extended: "Place comprehension checks every 2–3 minutes in longer videos. Use a mix of multiple choice and short answer questions. For ESOL learners, consider adding visual prompts or simplified language in your questions to reduce the cognitive load.",
+    color: "bg-[#1DA1F2]/10 border-[#1DA1F2]/30 text-[#1DA1F2]",
+  },
+  {
+    tool: "Edpuzzle",
+    icon: <Video className="w-5 h-5" />,
+    tip: "Set Edpuzzle tasks as pre-lesson homework so learners with additional needs can prepare and arrive more confident.",
+    extended: "A flipped learning approach using Edpuzzle means learners can watch content at their own pace, pause, rewind, and re-watch. This is transformative for learners with processing difficulties, anxiety, or those who need extra time to absorb new concepts before the classroom session.",
+    color: "bg-[#1DA1F2]/10 border-[#1DA1F2]/30 text-[#1DA1F2]",
+  },
+  {
+    tool: "Canva",
+    icon: <Palette className="w-5 h-5" />,
+    tip: "Use Canva's accessibility checker to ensure your resources have strong contrast and readable fonts for dyslexic learners.",
+    extended: "Go to File → Accessibility in Canva to run the built-in checker. It flags low contrast text, missing alt text, and reading order issues. Choose sans-serif fonts like Arial or Verdana at 14pt minimum, and avoid placing text over busy backgrounds.",
+    color: "bg-[#7D2AE8]/10 border-[#7D2AE8]/30 text-[#7D2AE8]",
+  },
+  {
+    tool: "Canva",
+    icon: <Palette className="w-5 h-5" />,
+    tip: "Replace text-heavy handouts with visual Canva infographics — images and icons help all learners, especially those with low literacy.",
+    extended: "Use Canva's infographic templates to transform dense text into visual guides. Incorporate icons, numbered steps, and colour-coded sections. This supports EAL learners, those with dyslexia, and visual learners. Share as both digital and printed formats for maximum accessibility.",
+    color: "bg-[#7D2AE8]/10 border-[#7D2AE8]/30 text-[#7D2AE8]",
+  },
+  {
+    tool: "Copilot",
+    icon: <Bot className="w-5 h-5" />,
+    tip: "Ask Copilot to 'simplify this text to ESOL Entry 3 level' to instantly create accessible versions of complex resources.",
+    extended: "Paste your existing resource text into Copilot and ask it to rewrite at a specific reading level. You can also ask for a glossary of key terms, or to add sentence starters and writing frames. This saves hours of manual differentiation work.",
+    color: "bg-[#0078D4]/10 border-[#0078D4]/30 text-[#0078D4]",
+  },
+  {
+    tool: "Copilot",
+    icon: <Bot className="w-5 h-5" />,
+    tip: "Prompt Copilot to generate a scaffolded AND an extended version of the same task — instant differentiation.",
+    extended: "Use a prompt like: 'Create three versions of this task: one with full scaffolding for SEND learners, one standard version, and one extended version for higher ability.' Copilot can generate all three in seconds, giving you ready-made differentiated resources.",
+    color: "bg-[#0078D4]/10 border-[#0078D4]/30 text-[#0078D4]",
+  },
+  {
+    tool: "Immersive Room",
+    icon: <Monitor className="w-5 h-5" />,
+    tip: "Use the Immersive Room to simulate real-world scenarios for learners who struggle with abstract classroom instruction.",
+    extended: "Immersive environments bring abstract concepts to life. For example, construction learners can explore a virtual building site, or health & social care students can practice in a simulated care home. This multi-sensory approach is especially powerful for kinaesthetic learners and those with ADHD.",
+    color: "bg-[hsl(340,70%,50%)]/10 border-[hsl(340,70%,50%)]/30 text-[hsl(340,70%,50%)]",
+  },
+  {
+    tool: "General",
+    icon: <Sparkles className="w-5 h-5" />,
+    tip: "Always provide content in multiple formats (text, video, audio, interactive) — multi-modal access is the foundation of inclusion.",
+    extended: "When planning any lesson or resource, ask yourself: 'Can a learner access this if they can't read well? Can they access it if they can't hear? Can they access it on a phone?' Providing content in at least two formats ensures that no single barrier prevents a learner from engaging.",
+    color: "bg-inclusion/10 border-inclusion/30 text-inclusion",
+  },
 ];
-
 
 interface InclusionStory {
   id: string;
@@ -96,11 +136,64 @@ interface InclusionStory {
   created_at: string;
 }
 
-interface CollegeAverages {
-  avgChecked: number;
-  avgRating: number;
-  totalResponses: number;
-}
+/* ── Expandable Tip Card ── */
+const TipCard = ({ tip, idx }: { tip: typeof inclusionTips[0]; idx: number }) => {
+  const [expanded, setExpanded] = useState(false);
+  const cardRef = useRef<HTMLDivElement>(null);
+
+  const toggle = () => {
+    const willExpand = !expanded;
+    setExpanded(willExpand);
+    if (willExpand && cardRef.current) {
+      setTimeout(() => {
+        cardRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+      }, 100);
+    }
+  };
+
+  return (
+    <div
+      ref={cardRef}
+      className={`rounded-2xl border p-5 ${tip.color} bg-card shadow-[var(--shadow-card)] transition-all duration-300`}
+    >
+      <div className="flex items-center gap-2 mb-3">
+        <div className="p-1.5 rounded-lg bg-white/80">{tip.icon}</div>
+        <span className="text-xs font-bold uppercase tracking-wider">{tip.tool}</span>
+      </div>
+      <p className="text-sm text-foreground leading-relaxed">{tip.tip}</p>
+
+      {/* Expanded content */}
+      <div
+        className={`overflow-hidden transition-all duration-300 ease-in-out ${expanded ? "max-h-[500px] opacity-100 mt-3" : "max-h-0 opacity-0"}`}
+        role="region"
+        aria-label={`Extended tip for ${tip.tool}`}
+        id={`tip-detail-${idx}`}
+      >
+        <div className="border-t border-current/10 pt-3">
+          <p className="text-sm text-foreground/80 leading-relaxed">{tip.extended}</p>
+        </div>
+      </div>
+
+      {/* Toggle button */}
+      <button
+        onClick={toggle}
+        aria-expanded={expanded}
+        aria-controls={`tip-detail-${idx}`}
+        className="mt-3 inline-flex items-center gap-1.5 text-xs font-semibold hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-lg px-3 py-2 min-h-[44px] min-w-[44px] transition-colors"
+      >
+        {expanded ? (
+          <>
+            <ChevronUp className="w-4 h-4" /> Show Less
+          </>
+        ) : (
+          <>
+            <ChevronDown className="w-4 h-4" /> Read More
+          </>
+        )}
+      </button>
+    </div>
+  );
+};
 
 const Inclusion = () => {
   const navigate = useNavigate();
@@ -110,8 +203,6 @@ const Inclusion = () => {
   const [storyTool, setStoryTool] = useState("");
   const [storyText, setStoryText] = useState("");
   const [submittingStory, setSubmittingStory] = useState(false);
-  const [collegeAverages, setCollegeAverages] = useState<CollegeAverages>({ avgChecked: 0, avgRating: 0, totalResponses: 0 });
-
 
   useEffect(() => { window.scrollTo(0, 0); }, []);
 
@@ -120,19 +211,7 @@ const Inclusion = () => {
     if (data) setStories(data as InclusionStory[]);
   }, []);
 
-  const fetchAverages = useCallback(async () => {
-    const { data } = await supabase.from("inclusion_responses").select("total_checked, avg_rating");
-    if (data && data.length > 0) {
-      const totalResponses = data.length;
-      const avgChecked = data.reduce((s, r) => s + (r.total_checked || 0), 0) / totalResponses;
-      const avgRating = data.reduce((s, r) => s + Number(r.avg_rating || 0), 0) / totalResponses;
-      setCollegeAverages({ avgChecked: Math.round(avgChecked * 10) / 10, avgRating: Math.round(avgRating * 10) / 10, totalResponses });
-    }
-  }, []);
-
-  useEffect(() => { fetchStories(); fetchAverages(); }, [fetchStories, fetchAverages]);
-
-  const totalStatements = inclusionChecklist.reduce((sum, t) => sum + t.statements.length, 0);
+  useEffect(() => { fetchStories(); }, [fetchStories]);
 
   const handleSubmitStory = async () => {
     if (!storyName.trim() || !storyDept || !storyTool || !storyText.trim()) {
@@ -152,7 +231,6 @@ const Inclusion = () => {
       fetchStories();
     }
   };
-
 
   return (
     <div className="min-h-screen bg-background">
@@ -193,48 +271,8 @@ const Inclusion = () => {
         {/* Intro card */}
         <div className="bg-card rounded-2xl border border-border shadow-[var(--shadow-card)] p-6 md:p-8 mb-10 border-l-4 border-l-inclusion">
           <p className="text-muted-foreground leading-relaxed">
-            Welcome to the college-wide Inclusion & Accessibility hub. Here you can see how Bradford College staff are using The Big 4 tools to support every learner — browse inspiring ideas, practical tips, and real stories from colleagues. Your personal inclusion checklists and confidence ratings are embedded within each tool's training module.
+            Welcome to the college-wide Inclusion & Accessibility hub. Here you can explore practical tips and real stories from colleagues showing how The Big 4 tools support every learner. Your personal inclusion checklists and confidence ratings are embedded within each tool's training module.
           </p>
-        </div>
-
-        {/* ═══ BRADFORD COLLEGE AVERAGES ═══ */}
-        {collegeAverages.totalResponses > 0 && (
-          <div className="mb-10 bg-gradient-to-br from-inclusion/5 to-inclusion/10 rounded-2xl border border-inclusion/20 shadow-[var(--shadow-card)] p-6 md:p-8">
-            <div className="flex items-center gap-3 mb-5">
-              <div className="p-2.5 rounded-xl bg-inclusion/15">
-                <BarChart3 className="w-6 h-6 text-inclusion" />
-              </div>
-              <div>
-                <h2 className="font-display text-xl font-bold text-foreground">Bradford College Averages</h2>
-                <p className="text-sm text-muted-foreground">{collegeAverages.totalResponses} staff member{collegeAverages.totalResponses !== 1 ? 's' : ''} have shared their inclusion reflections</p>
-              </div>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              <div className="bg-card rounded-xl p-5 border border-border text-center">
-                <TrendingUp className="w-6 h-6 text-inclusion mx-auto mb-2" />
-                <p className="text-2xl font-bold text-foreground">{collegeAverages.avgChecked}</p>
-                <p className="text-xs text-muted-foreground mt-1">Avg. statements ticked</p>
-                <p className="text-[10px] text-muted-foreground/60">out of {totalStatements}</p>
-              </div>
-              <div className="bg-card rounded-xl p-5 border border-border text-center">
-                <Star className="w-6 h-6 text-inclusion mx-auto mb-2" />
-                <p className="text-2xl font-bold text-foreground">{collegeAverages.avgRating}</p>
-                <p className="text-xs text-muted-foreground mt-1">Avg. confidence rating</p>
-                <p className="text-[10px] text-muted-foreground/60">out of 5</p>
-              </div>
-              <div className="bg-card rounded-xl p-5 border border-border text-center">
-                <Users className="w-6 h-6 text-inclusion mx-auto mb-2" />
-                <p className="text-2xl font-bold text-foreground">{collegeAverages.totalResponses}</p>
-                <p className="text-xs text-muted-foreground mt-1">Staff reflections</p>
-                <p className="text-[10px] text-muted-foreground/60">and growing</p>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* ═══ IDEAS WALL ═══ */}
-        <div className="mb-12">
-          <InclusionIdeasWall />
         </div>
 
         {/* ═══ INCLUSION TIPS WALL ═══ */}
@@ -251,13 +289,7 @@ const Inclusion = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {inclusionTips.map((tip, idx) => (
-              <div key={idx} className={`rounded-2xl border p-5 ${tip.color} bg-card shadow-[var(--shadow-card)]`}>
-                <div className="flex items-center gap-2 mb-3">
-                  <div className="p-1.5 rounded-lg bg-white/80">{tip.icon}</div>
-                  <span className="text-xs font-bold uppercase tracking-wider">{tip.tool}</span>
-                </div>
-                <p className="text-sm text-foreground leading-relaxed">{tip.tip}</p>
-              </div>
+              <TipCard key={idx} tip={tip} idx={idx} />
             ))}
           </div>
         </div>
