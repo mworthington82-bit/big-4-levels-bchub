@@ -165,6 +165,20 @@ const TipCard = ({ tip, idx }: { tip: typeof inclusionTips[0]; idx: number }) =>
     }
   };
 
+  const renderExtended = (text: string) => {
+    return text.split("\n").map((line, i) => {
+      if (line.trim() === "") return <br key={i} />;
+      if (line.startsWith("—")) {
+        return <li key={i} className="ml-4 list-disc text-sm text-foreground/80 leading-relaxed">{line.slice(1).trim()}</li>;
+      }
+      // Bold-style headings (lines ending with :)
+      if (line.trim().endsWith(":") && line.trim().length < 80) {
+        return <p key={i} className="text-sm font-semibold text-foreground mt-2 mb-1">{line}</p>;
+      }
+      return <p key={i} className="text-sm text-foreground/80 leading-relaxed">{line}</p>;
+    });
+  };
+
   return (
     <div
       ref={cardRef}
@@ -178,13 +192,13 @@ const TipCard = ({ tip, idx }: { tip: typeof inclusionTips[0]; idx: number }) =>
 
       {/* Expanded content */}
       <div
-        className={`overflow-hidden transition-all duration-300 ease-in-out ${expanded ? "max-h-[500px] opacity-100 mt-3" : "max-h-0 opacity-0"}`}
+        className={`overflow-hidden transition-all duration-300 ease-in-out ${expanded ? "max-h-[3000px] opacity-100 mt-3" : "max-h-0 opacity-0"}`}
         role="region"
         aria-label={`Extended tip for ${tip.tool}`}
         id={`tip-detail-${idx}`}
       >
-        <div className="border-t border-current/10 pt-3">
-          <p className="text-sm text-foreground/80 leading-relaxed">{tip.extended}</p>
+        <div className="border-t border-current/10 pt-3 space-y-0.5">
+          {renderExtended(tip.extended)}
         </div>
       </div>
 
