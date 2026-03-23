@@ -65,7 +65,7 @@ const SelfAssessment = () => {
                 <iframe 
                   loading="lazy"
                   className="absolute top-0 left-0 w-full h-full border-none p-0 m-0"
-                  src="https://www.canva.com/design/DAXEyVOts2E/6GpllF4VkvgVKBDRdJhh6w/view?embed"
+                  src="https://www.canva.com/design/DAXEydz1ydQ/_AISTENDTVo293WbgFqNQQ/view?embed"
                   allowFullScreen
                   allow="fullscreen"
                 />
@@ -77,7 +77,7 @@ const SelfAssessment = () => {
                   <strong>Having trouble viewing the assessment?</strong> Open it directly in a new tab:
                 </p>
                 <a 
-                  href="https://bradfordcollege-handsmisconducttraining.my.canva.site/daxeyvots2e"
+                  href="https://bradfordcollege-handsmisconducttraining.my.canva.site/latest-and-final-digital-literacy-self-assessment-the-big-4-tools"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 font-medium text-sm transition-colors"
