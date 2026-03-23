@@ -77,7 +77,7 @@ const SelfAssessment = () => {
                   <strong>Having trouble viewing the assessment?</strong> Open it directly in a new tab:
                 </p>
                 <a 
-                  href="https://bradfordcollege-handsmisconducttraining.my.canva.site/big4"
+                  href="https://bradfordcollege-handsmisconducttraining.my.canva.site/daxeyvots2e"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 font-medium text-sm transition-colors"
