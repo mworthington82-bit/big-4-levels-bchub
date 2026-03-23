@@ -65,7 +65,7 @@ const SelfAssessment = () => {
                 <iframe 
                   loading="lazy"
                   className="absolute top-0 left-0 w-full h-full border-none p-0 m-0"
-                  src="https://www.canva.com/design/DAXEyVOts2E/6GpllF4VkvgVKBDRdJhh6w/view?embed"
+                  src="https://www.canva.com/design/DAXEydz1ydQ/_AISTENDTVo293WbgFqNQQ/view?embed"
                   allowFullScreen
                   allow="fullscreen"
                 />
