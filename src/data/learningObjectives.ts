@@ -165,9 +165,9 @@ export const learningObjectives: Record<Level, ToolObjectives[]> = {
       tool: 'copilot',
       toolName: 'Microsoft Copilot',
       objectives: [
-        { id: 'col1', text: 'Advanced prompt engineering', icon: '🔧', description: 'Master complex prompting techniques for sophisticated AI-assisted resource creation' },
-        { id: 'col2', text: 'Create and share Copilot Agents', icon: '🤖', description: 'Build and deploy custom AI agents that colleagues can use in their teaching' },
-        { id: 'col3', text: 'Lead AI integration initiatives', icon: '🚀', description: 'Drive strategic adoption of AI tools across your educational setting' },
+        { id: 'col1', text: 'Advanced prompt engineering', description: 'Master complex prompting techniques for sophisticated AI-assisted resource creation' },
+        { id: 'col2', text: 'Create and share Copilot Agents', description: 'Build and deploy custom AI agents that colleagues can use in their teaching' },
+        { id: 'col3', text: 'Lead AI integration initiatives', description: 'Drive strategic adoption of AI tools across your educational setting' },
       ],
     },
   ],

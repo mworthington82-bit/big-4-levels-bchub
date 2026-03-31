@@ -100,7 +100,7 @@ const LearningSummary = ({ level, onContinue }: LearningSummaryProps) => {
                         }`}
                       >
                         {/* Icon */}
-                        <span className="text-lg flex-shrink-0">{obj.icon || '📌'}</span>
+                        {obj.icon && <span className="text-lg flex-shrink-0">{obj.icon}</span>}
 
                         {/* Text */}
                         <div className="flex-1 min-w-0">
