@@ -121,7 +121,7 @@ const ToolEvidenceSection = ({
       <Card className={`border-2 border-${toolColor}/30 bg-${toolColor}/10`}>
         <CardHeader>
           <CardTitle className="text-xl flex items-center gap-2">
-            {getToolEmoji()} Success Criteria – {toolDisplayName}
+            <img src={getToolLogo()} alt={toolDisplayName} className="w-6 h-6 rounded object-contain" /> Success Criteria – {toolDisplayName}
           </CardTitle>
           <CardDescription>
             To demonstrate Leader Level practice with {toolDisplayName}, you should be able to confidently tick these boxes:
