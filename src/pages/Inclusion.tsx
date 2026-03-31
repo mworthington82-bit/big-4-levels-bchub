@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
-import { ArrowLeft, Users, ExternalLink, Lightbulb, MessageSquareHeart, Send, Sparkles, BookOpen, Palette, Video, Bot, Monitor, ChevronDown, ChevronUp } from "lucide-react";
+import { ArrowLeft, Users, ExternalLink, Lightbulb, Sparkles, BookOpen, Palette, Video, Bot, Monitor, ChevronDown, ChevronUp } from "lucide-react";
 import { AccessibilityPanel } from "@/components/AccessibilityPanel";
 import ResourceBankButton from "@/components/ResourceBankButton";
 import { supabase } from "@/integrations/supabase/client";
