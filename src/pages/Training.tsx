@@ -1174,10 +1174,17 @@ const Training = () => {
                         </a>
                       </Button>
                 }
-                    {selectedTool === 'copilot' &&
+                    {selectedTool === 'copilot' && selectedLevel === 'explorer' &&
+                <Button asChild className="flex-1 text-white" style={{ backgroundColor: currentBrandColor }}>
+                        <a href="https://edpuzzle.com/professional/join/69c5285120b73a1c9f368e41?schoolCode=bnc9r6" target="_blank" rel="noopener noreferrer">
+                          Access Copilot Training <ArrowRight className="ml-2 h-4 w-4" />
+                        </a>
+                      </Button>
+                }
+                    {selectedTool === 'copilot' && selectedLevel === 'practitioner' &&
                 <Button asChild className="flex-1 text-white" style={{ backgroundColor: currentBrandColor }}>
                         <a href="https://learn.microsoft.com/en-us/collections/778ea8tj5ww7d2?&sharingId=96CA0696F41DC6E3" target="_blank" rel="noopener noreferrer">
-                          Microsoft Copilot Training <ArrowRight className="ml-2 h-4 w-4" />
+                          Access Copilot Training <ArrowRight className="ml-2 h-4 w-4" />
                         </a>
                       </Button>
                 }
