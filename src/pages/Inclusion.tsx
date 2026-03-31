@@ -299,7 +299,7 @@ const Inclusion = () => {
         {/* Intro card */}
         <div className="bg-card rounded-2xl border border-border shadow-[var(--shadow-card)] p-6 md:p-8 mb-10 border-l-4 border-l-inclusion">
           <p className="text-muted-foreground leading-relaxed">
-            Welcome to the college-wide Inclusion & Accessibility hub. Here you can explore practical tips and real stories from colleagues showing how The Big 4 tools support every learner. Your personal inclusion checklists and confidence ratings are embedded within each tool's training module.
+            Welcome to the college-wide Inclusion & Accessibility hub. Here you can explore practical tips for using The Big 4 tools to support every learner.
           </p>
         </div>
 
