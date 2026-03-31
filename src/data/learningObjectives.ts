@@ -117,9 +117,9 @@ export const learningObjectives: Record<Level, ToolObjectives[]> = {
       tool: 'copilot',
       toolName: 'Microsoft Copilot',
       objectives: [
-        { id: 'cpp1', text: 'Write detailed prompts', icon: '✍️', description: 'Master prompt engineering to get more accurate and useful AI responses' },
-        { id: 'cpp2', text: 'Generate differentiated resources', icon: '📚', description: 'Create materials at different levels to support all students in your class' },
-        { id: 'cpp3', text: 'Create and use Copilot Agents', icon: '🤖', description: 'Build custom AI assistants tailored to your specific teaching needs' },
+        { id: 'cpp1', text: 'Write detailed prompts', description: 'Master prompt engineering to get more accurate and useful AI responses' },
+        { id: 'cpp2', text: 'Generate differentiated resources', description: 'Create materials at different levels to support all students in your class' },
+        { id: 'cpp3', text: 'Create and use Copilot Agents', description: 'Build custom AI assistants tailored to your specific teaching needs' },
       ],
     },
     {
