@@ -36,9 +36,9 @@ export const learningObjectives: Record<Level, ToolObjectives[]> = {
       tool: 'teams',
       toolName: 'MS Forms',
       objectives: [
-        { id: 'fe1', text: 'Create a simple quiz or survey', icon: '📋', description: 'Build quick knowledge checks or gather student feedback using Forms' },
-        { id: 'fe2', text: 'Share a Form (link or via Teams)', icon: '🔗', description: 'Distribute your quizzes and surveys directly to students through various channels' },
-        { id: 'fe3', text: 'View basic results', icon: '📊', description: 'See response summaries and identify areas where students may need support' },
+        { id: 'fe1', text: 'Create a simple quiz or survey', description: 'Build quick knowledge checks or gather student feedback using Forms' },
+        { id: 'fe2', text: 'Share a Form (link or via Teams)', description: 'Distribute your quizzes and surveys directly to students through various channels' },
+        { id: 'fe3', text: 'View basic results', description: 'See response summaries and identify areas where students may need support' },
       ],
     },
     {
