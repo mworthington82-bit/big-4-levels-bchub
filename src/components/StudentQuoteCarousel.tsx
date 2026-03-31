@@ -34,7 +34,7 @@ const StudentQuoteCarousel = () => {
     <div className="max-w-[640px] mx-auto mt-8 text-left">
       {/* Context label */}
       <p className="uppercase text-[#F5A623] font-semibold tracking-wide" style={{ fontSize: 12 }}>
-        💬 How students see digital learning
+        How students see digital learning
       </p>
       <p className="text-white/50 mt-1 leading-snug" style={{ fontSize: 14 }}>
         We asked Bradford College students why digital innovation matters to them. Here's what they said — in their own words.
