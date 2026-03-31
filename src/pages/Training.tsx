@@ -1106,6 +1106,11 @@ const Training = () => {
                   <p className="text-sm text-[#52526E] leading-relaxed mb-3">
                     Watch the training video(s) below and complete the embedded questions. This interactive content will help you apply {getToolDisplayName(selectedTool!)} in your teaching practice.
                   </p>
+                  {selectedTool === 'canva' && selectedLevel === 'explorer' && (
+                    <p className="text-sm text-[#52526E] leading-relaxed mb-3">
+                      Complete the Canva training course to build your confidence and knowledge of Canva for teaching and learning. On completion you will receive a Canva certificate to evidence your achievement.
+                    </p>
+                  )}
                   
                   <div className="flex flex-col sm:flex-row flex-wrap gap-3">
                     {selectedTool === 'teams' && selectedLevel === 'explorer' &&
