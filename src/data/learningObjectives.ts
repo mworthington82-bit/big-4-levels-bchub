@@ -89,10 +89,10 @@ export const learningObjectives: Record<Level, ToolObjectives[]> = {
       tool: 'teams',
       toolName: 'MS Forms',
       objectives: [
-        { id: 'fp1', text: 'Create branching quizzes', icon: '🔀', description: 'Design adaptive assessments that change questions based on student responses' },
-        { id: 'fp2', text: 'Design formative assessments', icon: '📝', description: 'Build low-stakes checks for learning to monitor student understanding' },
-        { id: 'fp3', text: 'Analyse responses to inform next steps', icon: '📈', description: 'Use response data to identify gaps and adjust your teaching approach' },
-        { id: 'fp4', text: 'Share Forms via Teams or links', icon: '🔗', description: 'Integrate assessments seamlessly into your Teams classroom workflow' },
+        { id: 'fp1', text: 'Create branching quizzes', description: 'Design adaptive assessments that change questions based on student responses' },
+        { id: 'fp2', text: 'Design formative assessments', description: 'Build low-stakes checks for learning to monitor student understanding' },
+        { id: 'fp3', text: 'Analyse responses to inform next steps', description: 'Use response data to identify gaps and adjust your teaching approach' },
+        { id: 'fp4', text: 'Share Forms via Teams or links', description: 'Integrate assessments seamlessly into your Teams classroom workflow' },
       ],
     },
     {
