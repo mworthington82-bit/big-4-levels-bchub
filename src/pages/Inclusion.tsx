@@ -225,40 +225,8 @@ const TipCard = ({ tip, idx }: { tip: typeof inclusionTips[0]; idx: number }) =>
 
 const Inclusion = () => {
   const navigate = useNavigate();
-  const [stories, setStories] = useState<InclusionStory[]>([]);
-  const [storyName, setStoryName] = useState("");
-  const [storyDept, setStoryDept] = useState("");
-  const [storyTool, setStoryTool] = useState("");
-  const [storyText, setStoryText] = useState("");
-  const [submittingStory, setSubmittingStory] = useState(false);
 
   useEffect(() => { window.scrollTo(0, 0); }, []);
-
-  const fetchStories = useCallback(async () => {
-    const { data } = await supabase.from("inclusion_stories").select("*").order("created_at", { ascending: false }).limit(50);
-    if (data) setStories(data as InclusionStory[]);
-  }, []);
-
-  useEffect(() => { fetchStories(); }, [fetchStories]);
-
-  const handleSubmitStory = async () => {
-    if (!storyName.trim() || !storyDept || !storyTool || !storyText.trim()) {
-      toast({ title: "Please complete all fields", variant: "destructive" });
-      return;
-    }
-    setSubmittingStory(true);
-    const { error } = await supabase.from("inclusion_stories").insert({
-      full_name: storyName.trim(), department: storyDept, tool_name: storyTool, story: storyText.trim(),
-    });
-    setSubmittingStory(false);
-    if (error) {
-      toast({ title: "Error submitting story", description: error.message, variant: "destructive" });
-    } else {
-      toast({ title: "Story shared!", description: "Thank you for sharing your inclusion story." });
-      setStoryName(""); setStoryDept(""); setStoryTool(""); setStoryText("");
-      fetchStories();
-    }
-  };
 
   return (
     <div className="min-h-screen bg-background">
