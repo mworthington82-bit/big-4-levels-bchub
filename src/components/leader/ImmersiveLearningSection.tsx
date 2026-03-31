@@ -108,7 +108,7 @@ const ImmersiveLearningSection = ({ checklist, onBack }: ImmersiveLearningProps)
             <h4 className="font-semibold text-foreground mb-2">Useful Links</h4>
             <ul className="space-y-2 mb-4">
               <li className="flex items-start gap-2">
-                <span className="text-rose-600 mt-1">📋</span>
+                <span className="text-rose-600 mt-1">•</span>
                 <a href="https://forms.office.com/e/QRrA7LfAUh" target="_blank" rel="noopener noreferrer" className="text-accent underline hover:text-accent/80">
                   Book the Immersive Room or Training Session
                 </a>
