@@ -24,12 +24,12 @@ export const learningObjectives: Record<Level, ToolObjectives[]> = {
       tool: 'teams',
       toolName: 'MS Teams',
       objectives: [
-        { id: 'te1', text: 'Send announcements', icon: '📢', description: 'Post important updates to your class channel that all students can see and respond to' },
-        { id: 'te2', text: 'Upload and share files', icon: '📁', description: 'Share documents, presentations, and resources directly with your students through Teams' },
-        { id: 'te3', text: 'Use chat with students', icon: '💬', description: 'Communicate with individual students or groups using the built-in chat feature' },
-        { id: 'te4', text: 'Create assignments', icon: '📝', description: 'Set up coursework, homework, and projects with due dates and instructions' },
-        { id: 'te5', text: 'Mark work and give feedback', icon: '✅', description: 'Review submitted work, add grades, and provide constructive feedback to students' },
-        { id: 'te6', text: 'Organise content using Classwork', icon: '📚', description: 'Structure your teaching materials into modules and topics for easy student access' },
+        { id: 'te1', text: 'Send announcements', description: 'Post important updates to your class channel that all students can see and respond to' },
+        { id: 'te2', text: 'Upload and share files', description: 'Share documents, presentations, and resources directly with your students through Teams' },
+        { id: 'te3', text: 'Use chat with students', description: 'Communicate with individual students or groups using the built-in chat feature' },
+        { id: 'te4', text: 'Create assignments', description: 'Set up coursework, homework, and projects with due dates and instructions' },
+        { id: 'te5', text: 'Mark work and give feedback', description: 'Review submitted work, add grades, and provide constructive feedback to students' },
+        { id: 'te6', text: 'Organise content using Classwork', description: 'Structure your teaching materials into modules and topics for easy student access' },
       ],
     },
     {
