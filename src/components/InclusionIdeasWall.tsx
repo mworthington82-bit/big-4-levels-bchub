@@ -28,9 +28,9 @@ const levelBadge: Record<string, string> = {
   leader: "bg-leader/20 text-leader",
 };
 
-const ratingBadge: Record<string, { emoji: string; label: string; color: string }> = {
-  strong: { emoji: "⭐", label: "Strong", color: "bg-amber-100 text-amber-800 border-amber-300" },
-  exemplary: { emoji: "🏆", label: "Exemplary", color: "bg-yellow-100 text-yellow-800 border-yellow-300" },
+const ratingBadge: Record<string, { label: string; color: string }> = {
+  strong: { label: "Strong", color: "bg-amber-100 text-amber-800 border-amber-300" },
+  exemplary: { label: "Exemplary", color: "bg-yellow-100 text-yellow-800 border-yellow-300" },
 };
 
 interface Idea {
