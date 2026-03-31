@@ -99,9 +99,9 @@ export const learningObjectives: Record<Level, ToolObjectives[]> = {
       tool: 'edpuzzle',
       toolName: 'Edpuzzle',
       objectives: [
-        { id: 'ep1', text: 'Add questions, notes, or voiceovers to videos', icon: '🎤', description: 'Enhance videos with interactive elements and personalised narration' },
-        { id: 'ep2', text: 'Track learner progress using analytics', icon: '📊', description: 'Monitor detailed statistics on student engagement and quiz performance' },
-        { id: 'ep3', text: 'Embed Edpuzzle into Teams', icon: '🔗', description: 'Integrate video assignments directly into your existing digital classroom' },
+        { id: 'ep1', text: 'Add questions, notes, or voiceovers to videos', description: 'Enhance videos with interactive elements and personalised narration' },
+        { id: 'ep2', text: 'Track learner progress using analytics', description: 'Monitor detailed statistics on student engagement and quiz performance' },
+        { id: 'ep3', text: 'Embed Edpuzzle into Teams', description: 'Integrate video assignments directly into your existing digital classroom' },
       ],
     },
     {
