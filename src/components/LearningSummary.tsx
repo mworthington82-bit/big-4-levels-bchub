@@ -48,7 +48,7 @@ const LearningSummary = ({ level, onContinue }: LearningSummaryProps) => {
     <div className="max-w-4xl mx-auto space-y-6 animate-fade-in">
       <div className="text-center mb-6 print-visible">
         <h2 className="font-display text-3xl md:text-4xl font-bold text-foreground mb-2">
-          📋 My Learning Summary
+          My Learning Summary
         </h2>
         <p className="text-lg text-muted-foreground">
           {levelLabel} Level — Review what you've learned and plan your next steps
