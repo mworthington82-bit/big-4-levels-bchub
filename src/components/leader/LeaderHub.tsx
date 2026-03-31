@@ -167,7 +167,7 @@ const LeaderHub = ({ onBack }: LeaderHubProps) => {
         {/* Clear Instructions */}
         <Card className="border-accent/30 bg-accent/5">
           <CardContent className="pt-6">
-            <h3 className="font-semibold text-foreground mb-3">📋 What You Need to Do:</h3>
+            <h3 className="font-semibold text-foreground mb-3">What You Need to Do:</h3>
             <div className="space-y-4">
               <div className="p-4 bg-card rounded-lg border border-border">
                 <p className="font-medium text-foreground mb-2">🏢 Campus-Based Staff:</p>
