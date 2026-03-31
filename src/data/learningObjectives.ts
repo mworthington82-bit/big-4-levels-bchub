@@ -156,9 +156,9 @@ export const learningObjectives: Record<Level, ToolObjectives[]> = {
       tool: 'edpuzzle',
       toolName: 'Edpuzzle',
       objectives: [
-        { id: 'el1', text: 'Create custom video content', icon: '🎬', description: 'Record and produce original educational videos tailored to your curriculum' },
-        { id: 'el2', text: 'Support colleagues with implementation', icon: '🤝', description: 'Help other staff members integrate Edpuzzle effectively into their teaching' },
-        { id: 'el3', text: 'Analyse department-wide engagement', icon: '📊', description: 'Review analytics across multiple classes to identify trends and opportunities' },
+        { id: 'el1', text: 'Create custom video content', description: 'Record and produce original educational videos tailored to your curriculum' },
+        { id: 'el2', text: 'Support colleagues with implementation', description: 'Help other staff members integrate Edpuzzle effectively into their teaching' },
+        { id: 'el3', text: 'Analyse department-wide engagement', description: 'Review analytics across multiple classes to identify trends and opportunities' },
       ],
     },
     {
