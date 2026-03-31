@@ -138,9 +138,9 @@ export const learningObjectives: Record<Level, ToolObjectives[]> = {
       tool: 'teams',
       toolName: 'MS Teams',
       objectives: [
-        { id: 'tl1', text: 'Mentor and support colleagues with Teams', icon: '🤝', description: 'Guide fellow educators in developing their Teams skills through coaching and support' },
-        { id: 'tl2', text: 'Lead departmental digital initiatives', icon: '🚀', description: 'Champion and coordinate digital transformation projects within your department' },
-        { id: 'tl3', text: 'Share best practice examples', icon: '⭐', description: 'Document and present successful strategies for others to learn from' },
+        { id: 'tl1', text: 'Mentor and support colleagues with Teams', description: 'Guide fellow educators in developing their Teams skills through coaching and support' },
+        { id: 'tl2', text: 'Lead departmental digital initiatives', description: 'Champion and coordinate digital transformation projects within your department' },
+        { id: 'tl3', text: 'Share best practice examples', description: 'Document and present successful strategies for others to learn from' },
       ],
     },
     {
