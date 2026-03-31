@@ -45,9 +45,9 @@ export const learningObjectives: Record<Level, ToolObjectives[]> = {
       tool: 'edpuzzle',
       toolName: 'Edpuzzle',
       objectives: [
-        { id: 'ee1', text: 'Create a class', icon: '👥', description: 'Set up your virtual classroom and add students to track their progress' },
-        { id: 'ee2', text: 'Assign a pre-made video', icon: '🎬', description: 'Choose from thousands of ready-made educational videos with embedded questions' },
-        { id: 'ee3', text: 'Check if students have watched or completed it', icon: '👁️', description: 'Monitor which students have viewed the video and their completion status' },
+        { id: 'ee1', text: 'Create a class', description: 'Set up your virtual classroom and add students to track their progress' },
+        { id: 'ee2', text: 'Assign a pre-made video', description: 'Choose from thousands of ready-made educational videos with embedded questions' },
+        { id: 'ee3', text: 'Check if students have watched or completed it', description: 'Monitor which students have viewed the video and their completion status' },
       ],
     },
     {
