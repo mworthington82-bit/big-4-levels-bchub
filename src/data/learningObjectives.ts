@@ -78,11 +78,11 @@ export const learningObjectives: Record<Level, ToolObjectives[]> = {
       tool: 'teams',
       toolName: 'MS Teams',
       objectives: [
-        { id: 'tp1', text: 'Run live lessons using Teams meetings', icon: '🎥', description: 'Deliver interactive online lessons with video, audio, and screen sharing' },
-        { id: 'tp2', text: 'Use Breakout Rooms', icon: '👥', description: 'Split students into smaller groups for collaborative activities during live sessions' },
-        { id: 'tp3', text: 'Create and apply Rubrics', icon: '📊', description: 'Design consistent marking criteria and apply them to assignments for fair assessment' },
-        { id: 'tp4', text: 'Give feedback in different formats', icon: '💬', description: 'Provide audio, video, and written feedback to suit different learning needs' },
-        { id: 'tp5', text: 'Create and manage structured channels', icon: '📁', description: 'Organise your Team with dedicated spaces for different topics or units' },
+        { id: 'tp1', text: 'Run live lessons using Teams meetings', description: 'Deliver interactive online lessons with video, audio, and screen sharing' },
+        { id: 'tp2', text: 'Use Breakout Rooms', description: 'Split students into smaller groups for collaborative activities during live sessions' },
+        { id: 'tp3', text: 'Create and apply Rubrics', description: 'Design consistent marking criteria and apply them to assignments for fair assessment' },
+        { id: 'tp4', text: 'Give feedback in different formats', description: 'Provide audio, video, and written feedback to suit different learning needs' },
+        { id: 'tp5', text: 'Create and manage structured channels', description: 'Organise your Team with dedicated spaces for different topics or units' },
       ],
     },
     {
