@@ -114,7 +114,7 @@ const ImmersiveLearningSection = ({ checklist, onBack }: ImmersiveLearningProps)
                 </a>
               </li>
               <li className="flex items-start gap-2">
-                <span className="text-rose-600 mt-1">🌐</span>
+                <span className="text-rose-600 mt-1">•</span>
                 <a href="https://www.thinglink.com/view/scene/1959585229274350436" target="_blank" rel="noopener noreferrer" className="text-accent underline hover:text-accent/80">
                   360° Interactive Guide to the Immersive Room
                 </a>
