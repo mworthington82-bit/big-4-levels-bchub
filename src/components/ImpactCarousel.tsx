@@ -17,6 +17,7 @@ interface ImpactCarouselProps {
   studentBenefits: string[];
   staffBenefits: string[];
   collegeBenefits: string[];
+  biggerPictureText?: string;
   onAllViewed?: (allViewed: boolean) => void;
 }
 
