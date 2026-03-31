@@ -108,9 +108,9 @@ export const learningObjectives: Record<Level, ToolObjectives[]> = {
       tool: 'canva',
       toolName: 'Canva (incl. Canva Code)',
       objectives: [
-        { id: 'cp1', text: 'Create basic designs', icon: '🎨', description: 'Build visually appealing resources from scratch using Canva\'s design tools' },
-        { id: 'cp2', text: 'Build interactive learning activities using Canva Code', icon: '💻', description: 'Use Canva\'s coding feature to create engaging, interactive student experiences' },
-        { id: 'cp3', text: 'Adapt activities for different learners', icon: '🎯', description: 'Modify resources to meet diverse learning needs and accessibility requirements' },
+        { id: 'cp1', text: 'Create basic designs', description: 'Build visually appealing resources from scratch using Canva\'s design tools' },
+        { id: 'cp2', text: 'Build interactive learning activities using Canva Code', description: 'Use Canva\'s coding feature to create engaging, interactive student experiences' },
+        { id: 'cp3', text: 'Adapt activities for different learners', description: 'Modify resources to meet diverse learning needs and accessibility requirements' },
       ],
     },
     {
