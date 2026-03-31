@@ -1231,7 +1231,8 @@ const Training = () => {
                 <ImpactCarousel
               studentBenefits={pathway.benefits.students}
               staffBenefits={pathway.benefits.staff}
-              collegeBenefits={pathway.benefits.college} />
+              collegeBenefits={pathway.benefits.college}
+              biggerPictureText={getBiggerPictureText(selectedTool!, selectedLevel!)} />
 
                 
                 <Button
