@@ -147,9 +147,9 @@ export const learningObjectives: Record<Level, ToolObjectives[]> = {
       tool: 'canva',
       toolName: 'Canva',
       objectives: [
-        { id: 'cl1', text: 'Create advanced interactive resources', icon: '🎨', description: 'Design sophisticated, multi-layered learning materials with complex interactions' },
-        { id: 'cl2', text: 'Train colleagues on Canva use', icon: '👨‍🏫', description: 'Deliver workshops and one-to-one support to upskill your team' },
-        { id: 'cl3', text: 'Develop departmental templates', icon: '📋', description: 'Create branded, reusable templates that ensure consistency across your department' },
+        { id: 'cl1', text: 'Create advanced interactive resources', description: 'Design sophisticated, multi-layered learning materials with complex interactions' },
+        { id: 'cl2', text: 'Train colleagues on Canva use', description: 'Deliver workshops and one-to-one support to upskill your team' },
+        { id: 'cl3', text: 'Develop departmental templates', description: 'Create branded, reusable templates that ensure consistency across your department' },
       ],
     },
     {
