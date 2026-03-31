@@ -140,7 +140,7 @@ const InclusionIdeasWall = () => {
           className="h-8 rounded-lg border border-input bg-background px-2 text-xs"
           aria-label="Filter by rating"
         >
-          {RATINGS.map(r => <option key={r} value={r}>{r === "All" ? "All Ratings" : r === "strong" ? "⭐ Strong" : "🏆 Exemplary"}</option>)}
+          {RATINGS.map(r => <option key={r} value={r}>{r === "All" ? "All Ratings" : r === "strong" ? "Strong" : "Exemplary"}</option>)}
         </select>
       </div>
 
