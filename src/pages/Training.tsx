@@ -298,6 +298,30 @@ const Training = () => {
 
   const allToolsCompleted = completedTools.size >= 4;
 
+  const getBiggerPictureText = (tool: Tool, level: Level): string => {
+    const texts: Record<string, Record<string, string>> = {
+      explorer: {
+        teams: "At Explorer level, MS Teams and Forms give every learner a consistent, organised digital classroom they can rely on. When materials are easy to find, assignments are clear, and feedback is timely, every student — regardless of their starting point — has an equal opportunity to engage and succeed. These are the foundations of effective digital teaching at Bradford College.",
+        canva: "At Explorer level, Canva transforms how resources look and feel for learners. Visually clear, well-structured materials reduce cognitive overload, support learners with diverse needs, and create a more professional and engaging learning experience. Every resource you create in Canva is a step towards more accessible, inclusive teaching across the college.",
+        edpuzzle: "At Explorer level, Edpuzzle moves video from a passive experience to an active one. When learners watch content in manageable chunks, respond to questions, and receive immediate feedback, they engage more deeply and retain more. This is particularly powerful for learners who need more time to process — including those with additional needs or those developing their English.",
+        copilot: "At Explorer level, Copilot changes how quickly and effectively you can create resources tailored to your learners. By uploading your lesson plan and a brief class profile, Copilot can generate differentiated, relevant materials in minutes — meaning every learner gets resources pitched at the right level without it costing hours of additional planning time.",
+      },
+      practitioner: {
+        teams: "At Practitioner level, MS Teams and Forms become powerful tools for responsive, data-informed teaching. Branching forms personalise learning pathways, Insights helps you identify and support disengaging learners early, and varied feedback formats ensure every student receives guidance in a way that works for them. This is teaching that adapts — and digital tools that make adaptation manageable.",
+        canva: "At Practitioner level, Canva becomes a tool for genuine differentiation. Creating interactive resources using Canva Code, designing materials that apply accessibility principles as standard, and supporting learners to create their own content all contribute to a richer, more inclusive learning experience. Every resource designed at this level has the potential to reach learners that traditional materials miss.",
+        edpuzzle: "At Practitioner level, Edpuzzle data becomes one of your most valuable planning tools. Knowing where individual learners paused, rewatched, or struggled means you can target support precisely and adapt your teaching before gaps become barriers. Used well, Edpuzzle analytics give you a level of insight into individual learning that is difficult to achieve through traditional classroom methods alone.",
+        copilot: "At Practitioner level, Copilot enables a level of personalisation that would otherwise be unsustainable within a busy teaching timetable. Uploading your lesson plan and class profile to generate scaffolded, differentiated resources means every learner — regardless of their starting point — receives support that is genuinely relevant to them. This is what inclusive teaching looks like when it is powered by AI.",
+      },
+      leader: {
+        teams: "At Leader level, MS Teams and Forms are embedded as the backbone of a fully digital, blended learning environment. Every learner knows where to find materials, how to access support, and what is expected of them — independently and consistently. When you share this practice with colleagues, you raise the standard of digital teaching across the college and ensure more learners benefit from a structured, accessible digital classroom.",
+        canva: "At Leader level, Canva practice goes beyond individual resources. Sharing accessible templates with colleagues, supporting learners to create their own content, and modelling inclusive design as standard all contribute to embedding a culture of accessibility across the college. The resources you create and share at this level have the potential to benefit learners far beyond your own classroom.",
+        edpuzzle: "At Leader level, Edpuzzle becomes a tool for demonstrating and evidencing the impact of technology-enhanced learning. Creating your own instructional videos, using analytics to evidence individual learner progress, and sharing effective Edpuzzle activities with colleagues positions you as a leader in innovative, inclusive curriculum delivery — and contributes directly to the college's digital transformation.",
+        copilot: "At Leader level, Copilot is embedded strategically across planning, delivery, and professional development. Using AI with learners to model responsible, creative use, generating resources that address the full range of needs in your department, and sharing effective prompts and approaches with colleagues all contribute to building a college-wide culture of confident, ethical, and impactful AI use in education.",
+      },
+    };
+    return texts[level]?.[tool] || '';
+  };
+
   // Level Entry Page
   if (stage === 'level-entry') {
     return (
