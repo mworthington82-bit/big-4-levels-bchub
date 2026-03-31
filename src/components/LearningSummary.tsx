@@ -160,7 +160,7 @@ const LearningSummary = ({ level, onContinue }: LearningSummaryProps) => {
       {/* Help box */}
       <div className="bg-muted/40 border border-border rounded-xl px-6 py-5 text-center space-y-2">
         <p className="text-sm font-semibold text-foreground">
-          💬 Need extra support or want to go further?
+          Need extra support or want to go further?
         </p>
         <p className="text-sm text-muted-foreground leading-relaxed">
           Get in touch with our team to book a one-to-one session or explore additional training opportunities.

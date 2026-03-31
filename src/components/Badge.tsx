@@ -40,7 +40,7 @@ const Badge = ({ level, toolName, score, userName, onRestart, onContinueLearning
           </div>
           
           <CardTitle className="text-4xl font-bold text-card-foreground">
-            🎉 Congratulations{userName ? `, ${userName}` : ''}!
+            Congratulations{userName ? `, ${userName}` : ''}!
           </CardTitle>
           
           <p className="text-xl text-muted-foreground">

@@ -8,47 +8,6 @@ import bradfordLogo from "@/assets/bradford-college-logo.jpg";
 
 const PADLET_URL = "https://padlet.com/bradfordcollegedigitalskills";
 
-const TOOL_OPTIONS = [
-  "MS Teams & Microsoft Forms",
-  "Edpuzzle",
-  "Canva",
-  "Copilot",
-  "Immersive Room & VR",
-];
-
-const DEPARTMENTS = [
-  "Business, Travel & Hospitality",
-  "Construction & Engineering",
-  "Creative Arts & Media",
-  "Digital & IT",
-  "Early Years & Education",
-  "ESOL & Languages",
-  "Foundation Learning",
-  "Hair & Beauty",
-  "Health & Social Care",
-  "Motor Vehicle",
-  "Public & Protective Services",
-  "Science",
-  "Sport",
-  "Other",
-];
-
-const departmentColors: Record<string, string> = {
-  "Business, Travel & Hospitality": "bg-blue-100 text-blue-800 border-blue-200",
-  "Construction & Engineering": "bg-orange-100 text-orange-800 border-orange-200",
-  "Creative Arts & Media": "bg-pink-100 text-pink-800 border-pink-200",
-  "Digital & IT": "bg-cyan-100 text-cyan-800 border-cyan-200",
-  "Early Years & Education": "bg-yellow-100 text-yellow-800 border-yellow-200",
-  "ESOL & Languages": "bg-green-100 text-green-800 border-green-200",
-  "Foundation Learning": "bg-lime-100 text-lime-800 border-lime-200",
-  "Hair & Beauty": "bg-rose-100 text-rose-800 border-rose-200",
-  "Health & Social Care": "bg-red-100 text-red-800 border-red-200",
-  "Motor Vehicle": "bg-slate-100 text-slate-800 border-slate-200",
-  "Public & Protective Services": "bg-indigo-100 text-indigo-800 border-indigo-200",
-  "Science": "bg-emerald-100 text-emerald-800 border-emerald-200",
-  "Sport": "bg-amber-100 text-amber-800 border-amber-200",
-  "Other": "bg-gray-100 text-gray-800 border-gray-200",
-};
 
 const inclusionTips = [
   {

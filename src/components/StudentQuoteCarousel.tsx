@@ -66,7 +66,7 @@ const StudentQuoteCarousel = () => {
       {/* Attribution row */}
       <div className="flex items-center justify-between mt-3 flex-wrap gap-2">
         <span className="uppercase text-[#F5A623] font-semibold tracking-[0.1em]" style={{ fontSize: 12 }}>
-          💬 Bradford College Student
+          Bradford College Student
         </span>
 
         <div className="flex items-center gap-3">

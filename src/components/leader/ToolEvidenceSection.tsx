@@ -42,15 +42,6 @@ const ToolEvidenceSection = ({
     return 'accent';
   };
 
-  const getToolEmoji = () => {
-    if (tool === 'teams') return '🟦';
-    if (tool === 'forms') return '🟩';
-    if (tool === 'canva') return '🟨';
-    if (tool === 'edpuzzle') return '🟦';
-    if (tool === 'copilot') return '🟪';
-    return '🎯';
-  };
-
   const getToolLogo = () => {
     switch (tool) {
       case 'teams': return teamsLogo;

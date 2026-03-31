@@ -177,7 +177,7 @@ const LeaderHub = ({ onBack }: LeaderHubProps) => {
                 </ul>
               </div>
               <div className="p-4 bg-card rounded-lg border border-border">
-                <p className="font-medium text-foreground mb-2">🌐 Remote, BBL or Community Staff:</p>
+                <p className="font-medium text-foreground mb-2">Remote, BBL or Community Staff:</p>
                 <ul className="text-sm text-muted-foreground space-y-1 ml-4">
                   <li>• Choose <strong>3 tools</strong> and share how you've used them with colleagues</li>
                 </ul>

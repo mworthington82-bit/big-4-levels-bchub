@@ -165,7 +165,7 @@ const InclusionIdeasWall = () => {
                     </span>
                     {badge && (
                       <span className={`text-[10px] px-2 py-0.5 rounded-full font-semibold border ${badge.color}`}>
-                        {badge.emoji} {badge.label}
+                        {badge.label}
                       </span>
                     )}
                   </div>

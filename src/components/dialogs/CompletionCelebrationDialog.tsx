@@ -45,7 +45,7 @@ const CompletionCelebrationDialog = ({
             </div>
           </div>
           <DialogTitle className="text-3xl">
-            🎉 Congratulations! 🎉
+            Congratulations!
           </DialogTitle>
           <DialogDescription className="text-lg">
             You've completed the {levelNames[level]} level for {toolName}!
