@@ -105,7 +105,7 @@ const ImmersiveLearningSection = ({ checklist, onBack }: ImmersiveLearningProps)
 
           {/* Useful Links */}
           <div className="mt-4 space-y-2">
-            <h4 className="font-semibold text-foreground mb-2">🔗 Useful Links</h4>
+            <h4 className="font-semibold text-foreground mb-2">Useful Links</h4>
             <ul className="space-y-2 mb-4">
               <li className="flex items-start gap-2">
                 <span className="text-rose-600 mt-1">📋</span>
