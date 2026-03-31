@@ -54,12 +54,12 @@ export const learningObjectives: Record<Level, ToolObjectives[]> = {
       tool: 'copilot',
       toolName: 'Microsoft Copilot',
       objectives: [
-        { id: 'ce1', text: 'Access Copilot', icon: '🤖', description: 'Learn how to open and start using Microsoft Copilot for education' },
-        { id: 'ce2', text: 'Write simple prompts', icon: '✍️', description: 'Craft clear instructions to get useful responses from the AI assistant' },
-        { id: 'ce3', text: 'Generate learning objectives', icon: '🎯', description: 'Use AI to create clear, measurable learning outcomes for your lessons' },
-        { id: 'ce4', text: 'Generate a basic lesson plan', icon: '📖', description: 'Get AI assistance to structure your teaching sessions effectively' },
-        { id: 'ce5', text: 'Generate a short summary of a topic', icon: '📄', description: 'Create concise overviews of complex topics for student revision' },
-        { id: 'ce6', text: 'Generate a simple starter or quiz', icon: '❓', description: 'Quickly create engaging lesson starters and knowledge checks' },
+        { id: 'ce1', text: 'Access Copilot', description: 'Learn how to open and start using Microsoft Copilot for education' },
+        { id: 'ce2', text: 'Write simple prompts', description: 'Craft clear instructions to get useful responses from the AI assistant' },
+        { id: 'ce3', text: 'Generate learning objectives', description: 'Use AI to create clear, measurable learning outcomes for your lessons' },
+        { id: 'ce4', text: 'Generate a basic lesson plan', description: 'Get AI assistance to structure your teaching sessions effectively' },
+        { id: 'ce5', text: 'Generate a short summary of a topic', description: 'Create concise overviews of complex topics for student revision' },
+        { id: 'ce6', text: 'Generate a simple starter or quiz', description: 'Quickly create engaging lesson starters and knowledge checks' },
       ],
     },
     {
