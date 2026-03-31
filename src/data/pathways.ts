@@ -705,7 +705,7 @@ export const learningPathways: Record<string, LearningPathway> = {
     level: 'explorer',
     intro: {
       title: 'Microsoft Copilot - Explorer Level',
-      description: 'Microsoft Copilot uses artificial intelligence to help staff save time on planning and resource creation. From lesson plans to quiz questions, Copilot acts as a digital assistant that responds to your prompts with relevant, adaptable content.',
+      description: 'At Explorer level, Microsoft Copilot is all about resource creation. Learn how to upload your lesson plan and a brief class profile — without including any individual student names — and use Copilot to generate teaching resources that are tailored to your curriculum content and your learners\' needs. From differentiated activities and scaffolded tasks to vocabulary support and simplified texts, Copilot can transform your planning time and ensure every learner has access to resources pitched at the right level for them.',
       whyItMatters: [
         'Saves valuable planning time that can be spent on teaching and student support',
         'Helps generate ideas when you need fresh approaches or inspiration',

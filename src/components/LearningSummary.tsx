@@ -48,7 +48,7 @@ const LearningSummary = ({ level, onContinue }: LearningSummaryProps) => {
     <div className="max-w-4xl mx-auto space-y-6 animate-fade-in">
       <div className="text-center mb-6 print-visible">
         <h2 className="font-display text-3xl md:text-4xl font-bold text-foreground mb-2">
-          📋 My Learning Summary
+          My Learning Summary
         </h2>
         <p className="text-lg text-muted-foreground">
           {levelLabel} Level — Review what you've learned and plan your next steps
@@ -100,7 +100,7 @@ const LearningSummary = ({ level, onContinue }: LearningSummaryProps) => {
                         }`}
                       >
                         {/* Icon */}
-                        <span className="text-lg flex-shrink-0">{obj.icon || '📌'}</span>
+                        {obj.icon && <span className="text-lg flex-shrink-0">{obj.icon}</span>}
 
                         {/* Text */}
                         <div className="flex-1 min-w-0">
@@ -160,7 +160,7 @@ const LearningSummary = ({ level, onContinue }: LearningSummaryProps) => {
       {/* Help box */}
       <div className="bg-muted/40 border border-border rounded-xl px-6 py-5 text-center space-y-2">
         <p className="text-sm font-semibold text-foreground">
-          💬 Need extra support or want to go further?
+          Need extra support or want to go further?
         </p>
         <p className="text-sm text-muted-foreground leading-relaxed">
           Get in touch with our team to book a one-to-one session or explore additional training opportunities.

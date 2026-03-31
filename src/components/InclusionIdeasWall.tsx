@@ -28,9 +28,9 @@ const levelBadge: Record<string, string> = {
   leader: "bg-leader/20 text-leader",
 };
 
-const ratingBadge: Record<string, { emoji: string; label: string; color: string }> = {
-  strong: { emoji: "⭐", label: "Strong", color: "bg-amber-100 text-amber-800 border-amber-300" },
-  exemplary: { emoji: "🏆", label: "Exemplary", color: "bg-yellow-100 text-yellow-800 border-yellow-300" },
+const ratingBadge: Record<string, { label: string; color: string }> = {
+  strong: { label: "Strong", color: "bg-amber-100 text-amber-800 border-amber-300" },
+  exemplary: { label: "Exemplary", color: "bg-yellow-100 text-yellow-800 border-yellow-300" },
 };
 
 interface Idea {
@@ -140,7 +140,7 @@ const InclusionIdeasWall = () => {
           className="h-8 rounded-lg border border-input bg-background px-2 text-xs"
           aria-label="Filter by rating"
         >
-          {RATINGS.map(r => <option key={r} value={r}>{r === "All" ? "All Ratings" : r === "strong" ? "⭐ Strong" : "🏆 Exemplary"}</option>)}
+          {RATINGS.map(r => <option key={r} value={r}>{r === "All" ? "All Ratings" : r === "strong" ? "Strong" : "Exemplary"}</option>)}
         </select>
       </div>
 
@@ -165,7 +165,7 @@ const InclusionIdeasWall = () => {
                     </span>
                     {badge && (
                       <span className={`text-[10px] px-2 py-0.5 rounded-full font-semibold border ${badge.color}`}>
-                        {badge.emoji} {badge.label}
+                        {badge.label}
                       </span>
                     )}
                   </div>

@@ -167,17 +167,17 @@ const LeaderHub = ({ onBack }: LeaderHubProps) => {
         {/* Clear Instructions */}
         <Card className="border-accent/30 bg-accent/5">
           <CardContent className="pt-6">
-            <h3 className="font-semibold text-foreground mb-3">📋 What You Need to Do:</h3>
+            <h3 className="font-semibold text-foreground mb-3">What You Need to Do:</h3>
             <div className="space-y-4">
               <div className="p-4 bg-card rounded-lg border border-border">
-                <p className="font-medium text-foreground mb-2">🏢 Campus-Based Staff:</p>
+                <p className="font-medium text-foreground mb-2">Campus-Based Staff:</p>
                 <ul className="text-sm text-muted-foreground space-y-1 ml-4">
                   <li>• Choose <strong>2 tools</strong> and share how you've used them with colleagues</li>
                   <li>• Deliver <strong>3 sessions</strong> in the Immersive Room and share your experience</li>
                 </ul>
               </div>
               <div className="p-4 bg-card rounded-lg border border-border">
-                <p className="font-medium text-foreground mb-2">🌐 Remote, BBL or Community Staff:</p>
+                <p className="font-medium text-foreground mb-2">Remote, BBL or Community Staff:</p>
                 <ul className="text-sm text-muted-foreground space-y-1 ml-4">
                   <li>• Choose <strong>3 tools</strong> and share how you've used them with colleagues</li>
                 </ul>

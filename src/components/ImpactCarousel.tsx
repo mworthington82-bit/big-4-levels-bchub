@@ -17,10 +17,11 @@ interface ImpactCarouselProps {
   studentBenefits: string[];
   staffBenefits: string[];
   collegeBenefits: string[];
+  biggerPictureText?: string;
   onAllViewed?: (allViewed: boolean) => void;
 }
 
-const ImpactCarousel = ({ studentBenefits, staffBenefits, collegeBenefits, onAllViewed }: ImpactCarouselProps) => {
+const ImpactCarousel = ({ studentBenefits, staffBenefits, collegeBenefits, biggerPictureText, onAllViewed }: ImpactCarouselProps) => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [viewedSlides, setViewedSlides] = useState<Set<number>>(new Set([0]));
 
@@ -57,13 +58,13 @@ const ImpactCarousel = ({ studentBenefits, staffBenefits, collegeBenefits, onAll
       category: 'students',
       title: 'The Bigger Picture',
       icon: <Sparkles className="h-8 w-8" />,
-      benefits: [
-        '82% of all job vacancies now require digital skills — you\'re preparing students for that world',
+      benefits: biggerPictureText ? [biggerPictureText] : [
+        '82% of all job vacancies now require digital skills — you are preparing students for that world',
         'Students who learn with engaged, digitally confident teachers achieve more',
         'The tools you use today shape the careers your students will have tomorrow',
-        'You\'re not just teaching a subject — you\'re modelling what confident learning looks like',
+        'You are not just teaching a subject — you are modelling what confident learning looks like',
       ],
-      highlight: 'You\'re shaping the future of education at Bradford College',
+      highlight: 'The impact of digital teaching at Bradford College',
       color: 'from-accent/30 to-primary/20',
     },
   ];
