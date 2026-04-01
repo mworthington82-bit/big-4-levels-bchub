@@ -724,25 +724,8 @@ const Training = () => {
               </div>
             )}
 
-            {/* Inclusion Section - after Immersive Learning */}
-            {selectedTool && selectedLevel && selectedLevel !== 'leader' && (
-              <div className="mb-10 animate-fade-in">
-                <InclusionEmbed tool={selectedTool} level={selectedLevel} brandColor="#7C3AED" />
-              </div>
-            )}
 
-            {selectedTool && selectedLevel && (
-              <div className="mb-10 animate-fade-in">
-                <InclusionIdeaChecker
-                  tool={selectedTool}
-                  level={selectedLevel}
-                  brandColor="#7C3AED"
-                  onContinue={() => {
-                    const toolData = tools.find(t => t.id === selectedTool);
-                    if (toolData) handleToolSelect(selectedTool);
-                  }}
-                />
-              </div>
+
             )}
 
             {/* My Learning Summary - always accessible */}
