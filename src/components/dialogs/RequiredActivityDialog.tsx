@@ -53,7 +53,7 @@ const RequiredActivityDialog = ({ tool, level }: RequiredActivityDialogProps) =>
           <DialogDescription className="text-base">
             {isCanvaExplorer ? (
               <>
-                To complete this module, you are required to complete the <strong>Canva training course</strong>. On successful completion you will receive a Canva certificate. Please ensure you upload or submit your certificate as evidence of completion.
+                To complete this module, you are required to complete the <strong>Canva training course</strong>. On successful completion you will receive a Canva certificate to evidence your achievement.
               </>
             ) : isFirstTool && !hasSeenAnyBefore ? (
               <>
