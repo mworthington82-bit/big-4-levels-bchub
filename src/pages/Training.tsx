@@ -726,8 +726,6 @@ const Training = () => {
 
 
 
-            )}
-
             {/* My Learning Summary - always accessible */}
             {selectedLevel && selectedLevel !== 'leader' &&
           <div
