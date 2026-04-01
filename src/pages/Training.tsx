@@ -29,8 +29,6 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import FlippableCard from "@/components/FlippableCard";
 import RequiredActivityDialog from "@/components/dialogs/RequiredActivityDialog";
-import InclusionEmbed from "@/components/InclusionEmbed";
-import InclusionIdeaChecker from "@/components/InclusionIdeaChecker";
 import CheatSheetButton from "@/components/CheatSheetButton";
 import bradfordLogo from "@/assets/bradford-college-logo.jpg";
 import heroBanner from "@/assets/hero-banner.jpg";
@@ -724,26 +722,7 @@ const Training = () => {
               </div>
             )}
 
-            {/* Inclusion Section - after Immersive Learning */}
-            {selectedTool && selectedLevel && selectedLevel !== 'leader' && (
-              <div className="mb-10 animate-fade-in">
-                <InclusionEmbed tool={selectedTool} level={selectedLevel} brandColor="#7C3AED" />
-              </div>
-            )}
 
-            {selectedTool && selectedLevel && (
-              <div className="mb-10 animate-fade-in">
-                <InclusionIdeaChecker
-                  tool={selectedTool}
-                  level={selectedLevel}
-                  brandColor="#7C3AED"
-                  onContinue={() => {
-                    const toolData = tools.find(t => t.id === selectedTool);
-                    if (toolData) handleToolSelect(selectedTool);
-                  }}
-                />
-              </div>
-            )}
 
             {/* My Learning Summary - always accessible */}
             {selectedLevel && selectedLevel !== 'leader' &&
