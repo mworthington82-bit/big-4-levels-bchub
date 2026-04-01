@@ -1103,12 +1103,13 @@ const Training = () => {
                     <Target className="w-5 h-5" style={{ color: currentBrandColor }} />
                     Required Activity
                   </h4>
-                  <p className="text-sm text-[#52526E] leading-relaxed mb-3">
-                    Watch the training video(s) below and complete the embedded questions. This interactive content will help you apply {getToolDisplayName(selectedTool!)} in your teaching practice.
-                  </p>
-                  {selectedTool === 'canva' && selectedLevel === 'explorer' && (
+                  {selectedTool === 'canva' && selectedLevel === 'explorer' ? (
                     <p className="text-sm text-[#52526E] leading-relaxed mb-3">
                       Complete the Canva training course to build your confidence and knowledge of Canva for teaching and learning. On completion you will receive a Canva certificate to evidence your achievement.
+                    </p>
+                  ) : (
+                    <p className="text-sm text-[#52526E] leading-relaxed mb-3">
+                      Watch the training video(s) below and complete the embedded questions. This interactive content will help you apply {getToolDisplayName(selectedTool!)} in your teaching practice.
                     </p>
                   )}
                   
