@@ -6,8 +6,6 @@ import { AccessibilityPanel } from "@/components/AccessibilityPanel";
 import ResourceBankButton from "@/components/ResourceBankButton";
 import bradfordLogo from "@/assets/bradford-college-logo.jpg";
 
-const PADLET_URL = "https://padlet.com/bradfordcollegedigitalskills";
-
 
 const inclusionTips = [
   {
@@ -245,16 +243,6 @@ const Inclusion = () => {
           </div>
         </div>
 
-        {/* Share on Padlet */}
-        <div className="text-center pb-12">
-          <a href={PADLET_URL} target="_blank" rel="noopener noreferrer">
-            <Button size="lg" variant="outline" className="border-inclusion/30 text-inclusion hover:bg-inclusion/10 rounded-xl gap-2 py-6 px-8 text-lg font-semibold">
-              <ExternalLink className="w-5 h-5" />
-              Share on Leader Padlet
-            </Button>
-          </a>
-          <p className="text-xs text-muted-foreground mt-3">Share your inclusion practice more widely on the Leader Padlet</p>
-        </div>
       </div>
     </div>
   );
