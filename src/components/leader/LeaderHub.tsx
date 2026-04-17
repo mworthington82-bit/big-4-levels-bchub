@@ -159,8 +159,7 @@ const LeaderHub = ({ onBack }: LeaderHubProps) => {
 
       {/* Tool Selection Grid */}
       <div className="space-y-4">
-        <h2 className="text-2xl font-bold text-foreground flex items-center gap-2">
-          <Crown className="w-6 h-6 text-accent" />
+        <h2 className="text-2xl font-bold text-foreground">
           Share Your Best Practice
         </h2>
         
