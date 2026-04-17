@@ -2,7 +2,9 @@ import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import { ArrowLeft, Glasses, Lightbulb } from "lucide-react";
+import { ArrowLeft, Glasses, Lightbulb, ExternalLink, Share2 } from "lucide-react";
+
+const IMMERSIVE_PADLET_URL = "https://padlet.com/bradfordcollegedigitalskills/immersive-learning-leader-level-sharing-best-practice";
 
 interface ImmersiveLearningProps {
   checklist: string[];
@@ -60,8 +62,8 @@ const ImmersiveLearningSection = ({ checklist, onBack }: ImmersiveLearningProps)
       {/* Success Criteria Checklist */}
       <Card className="border-2 border-orange-500/30 bg-orange-500/10">
         <CardHeader>
-          <CardTitle className="text-xl flex items-center gap-2">
-            🟧 Success Criteria – Immersive Room & VR
+          <CardTitle className="text-xl">
+            Success Criteria – Immersive Room & VR
           </CardTitle>
           <CardDescription>
             To demonstrate Leader Level practice with immersive technologies, you should be able to confidently tick these boxes:
@@ -126,6 +128,27 @@ const ImmersiveLearningSection = ({ checklist, onBack }: ImmersiveLearningProps)
                 </a>
               </li>
             </ul>
+          </div>
+
+          {/* Share Best Practice CTA */}
+          <div className="mt-6 pt-6 border-t border-border">
+            <div className="rounded-xl bg-gradient-to-br from-rose-500/10 to-accent/10 border-2 border-rose-500/30 p-6 text-center space-y-3">
+              <div className="flex items-center justify-center gap-2">
+                <Share2 className="w-6 h-6 text-rose-600" />
+                <h4 className="text-lg font-bold text-foreground">
+                  Complete the Task: Share Your Best Practice
+                </h4>
+              </div>
+              <p className="text-sm text-muted-foreground max-w-xl mx-auto">
+                Post your immersive lesson plan, photos, reflection, or video walkthrough on the Leader Padlet to evidence your practice and inspire colleagues.
+              </p>
+              <a href={IMMERSIVE_PADLET_URL} target="_blank" rel="noopener noreferrer" className="inline-block">
+                <Button size="lg" className="bg-rose-600 hover:bg-rose-700 text-white font-semibold gap-2 px-8 py-6 text-base shadow-lg">
+                  <ExternalLink className="w-5 h-5" />
+                  Share on Immersive Learning Padlet
+                </Button>
+              </a>
+            </div>
           </div>
         </CardContent>
       </Card>
