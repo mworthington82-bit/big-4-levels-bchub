@@ -65,6 +65,9 @@ const ImmersiveLearningSection = ({ checklist, onBack }: ImmersiveLearningProps)
           <CardTitle className="text-xl">
             Success Criteria – Immersive Room & VR
           </CardTitle>
+          <CardDescription>
+            To demonstrate Leader Level practice with immersive technologies, you should be able to confidently tick these boxes:
+          </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <ul className="space-y-3">
