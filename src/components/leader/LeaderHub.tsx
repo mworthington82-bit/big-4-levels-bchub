@@ -207,11 +207,6 @@ const LeaderHub = ({ onBack }: LeaderHubProps) => {
                       section.icon
                     )}
                   </div>
-                  {section.required && (
-                    <span className="px-2 py-1 text-xs font-semibold bg-rose-100 text-rose-700 rounded">
-                      Required
-                    </span>
-                  )}
                 </div>
                 <CardTitle className="text-lg text-foreground">{section.title}</CardTitle>
                 <CardDescription>{section.description}</CardDescription>
