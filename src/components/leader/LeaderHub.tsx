@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Crown, Glasses, ArrowRight, Home, ArrowLeft } from "lucide-react";
+import { Glasses, ArrowRight, Home, ArrowLeft } from "lucide-react";
 import LeaderOverview from "./LeaderOverview";
 import ToolEvidenceSection from "./ToolEvidenceSection";
 import ImmersiveLearningSection from "./ImmersiveLearningSection";
