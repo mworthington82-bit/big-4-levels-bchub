@@ -162,49 +162,6 @@ const ToolEvidenceSection = ({
               ))}
             </ul>
           </div>
-
-          {/* Padlet Embeds */}
-          <div className="mt-4">
-            <h4 className="font-semibold text-foreground mb-2">📌 Share Your Practice</h4>
-            <p className="text-sm text-muted-foreground mb-3">
-              If you would like to open Padlet in a new tab, use this link:{' '}
-              <a 
-                href={
-                  tool === 'teams' ? 'https://padlet.com/m_worthington1/ms-teams-microsoft-forms-leader-level-sharing-best-practice-gks2w9j29p4m30np' :
-                  tool === 'canva' ? 'https://padlet.com/m_worthington1/canva-leader-level-sharing-best-practice-hedtqgi5d39rabrd' :
-                  tool === 'edpuzzle' ? 'https://padlet.com/m_worthington1/edpuzzle-leader-level-sharing-best-practice-spyzi6v7k5iepolu' :
-                  tool === 'copilot' ? 'https://padlet.com/m_worthington1/microsoft-copilot-leader-level-sharing-best-practice-vbbh9q3jed0zj0tf' :
-                  '#'
-                }
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="text-accent underline hover:text-accent/80"
-              >
-                Open Padlet ↗
-              </a>
-            </p>
-            <div style={{ border: '1px solid rgba(0,0,0,0.1)', borderRadius: '2px', boxSizing: 'border-box', overflow: 'hidden', position: 'relative', width: '100%', background: '#F4F4F4' }}>
-              <iframe 
-                src={
-                  tool === 'teams' ? 'https://padlet.com/embed/gks2w9j29p4m30np' :
-                  tool === 'canva' ? 'https://padlet.com/embed/hedtqgi5d39rabrd' :
-                  tool === 'edpuzzle' ? 'https://padlet.com/embed/spyzi6v7k5iepolu' :
-                  tool === 'copilot' ? 'https://padlet.com/embed/vbbh9q3jed0zj0tf' :
-                  ''
-                }
-                frameBorder="0"
-                allow="camera;microphone;geolocation;display-capture;clipboard-write"
-                style={{ width: '100%', height: '608px', display: 'block', padding: 0, margin: 0 }}
-                title={`${toolDisplayName} Best Practice Padlet`}
-              />
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', margin: 0, padding: '8px 8px 8px 0' }}>
-                <a href="https://padlet.com?ref=embed" style={{ display: 'flex', alignItems: 'center', gap: '5px', flexGrow: 0, margin: 0, border: 'none', padding: 0, textDecoration: 'none' }} target="_blank" rel="noopener noreferrer">
-                  <span style={{ color: '#9E9E9E', fontSize: '10px', fontFamily: '-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen,Ubuntu,Cantarell,sans-serif', lineHeight: 1 }}>Made with</span>
-                  <img src="https://padlet.net/emails/padlet_email_logo_2026_text-dark-200.png" height="12" style={{ padding: 0, margin: 0, background: '0 0', border: 'none', boxShadow: 'none', display: 'block' }} alt="Made with Padlet" />
-                </a>
-              </div>
-            </div>
-          </div>
         </CardContent>
       </Card>
     </div>
