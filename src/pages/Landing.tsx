@@ -260,7 +260,7 @@ const Landing = () => {
                 <div className="flex-1">
                   <h3 className="font-display text-xl font-bold text-foreground">Inclusion & Accessibility</h3>
                   <p className="text-muted-foreground text-sm mt-1">
-                    Reflect on how you use digital tools to remove barriers, personalise learning, and support every student
+                    Explore quick, practical tips on how the Big 4 apps can be used to remove barriers, personalise learning, and support every learner to succeed.
                   </p>
                 </div>
                 <ArrowRight className="w-5 h-5 text-inclusion flex-shrink-0" />
