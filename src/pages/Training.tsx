@@ -30,6 +30,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import FlippableCard from "@/components/FlippableCard";
 import RequiredActivityDialog from "@/components/dialogs/RequiredActivityDialog";
 import CheatSheetButton from "@/components/CheatSheetButton";
+import LeadCallout from "@/components/LeadCallout";
 import bradfordLogo from "@/assets/bradford-college-logo.jpg";
 import heroBanner from "@/assets/hero-banner.jpg";
 import teamsIllustration from "@/assets/teams-illustration.jpg";
@@ -1198,6 +1199,8 @@ const Training = () => {
                     )}
                   </div>
                 )}
+
+                <LeadCallout tool={selectedTool!} />
 
                 <Button
               onClick={() => { setStage('benefits'); setActivityConfirmed(false); }}

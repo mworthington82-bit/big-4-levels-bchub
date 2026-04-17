@@ -10,6 +10,7 @@ import WelcomeDialog from "@/components/dialogs/WelcomeDialog";
 import StudentQuoteCarousel from "@/components/StudentQuoteCarousel";
 import ResourceBankButton from "@/components/ResourceBankButton";
 import StaffSpotlight from "@/components/StaffSpotlight";
+import LeadStrip from "@/components/LeadStrip";
 
 import bradfordLogo from "@/assets/bradford-college-logo.jpg";
 import teamsLogo from "@/assets/teams-logo.png";
@@ -136,6 +137,11 @@ const Landing = () => {
         </section>
 
         <div className="container mx-auto px-4 py-8 md:py-12">
+          {/* LEAD model strip */}
+          <div className="mb-8 animate-fade-in">
+            <LeadStrip />
+          </div>
+
           {/* Warm Welcome Card */}
           <div className="max-w-4xl mx-auto mb-12 animate-fade-in">
             <div className="bg-card rounded-3xl shadow-[var(--shadow-card)] border-l-4 border-l-[#F5A623] border border-border p-8 md:p-10 text-left">

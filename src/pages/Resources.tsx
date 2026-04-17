@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect, useRef } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Home, Search, ArrowLeft, X, ExternalLink, Play, Download, Bookmark, BookmarkCheck } from 'lucide-react';
+import { Home, Search, ArrowLeft, X, Play, Download, Bookmark, BookmarkCheck, Pin } from 'lucide-react';
 import { resources, searchResources, toolDisplayNames, Resource } from '@/data/resources';
 import CheatSheetButton from '@/components/CheatSheetButton';
 import bradfordLogo from '@/assets/bradford-college-logo.jpg';
@@ -58,6 +58,8 @@ const getActionButton = (resource: Resource) => {
 
 const Resources = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const leadCardRef = useRef<HTMLDivElement | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedTool, setSelectedTool] = useState<ToolFilter>('all');
   const [selectedLevel, setSelectedLevel] = useState<LevelFilter>('all');
@@ -71,6 +73,14 @@ const Resources = () => {
   }, []);
 
   useEffect(() => { window.scrollTo(0, 0); }, []);
+
+  useEffect(() => {
+    if (searchParams.get('pinned') === 'lead' && leadCardRef.current) {
+      setTimeout(() => {
+        leadCardRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 200);
+    }
+  }, [searchParams]);
 
   useEffect(() => {
     let result = resources;
@@ -220,6 +230,52 @@ const Resources = () => {
         <p className="text-center text-muted-foreground mb-6">
           {filteredResources.length} resource{filteredResources.length !== 1 ? 's' : ''} found
         </p>
+
+        {/* Pinned LEAD Guide Card */}
+        <div ref={leadCardRef} className="max-w-4xl mx-auto mb-8 animate-fade-in">
+          <div className="bg-card rounded-2xl border-2 border-[#0078D4]/40 shadow-[var(--shadow-hover)] overflow-hidden">
+            <div className="bg-[#0078D4] px-5 py-3 flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <Pin className="h-4 w-4 text-white" />
+                <span className="text-sm font-semibold text-white">Pinned · Bradford College</span>
+              </div>
+              <span className="text-xs font-bold uppercase tracking-wider text-white bg-white/20 px-2 py-1 rounded-full">
+                LEAD Guide
+              </span>
+            </div>
+
+            {/* LEAD strip badges */}
+            <div className="grid grid-cols-4 gap-0">
+              <div className="bg-green-600 text-white text-center py-2 text-xs md:text-sm font-bold">L — Launch</div>
+              <div className="bg-blue-600 text-white text-center py-2 text-xs md:text-sm font-bold">E — Establish</div>
+              <div className="bg-amber-500 text-white text-center py-2 text-xs md:text-sm font-bold">A — Apply</div>
+              <div className="bg-purple-600 text-white text-center py-2 text-xs md:text-sm font-bold">D — Demonstrate</div>
+            </div>
+
+            <div className="p-6">
+              <h3 className="font-display text-xl md:text-2xl font-bold text-foreground mb-2">
+                Big 4 x LEAD Model — Teaching Guide
+              </h3>
+              <p className="text-sm md:text-base text-muted-foreground mb-4 leading-relaxed">
+                A practical guide showing how each of the Big 4 tools — MS Teams, Canva, Edpuzzle, Copilot, and the Immersive Room — can be used at every stage of the LEAD model: Launch, Establish, Apply, and Demonstrate. Use this as your planning reference to embed digital tools purposefully into every lesson.
+              </p>
+              <div className="flex flex-wrap items-center gap-2 mb-5">
+                <span className="text-xs px-2.5 py-1 rounded-full bg-[#F5A623]/20 text-[#B8860B] font-semibold">Explorer</span>
+                <span className="text-xs px-2.5 py-1 rounded-full bg-[#16a085]/20 text-[#16a085] font-semibold">Practitioner</span>
+                <span className="text-xs px-2.5 py-1 rounded-full bg-[#2E86DE]/20 text-[#2E86DE] font-semibold">Leader</span>
+                <span className="text-xs px-2.5 py-1 rounded-full bg-muted text-muted-foreground font-medium">All tools</span>
+              </div>
+              <Button
+                size="lg"
+                className="w-full md:w-auto bg-[#0078D4] hover:bg-[#0078D4]/90 text-white rounded-full px-6 font-semibold"
+                onClick={() => window.open('/resources/Big4_LEAD_Guide.docx', '_blank')}
+              >
+                <Download className="h-4 w-4 mr-2" />
+                Download the Big 4 x LEAD Guide
+              </Button>
+            </div>
+          </div>
+        </div>
 
         {/* Resource Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
