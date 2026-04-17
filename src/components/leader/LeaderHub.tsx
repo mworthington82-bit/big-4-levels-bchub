@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Crown, Glasses, ArrowRight, Home, ArrowLeft } from "lucide-react";
+import { Glasses, ArrowRight, Home, ArrowLeft } from "lucide-react";
 import LeaderOverview from "./LeaderOverview";
 import ToolEvidenceSection from "./ToolEvidenceSection";
 import ImmersiveLearningSection from "./ImmersiveLearningSection";
@@ -60,10 +60,9 @@ const LeaderHub = ({ onBack }: LeaderHubProps) => {
     {
       id: 'immersive' as const,
       title: 'Immersive Learning',
-      description: 'VR and immersive technology leadership (Required)',
+      description: 'VR and immersive technology leadership',
       icon: <Glasses className="w-6 h-6 text-rose-500" />,
-      color: 'from-rose-500/20 to-rose-500/5',
-      required: true
+      color: 'from-rose-500/20 to-rose-500/5'
     }
   ];
 
@@ -159,8 +158,7 @@ const LeaderHub = ({ onBack }: LeaderHubProps) => {
 
       {/* Tool Selection Grid */}
       <div className="space-y-4">
-        <h2 className="text-2xl font-bold text-foreground flex items-center gap-2">
-          <Crown className="w-6 h-6 text-accent" />
+        <h2 className="text-2xl font-bold text-foreground">
           Share Your Best Practice
         </h2>
         
@@ -209,11 +207,6 @@ const LeaderHub = ({ onBack }: LeaderHubProps) => {
                       section.icon
                     )}
                   </div>
-                  {section.required && (
-                    <span className="px-2 py-1 text-xs font-semibold bg-rose-100 text-rose-700 rounded">
-                      Required
-                    </span>
-                  )}
                 </div>
                 <CardTitle className="text-lg text-foreground">{section.title}</CardTitle>
                 <CardDescription>{section.description}</CardDescription>
