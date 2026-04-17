@@ -129,6 +129,27 @@ const ImmersiveLearningSection = ({ checklist, onBack }: ImmersiveLearningProps)
               </li>
             </ul>
           </div>
+
+          {/* Share Best Practice CTA */}
+          <div className="mt-6 pt-6 border-t border-border">
+            <div className="rounded-xl bg-gradient-to-br from-rose-500/10 to-accent/10 border-2 border-rose-500/30 p-6 text-center space-y-3">
+              <div className="flex items-center justify-center gap-2">
+                <Share2 className="w-6 h-6 text-rose-600" />
+                <h4 className="text-lg font-bold text-foreground">
+                  Complete the Task: Share Your Best Practice
+                </h4>
+              </div>
+              <p className="text-sm text-muted-foreground max-w-xl mx-auto">
+                Post your immersive lesson plan, photos, reflection, or video walkthrough on the Leader Padlet to evidence your practice and inspire colleagues.
+              </p>
+              <a href={IMMERSIVE_PADLET_URL} target="_blank" rel="noopener noreferrer" className="inline-block">
+                <Button size="lg" className="bg-rose-600 hover:bg-rose-700 text-white font-semibold gap-2 px-8 py-6 text-base shadow-lg">
+                  <ExternalLink className="w-5 h-5" />
+                  Share on Immersive Learning Padlet
+                </Button>
+              </a>
+            </div>
+          </div>
         </CardContent>
       </Card>
     </div>
