@@ -170,6 +170,27 @@ const ToolEvidenceSection = ({
               ))}
             </ul>
           </div>
+
+          {/* Share Best Practice CTA */}
+          <div className="mt-6 pt-6 border-t border-border">
+            <div className="rounded-xl bg-gradient-to-br from-accent/10 to-primary/10 border-2 border-accent/30 p-6 text-center space-y-3">
+              <div className="flex items-center justify-center gap-2">
+                <Share2 className="w-6 h-6 text-accent" />
+                <h4 className="text-lg font-bold text-foreground">
+                  Complete the Task: Share Your Best Practice
+                </h4>
+              </div>
+              <p className="text-sm text-muted-foreground max-w-xl mx-auto">
+                Post your evidence — a resource, screenshot, video walkthrough, or reflection — on the {toolDisplayName} Leader Padlet to evidence your practice and inspire colleagues.
+              </p>
+              <a href={PADLET_LINKS[tool]} target="_blank" rel="noopener noreferrer" className="inline-block">
+                <Button size="lg" className="bg-accent hover:bg-accent/90 text-accent-foreground font-semibold gap-2 px-8 py-6 text-base shadow-lg">
+                  <ExternalLink className="w-5 h-5" />
+                  Share on {toolDisplayName} Padlet
+                </Button>
+              </a>
+            </div>
+          </div>
         </CardContent>
       </Card>
     </div>
