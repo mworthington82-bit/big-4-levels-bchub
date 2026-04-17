@@ -6,8 +6,6 @@ import { AccessibilityPanel } from "@/components/AccessibilityPanel";
 import ResourceBankButton from "@/components/ResourceBankButton";
 import bradfordLogo from "@/assets/bradford-college-logo.jpg";
 
-const PADLET_URL = "https://padlet.com/bradfordcollegedigitalskills";
-
 
 const inclusionTips = [
   {
