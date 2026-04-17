@@ -60,10 +60,9 @@ const LeaderHub = ({ onBack }: LeaderHubProps) => {
     {
       id: 'immersive' as const,
       title: 'Immersive Learning',
-      description: 'VR and immersive technology leadership (Required)',
+      description: 'VR and immersive technology leadership',
       icon: <Glasses className="w-6 h-6 text-rose-500" />,
-      color: 'from-rose-500/20 to-rose-500/5',
-      required: true
+      color: 'from-rose-500/20 to-rose-500/5'
     }
   ];
 
