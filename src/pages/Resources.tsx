@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect, useRef } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Home, Search, ArrowLeft, X, ExternalLink, Play, Download, Bookmark, BookmarkCheck } from 'lucide-react';
+import { Home, Search, ArrowLeft, X, Play, Download, Bookmark, BookmarkCheck, Pin } from 'lucide-react';
 import { resources, searchResources, toolDisplayNames, Resource } from '@/data/resources';
 import CheatSheetButton from '@/components/CheatSheetButton';
 import bradfordLogo from '@/assets/bradford-college-logo.jpg';
@@ -58,6 +58,8 @@ const getActionButton = (resource: Resource) => {
 
 const Resources = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const leadCardRef = useRef<HTMLDivElement | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedTool, setSelectedTool] = useState<ToolFilter>('all');
   const [selectedLevel, setSelectedLevel] = useState<LevelFilter>('all');
@@ -71,6 +73,14 @@ const Resources = () => {
   }, []);
 
   useEffect(() => { window.scrollTo(0, 0); }, []);
+
+  useEffect(() => {
+    if (searchParams.get('pinned') === 'lead' && leadCardRef.current) {
+      setTimeout(() => {
+        leadCardRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 200);
+    }
+  }, [searchParams]);
 
   useEffect(() => {
     let result = resources;
