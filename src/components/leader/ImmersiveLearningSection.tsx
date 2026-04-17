@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { ArrowLeft, Glasses, Lightbulb, ExternalLink, Share2 } from "lucide-react";
 
-const IMMERSIVE_PADLET_URL = "https://padlet.com/bradfordcollegedigitalskills/immersive-learning-leader-level-sharing-best-practice";
+const IMMERSIVE_PADLET_URL = "https://padlet.com/m_worthington1/immersive-learning-leader-level-sharing-best-practice-h4686ht9wq9dpui7";
 
 interface ImmersiveLearningProps {
   checklist: string[];

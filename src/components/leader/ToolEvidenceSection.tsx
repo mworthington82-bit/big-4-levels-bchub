@@ -2,7 +2,15 @@ import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import { ArrowLeft, Lightbulb } from "lucide-react";
+import { ArrowLeft, Lightbulb, ExternalLink, Share2 } from "lucide-react";
+
+const PADLET_LINKS: Record<string, string> = {
+  teams: "https://padlet.com/m_worthington1/ms-teams-microsoft-forms-leader-level-sharing-best-practice-gks2w9j29p4m30np",
+  forms: "https://padlet.com/m_worthington1/ms-teams-microsoft-forms-leader-level-sharing-best-practice-gks2w9j29p4m30np",
+  canva: "https://padlet.com/m_worthington1/canva-leader-level-sharing-best-practice-hedtqgi5d39rabrd",
+  edpuzzle: "https://padlet.com/m_worthington1/edpuzzle-leader-level-sharing-best-practice-spyzi6v7k5iepolu",
+  copilot: "https://padlet.com/m_worthington1/microsoft-copilot-leader-level-sharing-best-practice-vbbh9q3jed0zj0tf",
+};
 
 import teamsLogo from "@/assets/teams-logo.png";
 import formsLogo from "@/assets/forms-logo.jpg";
@@ -161,6 +169,27 @@ const ToolEvidenceSection = ({
                 </li>
               ))}
             </ul>
+          </div>
+
+          {/* Share Best Practice CTA */}
+          <div className="mt-6 pt-6 border-t border-border">
+            <div className="rounded-xl bg-gradient-to-br from-accent/10 to-primary/10 border-2 border-accent/30 p-6 text-center space-y-3">
+              <div className="flex items-center justify-center gap-2">
+                <Share2 className="w-6 h-6 text-accent" />
+                <h4 className="text-lg font-bold text-foreground">
+                  Complete the Task: Share Your Best Practice
+                </h4>
+              </div>
+              <p className="text-sm text-muted-foreground max-w-xl mx-auto">
+                Post your evidence — a resource, screenshot, video walkthrough, or reflection — on the {toolDisplayName} Leader Padlet to evidence your practice and inspire colleagues.
+              </p>
+              <a href={PADLET_LINKS[tool]} target="_blank" rel="noopener noreferrer" className="inline-block">
+                <Button size="lg" className="bg-accent hover:bg-accent/90 text-accent-foreground font-semibold gap-2 px-8 py-6 text-base shadow-lg">
+                  <ExternalLink className="w-5 h-5" />
+                  Share on {toolDisplayName} Padlet
+                </Button>
+              </a>
+            </div>
           </div>
         </CardContent>
       </Card>
