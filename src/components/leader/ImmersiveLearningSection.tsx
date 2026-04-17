@@ -2,7 +2,9 @@ import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import { ArrowLeft, Glasses, Lightbulb } from "lucide-react";
+import { ArrowLeft, Glasses, Lightbulb, ExternalLink, Share2 } from "lucide-react";
+
+const IMMERSIVE_PADLET_URL = "https://padlet.com/bradfordcollegedigitalskills/immersive-learning-leader-level-sharing-best-practice";
 
 interface ImmersiveLearningProps {
   checklist: string[];
