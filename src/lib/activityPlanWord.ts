@@ -1,0 +1,97 @@
+import { Document, Packer, Paragraph, TextRun, HeadingLevel, AlignmentType, LevelFormat } from "docx";
+import { saveAs } from "file-saver";
+
+export interface ActivityPlan {
+  primary_tool: string;
+  why_this_tool: string;
+  secondary_tool: string;
+  secondary_reason: string;
+  setup_steps: string[];
+  how_to_run: string;
+  lead_stages: string[];
+  lead_notes: string;
+  inclusion_strengths: string[];
+  inclusion_tips: string[];
+  inclusion_rating: string;
+  clarifying_note: string;
+  closing_line: string;
+}
+
+export const TOOL_LABELS: Record<string, string> = {
+  teams: "MS Teams and MS Forms",
+  canva: "Canva",
+  edpuzzle: "Edpuzzle",
+  copilot: "Microsoft Copilot",
+  immersive: "Immersive Room and VR",
+};
+
+export const LEAD_LABELS: Record<string, string> = {
+  launch: "Launch",
+  establish: "Establish",
+  apply: "Apply",
+  demonstrate: "Demonstrate",
+};
+
+export const RATING_LABELS: Record<string, string> = {
+  explorer: "Explorer",
+  developing: "Developing",
+  strong: "Strong",
+  exemplary: "Exemplary",
+};
+
+export async function downloadPlanAsWord(plan: ActivityPlan, activityText: string, subject?: string, learners?: string) {
+  const heading = (text: string) => new Paragraph({ heading: HeadingLevel.HEADING_2, children: [new TextRun({ text, bold: true })], spacing: { before: 240, after: 120 } });
+  const para = (text: string) => new Paragraph({ children: [new TextRun(text)], spacing: { after: 120 } });
+
+  const doc = new Document({
+    numbering: {
+      config: [
+        { reference: "steps", levels: [{ level: 0, format: LevelFormat.DECIMAL, text: "%1.", alignment: AlignmentType.LEFT, style: { paragraph: { indent: { left: 720, hanging: 360 } } } }] },
+        { reference: "bullets", levels: [{ level: 0, format: LevelFormat.BULLET, text: "•", alignment: AlignmentType.LEFT, style: { paragraph: { indent: { left: 720, hanging: 360 } } } }] },
+      ],
+    },
+    sections: [{
+      children: [
+        new Paragraph({ heading: HeadingLevel.HEADING_1, alignment: AlignmentType.CENTER, children: [new TextRun({ text: "Big 4 Activity Plan", bold: true })] }),
+        new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: "Bradford College — Big 4: Level Up", italics: true })], spacing: { after: 240 } }),
+
+        heading("Activity goal"),
+        para(activityText),
+        ...(subject ? [heading("Subject / topic"), para(subject)] : []),
+        ...(learners ? [heading("Learners"), para(learners)] : []),
+
+        heading("Recommended tool"),
+        para(TOOL_LABELS[plan.primary_tool] || plan.primary_tool),
+        new Paragraph({ children: [new TextRun({ text: "Why this tool: ", bold: true }), new TextRun(plan.why_this_tool)], spacing: { after: 120 } }),
+
+        heading("Also worth considering"),
+        new Paragraph({ children: [new TextRun({ text: `${TOOL_LABELS[plan.secondary_tool] || plan.secondary_tool}: `, bold: true }), new TextRun(plan.secondary_reason)], spacing: { after: 120 } }),
+
+        heading("How to set it up"),
+        ...plan.setup_steps.map(step => new Paragraph({ numbering: { reference: "steps", level: 0 }, children: [new TextRun(step)] })),
+
+        heading("How to run the activity"),
+        para(plan.how_to_run),
+
+        heading("LEAD stage"),
+        para(plan.lead_stages.map(s => LEAD_LABELS[s] || s).join(", ")),
+        ...(plan.lead_notes ? [para(plan.lead_notes)] : []),
+
+        heading("Inclusion check"),
+        new Paragraph({ children: [new TextRun({ text: `Inclusion rating: ${RATING_LABELS[plan.inclusion_rating] || plan.inclusion_rating}`, bold: true })], spacing: { after: 120 } }),
+        new Paragraph({ children: [new TextRun({ text: "Inclusion strengths", bold: true })], spacing: { before: 120, after: 60 } }),
+        ...plan.inclusion_strengths.map(s => new Paragraph({ numbering: { reference: "bullets", level: 0 }, children: [new TextRun(s)] })),
+        new Paragraph({ children: [new TextRun({ text: "Inclusion tips to go further", bold: true })], spacing: { before: 120, after: 60 } }),
+        ...plan.inclusion_tips.map(t => new Paragraph({ numbering: { reference: "bullets", level: 0 }, children: [new TextRun(t)] })),
+
+        ...(plan.clarifying_note ? [heading("A gentle note"), para(plan.clarifying_note)] : []),
+
+        new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: plan.closing_line, italics: true })], spacing: { before: 360 } }),
+      ],
+    }],
+  });
+
+  const blob = await Packer.toBlob(doc);
+  const fileName = `Big4-Activity-Plan-${new Date().toISOString().slice(0, 10)}.docx`;
+  saveAs(blob, fileName);
+}
