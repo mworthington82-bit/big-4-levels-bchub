@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Sparkles, Lightbulb, Loader2, Download, RefreshCw, Share2, CheckCircle2, AlertCircle } from "lucide-react";
+import { Sparkles, Lightbulb, Loader2, Download, RefreshCw, Share2, CheckCircle2, AlertCircle, Info } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
