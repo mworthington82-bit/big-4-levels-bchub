@@ -125,7 +125,7 @@ const ActivityPlanner = () => {
             <Lightbulb className="w-7 h-7" aria-hidden="true" />
           </div>
           <div>
-            <h2 className="font-display text-2xl md:text-3xl font-bold mb-2">Activity Planner</h2>
+            <h2 className="font-display text-2xl md:text-3xl font-bold mb-2">Big 4 Activity Planner</h2>
             <p className="text-white/90 text-sm md:text-base leading-relaxed">
               Tell us what you want learners to achieve and we will recommend the right Big 4 tool, show you how to set it up, and check it for inclusion.
             </p>
