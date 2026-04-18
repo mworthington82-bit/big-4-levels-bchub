@@ -200,6 +200,9 @@ const ActivityPlanner = () => {
             <Button onClick={handleSubmit} disabled={!canSubmit} size="lg" className="w-full md:w-auto bg-teal-700 hover:bg-teal-800 text-white">
               {loading ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" />Finding the right tool...</> : <><Sparkles className="w-4 h-4 mr-2" />Find my activity</>}
             </Button>
+
+            <AiDisclaimerNote />
+
           </div>
         ) : (
           <PlanResult
