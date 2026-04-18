@@ -14,6 +14,66 @@ export type Database = {
   }
   public: {
     Tables: {
+      activity_ideas: {
+        Row: {
+          activity_text: string
+          created_at: string
+          department: string
+          how_to_run: string | null
+          id: string
+          inclusion_rating: string
+          inclusion_strengths: Json
+          inclusion_tips: Json
+          lead_stages: string[]
+          learners: string | null
+          primary_tool: string
+          secondary_tool: string | null
+          setup_steps: Json
+          show_name: boolean
+          staff_name: string | null
+          subject: string | null
+          why_this_tool: string | null
+        }
+        Insert: {
+          activity_text: string
+          created_at?: string
+          department: string
+          how_to_run?: string | null
+          id?: string
+          inclusion_rating: string
+          inclusion_strengths?: Json
+          inclusion_tips?: Json
+          lead_stages?: string[]
+          learners?: string | null
+          primary_tool: string
+          secondary_tool?: string | null
+          setup_steps?: Json
+          show_name?: boolean
+          staff_name?: string | null
+          subject?: string | null
+          why_this_tool?: string | null
+        }
+        Update: {
+          activity_text?: string
+          created_at?: string
+          department?: string
+          how_to_run?: string | null
+          id?: string
+          inclusion_rating?: string
+          inclusion_strengths?: Json
+          inclusion_tips?: Json
+          lead_stages?: string[]
+          learners?: string | null
+          primary_tool?: string
+          secondary_tool?: string | null
+          setup_steps?: Json
+          show_name?: boolean
+          staff_name?: string | null
+          subject?: string | null
+          why_this_tool?: string | null
+        }
+        Relationships: []
+      }
       evidence_comments: {
         Row: {
           comment: string
