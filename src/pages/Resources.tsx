@@ -5,6 +5,8 @@ import { Input } from '@/components/ui/input';
 import { Home, Search, ArrowLeft, X, Play, Download, Bookmark, BookmarkCheck, Pin } from 'lucide-react';
 import { resources, searchResources, toolDisplayNames, Resource } from '@/data/resources';
 import CheatSheetButton from '@/components/CheatSheetButton';
+import ActivityPlanner from '@/components/ActivityPlanner';
+import ActivityIdeasWall from '@/components/ActivityIdeasWall';
 import bradfordLogo from '@/assets/bradford-college-logo.jpg';
 import teamsLogo from '@/assets/teams-logo.png';
 import canvaLogo from '@/assets/canva-logo.jpg';
@@ -231,6 +233,11 @@ const Resources = () => {
           {filteredResources.length} resource{filteredResources.length !== 1 ? 's' : ''} found
         </p>
 
+        {/* Activity Planner — AI-powered */}
+        <div className="max-w-4xl mx-auto mb-8 animate-fade-in">
+          <ActivityPlanner />
+        </div>
+
         {/* Pinned LEAD Guide Card */}
         <div ref={leadCardRef} className="max-w-4xl mx-auto mb-8 animate-fade-in">
           <div className="bg-card rounded-2xl border-2 border-[#0078D4]/40 shadow-[var(--shadow-hover)] overflow-hidden">
@@ -374,6 +381,11 @@ const Resources = () => {
             <Button onClick={clearFilters} variant="outline">Clear filters</Button>
           </div>
         )}
+
+        {/* Activity Ideas Wall */}
+        <div className="max-w-6xl mx-auto">
+          <ActivityIdeasWall />
+        </div>
 
         <div className="text-center mt-8">
           <Button variant="outline" onClick={() => navigate(-1)} className="border-border hover:bg-accent hover:text-accent-foreground">
