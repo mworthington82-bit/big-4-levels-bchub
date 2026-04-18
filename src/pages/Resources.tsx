@@ -69,6 +69,7 @@ const Resources = () => {
   const [filteredResources, setFilteredResources] = useState<Resource[]>(resources);
   const [bookmarks, setBookmarks] = useState<Set<string>>(new Set());
   const [showBookmarksOnly, setShowBookmarksOnly] = useState(false);
+  const [plannerOpen, setPlannerOpen] = useState(false);
 
   useEffect(() => {
     const stored = localStorage.getItem('bookmarked_resources');
