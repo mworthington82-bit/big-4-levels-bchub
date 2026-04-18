@@ -241,7 +241,7 @@ const Resources = () => {
             type="button"
             onClick={() => setPlannerOpen(true)}
             className="group w-full text-left bg-card rounded-2xl border border-border hover:border-teal-600/40 shadow-sm hover:shadow-[var(--shadow-hover)] transition-all duration-300 overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-600 focus-visible:ring-offset-2"
-            aria-label="Open the Activity Planner"
+            aria-label="Open the Big 4 Activity Planner"
           >
             <div className="flex items-center gap-4 p-4 md:p-5">
               <div className="flex-shrink-0 h-12 w-12 md:h-14 md:w-14 rounded-xl bg-gradient-to-br from-teal-600 to-blue-700 flex items-center justify-center shadow-sm">
@@ -249,7 +249,7 @@ const Resources = () => {
               </div>
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 flex-wrap mb-0.5">
-                  <h3 className="font-display text-base md:text-lg font-bold text-foreground">Activity Planner</h3>
+                  <h3 className="font-display text-base md:text-lg font-bold text-foreground">Big 4 Activity Planner</h3>
                   <span className="inline-flex items-center gap-1 text-[10px] md:text-[11px] font-semibold uppercase tracking-wide px-2 py-0.5 rounded-full bg-teal-50 text-teal-700 border border-teal-200">
                     <Sparkles className="h-3 w-3" aria-hidden="true" />
                     AI-Powered
@@ -271,7 +271,7 @@ const Resources = () => {
         <Dialog open={plannerOpen} onOpenChange={setPlannerOpen}>
           <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto p-0 gap-0">
             <DialogHeader className="sr-only">
-              <DialogTitle>Activity Planner</DialogTitle>
+              <DialogTitle>Big 4 Activity Planner</DialogTitle>
               <DialogDescription>
                 Tell us what you want learners to achieve and we will recommend the right Big 4 tool, show you how to set it up, and check it for inclusion.
               </DialogDescription>

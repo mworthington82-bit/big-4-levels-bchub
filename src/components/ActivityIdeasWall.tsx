@@ -155,7 +155,7 @@ const ActivityIdeasWall = () => {
           <Lightbulb className="w-10 h-10 text-muted-foreground/30 mx-auto mb-3" aria-hidden="true" />
           <p className="text-sm text-muted-foreground">
             {ideas.length === 0
-              ? "No activity ideas shared yet — be the first to use the Activity Planner above and tick the share box."
+              ? "No activity ideas shared yet — be the first to use the Big 4 Activity Planner above and tick the share box."
               : "No ideas match your current filters. Try adjusting them."}
           </p>
         </div>
