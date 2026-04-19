@@ -1,5 +1,8 @@
-import { Download } from "lucide-react";
+import { useState } from "react";
+import { Download, Eye } from "lucide-react";
 import jsPDF from "jspdf";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
 
 interface CheatSection {
   heading: string;
@@ -324,34 +327,112 @@ interface CheatSheetButtonProps {
   children?: React.ReactNode;
 }
 
+const BRAND_BLUE_HEX = "#1F3864";
+
 /**
- * Renders a download trigger for a tool's Quick Reference cheat sheet.
- * If `children` are provided, they're used as the trigger (so callers can
- * supply their own card UI). Otherwise a simple inline button is rendered.
+ * Renders a Preview trigger for a tool's Quick Reference cheat sheet.
+ * Clicking opens a styled dialog showing the full content; the dialog
+ * has a Download PDF action so staff can review before downloading.
  */
 const CheatSheetButton = ({ toolId, className, children }: CheatSheetButtonProps) => {
   const content = cheatSheets[toolId];
+  const [open, setOpen] = useState(false);
   if (!content) return null;
 
   const handleDownload = () => generateCheatSheetPDF(content);
 
-  if (children) {
-    return (
-      <button type="button" onClick={handleDownload} className={className} aria-label={`Download ${content.tool} Quick Reference cheat sheet`}>
-        {children}
-      </button>
-    );
-  }
-
-  return (
+  const trigger = children ? (
     <button
       type="button"
-      onClick={handleDownload}
+      onClick={() => setOpen(true)}
+      className={className}
+      aria-label={`Preview ${content.tool} Quick Reference cheat sheet`}
+    >
+      {children}
+    </button>
+  ) : (
+    <button
+      type="button"
+      onClick={() => setOpen(true)}
       className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-semibold border-2 border-border bg-card hover:border-accent/60 transition"
     >
-      <Download className="h-3.5 w-3.5" />
+      <Eye className="h-3.5 w-3.5" />
       {content.tool} Cheat Sheet
     </button>
+  );
+
+  return (
+    <>
+      {trigger}
+
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto p-0 gap-0 bg-white">
+          <DialogHeader className="sr-only">
+            <DialogTitle>{content.tool} — Quick Reference Guide</DialogTitle>
+            <DialogDescription>
+              Preview of the {content.tool} cheat sheet. Use the Download PDF button to save a copy.
+            </DialogDescription>
+          </DialogHeader>
+
+          {/* Branded header bar (mirrors the PDF) */}
+          <div className="px-6 py-5 flex items-start justify-between" style={{ backgroundColor: BRAND_BLUE_HEX }}>
+            <div>
+              <h2 className="text-2xl md:text-3xl font-bold text-white leading-tight">{content.title}</h2>
+              <p className="text-sm mt-1" style={{ color: "#B4C8E6" }}>Quick Reference Guide</p>
+            </div>
+            <div className="text-right">
+              <p className="text-sm font-bold text-white">The Big 4: Level Up</p>
+              <p className="text-xs" style={{ color: "#B4C8E6" }}>Bradford College</p>
+            </div>
+          </div>
+
+          {/* Content card */}
+          <div className="px-6 py-6 space-y-6">
+            {content.sections.map((section) => (
+              <section key={section.heading}>
+                <h3
+                  className="font-display text-lg font-bold pb-1 inline-block border-b-2"
+                  style={{ color: content.accentHex, borderColor: content.accentHex }}
+                >
+                  {section.heading}
+                </h3>
+                <ul className="mt-3 space-y-2">
+                  {section.points.map((point, i) => (
+                    <li key={i} className="flex gap-3 text-[13px] md:text-sm leading-relaxed" style={{ color: "#222" }}>
+                      <span
+                        className="mt-2 h-1.5 w-1.5 rounded-full flex-shrink-0"
+                        style={{ backgroundColor: content.accentHex }}
+                        aria-hidden="true"
+                      />
+                      <span>{point}</span>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            ))}
+          </div>
+
+          {/* Footer + actions */}
+          <div className="px-6 py-4 border-t border-border bg-muted/30 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+            <div className="text-xs text-muted-foreground">
+              <p>Bradford College — The Big 4: Level Up</p>
+              <p className="font-semibold" style={{ color: BRAND_BLUE_HEX }}>bradfordbig4.online</p>
+            </div>
+            <div className="flex items-center gap-2">
+              <Button variant="outline" onClick={() => setOpen(false)}>Close</Button>
+              <Button
+                onClick={handleDownload}
+                className="text-white"
+                style={{ backgroundColor: BRAND_BLUE_HEX }}
+              >
+                <Download className="h-4 w-4 mr-2" />
+                Download PDF
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+    </>
   );
 };
 
