@@ -275,6 +275,21 @@ const TipCard = ({ tip, idx }: { tip: typeof inclusionTips[0]; idx: number }) =>
       <div className="flex items-center gap-2 mb-3">
         <div className="p-1.5 rounded-lg bg-white/80">{tip.icon}</div>
         <span className="text-xs font-bold uppercase tracking-wider">{tip.tool}</span>
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            generateInclusionPDF(
+              inclusionTips.filter(t => t.tool === tip.tool),
+              tip.tool,
+              `Inclusion_Tips_${tip.tool.replace(/\s+/g, "_")}.pdf`
+            );
+          }}
+          className="ml-auto p-2 rounded-lg hover:bg-black/5 transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
+          title={`Download ${tip.tool} tips as PDF`}
+          aria-label={`Download ${tip.tool} inclusion tips as PDF`}
+        >
+          <Download className="w-4 h-4" />
+        </button>
       </div>
       <p className="text-sm text-foreground leading-relaxed">{tip.tip}</p>
 
