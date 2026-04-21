@@ -376,14 +376,22 @@ const Inclusion = () => {
 
         {/* ═══ INCLUSION TIPS WALL ═══ */}
         <div className="mb-12">
-          <div className="flex items-center gap-3 mb-6">
+          <div className="flex items-center gap-3 mb-6 flex-wrap">
             <div className="p-2.5 rounded-xl bg-inclusion/10">
               <Lightbulb className="w-6 h-6 text-inclusion" />
             </div>
-            <div>
+            <div className="flex-1">
               <h2 className="font-display text-2xl font-bold text-foreground">Inclusion Tips Wall</h2>
               <p className="text-sm text-muted-foreground">Quick, practical ways to make your teaching more inclusive using The Big 4</p>
             </div>
+            <Button
+              variant="outline"
+              size="sm"
+              className="gap-2 border-inclusion/30 text-inclusion hover:bg-inclusion/10"
+              onClick={() => generateInclusionPDF(inclusionTips, "All Tools", "Inclusion_Accessibility_Full_Guide.pdf")}
+            >
+              <Download className="w-4 h-4" /> Download Full Guide
+            </Button>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
