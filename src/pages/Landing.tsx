@@ -247,23 +247,32 @@ const Landing = () => {
             </div>
           </div>
 
-          {/* Inclusion & Accessibility */}
+          {/* Inclusion & Accessibility Signpost Banner */}
           <div className="max-w-4xl mx-auto mt-8 animate-fade-in" style={{ animationDelay: '300ms' }}>
             <div
-              className="bg-card rounded-2xl border border-border shadow-[var(--shadow-card)] p-6 hover:shadow-[var(--shadow-hover)] transition-all duration-300 cursor-pointer border-l-4 border-l-inclusion"
+              className="rounded-2xl bg-[#F3EEF9] border-l-4 border-l-[#5B2D8E] p-6 hover:shadow-md transition-all duration-300 cursor-pointer"
               onClick={() => navigate("/inclusion")}
+              role="link"
+              tabIndex={0}
+              onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") navigate("/inclusion"); }}
             >
-              <div className="flex items-center gap-4">
-                <div className="p-3 rounded-xl bg-inclusion/10">
-                  <Heart className="w-7 h-7 text-inclusion" />
+              <div className="flex items-center gap-4 flex-wrap md:flex-nowrap">
+                <div className="p-3 rounded-xl bg-[#5B2D8E]/10 flex-shrink-0">
+                  <Heart className="w-7 h-7 text-[#5B2D8E]" />
                 </div>
-                <div className="flex-1">
-                  <h3 className="font-display text-xl font-bold text-foreground">Inclusion & Accessibility</h3>
-                  <p className="text-muted-foreground text-sm mt-1">
-                    Explore quick, practical tips on how the Big 4 apps can be used to remove barriers, personalise learning, and support every learner to succeed.
+                <div className="flex-1 min-w-0">
+                  <h3 className="font-display text-lg font-bold text-[#5B2D8E]">Inclusion & Accessibility Hub</h3>
+                  <p className="text-[#5B2D8E]/70 text-sm mt-1">
+                    Explore practical tips and downloadable guides for making The Big 4 tools work for every learner in your classroom.
                   </p>
                 </div>
-                <ArrowRight className="w-5 h-5 text-inclusion flex-shrink-0" />
+                <Button
+                  size="sm"
+                  className="bg-[#5B2D8E] hover:bg-[#5B2D8E]/90 text-white gap-2 flex-shrink-0"
+                  onClick={(e) => { e.stopPropagation(); navigate("/inclusion"); }}
+                >
+                  Explore the Hub <ArrowRight className="w-4 h-4" />
+                </Button>
               </div>
             </div>
           </div>

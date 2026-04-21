@@ -348,8 +348,8 @@ const Inclusion = () => {
       </header>
 
       {/* Hero */}
-      <section className="relative bg-gradient-to-br from-[hsl(var(--inclusion))] to-[hsl(var(--inclusion-dark))] overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_hsl(0_0%_100%_/_0.12)_0%,_transparent_60%)]" />
+      <section className="relative bg-[#1F3864] overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_hsl(0_0%_100%_/_0.08)_0%,_transparent_60%)]" />
         <div className="container mx-auto px-4 py-14 md:py-20 relative z-10">
           <div className="max-w-3xl mx-auto text-center">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/15 backdrop-blur-sm border border-white/20 mb-6">
@@ -360,7 +360,7 @@ const Inclusion = () => {
               Inclusion & <span className="text-[hsl(39,90%,70%)]">Accessibility</span>
             </h1>
             <p className="text-white/85 text-base md:text-lg leading-relaxed max-w-2xl mx-auto">
-              Digital tools are not just about efficiency — they are one of the most powerful ways we can remove barriers, personalise learning, and ensure every learner can access, engage with, and succeed in their education.
+              Practical tools and guidance for making digital teaching work for every learner at Bradford College
             </p>
           </div>
         </div>
@@ -370,7 +370,7 @@ const Inclusion = () => {
         {/* Intro card */}
         <div className="bg-card rounded-2xl border border-border shadow-[var(--shadow-card)] p-6 md:p-8 mb-10 border-l-4 border-l-inclusion">
           <p className="text-muted-foreground leading-relaxed">
-            Welcome to the college-wide Inclusion & Accessibility hub. Here you can explore practical tips for using The Big 4 tools to support every learner.
+            Welcome to the college-wide Inclusion & Accessibility hub. Here you can explore practical tips for using The Big 4 tools to support every learner. Your personal inclusion checklists and confidence ratings are embedded within each tool's training module.
           </p>
         </div>
 
