@@ -1,7 +1,8 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Users, ExternalLink, Lightbulb, Sparkles, BookOpen, Palette, Video, Bot, Monitor, ChevronDown, ChevronUp } from "lucide-react";
+import { ArrowLeft, Users, ExternalLink, Lightbulb, Sparkles, BookOpen, Palette, Video, Bot, Monitor, ChevronDown, ChevronUp, Download } from "lucide-react";
+import jsPDF from "jspdf";
 import { AccessibilityPanel } from "@/components/AccessibilityPanel";
 import ResourceBankButton from "@/components/ResourceBankButton";
 import bradfordLogo from "@/assets/bradford-college-logo.jpg";
@@ -94,6 +95,140 @@ const inclusionTips = [
   },
 ];
 
+/* ── Tool colour map for PDF ── */
+const toolPdfColors: Record<string, [number, number, number]> = {
+  "MS Teams": [91, 95, 199],
+  "Edpuzzle": [29, 161, 242],
+  "Canva": [125, 42, 232],
+  "Copilot": [0, 120, 212],
+  "Immersive Room": [205, 62, 108],
+  "General": [16, 163, 127],
+};
+
+const generateInclusionPDF = (tips: typeof inclusionTips, title: string, filename: string) => {
+  const doc = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" });
+  const pageW = doc.internal.pageSize.getWidth();
+  const pageH = doc.internal.pageSize.getHeight();
+  const margin = 16;
+  const contentW = pageW - margin * 2;
+  let y = 0;
+
+  const addHeader = (subtitle: string) => {
+    // Brand blue header bar
+    doc.setFillColor(31, 56, 100);
+    doc.rect(0, 0, pageW, 36, "F");
+    doc.setTextColor(255, 255, 255);
+    doc.setFontSize(18);
+    doc.setFont("helvetica", "bold");
+    doc.text("Inclusion & Accessibility Guide", margin, 16);
+    doc.setFontSize(10);
+    doc.setFont("helvetica", "normal");
+    doc.text(subtitle, margin, 26);
+    // Gold accent line
+    doc.setFillColor(245, 166, 35);
+    doc.rect(0, 36, pageW, 2, "F");
+    y = 46;
+  };
+
+  const addFooter = () => {
+    doc.setFontSize(7);
+    doc.setTextColor(120, 120, 120);
+    doc.setFont("helvetica", "normal");
+    doc.text("Bradford College \u2014 The Big 4: Level Up", margin, pageH - 8);
+    doc.text("bradfordbig4.online", pageW - margin, pageH - 8, { align: "right" });
+  };
+
+  const checkSpace = (needed: number) => {
+    if (y + needed > pageH - 18) {
+      addFooter();
+      doc.addPage();
+      y = 16;
+    }
+  };
+
+  const wrapText = (text: string, maxW: number, fontSize: number): string[] => {
+    doc.setFontSize(fontSize);
+    return doc.splitTextToSize(text, maxW) as string[];
+  };
+
+  // Group tips by tool
+  const grouped: Record<string, typeof inclusionTips> = {};
+  tips.forEach(t => {
+    if (!grouped[t.tool]) grouped[t.tool] = [];
+    grouped[t.tool].push(t);
+  });
+
+  const toolNames = Object.keys(grouped);
+
+  toolNames.forEach((toolName, tIdx) => {
+    if (tIdx > 0) {
+      addFooter();
+      doc.addPage();
+    }
+    addHeader(toolName === "General" ? "General Inclusion Tips" : toolName);
+
+    const color = toolPdfColors[toolName] || [80, 80, 80];
+
+    grouped[toolName].forEach((tip, tipIdx) => {
+      checkSpace(20);
+
+      // Tip number badge
+      doc.setFillColor(color[0], color[1], color[2]);
+      doc.roundedRect(margin, y, 6, 6, 1, 1, "F");
+      doc.setTextColor(255, 255, 255);
+      doc.setFontSize(8);
+      doc.setFont("helvetica", "bold");
+      doc.text(String(tipIdx + 1), margin + 3, y + 4.5, { align: "center" });
+
+      // Tip main text
+      doc.setTextColor(30, 30, 30);
+      doc.setFontSize(9);
+      doc.setFont("helvetica", "bold");
+      const tipLines = wrapText(tip.tip, contentW - 10, 9);
+      doc.text(tipLines, margin + 9, y + 4.5);
+      y += tipLines.length * 4.2 + 4;
+
+      // Extended content as sub-bullets
+      if (tip.extended) {
+        const extLines = tip.extended.split("\n").filter(l => l.trim());
+        extLines.forEach(line => {
+          checkSpace(6);
+          const trimmed = line.trim();
+          if (trimmed.startsWith("\u2014") || trimmed.startsWith("--")) {
+            // Bullet point
+            doc.setFontSize(7.5);
+            doc.setFont("helvetica", "normal");
+            doc.setTextColor(80, 80, 80);
+            const bulletText = trimmed.replace(/^(\u2014|--)\s*/, "");
+            const bLines = wrapText("\u2022 " + bulletText, contentW - 16, 7.5);
+            doc.text(bLines, margin + 12, y);
+            y += bLines.length * 3.5 + 1;
+          } else if (trimmed.endsWith(":") && trimmed.length < 80) {
+            // Sub-heading
+            checkSpace(8);
+            doc.setFontSize(8);
+            doc.setFont("helvetica", "bold");
+            doc.setTextColor(color[0], color[1], color[2]);
+            doc.text(trimmed, margin + 9, y);
+            y += 5;
+          } else {
+            doc.setFontSize(7.5);
+            doc.setFont("helvetica", "normal");
+            doc.setTextColor(80, 80, 80);
+            const pLines = wrapText(trimmed, contentW - 12, 7.5);
+            doc.text(pLines, margin + 9, y);
+            y += pLines.length * 3.5 + 1;
+          }
+        });
+      }
+      y += 4;
+    });
+  });
+
+  addFooter();
+  doc.save(filename);
+};
+
 interface InclusionStory {
   id: string;
   full_name: string;
@@ -140,6 +275,21 @@ const TipCard = ({ tip, idx }: { tip: typeof inclusionTips[0]; idx: number }) =>
       <div className="flex items-center gap-2 mb-3">
         <div className="p-1.5 rounded-lg bg-white/80">{tip.icon}</div>
         <span className="text-xs font-bold uppercase tracking-wider">{tip.tool}</span>
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            generateInclusionPDF(
+              inclusionTips.filter(t => t.tool === tip.tool),
+              tip.tool,
+              `Inclusion_Tips_${tip.tool.replace(/\s+/g, "_")}.pdf`
+            );
+          }}
+          className="ml-auto p-2 rounded-lg hover:bg-black/5 transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
+          title={`Download ${tip.tool} tips as PDF`}
+          aria-label={`Download ${tip.tool} inclusion tips as PDF`}
+        >
+          <Download className="w-4 h-4" />
+        </button>
       </div>
       <p className="text-sm text-foreground leading-relaxed">{tip.tip}</p>
 
@@ -226,14 +376,22 @@ const Inclusion = () => {
 
         {/* ═══ INCLUSION TIPS WALL ═══ */}
         <div className="mb-12">
-          <div className="flex items-center gap-3 mb-6">
+          <div className="flex items-center gap-3 mb-6 flex-wrap">
             <div className="p-2.5 rounded-xl bg-inclusion/10">
               <Lightbulb className="w-6 h-6 text-inclusion" />
             </div>
-            <div>
+            <div className="flex-1">
               <h2 className="font-display text-2xl font-bold text-foreground">Inclusion Tips Wall</h2>
               <p className="text-sm text-muted-foreground">Quick, practical ways to make your teaching more inclusive using The Big 4</p>
             </div>
+            <Button
+              variant="outline"
+              size="sm"
+              className="gap-2 border-inclusion/30 text-inclusion hover:bg-inclusion/10"
+              onClick={() => generateInclusionPDF(inclusionTips, "All Tools", "Inclusion_Accessibility_Full_Guide.pdf")}
+            >
+              <Download className="w-4 h-4" /> Download Full Guide
+            </Button>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
