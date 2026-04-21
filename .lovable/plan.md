@@ -1,33 +1,37 @@
 
-This is a question about costs, not a code change — so no plan is needed, just a clear answer.
 
-The Big 4 Activity Planner uses the `plan-activity` Supabase Edge Function, which calls Lovable AI Gateway with `google/gemini-2.5-flash`. So yes, each generation consumes a small amount of your Lovable AI balance.
+# Downloadable Inclusion & Accessibility Guide
 
-**How charging works:**
+## What we are building
 
-1. **Free allowance** — Every workspace gets **$1 free AI balance per month** (until early 2026). Most small-scale staff use will fit comfortably inside this.
+Add two download options to the Inclusion & Accessibility page:
 
-2. **After the free allowance** — Usage is billed against your **Lovable Cloud & AI balance** (separate from your subscription credits). You only pay for what's used.
+1. **"Download All" button** at the top of the Inclusion Tips Wall section — generates a single multi-page PDF containing every tip across all tools
+2. **Per-tool download buttons** on each tip card — downloads a one-page PDF for just that tool's tips
 
-3. **Per-generation cost** — Each "Find my activity" click sends roughly:
-   - System prompt + user input: ~1,500 tokens in
-   - Structured AI plan returned: ~600–900 tokens out
-   - Model: `google/gemini-2.5-flash` (one of the cheapest capable models)
-   
-   At Gemini 2.5 Flash public rates this works out to **well under £0.001 (a tenth of a penny) per generation**. Realistically you can expect **1,000+ generations per £1**.
+## Design
 
-4. **What this means in practice:**
-   - 50 staff using it twice a week = ~400 generations/month = a few pence
-   - The free $1/month likely covers normal departmental use entirely
-   - The Activity Ideas Wall (sharing) costs nothing extra — only the AI call costs
+- **Download All**: A branded button placed next to the "Inclusion Tips Wall" heading, styled with the inclusion accent colour. Text: "Download Full Guide"
+- **Per-tool buttons**: A small download icon button on each tip card header row, generating a single-page PDF for that tool only (e.g. all MS Teams tips on one page, all Canva tips on one page)
 
-**Where to monitor & top up:**
-- **Settings → Cloud & AI balance** — see live spend and add funds
-- Free plan accounts cannot top up; Pro and above can
+### PDF layout (matches cheat sheet design language)
 
-**Optional safeguards I can add if you want to cap exposure:**
-- A simple per-day rate limit per user (e.g. max 10 plans/day) in the edge function
-- A "characters remaining" style budget warning if balance gets low
-- Switch the model to `google/gemini-2.5-flash-lite` (cheapest tier) — slightly less nuance but ~3x cheaper
+- **Header bar**: Bradford College brand blue (#1F3864), white title "Inclusion & Accessibility Guide", subtitle per tool or "All Tools"
+- **Content**: White card with tool-coloured section headings, tip text as bullet points, extended content as sub-bullets in smaller text
+- **Footer**: "Bradford College — The Big 4: Level Up" / "bradfordbig4.online"
 
-Just say the word if you'd like any of those added.
+Tips are grouped by tool in the PDF. The combined PDF uses page breaks between tools. Each per-tool PDF fits on 1-2 pages depending on content length.
+
+Uses `jsPDF` (already installed) for generation — same approach as the cheat sheets.
+
+## Files to change
+
+- **`src/pages/Inclusion.tsx`**
+  - Import `Download` icon from lucide-react and `jsPDF`
+  - Add a `generateInclusionPDF(tips, title)` function that renders the branded PDF
+  - Add a "Download Full Guide" button next to the Inclusion Tips Wall heading
+  - Add a small download button to each `TipCard` header for per-tool download
+  - Group tips by tool name for per-tool PDF generation
+
+No database, edge function, or new dependency changes needed.
+
