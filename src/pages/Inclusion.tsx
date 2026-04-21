@@ -1,7 +1,8 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Users, ExternalLink, Lightbulb, Sparkles, BookOpen, Palette, Video, Bot, Monitor, ChevronDown, ChevronUp } from "lucide-react";
+import { ArrowLeft, Users, ExternalLink, Lightbulb, Sparkles, BookOpen, Palette, Video, Bot, Monitor, ChevronDown, ChevronUp, Download } from "lucide-react";
+import jsPDF from "jspdf";
 import { AccessibilityPanel } from "@/components/AccessibilityPanel";
 import ResourceBankButton from "@/components/ResourceBankButton";
 import bradfordLogo from "@/assets/bradford-college-logo.jpg";
