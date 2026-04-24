@@ -1,20 +1,33 @@
 import { Document, Packer, Paragraph, TextRun, HeadingLevel, AlignmentType, LevelFormat } from "docx";
 import { saveAs } from "file-saver";
 
+export interface OfstedAlignment {
+  intent: string;
+  implementation: string;
+  impact: string;
+}
+
 export interface ActivityPlan {
+  lead_stage: string;
+  lead_was_suggested: boolean;
+  lead_rationale: string;
+  blooms_level: string;
+  blooms_rationale: string;
   primary_tool: string;
   why_this_tool: string;
   secondary_tool: string;
   secondary_reason: string;
   setup_steps: string[];
   how_to_run: string;
-  lead_stages: string[];
-  lead_notes: string;
+  ofsted_alignment: OfstedAlignment;
   inclusion_strengths: string[];
   inclusion_tips: string[];
   inclusion_rating: string;
   clarifying_note: string;
   closing_line: string;
+  // Legacy compat — populated from lead_stage
+  lead_stages?: string[];
+  lead_notes?: string;
 }
 
 export const TOOL_LABELS: Record<string, string> = {
@@ -32,11 +45,36 @@ export const LEAD_LABELS: Record<string, string> = {
   demonstrate: "Demonstrate",
 };
 
+export const LEAD_DESCRIPTIONS: Record<string, string> = {
+  launch: "Activate and engage learners",
+  establish: "Build knowledge and understanding",
+  apply: "Practise and consolidate learning",
+  demonstrate: "Evidence progress and give feedback",
+};
+
 export const RATING_LABELS: Record<string, string> = {
   explorer: "Explorer",
   developing: "Developing",
   strong: "Strong",
   exemplary: "Exemplary",
+};
+
+export const BLOOMS_LABELS: Record<string, string> = {
+  remember: "Remember",
+  understand: "Understand",
+  apply: "Apply",
+  analyse: "Analyse",
+  evaluate: "Evaluate",
+  create: "Create",
+};
+
+export const BLOOMS_DESCRIPTIONS: Record<string, string> = {
+  remember: "recall facts and basic concepts",
+  understand: "explain ideas or concepts",
+  apply: "use information in new situations",
+  analyse: "draw connections between ideas",
+  evaluate: "justify a stance or decision",
+  create: "produce new or original work",
 };
 
 export async function downloadPlanAsWord(plan: ActivityPlan, activityText: string, subject?: string, learners?: string) {
@@ -60,6 +98,14 @@ export async function downloadPlanAsWord(plan: ActivityPlan, activityText: strin
         ...(subject ? [heading("Subject / topic"), para(subject)] : []),
         ...(learners ? [heading("Learners"), para(learners)] : []),
 
+        heading("LEAD stage"),
+        new Paragraph({ children: [new TextRun({ text: `${LEAD_LABELS[plan.lead_stage] || plan.lead_stage} — ${LEAD_DESCRIPTIONS[plan.lead_stage] || ""}`, bold: true })], spacing: { after: 60 } }),
+        ...(plan.lead_was_suggested ? [para(`Suggested by AI based on your activity. ${plan.lead_rationale}`)] : [para(plan.lead_rationale)]),
+
+        heading("Bloom's Taxonomy level"),
+        new Paragraph({ children: [new TextRun({ text: `${BLOOMS_LABELS[plan.blooms_level] || plan.blooms_level} — ${BLOOMS_DESCRIPTIONS[plan.blooms_level] || ""}`, bold: true })], spacing: { after: 60 } }),
+        para(plan.blooms_rationale),
+
         heading("Recommended tool"),
         para(TOOL_LABELS[plan.primary_tool] || plan.primary_tool),
         new Paragraph({ children: [new TextRun({ text: "Why this tool: ", bold: true }), new TextRun(plan.why_this_tool)], spacing: { after: 120 } }),
@@ -73,9 +119,10 @@ export async function downloadPlanAsWord(plan: ActivityPlan, activityText: strin
         heading("How to run the activity"),
         para(plan.how_to_run),
 
-        heading("LEAD stage"),
-        para(plan.lead_stages.map(s => LEAD_LABELS[s] || s).join(", ")),
-        ...(plan.lead_notes ? [para(plan.lead_notes)] : []),
+        heading("Ofsted EIF alignment"),
+        new Paragraph({ children: [new TextRun({ text: "Intent: ", bold: true }), new TextRun(plan.ofsted_alignment?.intent || "")], spacing: { after: 80 } }),
+        new Paragraph({ children: [new TextRun({ text: "Implementation: ", bold: true }), new TextRun(plan.ofsted_alignment?.implementation || "")], spacing: { after: 80 } }),
+        new Paragraph({ children: [new TextRun({ text: "Impact: ", bold: true }), new TextRun(plan.ofsted_alignment?.impact || "")], spacing: { after: 120 } }),
 
         heading("Inclusion check"),
         new Paragraph({ children: [new TextRun({ text: `Inclusion rating: ${RATING_LABELS[plan.inclusion_rating] || plan.inclusion_rating}`, bold: true })], spacing: { after: 120 } }),
