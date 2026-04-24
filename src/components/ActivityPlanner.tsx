@@ -1,14 +1,24 @@
 import { useState } from "react";
-import { Sparkles, Lightbulb, Loader2, Download, RefreshCw, Share2, CheckCircle2, AlertCircle, Info } from "lucide-react";
+import { Sparkles, Lightbulb, Loader2, Download, RefreshCw, Share2, CheckCircle2, AlertCircle, Info, HelpCircle, ClipboardCheck, Brain } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
-import { downloadPlanAsWord, type ActivityPlan, TOOL_LABELS, LEAD_LABELS, RATING_LABELS } from "@/lib/activityPlanWord";
+import {
+  downloadPlanAsWord,
+  type ActivityPlan,
+  TOOL_LABELS,
+  LEAD_LABELS,
+  LEAD_DESCRIPTIONS,
+  RATING_LABELS,
+  BLOOMS_LABELS,
+  BLOOMS_DESCRIPTIONS,
+} from "@/lib/activityPlanWord";
 
 const DEPARTMENTS = [
   "ESOL", "Maths", "English", "Health & Social Care", "Business", "Computing",
@@ -26,11 +36,19 @@ const TOOL_BADGE: Record<string, string> = {
   immersive: "bg-orange-500 text-white",
 };
 
+// LEAD colour coding (green / blue / amber / purple)
 const LEAD_BADGE: Record<string, string> = {
-  launch: "bg-emerald-600 text-white",
-  establish: "bg-blue-600 text-white",
+  launch: "bg-emerald-700 text-white",
+  establish: "bg-blue-700 text-white",
   apply: "bg-amber-500 text-ink",
-  demonstrate: "bg-purple-600 text-white",
+  demonstrate: "bg-purple-700 text-white",
+};
+
+const LEAD_DOT: Record<string, string> = {
+  launch: "bg-emerald-700",
+  establish: "bg-blue-700",
+  apply: "bg-amber-500",
+  demonstrate: "bg-purple-700",
 };
 
 const RATING_BADGE: Record<string, string> = {
@@ -40,9 +58,22 @@ const RATING_BADGE: Record<string, string> = {
   exemplary: "bg-yellow-100 text-yellow-800 border-yellow-300",
 };
 
+// Bloom's badges — cool-to-warm progression
+const BLOOMS_BADGE: Record<string, string> = {
+  remember: "bg-slate-200 text-slate-800 border-slate-300",
+  understand: "bg-sky-100 text-sky-900 border-sky-300",
+  apply: "bg-amber-100 text-amber-900 border-amber-300",
+  analyse: "bg-orange-200 text-orange-900 border-orange-400",
+  evaluate: "bg-red-200 text-red-900 border-red-400",
+  create: "bg-purple-200 text-purple-900 border-purple-400",
+};
+
+type LeadChoice = "launch" | "establish" | "apply" | "demonstrate" | "not_sure";
+
 const ActivityPlanner = () => {
   const { toast } = useToast();
   const [activity, setActivity] = useState("");
+  const [leadChoice, setLeadChoice] = useState<LeadChoice>("not_sure");
   const [subject, setSubject] = useState("");
   const [learners, setLearners] = useState("");
   const [share, setShare] = useState(false);
@@ -61,7 +92,12 @@ const ActivityPlanner = () => {
     setPlan(null);
     try {
       const { data, error } = await supabase.functions.invoke("plan-activity", {
-        body: { activity: activity.trim(), subject: subject.trim(), learners: learners.trim() },
+        body: {
+          activity: activity.trim(),
+          subject: subject.trim(),
+          learners: learners.trim(),
+          lead_stage: leadChoice,
+        },
       });
       if (error) throw error;
       if ((data as any)?.error) throw new Error((data as any).error);
@@ -76,7 +112,13 @@ const ActivityPlanner = () => {
           learners: learners.trim() || null,
           primary_tool: result.primary_tool,
           secondary_tool: result.secondary_tool,
-          lead_stages: result.lead_stages,
+          lead_stages: [result.lead_stage],
+          lead_stage: result.lead_stage,
+          lead_was_suggested: result.lead_was_suggested,
+          blooms_level: result.blooms_level,
+          ofsted_intent: result.ofsted_alignment?.intent || null,
+          ofsted_implementation: result.ofsted_alignment?.implementation || null,
+          ofsted_impact: result.ofsted_alignment?.impact || null,
           inclusion_rating: result.inclusion_rating,
           why_this_tool: result.why_this_tool,
           setup_steps: result.setup_steps,
@@ -104,6 +146,7 @@ const ActivityPlanner = () => {
   const reset = () => {
     setPlan(null);
     setActivity("");
+    setLeadChoice("not_sure");
     setSubject("");
     setLearners("");
     setShare(false);
@@ -111,6 +154,14 @@ const ActivityPlanner = () => {
     setStaffName("");
     setShowName(false);
   };
+
+  const leadOptions: { value: LeadChoice; label: string; description: string }[] = [
+    { value: "launch", label: "Launch", description: LEAD_DESCRIPTIONS.launch },
+    { value: "establish", label: "Establish", description: LEAD_DESCRIPTIONS.establish },
+    { value: "apply", label: "Apply", description: LEAD_DESCRIPTIONS.apply },
+    { value: "demonstrate", label: "Demonstrate", description: LEAD_DESCRIPTIONS.demonstrate },
+    { value: "not_sure", label: "Not sure", description: "Suggest the best fit for me" },
+  ];
 
   return (
     <div className="bg-card rounded-2xl border border-border shadow-[var(--shadow-card)] overflow-hidden">
@@ -127,7 +178,7 @@ const ActivityPlanner = () => {
           <div>
             <h2 className="font-display text-2xl md:text-3xl font-bold mb-2">Big 4 Activity Planner</h2>
             <p className="text-white/90 text-sm md:text-base leading-relaxed">
-              Tell us what you want learners to achieve and we will recommend the right Big 4 tool, show you how to set it up, and check it for inclusion.
+              Tell us what you want learners to achieve, and we will recommend the right Big 4 tool, map it to LEAD and Bloom's, align it to Ofsted EIF, and check it for inclusion.
             </p>
           </div>
         </div>
@@ -155,6 +206,51 @@ const ActivityPlanner = () => {
                   : "Ready when you are"}
               </p>
             </div>
+
+            {/* LEAD stage radio group */}
+            <fieldset className="space-y-3">
+              <legend className="text-sm font-semibold mb-1">
+                Which LEAD stage is this activity for? <span className="text-destructive">*</span>
+              </legend>
+              <RadioGroup
+                value={leadChoice}
+                onValueChange={(v) => setLeadChoice(v as LeadChoice)}
+                className="grid sm:grid-cols-2 gap-2"
+              >
+                {leadOptions.map(opt => {
+                  const isNotSure = opt.value === "not_sure";
+                  return (
+                    <Label
+                      key={opt.value}
+                      htmlFor={`lead-${opt.value}`}
+                      className={`flex items-start gap-3 p-3 rounded-xl border cursor-pointer transition-colors ${
+                        leadChoice === opt.value
+                          ? "border-teal-600 bg-teal-50 dark:bg-teal-950/30"
+                          : "border-border bg-background hover:bg-muted/40"
+                      }`}
+                    >
+                      <RadioGroupItem id={`lead-${opt.value}`} value={opt.value} className="mt-1" />
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2 mb-0.5">
+                          {isNotSure ? (
+                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-200 text-slate-700 border border-slate-300">
+                              <HelpCircle className="w-3 h-3" aria-hidden="true" />
+                              Not sure
+                            </span>
+                          ) : (
+                            <span className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-bold ${LEAD_BADGE[opt.value]}`}>
+                              <span className="inline-block w-1.5 h-1.5 rounded-full bg-white/90" aria-hidden="true" />
+                              {opt.label}
+                            </span>
+                          )}
+                        </div>
+                        <p className="text-xs text-muted-foreground leading-snug">{opt.description}</p>
+                      </div>
+                    </Label>
+                  );
+                })}
+              </RadioGroup>
+            </fieldset>
 
             <div className="grid md:grid-cols-2 gap-4">
               <div className="space-y-2">
@@ -198,7 +294,7 @@ const ActivityPlanner = () => {
             </div>
 
             <Button onClick={handleSubmit} disabled={!canSubmit} size="lg" className="w-full md:w-auto bg-teal-700 hover:bg-teal-800 text-white">
-              {loading ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" />Finding the right tool...</> : <><Sparkles className="w-4 h-4 mr-2" />Find my activity</>}
+              {loading ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" />Planning your activity...</> : <><Sparkles className="w-4 h-4 mr-2" />Find my activity</>}
             </Button>
 
             <AiDisclaimerNote />
@@ -229,127 +325,178 @@ const AiDisclaimerNote = () => (
   </div>
 );
 
-const PlanResult = ({ plan, shared, onReset, onDownload }: { plan: ActivityPlan; shared: boolean; onReset: () => void; onDownload: () => void }) => (
-  <div className="space-y-6 animate-in fade-in duration-500">
-    <AiDisclaimerNote />
+const PlanResult = ({ plan, shared, onReset, onDownload }: { plan: ActivityPlan; shared: boolean; onReset: () => void; onDownload: () => void }) => {
+  const leadKey = plan.lead_stage;
+  const bloomsKey = plan.blooms_level;
 
-    {/* Section 1 — Primary tool */}
-    <section aria-labelledby="primary-tool">
-      <div className="flex items-center gap-2 mb-3 flex-wrap">
-        <span className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Recommended tool</span>
-        <span className={`px-3 py-1 rounded-full text-sm font-bold ${TOOL_BADGE[plan.primary_tool]}`} id="primary-tool">
-          {TOOL_LABELS[plan.primary_tool]}
-        </span>
-      </div>
-      <div className="bg-muted/30 rounded-xl p-4 border border-border">
-        <h3 className="text-sm font-bold mb-1">Why this tool?</h3>
-        <p className="text-sm text-foreground leading-relaxed">{plan.why_this_tool}</p>
-      </div>
-    </section>
+  return (
+    <div className="space-y-6 animate-in fade-in duration-500">
+      <AiDisclaimerNote />
 
-    {/* Section 2 — Secondary */}
-    <section aria-labelledby="secondary-tool" className="bg-card rounded-xl border border-dashed border-border p-4">
-      <div className="flex items-center gap-2 mb-2 flex-wrap">
-        <span className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Also worth considering</span>
-        <span className={`px-2.5 py-0.5 rounded-full text-xs font-bold ${TOOL_BADGE[plan.secondary_tool]}`} id="secondary-tool">
-          {TOOL_LABELS[plan.secondary_tool]}
-        </span>
-      </div>
-      <p className="text-sm text-muted-foreground leading-relaxed">{plan.secondary_reason}</p>
-    </section>
-
-    {/* Section 3 — Setup */}
-    <section aria-labelledby="setup-heading">
-      <h3 id="setup-heading" className="font-display text-lg font-bold mb-3">How to set it up</h3>
-      <ol className="space-y-2.5">
-        {plan.setup_steps.map((step, i) => (
-          <li key={i} className="flex gap-3">
-            <span className="shrink-0 w-7 h-7 rounded-full bg-teal-700 text-white text-sm font-bold flex items-center justify-center">{i + 1}</span>
-            <p className="text-sm text-foreground leading-relaxed pt-0.5">{step}</p>
-          </li>
-        ))}
-      </ol>
-    </section>
-
-    {/* Section 4 — How to run */}
-    <section aria-labelledby="run-heading">
-      <h3 id="run-heading" className="font-display text-lg font-bold mb-2">How to run the activity</h3>
-      <p className="text-sm text-foreground leading-relaxed">{plan.how_to_run}</p>
-    </section>
-
-    {/* Section 5 — LEAD */}
-    <section aria-labelledby="lead-heading">
-      <h3 id="lead-heading" className="font-display text-lg font-bold mb-3">LEAD stage</h3>
-      <div className="flex flex-wrap gap-2 mb-2">
-        {plan.lead_stages.map(s => (
-          <span key={s} className={`px-3 py-1 rounded-full text-xs font-bold ${LEAD_BADGE[s]}`}>
-            {LEAD_LABELS[s]}
+      {/* Section 1 — LEAD stage confirmed */}
+      <section aria-labelledby="lead-confirmed" className="rounded-xl border border-border bg-muted/30 p-5">
+        <div className="flex items-center gap-2 mb-3 flex-wrap">
+          <span className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">LEAD stage</span>
+          <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-sm font-bold ${LEAD_BADGE[leadKey]}`} id="lead-confirmed">
+            <span className={`inline-block w-2 h-2 rounded-full bg-white/90`} aria-hidden="true" />
+            {LEAD_LABELS[leadKey]} — {LEAD_DESCRIPTIONS[leadKey]}
           </span>
-        ))}
-      </div>
-      {plan.lead_notes && <p className="text-sm text-muted-foreground leading-relaxed">{plan.lead_notes}</p>}
-    </section>
-
-    {/* Section 6 — Inclusion check */}
-    <section aria-labelledby="inclusion-heading" className="bg-purple-50 dark:bg-purple-950/20 border border-purple-200 dark:border-purple-900 rounded-xl p-5">
-      <div className="flex items-center gap-2 mb-3 flex-wrap">
-        <h3 id="inclusion-heading" className="font-display text-lg font-bold text-purple-900 dark:text-purple-100">Inclusion Check</h3>
-        <span className={`px-2.5 py-0.5 rounded-full text-xs font-bold border ${RATING_BADGE[plan.inclusion_rating]}`}>
-          {RATING_LABELS[plan.inclusion_rating]}
-        </span>
-      </div>
-      <div className="grid md:grid-cols-2 gap-4">
-        <div>
-          <h4 className="text-sm font-bold mb-2 text-purple-900 dark:text-purple-100 flex items-center gap-1.5">
-            <CheckCircle2 className="w-4 h-4" aria-hidden="true" />Inclusion strengths
-          </h4>
-          <ul className="space-y-1.5">
-            {plan.inclusion_strengths.map((s, i) => (
-              <li key={i} className="text-sm text-foreground leading-relaxed flex gap-2">
-                <span className="text-purple-700 dark:text-purple-300 font-bold mt-0.5">·</span><span>{s}</span>
-              </li>
-            ))}
-          </ul>
+          {plan.lead_was_suggested && (
+            <span className="text-[10px] font-semibold uppercase tracking-wide px-2 py-0.5 rounded-full bg-slate-200 text-slate-700">
+              AI-suggested
+            </span>
+          )}
         </div>
-        <div>
-          <h4 className="text-sm font-bold mb-2 text-purple-900 dark:text-purple-100 flex items-center gap-1.5">
-            <Sparkles className="w-4 h-4" aria-hidden="true" />Tips to go further
-          </h4>
-          <ul className="space-y-1.5">
-            {plan.inclusion_tips.map((t, i) => (
-              <li key={i} className="text-sm text-foreground leading-relaxed flex gap-2">
-                <span className="text-purple-700 dark:text-purple-300 font-bold mt-0.5">·</span><span>{t}</span>
-              </li>
-            ))}
-          </ul>
+        <p className="text-sm text-foreground leading-relaxed">
+          {plan.lead_was_suggested
+            ? <>Based on what you described, this activity fits best at the <strong>{LEAD_LABELS[leadKey]}</strong> stage of your lesson. Here is why: {plan.lead_rationale}</>
+            : plan.lead_rationale}
+        </p>
+      </section>
+
+      {/* Section 2 — Bloom's Taxonomy */}
+      <section aria-labelledby="blooms-heading" className="rounded-xl border border-border bg-muted/30 p-5">
+        <div className="flex items-center gap-2 mb-3 flex-wrap">
+          <Brain className="w-4 h-4 text-muted-foreground" aria-hidden="true" />
+          <span className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Bloom's Taxonomy</span>
+          <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-bold border ${BLOOMS_BADGE[bloomsKey]}`} id="blooms-heading">
+            {BLOOMS_LABELS[bloomsKey]} — {BLOOMS_DESCRIPTIONS[bloomsKey]}
+          </span>
         </div>
-      </div>
-    </section>
+        <p className="text-sm text-foreground leading-relaxed">
+          This activity targets the <strong>{BLOOMS_LABELS[bloomsKey]}</strong> stage of Bloom's Taxonomy — {plan.blooms_rationale}
+        </p>
+      </section>
 
-    {plan.clarifying_note && (
-      <div className="rounded-xl border border-amber-300 bg-amber-50 dark:bg-amber-950/20 p-4 flex gap-3">
-        <AlertCircle className="w-5 h-5 text-amber-700 shrink-0 mt-0.5" aria-hidden="true" />
-        <p className="text-sm text-amber-900 dark:text-amber-100 leading-relaxed">{plan.clarifying_note}</p>
-      </div>
-    )}
+      {/* Section 3 — Primary tool */}
+      <section aria-labelledby="primary-tool">
+        <div className="flex items-center gap-2 mb-3 flex-wrap">
+          <span className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Recommended tool</span>
+          <span className={`px-3 py-1 rounded-full text-sm font-bold ${TOOL_BADGE[plan.primary_tool]}`} id="primary-tool">
+            {TOOL_LABELS[plan.primary_tool]}
+          </span>
+        </div>
+        <div className="bg-muted/30 rounded-xl p-4 border border-border">
+          <h3 className="text-sm font-bold mb-1">Why this tool?</h3>
+          <p className="text-sm text-foreground leading-relaxed">{plan.why_this_tool}</p>
+        </div>
+      </section>
 
-    <p className="text-center text-sm italic text-muted-foreground pt-2">{plan.closing_line}</p>
+      {/* Section 5 — Secondary */}
+      <section aria-labelledby="secondary-tool" className="bg-card rounded-xl border border-dashed border-border p-4">
+        <div className="flex items-center gap-2 mb-2 flex-wrap">
+          <span className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Also worth considering</span>
+          <span className={`px-2.5 py-0.5 rounded-full text-xs font-bold ${TOOL_BADGE[plan.secondary_tool]}`} id="secondary-tool">
+            {TOOL_LABELS[plan.secondary_tool]}
+          </span>
+        </div>
+        <p className="text-sm text-muted-foreground leading-relaxed">{plan.secondary_reason}</p>
+      </section>
 
-    {/* Section 7 — Actions */}
-    <div className="flex flex-wrap gap-3 pt-4 border-t border-border">
-      <Button onClick={onReset} variant="outline">
-        <RefreshCw className="w-4 h-4 mr-2" />Try another activity
-      </Button>
-      <Button onClick={onDownload} className="bg-teal-700 hover:bg-teal-800 text-white">
-        <Download className="w-4 h-4 mr-2" />Download as Word
-      </Button>
-      {shared && (
-        <span className="inline-flex items-center gap-2 px-3 py-2 text-sm text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/20 rounded-lg border border-emerald-200 dark:border-emerald-900">
-          <Share2 className="w-4 h-4" aria-hidden="true" />Shared on the Activity Ideas Wall
-        </span>
+      {/* Section 6 — Setup */}
+      <section aria-labelledby="setup-heading">
+        <h3 id="setup-heading" className="font-display text-lg font-bold mb-3">How to set it up</h3>
+        <ol className="space-y-2.5">
+          {plan.setup_steps.map((step, i) => (
+            <li key={i} className="flex gap-3">
+              <span className="shrink-0 w-7 h-7 rounded-full bg-teal-700 text-white text-sm font-bold flex items-center justify-center">{i + 1}</span>
+              <p className="text-sm text-foreground leading-relaxed pt-0.5">{step}</p>
+            </li>
+          ))}
+        </ol>
+      </section>
+
+      {/* Section 7 — How to run */}
+      <section aria-labelledby="run-heading">
+        <h3 id="run-heading" className="font-display text-lg font-bold mb-2">How to run the activity</h3>
+        <p className="text-sm text-foreground leading-relaxed">{plan.how_to_run}</p>
+      </section>
+
+      {/* Section 8 — Ofsted EIF Alignment */}
+      {plan.ofsted_alignment && (
+        <section
+          aria-labelledby="ofsted-heading"
+          className="rounded-xl bg-blue-50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-900 border-l-4 border-l-blue-800 p-5"
+        >
+          <div className="flex items-center gap-2 mb-3">
+            <ClipboardCheck className="w-5 h-5 text-blue-800 dark:text-blue-300" aria-hidden="true" />
+            <h3 id="ofsted-heading" className="font-display text-lg font-bold text-blue-900 dark:text-blue-100">Ofsted EIF Alignment</h3>
+          </div>
+          <ul className="space-y-2">
+            <li className="text-sm text-foreground leading-relaxed">
+              <span className="font-bold text-blue-900 dark:text-blue-100">Intent:</span> {plan.ofsted_alignment.intent}
+            </li>
+            <li className="text-sm text-foreground leading-relaxed">
+              <span className="font-bold text-blue-900 dark:text-blue-100">Implementation:</span> {plan.ofsted_alignment.implementation}
+            </li>
+            <li className="text-sm text-foreground leading-relaxed">
+              <span className="font-bold text-blue-900 dark:text-blue-100">Impact:</span> {plan.ofsted_alignment.impact}
+            </li>
+          </ul>
+        </section>
       )}
+
+      {/* Section 9 — Inclusion check */}
+      <section aria-labelledby="inclusion-heading" className="bg-purple-50 dark:bg-purple-950/20 border border-purple-200 dark:border-purple-900 rounded-xl p-5">
+        <div className="flex items-center gap-2 mb-3 flex-wrap">
+          <h3 id="inclusion-heading" className="font-display text-lg font-bold text-purple-900 dark:text-purple-100">Inclusion Check</h3>
+          <span className={`px-2.5 py-0.5 rounded-full text-xs font-bold border ${RATING_BADGE[plan.inclusion_rating]}`}>
+            {RATING_LABELS[plan.inclusion_rating]}
+          </span>
+        </div>
+        <div className="grid md:grid-cols-2 gap-4">
+          <div>
+            <h4 className="text-sm font-bold mb-2 text-purple-900 dark:text-purple-100 flex items-center gap-1.5">
+              <CheckCircle2 className="w-4 h-4" aria-hidden="true" />Inclusion strengths
+            </h4>
+            <ul className="space-y-1.5">
+              {plan.inclusion_strengths.map((s, i) => (
+                <li key={i} className="text-sm text-foreground leading-relaxed flex gap-2">
+                  <span className="text-purple-700 dark:text-purple-300 font-bold mt-0.5">·</span><span>{s}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div>
+            <h4 className="text-sm font-bold mb-2 text-purple-900 dark:text-purple-100 flex items-center gap-1.5">
+              <Sparkles className="w-4 h-4" aria-hidden="true" />Tips to go further
+            </h4>
+            <ul className="space-y-1.5">
+              {plan.inclusion_tips.map((t, i) => (
+                <li key={i} className="text-sm text-foreground leading-relaxed flex gap-2">
+                  <span className="text-purple-700 dark:text-purple-300 font-bold mt-0.5">·</span><span>{t}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      {plan.clarifying_note && (
+        <div className="rounded-xl border border-amber-300 bg-amber-50 dark:bg-amber-950/20 p-4 flex gap-3">
+          <AlertCircle className="w-5 h-5 text-amber-700 shrink-0 mt-0.5" aria-hidden="true" />
+          <p className="text-sm text-amber-900 dark:text-amber-100 leading-relaxed">{plan.clarifying_note}</p>
+        </div>
+      )}
+
+      <p className="text-center text-sm italic text-muted-foreground pt-2">{plan.closing_line}</p>
+
+      {/* Section 11 — Actions */}
+      <div className="flex flex-wrap gap-3 pt-4 border-t border-border">
+        <Button onClick={onReset} variant="outline">
+          <RefreshCw className="w-4 h-4 mr-2" />Try another activity
+        </Button>
+        <Button onClick={onDownload} className="bg-teal-700 hover:bg-teal-800 text-white">
+          <Download className="w-4 h-4 mr-2" />Download as Word
+        </Button>
+        {shared && (
+          <span className="inline-flex items-center gap-2 px-3 py-2 text-sm text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/20 rounded-lg border border-emerald-200 dark:border-emerald-900">
+            <Share2 className="w-4 h-4" aria-hidden="true" />Shared on the Activity Ideas Wall
+          </span>
+        )}
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 export default ActivityPlanner;
