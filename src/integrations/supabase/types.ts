@@ -17,6 +17,7 @@ export type Database = {
       activity_ideas: {
         Row: {
           activity_text: string
+          blooms_level: string | null
           created_at: string
           department: string
           how_to_run: string | null
@@ -24,8 +25,13 @@ export type Database = {
           inclusion_rating: string
           inclusion_strengths: Json
           inclusion_tips: Json
+          lead_stage: string | null
           lead_stages: string[]
+          lead_was_suggested: boolean | null
           learners: string | null
+          ofsted_impact: string | null
+          ofsted_implementation: string | null
+          ofsted_intent: string | null
           primary_tool: string
           secondary_tool: string | null
           setup_steps: Json
@@ -36,6 +42,7 @@ export type Database = {
         }
         Insert: {
           activity_text: string
+          blooms_level?: string | null
           created_at?: string
           department: string
           how_to_run?: string | null
@@ -43,8 +50,13 @@ export type Database = {
           inclusion_rating: string
           inclusion_strengths?: Json
           inclusion_tips?: Json
+          lead_stage?: string | null
           lead_stages?: string[]
+          lead_was_suggested?: boolean | null
           learners?: string | null
+          ofsted_impact?: string | null
+          ofsted_implementation?: string | null
+          ofsted_intent?: string | null
           primary_tool: string
           secondary_tool?: string | null
           setup_steps?: Json
@@ -55,6 +67,7 @@ export type Database = {
         }
         Update: {
           activity_text?: string
+          blooms_level?: string | null
           created_at?: string
           department?: string
           how_to_run?: string | null
@@ -62,8 +75,13 @@ export type Database = {
           inclusion_rating?: string
           inclusion_strengths?: Json
           inclusion_tips?: Json
+          lead_stage?: string | null
           lead_stages?: string[]
+          lead_was_suggested?: boolean | null
           learners?: string | null
+          ofsted_impact?: string | null
+          ofsted_implementation?: string | null
+          ofsted_intent?: string | null
           primary_tool?: string
           secondary_tool?: string | null
           setup_steps?: Json
