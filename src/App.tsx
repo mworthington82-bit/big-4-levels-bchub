@@ -21,7 +21,8 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Landing />} />
+          <Route path="/" element={<TempLanding />} />
+          <Route path="/home" element={<Landing />} />
           <Route path="/self-assessment" element={<SelfAssessment />} />
           <Route path="/training" element={<GatedRoute><Training /></GatedRoute>} />
           <Route path="/resources" element={<GatedRoute><Resources /></GatedRoute>} />
