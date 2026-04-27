@@ -30,6 +30,32 @@ const SelfAssessment = () => {
       </header>
 
       <main className="container mx-auto px-4 py-8 md:py-12">
+        {/* Temporary flair intro image */}
+        <div className="max-w-5xl mx-auto mb-8 animate-fade-in">
+          <img
+            src={flairImage}
+            alt="Welcome to The Big 4 Self Assessment — instructions: click the link below, add your name and email, complete all questions honestly, and click Submit at the end."
+            className="w-full h-auto rounded-xl shadow-[var(--shadow-card)]"
+          />
+          <div className="mt-6 text-center">
+            <p className="text-lg md:text-xl font-semibold text-foreground">
+              To start your Self-Assessment,{" "}
+              <a
+                href="https://bradfordcollege-handsmisconducttraining.my.canva.site/final-24-03the-big-4-tools"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 underline underline-offset-4 font-bold"
+              >
+                click here
+              </a>
+              .
+            </p>
+            <p className="text-sm text-muted-foreground mt-2">
+              Remember to click <strong>Submit</strong> at the end so your responses are saved.
+            </p>
+          </div>
+        </div>
+
         {/* Hero Section */}
         <div className="text-center mb-8 animate-fade-in">
           <div className="flex items-center justify-center gap-3 mb-4">
