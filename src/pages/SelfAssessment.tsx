@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import NavigationButtons from "@/components/NavigationButtons";
 import AssessmentIntroDialog from "@/components/dialogs/AssessmentIntroDialog";
 import bradfordLogo from "@/assets/bradford-college-logo.jpg";
+import flairImage from "@/assets/self-assessment-flair.png";
 
 const SelfAssessment = () => {
   const navigate = useNavigate();
