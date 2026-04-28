@@ -48,12 +48,14 @@ const TempLanding = () => {
         </div>
       </main>
 
-      {/* Hidden admin bypass to reach the full site */}
+      {/* Admin bypass to reach the full site */}
       <button
         onClick={handleAdminBypass}
         aria-label="Admin access"
-        className="fixed bottom-2 right-2 w-8 h-8 opacity-0"
-      />
+        className="fixed bottom-4 right-4 px-4 py-2 rounded-full bg-[#1C1C2E] text-white text-sm font-medium shadow-lg hover:bg-[#1C1C2E]/90 transition-colors"
+      >
+        Admin Login
+      </button>
     </div>
   );
 };
