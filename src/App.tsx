@@ -12,6 +12,7 @@ import Inclusion from "./pages/Inclusion";
 import Bookings from "./pages/Bookings";
 import NotFound from "./pages/NotFound";
 import GatedRoute from "./components/GatedRoute";
+import BookTrainingButton from "./components/BookTrainingButton";
 
 const queryClient = new QueryClient();
 
@@ -21,6 +22,7 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
+        <BookTrainingButton />
         <Routes>
           <Route path="/" element={<TempLanding />} />
           <Route path="/home" element={<Landing />} />
