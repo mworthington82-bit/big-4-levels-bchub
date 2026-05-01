@@ -16,7 +16,7 @@ const BookTrainingButton = () => {
         <TooltipTrigger asChild>
           <Button
             onClick={() => navigate('/bookings')}
-            className="fixed bottom-4 right-4 z-50 bg-accent text-accent-foreground hover:bg-accent/90 shadow-lg rounded-full h-12 px-5"
+            className="fixed top-4 right-4 z-50 bg-accent text-accent-foreground hover:bg-accent/90 shadow-lg rounded-full h-12 px-5"
             aria-label="Book a training session"
           >
             <CalendarDays className="h-5 w-5 mr-2" aria-hidden />
