@@ -764,9 +764,10 @@ const MentorDirectoryTab = () => {
 
 // ───────── Page ─────────
 const Leader = () => {
+  usePageTitle("Leader Hub");
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const { profile, email, loading, refresh } = useStaffProfile();
+  const { profile, email, loading, error, refresh } = useStaffProfile();
   const [tab, setTab] = useState<Tab>("contributions");
   const fromResources = searchParams.get("from") === "resources";
 
@@ -784,10 +785,22 @@ const Leader = () => {
     if (readOnly && tab === "contributions") setTab("gallery");
   }, [readOnly, tab]);
 
+  if (error) return <PageError />;
+
   if (loading || !profile || !email) {
     return (
       <AppShell>
-        <div className="container mx-auto px-4 py-16 text-sm text-muted-foreground">Loading…</div>
+        <div className="min-h-full bg-[#F4F6FB]" aria-busy="true" aria-label="Loading Leader Hub">
+          <div className="bg-[#1F3864] h-32" />
+          <div className="container mx-auto px-4 py-8 max-w-6xl space-y-6">
+            <div className="h-8 w-64 bg-[#E5E9F0] rounded animate-pulse" />
+            <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
+              {[0,1,2,3].map((i) => (
+                <div key={i} className="bg-white rounded-xl border border-[#D0D7E2] h-48 animate-pulse" />
+              ))}
+            </div>
+          </div>
+        </div>
       </AppShell>
     );
   }
