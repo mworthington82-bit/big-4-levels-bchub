@@ -4,14 +4,14 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Landing from "./pages/Landing";
-import TempLanding from "./pages/TempLanding";
+import SignIn from "./pages/SignIn";
 import SelfAssessment from "./pages/SelfAssessment";
 import Training from "./pages/Training";
 import Resources from "./pages/Resources";
 import Inclusion from "./pages/Inclusion";
 import Bookings from "./pages/Bookings";
 import NotFound from "./pages/NotFound";
-import GatedRoute from "./components/GatedRoute";
+import RequireAuth from "./components/RequireAuth";
 import BookTrainingButton from "./components/BookTrainingButton";
 
 const queryClient = new QueryClient();
@@ -24,13 +24,13 @@ const App = () => (
       <BrowserRouter>
         <BookTrainingButton />
         <Routes>
-          <Route path="/" element={<TempLanding />} />
-          <Route path="/home" element={<Landing />} />
-          <Route path="/self-assessment" element={<SelfAssessment />} />
-          <Route path="/training" element={<GatedRoute><Training /></GatedRoute>} />
-          <Route path="/resources" element={<GatedRoute><Resources /></GatedRoute>} />
-          <Route path="/inclusion" element={<Inclusion />} />
-          <Route path="/bookings" element={<Bookings />} />
+          <Route path="/" element={<SignIn />} />
+          <Route path="/home" element={<RequireAuth><Landing /></RequireAuth>} />
+          <Route path="/self-assessment" element={<RequireAuth><SelfAssessment /></RequireAuth>} />
+          <Route path="/training" element={<RequireAuth><Training /></RequireAuth>} />
+          <Route path="/resources" element={<RequireAuth><Resources /></RequireAuth>} />
+          <Route path="/inclusion" element={<RequireAuth><Inclusion /></RequireAuth>} />
+          <Route path="/bookings" element={<RequireAuth><Bookings /></RequireAuth>} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
