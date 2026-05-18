@@ -16,6 +16,7 @@ import {
 } from "@/lib/journey";
 import { deriveEffectiveLevel, runProgressionCheck } from "@/lib/progression";
 import ModuleCard from "@/components/journey/ModuleCard";
+import LeaderPreviewCards from "@/components/journey/LeaderPreviewCards";
 import { IconWand, IconCalendarEvent, IconHeart, IconArrowRight } from "@tabler/icons-react";
 
 const greeting = () => {
@@ -181,12 +182,7 @@ const Journey = () => {
 
             {/* Main pathway content */}
             {effective === "Leader" ? (
-              <div className="bg-white rounded-2xl border border-[#D0D7E2] p-8 text-center">
-                <h3 className="font-bold text-[#1F3864] text-lg">Leader Hub — coming soon</h3>
-                <p className="text-sm text-[#5F6B7D] mt-2">
-                  We are building your Leader experience. Watch this space.
-                </p>
-              </div>
+              <LeaderPreviewCards />
             ) : (
               <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
                 {cards.map((c) => (

@@ -13,6 +13,7 @@ import ResourcesHub from "./pages/ResourcesHub";
 import Connect from "./pages/Connect";
 import Admin from "./pages/Admin";
 import Module from "./pages/Module";
+import Leader from "./pages/Leader";
 
 // Legacy pages — still reachable at /legacy/* for existing deep links
 import Landing from "./pages/Landing";
@@ -42,6 +43,7 @@ const App = () => (
           <Route path="/journey" element={<RequireAuth><Journey /></RequireAuth>} />
           <Route path="/module/:moduleId" element={<RequireAuth><Module /></RequireAuth>} />
           <Route path="/resources" element={<RequireAuth><ResourcesHub /></RequireAuth>} />
+          <Route path="/leader" element={<RequireAuth><Leader /></RequireAuth>} />
           <Route path="/connect" element={<RequireAuth><Connect /></RequireAuth>} />
           <Route path="/admin" element={<RequireAdmin><Admin /></RequireAdmin>} />
 
