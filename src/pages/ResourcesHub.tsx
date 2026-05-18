@@ -245,11 +245,12 @@ const ResourceCard = ({
           type="button"
           onClick={onToggleBookmark}
           aria-label={bookmarked ? "Remove bookmark" : "Add bookmark"}
-          className="p-1.5 rounded-md hover:bg-[#F4F6FB]"
+          aria-pressed={bookmarked}
+          className="inline-flex items-center justify-center min-h-11 min-w-11 rounded-md hover:bg-[#F4F6FB] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#185FA5]"
         >
           {bookmarked
-            ? <IconBookmarkFilled size={18} className="text-[#F5A623]" />
-            : <IconBookmark size={18} stroke={1.75} className="text-[#9AA3B0]" />}
+            ? <IconBookmarkFilled size={20} className="text-[#F5A623]" />
+            : <IconBookmark size={20} stroke={1.75} className="text-[#9AA3B0]" />}
         </button>
       </div>
     </div>
