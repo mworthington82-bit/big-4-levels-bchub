@@ -398,6 +398,8 @@ const Resources = () => {
                   ))}
                 </div>
               )}
+
+              <FromTheClassroom />
             </>
           ) : (
             <>
