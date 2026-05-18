@@ -637,6 +637,13 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      admin_upsert_staff: {
+        Args: { payload: Json }
+        Returns: {
+          added: number
+          updated: number
+        }[]
+      }
       is_admin: { Args: never; Returns: boolean }
     }
     Enums: {
