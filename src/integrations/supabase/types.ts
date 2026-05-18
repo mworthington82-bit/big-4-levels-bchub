@@ -189,6 +189,80 @@ export type Database = {
           },
         ]
       }
+      evidence_likes: {
+        Row: {
+          id: string
+          liked_at: string
+          post_id: string
+          staff_email: string
+        }
+        Insert: {
+          id?: string
+          liked_at?: string
+          post_id: string
+          staff_email: string
+        }
+        Update: {
+          id?: string
+          liked_at?: string
+          post_id?: string
+          staff_email?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "evidence_likes_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "evidence_posts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      evidence_posts: {
+        Row: {
+          created_at: string
+          department: string | null
+          id: string
+          inclusion_focus: string | null
+          is_published: boolean
+          learner_impact: string
+          staff_email: string
+          staff_name: string | null
+          title: string
+          tool: string
+          updated_at: string
+          what_i_did: string
+        }
+        Insert: {
+          created_at?: string
+          department?: string | null
+          id?: string
+          inclusion_focus?: string | null
+          is_published?: boolean
+          learner_impact: string
+          staff_email: string
+          staff_name?: string | null
+          title: string
+          tool: string
+          updated_at?: string
+          what_i_did: string
+        }
+        Update: {
+          created_at?: string
+          department?: string | null
+          id?: string
+          inclusion_focus?: string | null
+          is_published?: boolean
+          learner_impact?: string
+          staff_email?: string
+          staff_name?: string | null
+          title?: string
+          tool?: string
+          updated_at?: string
+          what_i_did?: string
+        }
+        Relationships: []
+      }
       immersive_sessions: {
         Row: {
           created_at: string
@@ -420,6 +494,42 @@ export type Database = {
           updated_at?: string
           user_id?: string
           video_link?: string | null
+        }
+        Relationships: []
+      }
+      mentor_signups: {
+        Row: {
+          created_at: string
+          department: string | null
+          id: string
+          is_active: boolean
+          mentor_bio: string | null
+          staff_email: string
+          staff_name: string | null
+          tools_offered: string[]
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          department?: string | null
+          id?: string
+          is_active?: boolean
+          mentor_bio?: string | null
+          staff_email: string
+          staff_name?: string | null
+          tools_offered?: string[]
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          department?: string | null
+          id?: string
+          is_active?: boolean
+          mentor_bio?: string | null
+          staff_email?: string
+          staff_name?: string | null
+          tools_offered?: string[]
+          updated_at?: string
         }
         Relationships: []
       }
@@ -846,6 +956,7 @@ export type Database = {
         }[]
       }
       is_admin: { Args: never; Returns: boolean }
+      is_leader: { Args: never; Returns: boolean }
     }
     Enums: {
       evidence_type: "video_link" | "file_upload" | "case_study"
