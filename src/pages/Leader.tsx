@@ -545,6 +545,7 @@ const EvidenceGalleryTab = ({ email }: { email: string | null }) => {
   const [toolFilter, setToolFilter] = useState<"All" | ToolName>("All");
   const [sort, setSort] = useState<"recent" | "liked">("recent");
   const [loading, setLoading] = useState(true);
+  const [visibleCount, setVisibleCount] = useState(12);
 
   useEffect(() => {
     (async () => {
