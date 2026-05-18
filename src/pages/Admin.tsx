@@ -5,6 +5,7 @@ import ProcessingStatus, { Step } from "@/components/admin/ProcessingStatus";
 import UploadSummary from "@/components/admin/UploadSummary";
 import UploadHistory from "@/components/admin/UploadHistory";
 import DatabaseSummary from "@/components/admin/DatabaseSummary";
+import PendingEvidencePanel from "@/components/admin/PendingEvidencePanel";
 import {
   HEADER_MISMATCH_MESSAGE,
   applyCleaningRules,
