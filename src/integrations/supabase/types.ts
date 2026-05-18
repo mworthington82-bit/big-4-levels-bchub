@@ -92,6 +92,36 @@ export type Database = {
         }
         Relationships: []
       }
+      csv_upload_log: {
+        Row: {
+          id: string
+          records_added: number | null
+          records_processed: number | null
+          records_updated: number | null
+          uploaded_at: string
+          uploaded_by: string | null
+          warnings: string[] | null
+        }
+        Insert: {
+          id?: string
+          records_added?: number | null
+          records_processed?: number | null
+          records_updated?: number | null
+          uploaded_at?: string
+          uploaded_by?: string | null
+          warnings?: string[] | null
+        }
+        Update: {
+          id?: string
+          records_added?: number | null
+          records_processed?: number | null
+          records_updated?: number | null
+          uploaded_at?: string
+          uploaded_by?: string | null
+          warnings?: string[] | null
+        }
+        Relationships: []
+      }
       evidence_comments: {
         Row: {
           comment: string
@@ -364,6 +394,38 @@ export type Database = {
         }
         Relationships: []
       }
+      module_completions: {
+        Row: {
+          completed_at: string
+          id: string
+          module_id: string
+          quiz_passed: boolean
+          staff_email: string
+        }
+        Insert: {
+          completed_at?: string
+          id?: string
+          module_id: string
+          quiz_passed?: boolean
+          staff_email: string
+        }
+        Update: {
+          completed_at?: string
+          id?: string
+          module_id?: string
+          quiz_passed?: boolean
+          staff_email?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "module_completions_staff_email_fkey"
+            columns: ["staff_email"]
+            isOneToOne: false
+            referencedRelation: "staff_profiles"
+            referencedColumns: ["email"]
+          },
+        ]
+      }
       notifications: {
         Row: {
           created_at: string
@@ -465,12 +527,117 @@ export type Database = {
         }
         Relationships: []
       }
+      staff_profiles: {
+        Row: {
+          assigned_level: string | null
+          canva_explorer_evidenced: boolean
+          canva_practitioner_evidenced: boolean
+          canva_score: number | null
+          copilot_explorer_evidenced: boolean
+          copilot_practitioner_evidenced: boolean
+          copilot_score: number | null
+          created_at: string
+          data_uploaded_at: string | null
+          department: string | null
+          edpuzzle_explorer_evidenced: boolean
+          edpuzzle_practitioner_evidenced: boolean
+          edpuzzle_score: number | null
+          email: string
+          explorer_complete: boolean
+          explorer_evidenced_count: number
+          forms_explorer_evidenced: boolean
+          forms_practitioner_evidenced: boolean
+          forms_score: number | null
+          leader_unlocked: boolean
+          name: string | null
+          onboarding_shown: boolean
+          practitioner_complete: boolean
+          practitioner_evidenced_count: number
+          practitioner_unlocked: boolean
+          teams_explorer_evidenced: boolean
+          teams_practitioner_evidenced: boolean
+          teams_score: number | null
+          updated_at: string
+          user_id: string | null
+          weighted_score: number | null
+          xr_score: number | null
+        }
+        Insert: {
+          assigned_level?: string | null
+          canva_explorer_evidenced?: boolean
+          canva_practitioner_evidenced?: boolean
+          canva_score?: number | null
+          copilot_explorer_evidenced?: boolean
+          copilot_practitioner_evidenced?: boolean
+          copilot_score?: number | null
+          created_at?: string
+          data_uploaded_at?: string | null
+          department?: string | null
+          edpuzzle_explorer_evidenced?: boolean
+          edpuzzle_practitioner_evidenced?: boolean
+          edpuzzle_score?: number | null
+          email: string
+          explorer_complete?: boolean
+          explorer_evidenced_count?: number
+          forms_explorer_evidenced?: boolean
+          forms_practitioner_evidenced?: boolean
+          forms_score?: number | null
+          leader_unlocked?: boolean
+          name?: string | null
+          onboarding_shown?: boolean
+          practitioner_complete?: boolean
+          practitioner_evidenced_count?: number
+          practitioner_unlocked?: boolean
+          teams_explorer_evidenced?: boolean
+          teams_practitioner_evidenced?: boolean
+          teams_score?: number | null
+          updated_at?: string
+          user_id?: string | null
+          weighted_score?: number | null
+          xr_score?: number | null
+        }
+        Update: {
+          assigned_level?: string | null
+          canva_explorer_evidenced?: boolean
+          canva_practitioner_evidenced?: boolean
+          canva_score?: number | null
+          copilot_explorer_evidenced?: boolean
+          copilot_practitioner_evidenced?: boolean
+          copilot_score?: number | null
+          created_at?: string
+          data_uploaded_at?: string | null
+          department?: string | null
+          edpuzzle_explorer_evidenced?: boolean
+          edpuzzle_practitioner_evidenced?: boolean
+          edpuzzle_score?: number | null
+          email?: string
+          explorer_complete?: boolean
+          explorer_evidenced_count?: number
+          forms_explorer_evidenced?: boolean
+          forms_practitioner_evidenced?: boolean
+          forms_score?: number | null
+          leader_unlocked?: boolean
+          name?: string | null
+          onboarding_shown?: boolean
+          practitioner_complete?: boolean
+          practitioner_evidenced_count?: number
+          practitioner_unlocked?: boolean
+          teams_explorer_evidenced?: boolean
+          teams_practitioner_evidenced?: boolean
+          teams_score?: number | null
+          updated_at?: string
+          user_id?: string | null
+          weighted_score?: number | null
+          xr_score?: number | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      is_admin: { Args: never; Returns: boolean }
     }
     Enums: {
       evidence_type: "video_link" | "file_upload" | "case_study"
