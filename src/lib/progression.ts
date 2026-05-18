@@ -36,7 +36,6 @@ export const runProgressionCheck = async (
   email: string,
 ): Promise<boolean> => {
   const completed = new Set(completedIds);
-  const assigned = normaliseLevel(profile.assigned_level);
 
   // Build a working copy reflecting cumulative updates so subsequent checks see them
   const next: Partial<StaffProfile> = {};
@@ -46,20 +45,12 @@ export const runProgressionCheck = async (
   const cur = <K extends keyof StaffProfile>(k: K): StaffProfile[K] =>
     (k in next ? (next as any)[k] : profile[k]) as StaffProfile[K];
 
-  // ── Part 2: Backfill ──────────────────────────────
-  if (assigned === "Practitioner" && profile.practitioner_unlocked === false) {
-    setFlag("practitioner_unlocked", true);
-    setFlag("explorer_complete", true);
-  }
-  if (assigned === "Leader" && profile.leader_unlocked === false) {
-    setFlag("leader_unlocked", true);
-    setFlag("practitioner_unlocked", true);
-    setFlag("practitioner_complete", true);
-    setFlag("explorer_complete", true);
-  }
+  // ── Backfill removed: all staff must complete platform modules
+  //    regardless of CSV assigned_level. Explorer-complete and
+  //    Practitioner-complete checks below handle all unlocks.
 
-  // ── Part 3: Explorer complete check ──────────────
-  if (assigned === "Explorer" && cur("explorer_complete") === false) {
+  // ── Explorer complete check (runs for all staff) ──
+  if (cur("explorer_complete") === false) {
     if (isExplorerDone(profile, completed)) {
       setFlag("explorer_complete", true);
       setFlag("practitioner_unlocked", true);
