@@ -29,12 +29,12 @@ Deno.serve(async (req) => {
     const userClient = createClient(SUPABASE_URL, ANON, {
       global: { headers: { Authorization: `Bearer ${token}` } },
     });
-    const { data: claimsRes, error: claimsErr } = await userClient.auth.getClaims(token);
-    if (claimsErr || !claimsRes?.claims) {
-      console.error("auth.getClaims failed", claimsErr);
+    const { data: userRes, error: userErr } = await userClient.auth.getUser(token);
+    if (userErr || !userRes?.user) {
+      console.error("auth.getUser failed", userErr);
       return json({ error: "Not authenticated" }, 401);
     }
-    const email = String(claimsRes.claims.email ?? "").toLowerCase();
+    const email = String(userRes.user.email ?? "").toLowerCase();
     if (email !== ADMIN_EMAIL) {
       console.error("Admin check failed for email:", email);
       return json({ error: "Not authorised" }, 403);
