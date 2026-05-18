@@ -12,6 +12,8 @@ import ResourceBankButton from "@/components/ResourceBankButton";
 import StaffSpotlight from "@/components/StaffSpotlight";
 import LeadStrip from "@/components/LeadStrip";
 import SignOutButton from "@/components/SignOutButton";
+import OnboardingModal from "@/components/journey/OnboardingModal";
+import { useStaffProfile } from "@/hooks/useStaffProfile";
 
 import bradfordLogo from "@/assets/bradford-college-logo.jpg";
 import teamsLogo from "@/assets/teams-logo.png";
