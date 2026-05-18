@@ -649,17 +649,29 @@ const EvidenceGalleryTab = ({ email }: { email: string | null }) => {
           No examples shared yet — Leaders who submit classroom examples will appear here.
         </div>
       ) : (
-        <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
-          {filtered.map((p) => (
-            <EvidenceCard
-              key={p.id}
-              post={p}
-              liked={myLikes.has(p.id)}
-              likeCount={likes[p.id] ?? 0}
-              onToggleLike={() => toggleLike(p.id)}
-            />
-          ))}
-        </div>
+        <>
+          <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
+            {filtered.slice(0, visibleCount).map((p) => (
+              <EvidenceCard
+                key={p.id}
+                post={p}
+                liked={myLikes.has(p.id)}
+                likeCount={likes[p.id] ?? 0}
+                onToggleLike={() => toggleLike(p.id)}
+              />
+            ))}
+          </div>
+          {filtered.length > visibleCount && (
+            <div className="flex justify-center mt-6">
+              <button
+                onClick={() => setVisibleCount((c) => c + 12)}
+                className="inline-flex items-center min-h-11 px-6 py-2.5 rounded-full bg-white border border-[#D0D7E2] text-sm font-semibold text-[#1F3864] hover:bg-[#F4F6FB] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#185FA5]"
+              >
+                Load more ({filtered.length - visibleCount} remaining)
+              </button>
+            </div>
+          )}
+        </>
       )}
     </div>
   );
