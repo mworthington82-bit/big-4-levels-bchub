@@ -432,16 +432,28 @@ const Resources = () => {
                   )}
                 </div>
               ) : (
-                <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-                  {filtered.map((r) => (
-                    <ResourceCard
-                      key={r.id}
-                      r={r}
-                      bookmarked={bookmarks.has(r.id)}
-                      onToggleBookmark={() => toggleBookmark(r.id)}
-                    />
-                  ))}
-                </div>
+                <>
+                  <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+                    {filtered.slice(0, visibleCount).map((r) => (
+                      <ResourceCard
+                        key={r.id}
+                        r={r}
+                        bookmarked={bookmarks.has(r.id)}
+                        onToggleBookmark={() => toggleBookmark(r.id)}
+                      />
+                    ))}
+                  </div>
+                  {filtered.length > visibleCount && (
+                    <div className="flex justify-center mt-6">
+                      <button
+                        onClick={() => setVisibleCount((c) => c + 12)}
+                        className="inline-flex items-center min-h-11 px-6 py-2.5 rounded-full bg-white border border-[#D0D7E2] text-sm font-semibold text-[#1F3864] hover:bg-[#F4F6FB] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#185FA5]"
+                      >
+                        Load more ({filtered.length - visibleCount} remaining)
+                      </button>
+                    </div>
+                  )}
+                </>
               )}
 
               <FromTheClassroom />
