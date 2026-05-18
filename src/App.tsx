@@ -40,6 +40,7 @@ const App = () => (
           <Route path="/post-login" element={<RequireAuth><PostLogin /></RequireAuth>} />
           <Route path="/not-yet" element={<RequireAuth><NotYet /></RequireAuth>} />
           <Route path="/journey" element={<RequireAuth><Journey /></RequireAuth>} />
+          <Route path="/module/:moduleId" element={<RequireAuth><ModulePlaceholder /></RequireAuth>} />
           <Route path="/resources" element={<RequireAuth><ResourcesPlaceholder /></RequireAuth>} />
           <Route path="/connect" element={<RequireAuth><Connect /></RequireAuth>} />
           <Route path="/admin" element={<RequireAdmin><Admin /></RequireAdmin>} />
