@@ -2,7 +2,8 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { LogOut } from "lucide-react";
 import { useStaffProfile } from "@/hooks/useStaffProfile";
 import { fullSignOut } from "@/lib/signOut";
-import { buildModuleCards, countCompleteOrEvidenced, normaliseLevel, totalForLevel } from "@/lib/journey";
+import { buildModuleCards, countCompleteOrEvidenced, totalForLevel } from "@/lib/journey";
+import { deriveEffectiveLevel } from "@/lib/progression";
 
 const navLinkClass = ({ isActive }: { isActive: boolean }) =>
   `px-4 py-2 rounded-full text-sm font-semibold transition-colors ${
@@ -16,12 +17,12 @@ const AppShell = ({ children }: { children: React.ReactNode }) => {
   let pillLabel = "";
   let showPill = false;
   if (profile) {
-    const level = normaliseLevel(profile.assigned_level);
+    const level = deriveEffectiveLevel(profile);
     showPill = true;
     if (level === "Leader") {
       pillLabel = "Leader";
     } else {
-      const cards = buildModuleCards(profile, completedModuleIds);
+      const cards = buildModuleCards(profile, completedModuleIds, level);
       const count = countCompleteOrEvidenced(cards);
       pillLabel = `${level} · ${count} of ${totalForLevel(level)} complete`;
     }
