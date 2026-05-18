@@ -43,6 +43,7 @@ const App = () => (
           <Route path="/journey" element={<RequireAuth><Journey /></RequireAuth>} />
           <Route path="/module/:moduleId" element={<RequireAuth><Module /></RequireAuth>} />
           <Route path="/resources" element={<RequireAuth><ResourcesHub /></RequireAuth>} />
+          <Route path="/leader" element={<RequireAuth><Leader /></RequireAuth>} />
           <Route path="/connect" element={<RequireAuth><Connect /></RequireAuth>} />
           <Route path="/admin" element={<RequireAdmin><Admin /></RequireAdmin>} />
 
