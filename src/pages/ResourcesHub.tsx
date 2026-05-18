@@ -444,7 +444,11 @@ const Resources = () => {
           ) : (
             <>
               {loading ? (
-                <p className="text-sm text-[#5F6B7D]">Loading bookmarks…</p>
+                <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3" aria-busy="true" aria-label="Loading bookmarks">
+                  {[0,1,2].map((i) => (
+                    <div key={i} className="bg-white rounded-xl border border-[#D0D7E2] h-56 animate-pulse" />
+                  ))}
+                </div>
               ) : bookmarkedList.length === 0 ? (
                 <div className="bg-white rounded-xl border border-[#D0D7E2] p-10 text-center">
                   <h3 className="font-bold text-[#1F3864] text-lg">You have not saved anything yet.</h3>
