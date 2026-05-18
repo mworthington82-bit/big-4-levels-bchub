@@ -175,6 +175,13 @@ const Journey = () => {
           </section>
         </div>
       </div>
+      {showOnboarding && profile && email && (
+        <OnboardingModal
+          profile={profile}
+          email={email}
+          onClose={() => setShowOnboarding(false)}
+        />
+      )}
     </AppShell>
   );
 };
