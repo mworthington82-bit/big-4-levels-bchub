@@ -1,5 +1,6 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import OnboardingModal from "@/components/journey/OnboardingModal";
 import AppShell from "@/components/AppShell";
 import { useStaffProfile } from "@/hooks/useStaffProfile";
 import {
@@ -78,7 +79,14 @@ const QuickCard = ({ Icon, title, desc, to }: { Icon: any; title: string; desc: 
 
 const Journey = () => {
   const navigate = useNavigate();
-  const { profile, loading, notFound, completedModuleIds } = useStaffProfile();
+  const { profile, email, loading, notFound, completedModuleIds } = useStaffProfile();
+  const [showOnboarding, setShowOnboarding] = useState(false);
+
+  useEffect(() => {
+    if (!loading && profile && profile.onboarding_shown === false) {
+      setShowOnboarding(true);
+    }
+  }, [loading, profile]);
 
   useEffect(() => {
     if (!loading && notFound) navigate("/not-yet", { replace: true });
@@ -167,6 +175,13 @@ const Journey = () => {
           </section>
         </div>
       </div>
+      {showOnboarding && profile && email && (
+        <OnboardingModal
+          profile={profile}
+          email={email}
+          onClose={() => setShowOnboarding(false)}
+        />
+      )}
     </AppShell>
   );
 };
