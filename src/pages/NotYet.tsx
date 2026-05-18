@@ -30,7 +30,7 @@ const NotYet = () => {
     e.preventDefault();
     if (password.trim() === ADMIN_BYPASS_PASSWORD) {
       grantMaintenanceBypass();
-      navigate("/journey", { replace: true });
+      navigate("/admin", { replace: true });
     } else {
       setError("Incorrect password.");
     }
