@@ -1,9 +1,11 @@
 import { fullSignOut } from "@/lib/signOut";
+import { usePageTitle } from "@/lib/usePageTitle";
 
 const SELF_ASSESSMENT_URL =
   "https://bradfordcollege.kallidus-suite.com/learn/#/course/a0ada9f6-7556-4a4f-8c72-827eb247b456";
 
 const NotYet = () => {
+  usePageTitle();
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <header className="bg-[#1F3864] text-white">
