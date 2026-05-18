@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AppShell from "@/components/AppShell";
 import { supabase } from "@/integrations/supabase/client";
+import FromTheClassroom from "@/components/resources/FromTheClassroom";
 import {
   IconBookmark,
   IconBookmarkFilled,
