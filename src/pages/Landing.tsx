@@ -322,6 +322,17 @@ const Landing = () => {
         </form>
       </DialogContent>
     </Dialog>
+
+    {showOnboarding && profile && email && (
+      <OnboardingModal
+        profile={profile}
+        email={email}
+        onClose={() => {
+          setShowOnboarding(false);
+          navigate("/new/journey");
+        }}
+      />
+    )}
   </>
   );
 };
