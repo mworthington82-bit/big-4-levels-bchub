@@ -151,9 +151,9 @@ export function applyCleaningRules(input: RawRow[]): CleanResult {
     return r;
   });
 
-  // Rule 7 — exclude departments
+  // Rule 7 — exclude "Other" department (LDI is a valid department)
   rows = rows.filter((r) => {
-    const hit = r.department === "LDI" || r.department === "Other";
+    const hit = r.department === "Other";
     if (hit) removalStats.rule7_excluded_depts++;
     return !hit;
   });
