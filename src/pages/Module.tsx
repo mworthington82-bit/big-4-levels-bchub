@@ -162,6 +162,12 @@ const Module = () => {
         },
         { onConflict: "staff_email,module_id" },
       );
+    try {
+      const { runProgressionCheckByEmail } = await import("@/lib/progression");
+      await runProgressionCheckByEmail(email);
+    } catch (e) {
+      console.error("progression check failed", e);
+    }
   };
 
   return (
