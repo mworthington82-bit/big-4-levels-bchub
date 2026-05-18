@@ -35,6 +35,12 @@ const PostLogin = () => {
         return;
       }
 
+      // Pre-launch gate: non-allowlisted users go straight to /not-yet
+      if (MAINTENANCE_MODE && !isAllowedDuringMaintenance(email)) {
+        navigate("/not-yet", { replace: true });
+        return;
+      }
+
       // Link auth.uid() to the staff_profiles row on first login (best effort)
       try {
         await supabase.functions.invoke("link-staff-profile");
