@@ -13,6 +13,7 @@ import ResourcesHub from "./pages/ResourcesHub";
 import Connect from "./pages/Connect";
 import Admin from "./pages/Admin";
 import Module from "./pages/Module";
+import Leader from "./pages/Leader";
 
 // Legacy pages — still reachable at /legacy/* for existing deep links
 import Landing from "./pages/Landing";
