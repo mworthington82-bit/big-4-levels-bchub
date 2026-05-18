@@ -309,3 +309,29 @@ All colors MUST be HSL.
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }
+
+/* Phase 9 — global accessibility polish */
+
+/* Visible focus indicator on common interactive elements.
+   Uses :where() for zero specificity so per-component focus styles still win. */
+:where(button, a, [role="button"], input, select, textarea, summary):focus-visible {
+  outline: 2px solid #1F3864;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px rgba(245, 166, 35, 0.35);
+}
+
+/* Honour the user's reduced-motion preference */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  .animate-pulse {
+    animation: none !important;
+    opacity: 1 !important;
+  }
+}

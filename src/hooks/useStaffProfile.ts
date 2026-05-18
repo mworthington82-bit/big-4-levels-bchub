@@ -30,6 +30,7 @@ interface State {
   email: string | null;
   loading: boolean;
   notFound: boolean;
+  error: boolean;
   completedModuleIds: string[];
 }
 
@@ -49,6 +50,7 @@ export const useStaffProfile = () => {
     email: null,
     loading: true,
     notFound: false,
+    error: false,
     completedModuleIds: [],
   });
   const [reloadKey, setReloadKey] = useState(0);
@@ -58,43 +60,50 @@ export const useStaffProfile = () => {
   useEffect(() => {
     let cancelled = false;
     (async () => {
-      const { data: sessionData } = await supabase.auth.getSession();
-      const email = sessionData.session?.user.email ?? null;
-      if (!email) {
-        if (!cancelled) setState({ profile: null, email: null, loading: false, notFound: false, completedModuleIds: [] });
-        return;
-      }
-      const { data, error } = await supabase
-        .from("staff_profiles")
-        .select(PROFILE_COLUMNS)
-        .ilike("email", email)
-        .maybeSingle();
-
-      let completedModuleIds: string[] = [];
       try {
-        const { data: comps } = await supabase
-          .from("module_completions")
-          .select("module_id,quiz_passed")
-          .ilike("staff_email", email);
-        completedModuleIds = (comps ?? [])
-          .filter((c: any) => c.quiz_passed === true)
-          .map((c: any) => c.module_id as string);
-      } catch {
-        completedModuleIds = [];
-      }
+        const { data: sessionData } = await supabase.auth.getSession();
+        const email = sessionData.session?.user.email ?? null;
+        if (!email) {
+          if (!cancelled)
+            setState({ profile: null, email: null, loading: false, notFound: false, error: false, completedModuleIds: [] });
+          return;
+        }
+        const { data, error } = await supabase
+          .from("staff_profiles")
+          .select(PROFILE_COLUMNS)
+          .ilike("email", email)
+          .maybeSingle();
 
-      if (cancelled) return;
-      if (error) {
-        setState({ profile: null, email, loading: false, notFound: true, completedModuleIds });
-        return;
+        let completedModuleIds: string[] = [];
+        try {
+          const { data: comps } = await supabase
+            .from("module_completions")
+            .select("module_id,quiz_passed")
+            .ilike("staff_email", email);
+          completedModuleIds = (comps ?? [])
+            .filter((c: any) => c.quiz_passed === true)
+            .map((c: any) => c.module_id as string);
+        } catch {
+          completedModuleIds = [];
+        }
+
+        if (cancelled) return;
+        if (error) {
+          setState({ profile: null, email, loading: false, notFound: true, error: false, completedModuleIds });
+          return;
+        }
+        setState({
+          profile: (data as unknown as StaffProfile) ?? null,
+          email,
+          loading: false,
+          notFound: !data,
+          error: false,
+          completedModuleIds,
+        });
+      } catch {
+        if (!cancelled)
+          setState({ profile: null, email: null, loading: false, notFound: false, error: true, completedModuleIds: [] });
       }
-      setState({
-        profile: (data as unknown as StaffProfile) ?? null,
-        email,
-        loading: false,
-        notFound: !data,
-        completedModuleIds,
-      });
     })();
     return () => {
       cancelled = true;

@@ -4,6 +4,8 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { IconArrowLeft, IconArrowRight, IconClock } from "@tabler/icons-react";
 import AppShell from "@/components/AppShell";
+import PageError from "@/components/PageError";
+import { usePageTitle } from "@/lib/usePageTitle";
 import { supabase } from "@/integrations/supabase/client";
 import ModuleQuiz, { QuizQuestion } from "@/components/module/ModuleQuiz";
 
@@ -65,6 +67,7 @@ const Module = () => {
   const { moduleId } = useParams<{ moduleId: string }>();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
+  const [errored, setErrored] = useState(false);
   const [module, setModule] = useState<ModuleRow | null>(null);
   const [steps, setSteps] = useState<StepRow[]>([]);
   const [questions, setQuestions] = useState<QuizQuestion[]>([]);
@@ -74,34 +77,49 @@ const Module = () => {
   const [warning, setWarning] = useState<string | null>(null);
   const [email, setEmail] = useState<string | null>(null);
 
+  usePageTitle(module?.module_title);
+
   useEffect(() => {
     let cancelled = false;
     (async () => {
       if (!moduleId) return;
       setLoading(true);
-      const { data: session } = await supabase.auth.getSession();
-      const userEmail = session.session?.user.email ?? null;
+      setErrored(false);
+      try {
+        const { data: session } = await supabase.auth.getSession();
+        const userEmail = session.session?.user.email ?? null;
 
-      const [{ data: mod }, { data: stepRows }, { data: qRows }] = await Promise.all([
-        supabase.from("modules").select("*").eq("module_id", moduleId).maybeSingle(),
-        supabase
-          .from("module_steps")
-          .select("*")
-          .eq("module_id", moduleId)
-          .order("step_number", { ascending: true }),
-        supabase
-          .from("quiz_questions")
-          .select("*")
-          .eq("module_id", moduleId)
-          .order("question_order", { ascending: true }),
-      ]);
+        const [{ data: mod, error: modErr }, { data: stepRows, error: stepErr }, { data: qRows, error: qErr }] = await Promise.all([
+          supabase.from("modules").select("*").eq("module_id", moduleId).maybeSingle(),
+          supabase
+            .from("module_steps")
+            .select("*")
+            .eq("module_id", moduleId)
+            .order("step_number", { ascending: true }),
+          supabase
+            .from("quiz_questions")
+            .select("*")
+            .eq("module_id", moduleId)
+            .order("question_order", { ascending: true }),
+        ]);
 
-      if (cancelled) return;
-      setEmail(userEmail);
-      setModule((mod as ModuleRow) ?? null);
-      setSteps((stepRows as StepRow[]) ?? []);
-      setQuestions((qRows as QuizQuestion[]) ?? []);
-      setLoading(false);
+        if (cancelled) return;
+        if (modErr || stepErr || qErr) {
+          setErrored(true);
+          setLoading(false);
+          return;
+        }
+        setEmail(userEmail);
+        setModule((mod as ModuleRow) ?? null);
+        setSteps((stepRows as StepRow[]) ?? []);
+        setQuestions((qRows as QuizQuestion[]) ?? []);
+        setLoading(false);
+      } catch {
+        if (!cancelled) {
+          setErrored(true);
+          setLoading(false);
+        }
+      }
     })();
     return () => {
       cancelled = true;
@@ -119,11 +137,34 @@ const Module = () => {
     [steps, currentStep],
   );
 
+  if (errored) return <PageError />;
+
   if (loading) {
     return (
       <AppShell>
-        <div className="min-h-full bg-[#F4F6FB] flex items-center justify-center py-20">
-          <p className="text-[#5F6B7D]">Loading module…</p>
+        <div className="min-h-full bg-[#F4F6FB]" aria-busy="true" aria-label="Loading module">
+          <header className="bg-white border-b border-[#D0D7E2]">
+            <div className="container mx-auto px-4 py-6 max-w-5xl space-y-3">
+              <div className="h-4 w-32 bg-[#E5E9F0] rounded animate-pulse" />
+              <div className="h-8 w-1/2 bg-[#E5E9F0] rounded animate-pulse" />
+              <div className="h-4 w-1/3 bg-[#E5E9F0] rounded animate-pulse" />
+            </div>
+          </header>
+          <div className="container mx-auto px-4 py-3 max-w-5xl">
+            <div className="flex items-center gap-2 overflow-x-auto">
+              {[0,1,2,3,4].map((i) => (
+                <div key={i} className="h-7 w-24 bg-[#E5E9F0] rounded-full animate-pulse shrink-0" />
+              ))}
+            </div>
+          </div>
+          <div className="container mx-auto px-4 pt-8 max-w-3xl">
+            <div className="bg-white rounded-2xl border border-[#D0D7E2] p-6 md:p-10 space-y-3">
+              <div className="h-7 w-2/3 bg-[#E5E9F0] rounded animate-pulse" />
+              <div className="h-4 w-full bg-[#E5E9F0] rounded animate-pulse" />
+              <div className="h-4 w-5/6 bg-[#E5E9F0] rounded animate-pulse" />
+              <div className="h-4 w-3/4 bg-[#E5E9F0] rounded animate-pulse" />
+            </div>
+          </div>
         </div>
       </AppShell>
     );

@@ -6,6 +6,7 @@ import UploadSummary from "@/components/admin/UploadSummary";
 import UploadHistory from "@/components/admin/UploadHistory";
 import DatabaseSummary from "@/components/admin/DatabaseSummary";
 import PendingEvidencePanel from "@/components/admin/PendingEvidencePanel";
+import { usePageTitle } from "@/lib/usePageTitle";
 import {
   HEADER_MISMATCH_MESSAGE,
   applyCleaningRules,
@@ -41,6 +42,7 @@ interface Result {
 }
 
 const Admin = () => {
+  usePageTitle("Admin");
   const [file, setFile] = useState<File | null>(null);
   const [steps, setSteps] = useState<Step[]>([]);
   const [error, setError] = useState<string | null>(null);

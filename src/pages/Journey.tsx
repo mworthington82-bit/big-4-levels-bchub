@@ -4,6 +4,8 @@ import OnboardingModal from "@/components/journey/OnboardingModal";
 import MilestoneBanner from "@/components/journey/MilestoneBanner";
 import CompletedLevelStrip from "@/components/journey/CompletedLevelStrip";
 import AppShell from "@/components/AppShell";
+import PageError from "@/components/PageError";
+import { usePageTitle } from "@/lib/usePageTitle";
 import { useStaffProfile } from "@/hooks/useStaffProfile";
 import {
   buildModuleCards,
@@ -81,9 +83,38 @@ const QuickCard = ({ Icon, title, desc, to }: { Icon: any; title: string; desc: 
   );
 };
 
+const JourneySkeleton = () => (
+  <AppShell>
+    <div className="min-h-full bg-[#F4F6FB]" aria-busy="true" aria-label="Loading your journey">
+      <div className="container mx-auto px-4 py-8 md:py-10 max-w-6xl space-y-8">
+        <section className="bg-white rounded-2xl border border-[#D0D7E2] p-6 md:p-8">
+          <div className="h-3 w-24 bg-[#E5E9F0] rounded mb-3 animate-pulse" />
+          <div className="h-6 w-32 bg-[#E5E9F0] rounded-full mb-4 animate-pulse" />
+          <div className="space-y-2 max-w-3xl">
+            <div className="h-4 bg-[#E5E9F0] rounded w-full animate-pulse" />
+            <div className="h-4 bg-[#E5E9F0] rounded w-5/6 animate-pulse" />
+          </div>
+        </section>
+        <section className="space-y-4">
+          <div className="h-5 w-40 bg-[#E5E9F0] rounded animate-pulse" />
+          <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+            {[0,1,2,3,4,5].map((i) => (
+              <div key={i} className="bg-white rounded-xl border border-[#D0D7E2] h-48 animate-pulse" />
+            ))}
+          </div>
+        </section>
+        <section>
+          <div className="h-1.5 w-full rounded-full bg-[#E5E9F0] animate-pulse" />
+        </section>
+      </div>
+    </div>
+  </AppShell>
+);
+
 const Journey = () => {
+  usePageTitle("My Journey");
   const navigate = useNavigate();
-  const { profile, email, loading, notFound, completedModuleIds, refresh } = useStaffProfile();
+  const { profile, email, loading, notFound, error, completedModuleIds, refresh } = useStaffProfile();
   const [showOnboarding, setShowOnboarding] = useState(false);
   const progressionRan = useRef(false);
 
@@ -107,13 +138,8 @@ const Journey = () => {
     if (!loading && notFound) navigate("/not-yet", { replace: true });
   }, [loading, notFound, navigate]);
 
-  if (loading || !profile) {
-    return (
-      <AppShell>
-        <div className="container mx-auto px-4 py-16 text-sm text-muted-foreground">Loading your journey…</div>
-      </AppShell>
-    );
-  }
+  if (error) return <PageError />;
+  if (loading || !profile) return <JourneySkeleton />;
 
   const effective = deriveEffectiveLevel(profile);
   const styles = LEVEL_STYLES[effective];
