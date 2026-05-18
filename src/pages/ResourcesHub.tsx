@@ -339,6 +339,11 @@ const Resources = () => {
   }, [resources, filters]);
 
   const bookmarkedList = resources.filter((r) => bookmarks.has(r.id));
+  const hasActiveFilters =
+    filters.tool !== "All" || filters.type !== "All" || filters.level !== "All" || filters.stage !== "All";
+  const clearFilters = () => setFilters({ tool: "All", type: "All", level: "All", stage: "All" });
+
+  if (errored) return <PageError />;
 
   return (
     <AppShell>
@@ -404,10 +409,22 @@ const Resources = () => {
 
               {/* Grid */}
               {loading ? (
-                <p className="text-sm text-[#5F6B7D]">Loading resources…</p>
+                <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3" aria-busy="true" aria-label="Loading resources">
+                  {[0,1,2,3,4,5].map((i) => (
+                    <div key={i} className="bg-white rounded-xl border border-[#D0D7E2] h-56 animate-pulse" />
+                  ))}
+                </div>
               ) : filtered.length === 0 ? (
                 <div className="bg-white rounded-xl border border-[#D0D7E2] p-8 text-center">
                   <p className="text-[#1F3864] font-semibold">No resources match your filters yet — check back soon as we add more.</p>
+                  {hasActiveFilters && (
+                    <button
+                      onClick={clearFilters}
+                      className="mt-3 inline-flex items-center text-sm font-semibold text-[#185FA5] hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#185FA5] rounded"
+                    >
+                      Clear filters
+                    </button>
+                  )}
                 </div>
               ) : (
                 <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
