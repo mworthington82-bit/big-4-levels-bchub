@@ -604,6 +604,10 @@ const EvidenceGalleryTab = ({ email }: { email: string | null }) => {
     return arr;
   }, [posts, toolFilter, sort, likes]);
 
+  useEffect(() => {
+    setVisibleCount(12);
+  }, [toolFilter, sort]);
+
   return (
     <div className="space-y-5">
       <div className="flex flex-wrap gap-3 items-end justify-between">
