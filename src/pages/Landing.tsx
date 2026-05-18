@@ -246,22 +246,24 @@ const Landing = () => {
               </Button>
             </div>
 
-            <div className="bg-card rounded-2xl border border-border shadow-[var(--shadow-card)] p-6 animate-fade-in opacity-50 cursor-not-allowed" style={{ animationDelay: '200ms' }}>
+            <div className="bg-card rounded-2xl border border-border shadow-[var(--shadow-card)] p-6 animate-fade-in hover:shadow-[var(--shadow-hover)] transition-all duration-300" style={{ animationDelay: '200ms' }}>
               <div className="flex items-center gap-3 mb-3">
-                <div className="p-3 rounded-xl bg-muted">
-                  <CheckCircle className="w-6 h-6 text-muted-foreground" />
+                <div className="p-3 rounded-xl bg-[#F5A623]/15">
+                  <CheckCircle className="w-6 h-6 text-[#F5A623]" />
                 </div>
-                <h3 className="font-display text-xl font-bold text-muted-foreground">Already Assessed?</h3>
+                <h3 className="font-display text-xl font-bold text-foreground">Already Assessed?</h3>
               </div>
               <p className="text-muted-foreground text-sm mb-4">
-                You know your level — jump straight into the training pathways
+                You know your level — jump straight into your personalised journey
               </p>
               <Button
                 size="lg"
-                disabled
-                className="w-full py-6 text-lg rounded-xl font-semibold"
+                onClick={handleAlreadyAssessed}
+                disabled={profileLoading}
+                className="w-full py-6 text-lg rounded-xl font-semibold group"
               >
-                Coming Soon
+                {profileLoading ? "Loading…" : "Go to My Journey"}
+                <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
               </Button>
             </div>
           </div>
