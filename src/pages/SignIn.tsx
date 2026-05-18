@@ -2,13 +2,21 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { consumeSessionExpired } from "@/lib/sessionExpiry";
+import { usePageTitle } from "@/lib/usePageTitle";
 
 const SSO_DOMAIN = "bradfordcollege.ac.uk";
 
 const SignIn = () => {
+  usePageTitle("Sign in");
   const navigate = useNavigate();
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
+  const [expired, setExpired] = useState(false);
+
+  useEffect(() => {
+    setExpired(consumeSessionExpired());
+  }, []);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
@@ -62,10 +70,19 @@ const SignIn = () => {
           <button
             onClick={handleSignIn}
             disabled={loading}
-            className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl bg-[#F5A623] text-[#1F3864] font-bold text-base hover:bg-[#F5A623]/90 transition-colors disabled:opacity-60 shadow-lg"
+            className="inline-flex items-center justify-center gap-2 min-h-11 px-8 py-4 rounded-xl bg-[#F5A623] text-[#1F3864] font-bold text-base hover:bg-[#F5A623]/90 transition-colors disabled:opacity-60 shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
           >
             {loading ? "Redirecting…" : "Sign in with Microsoft"}
           </button>
+
+          {expired && (
+            <div
+              role="status"
+              className="mx-auto max-w-sm rounded-lg bg-white/10 border border-white/20 text-white/90 text-sm px-4 py-2.5"
+            >
+              Your session has expired. Please sign in again.
+            </div>
+          )}
         </div>
       </main>
 
