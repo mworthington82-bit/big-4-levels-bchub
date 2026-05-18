@@ -59,6 +59,16 @@ const ModuleQuiz = ({ questions, onComplete, onBackToPathway }: Props) => {
           Back to my pathway
           <IconArrowRight size={18} stroke={2} />
         </button>
+        <div className="mt-8 pt-6 border-t border-[#EEF1F6]">
+          <p className="text-sm text-[#5F6B7D] mb-2">Looking for more ideas?</p>
+          <a
+            href="/resources"
+            className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#185FA5] hover:underline"
+          >
+            Browse resources
+            <IconArrowRight size={14} stroke={2.25} />
+          </a>
+        </div>
       </div>
     );
   }

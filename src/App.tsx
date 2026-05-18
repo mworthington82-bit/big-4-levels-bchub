@@ -9,7 +9,7 @@ import SignIn from "./pages/SignIn";
 import PostLogin from "./pages/PostLogin";
 import NotYet from "./pages/NotYet";
 import Journey from "./pages/Journey";
-import ResourcesPlaceholder from "./pages/ResourcesPlaceholder";
+import ResourcesHub from "./pages/ResourcesHub";
 import Connect from "./pages/Connect";
 import Admin from "./pages/Admin";
 import Module from "./pages/Module";
@@ -41,7 +41,7 @@ const App = () => (
           <Route path="/not-yet" element={<RequireAuth><NotYet /></RequireAuth>} />
           <Route path="/journey" element={<RequireAuth><Journey /></RequireAuth>} />
           <Route path="/module/:moduleId" element={<RequireAuth><Module /></RequireAuth>} />
-          <Route path="/resources" element={<RequireAuth><ResourcesPlaceholder /></RequireAuth>} />
+          <Route path="/resources" element={<RequireAuth><ResourcesHub /></RequireAuth>} />
           <Route path="/connect" element={<RequireAuth><Connect /></RequireAuth>} />
           <Route path="/admin" element={<RequireAdmin><Admin /></RequireAdmin>} />
 
