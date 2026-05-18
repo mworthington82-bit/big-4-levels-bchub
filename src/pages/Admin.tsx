@@ -146,6 +146,7 @@ const Admin = () => {
 
         <UploadHistory refreshKey={refreshKey} />
         <DatabaseSummary refreshKey={refreshKey} />
+        <PendingEvidencePanel />
       </div>
     </AppShell>
   );
