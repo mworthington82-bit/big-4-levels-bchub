@@ -20,6 +20,7 @@ export const EXPECTED_DEPARTMENTS = [
   "14–16 Alternative Provision",
   "Early Years, Education & Social Care",
   "Science & Digital",
+  "LDI",
 ] as const;
 
 export type Level = "Explorer" | "Practitioner" | "Leader";
