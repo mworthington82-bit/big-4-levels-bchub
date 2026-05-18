@@ -2,7 +2,7 @@
 // unlocked the bypass with the admin password can access the full platform.
 // Everyone else lands on /not-yet (self-assessment landing).
 // Set MAINTENANCE_MODE to false to open the platform to all staff.
-export const MAINTENANCE_MODE = true;
+export const MAINTENANCE_MODE = false;
 
 const ALLOWED_EMAILS = new Set<string>([
   "m.worthington@bradfordcollege.ac.uk",

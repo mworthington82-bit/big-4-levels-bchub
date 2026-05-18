@@ -48,16 +48,8 @@ const PostLogin = () => {
         // non-fatal — RLS falls back to JWT email matching
       }
 
-      // Look up the staff profile
-      const { data: profile } = await supabase
-        .from("staff_profiles")
-        .select("email")
-        .ilike("email", email)
-        .maybeSingle();
-
       if (cancelled) return;
-      if (profile) navigate("/home", { replace: true });
-      else navigate("/not-yet", { replace: true });
+      navigate("/home", { replace: true });
     };
 
     route();
