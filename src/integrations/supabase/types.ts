@@ -92,6 +92,35 @@ export type Database = {
         }
         Relationships: []
       }
+      bookmarks: {
+        Row: {
+          bookmarked_at: string
+          id: string
+          resource_id: string
+          staff_email: string
+        }
+        Insert: {
+          bookmarked_at?: string
+          id?: string
+          resource_id: string
+          staff_email: string
+        }
+        Update: {
+          bookmarked_at?: string
+          id?: string
+          resource_id?: string
+          staff_email?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "bookmarks_resource_id_fkey"
+            columns: ["resource_id"]
+            isOneToOne: false
+            referencedRelation: "resources"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       csv_upload_log: {
         Row: {
           id: string
@@ -651,6 +680,51 @@ export type Database = {
           other_department?: string | null
           reflection_text?: string
           tool_name?: string
+        }
+        Relationships: []
+      }
+      resources: {
+        Row: {
+          created_at: string
+          description: string | null
+          file_path: string | null
+          id: string
+          is_published: boolean
+          lead_stage: string
+          level: string
+          resource_type: string
+          title: string
+          tool: string
+          updated_at: string
+          url: string | null
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          file_path?: string | null
+          id?: string
+          is_published?: boolean
+          lead_stage: string
+          level: string
+          resource_type: string
+          title: string
+          tool: string
+          updated_at?: string
+          url?: string | null
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          file_path?: string | null
+          id?: string
+          is_published?: boolean
+          lead_stage?: string
+          level?: string
+          resource_type?: string
+          title?: string
+          tool?: string
+          updated_at?: string
+          url?: string | null
         }
         Relationships: []
       }
