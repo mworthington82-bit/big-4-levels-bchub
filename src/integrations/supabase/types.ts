@@ -426,6 +426,83 @@ export type Database = {
           },
         ]
       }
+      module_steps: {
+        Row: {
+          created_at: string
+          id: string
+          inclusion_note: string | null
+          module_id: string
+          step_content: string | null
+          step_number: number
+          step_title: string
+          step_type: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          inclusion_note?: string | null
+          module_id: string
+          step_content?: string | null
+          step_number: number
+          step_title: string
+          step_type: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          inclusion_note?: string | null
+          module_id?: string
+          step_content?: string | null
+          step_number?: number
+          step_title?: string
+          step_type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "module_steps_module_id_fkey"
+            columns: ["module_id"]
+            isOneToOne: false
+            referencedRelation: "modules"
+            referencedColumns: ["module_id"]
+          },
+        ]
+      }
+      modules: {
+        Row: {
+          created_at: string
+          estimated_minutes: number
+          is_published: boolean
+          level: string
+          module_id: string
+          module_subtitle: string | null
+          module_title: string
+          tool_name: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          estimated_minutes?: number
+          is_published?: boolean
+          level: string
+          module_id: string
+          module_subtitle?: string | null
+          module_title: string
+          tool_name: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          estimated_minutes?: number
+          is_published?: boolean
+          level?: string
+          module_id?: string
+          module_subtitle?: string | null
+          module_title?: string
+          tool_name?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       notifications: {
         Row: {
           created_at: string
@@ -496,6 +573,56 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      quiz_questions: {
+        Row: {
+          correct_option: string
+          created_at: string
+          explanation: string | null
+          id: string
+          module_id: string
+          option_a: string
+          option_b: string
+          option_c: string
+          option_d: string
+          question_order: number
+          question_text: string
+        }
+        Insert: {
+          correct_option: string
+          created_at?: string
+          explanation?: string | null
+          id?: string
+          module_id: string
+          option_a: string
+          option_b: string
+          option_c: string
+          option_d: string
+          question_order: number
+          question_text: string
+        }
+        Update: {
+          correct_option?: string
+          created_at?: string
+          explanation?: string | null
+          id?: string
+          module_id?: string
+          option_a?: string
+          option_b?: string
+          option_c?: string
+          option_d?: string
+          question_order?: number
+          question_text?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "quiz_questions_module_id_fkey"
+            columns: ["module_id"]
+            isOneToOne: false
+            referencedRelation: "modules"
+            referencedColumns: ["module_id"]
+          },
+        ]
       }
       reflections: {
         Row: {
