@@ -1,17 +1,20 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import OnboardingModal from "@/components/journey/OnboardingModal";
+import MilestoneBanner from "@/components/journey/MilestoneBanner";
+import CompletedLevelStrip from "@/components/journey/CompletedLevelStrip";
 import AppShell from "@/components/AppShell";
 import { useStaffProfile } from "@/hooks/useStaffProfile";
 import {
   buildModuleCards,
   countCompleteOrEvidenced,
   formatList,
+  hasAnyPractitionerCompletion,
   listEvidencedToolNames,
   listToDoToolNames,
-  normaliseLevel,
   totalForLevel,
 } from "@/lib/journey";
+import { deriveEffectiveLevel, runProgressionCheck } from "@/lib/progression";
 import ModuleCard from "@/components/journey/ModuleCard";
 import { IconWand, IconCalendarEvent, IconHeart, IconArrowRight } from "@tabler/icons-react";
 
@@ -34,7 +37,7 @@ const personalisedMessage = (
   todoNames: string[],
 ): string => {
   if (level === "Leader") {
-    return "You have reached Leader level. Your Leader Hub is coming soon — thank you for being a digital champion at Bradford College.";
+    return "You have reached Leader level — the highest level on The Big 4: Level Up. Thank you for being a digital champion at Bradford College.";
   }
   const count = evidencedNames.length;
   if (level === "Explorer") {
@@ -79,8 +82,19 @@ const QuickCard = ({ Icon, title, desc, to }: { Icon: any; title: string; desc: 
 
 const Journey = () => {
   const navigate = useNavigate();
-  const { profile, email, loading, notFound, completedModuleIds } = useStaffProfile();
+  const { profile, email, loading, notFound, completedModuleIds, refresh } = useStaffProfile();
   const [showOnboarding, setShowOnboarding] = useState(false);
+  const progressionRan = useRef(false);
+
+  // Run progression check once per load
+  useEffect(() => {
+    if (loading || !profile || !email || progressionRan.current) return;
+    progressionRan.current = true;
+    (async () => {
+      const changed = await runProgressionCheck(profile, completedModuleIds, email);
+      if (changed) refresh();
+    })();
+  }, [loading, profile, email, completedModuleIds, refresh]);
 
   useEffect(() => {
     if (!loading && profile && profile.onboarding_shown === false) {
@@ -100,15 +114,22 @@ const Journey = () => {
     );
   }
 
-  const level = normaliseLevel(profile.assigned_level);
-  const styles = LEVEL_STYLES[level];
-  const cards = buildModuleCards(profile, completedModuleIds);
-  const total = totalForLevel(level);
+  const effective = deriveEffectiveLevel(profile);
+  const styles = LEVEL_STYLES[effective];
+  const cards = buildModuleCards(profile, completedModuleIds, effective);
+  const total = totalForLevel(effective);
   const progressCount = countCompleteOrEvidenced(cards);
   const progressPct = total ? Math.round((progressCount / total) * 100) : 0;
-  const evidencedNames = listEvidencedToolNames(profile, level);
-  const todoNames = listToDoToolNames(profile, level);
-  const message = personalisedMessage(level, evidencedNames, todoNames);
+  const evidencedNames = listEvidencedToolNames(profile, effective);
+  const todoNames = listToDoToolNames(profile, effective);
+  const message = personalisedMessage(effective, evidencedNames, todoNames);
+
+  const showExplorerMilestone =
+    effective !== "Explorer" &&
+    profile.explorer_complete === true &&
+    !hasAnyPractitionerCompletion(completedModuleIds);
+  const showPractitionerMilestone =
+    effective === "Leader" && profile.practitioner_complete === true;
 
   return (
     <AppShell>
@@ -121,7 +142,7 @@ const Journey = () => {
               className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold ${styles.pillBg} ${styles.pillText} mb-4`}
             >
               <span className={`w-1.5 h-1.5 rounded-full ${styles.dot}`} />
-              {level} level
+              {effective} level
             </span>
             <p className="text-[#1F3864] text-base md:text-lg leading-relaxed max-w-3xl">
               {message}
@@ -129,9 +150,37 @@ const Journey = () => {
           </section>
 
           {/* Zone 2 — Pathway */}
-          <section>
-            <h2 className="font-bold text-[#1F3864] text-lg md:text-xl mb-4">Your pathway</h2>
-            {level === "Leader" ? (
+          <section className="space-y-4">
+            <h2 className="font-bold text-[#1F3864] text-lg md:text-xl">Your pathway</h2>
+
+            {showExplorerMilestone && <MilestoneBanner variant="explorer" />}
+            {showPractitionerMilestone && <MilestoneBanner variant="practitioner" />}
+
+            {/* Collapsed prior-level strips */}
+            {effective === "Practitioner" && (
+              <CompletedLevelStrip
+                profile={profile}
+                completedIds={completedModuleIds}
+                variant="explorer"
+              />
+            )}
+            {effective === "Leader" && (
+              <>
+                <CompletedLevelStrip
+                  profile={profile}
+                  completedIds={completedModuleIds}
+                  variant="explorer"
+                />
+                <CompletedLevelStrip
+                  profile={profile}
+                  completedIds={completedModuleIds}
+                  variant="practitioner"
+                />
+              </>
+            )}
+
+            {/* Main pathway content */}
+            {effective === "Leader" ? (
               <div className="bg-white rounded-2xl border border-[#D0D7E2] p-8 text-center">
                 <h3 className="font-bold text-[#1F3864] text-lg">Leader Hub — coming soon</h3>
                 <p className="text-sm text-[#5F6B7D] mt-2">
@@ -148,7 +197,7 @@ const Journey = () => {
           </section>
 
           {/* Zone 3 — Progress */}
-          {level !== "Leader" && (
+          {effective !== "Leader" && (
             <section>
               <div className="flex justify-end mb-2">
                 <span className="text-xs font-semibold text-[#5F6B7D]">

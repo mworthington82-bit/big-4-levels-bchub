@@ -39,46 +39,66 @@ export const normaliseLevel = (raw: string | null | undefined): LevelKey => {
   return "Explorer"; // default fallback
 };
 
-export const buildModuleCards = (
+export const buildExplorerCards = (
   profile: StaffProfile,
   completedIds: string[],
 ): ModuleCardSpec[] => {
-  const level = normaliseLevel(profile.assigned_level);
   const completed = new Set(completedIds);
-
-  if (level === "Leader") return [];
-
-  const levelSuffix = level === "Explorer" ? "explorer" : "practitioner";
-  const tools = level === "Explorer" ? EXPLORER_TOOLS : PRACTITIONER_TOOLS;
-
-  const cards: ModuleCardSpec[] = tools.map((tool) => {
-    const id = `${tool}_${levelSuffix}`;
-    const flagKey = `${tool}_${levelSuffix}_evidenced` as keyof StaffProfile;
+  return EXPLORER_TOOLS.map((tool) => {
+    const id = `${tool}_explorer`;
+    const flagKey = `${tool}_explorer_evidenced` as keyof StaffProfile;
     const evidenced = profile[flagKey] === true;
     let status: ModuleStatus = "todo";
     if (completed.has(id)) status = "completed";
     else if (evidenced) status = "evidenced";
-    return {
-      id,
-      toolKey: tool,
-      name: TOOL_LABEL[tool],
-      description: DESCRIPTIONS[tool],
-      status,
-    };
+    return { id, toolKey: tool, name: TOOL_LABEL[tool], description: DESCRIPTIONS[tool], status };
   });
+};
 
-  if (level === "Practitioner") {
-    const id = "immersive_practitioner";
-    cards.push({
-      id,
-      toolKey: "immersive",
-      name: TOOL_LABEL.immersive,
-      description: DESCRIPTIONS.immersive,
-      status: completed.has(id) ? "completed" : "todo",
-    });
-  }
-
+export const buildPractitionerCards = (
+  profile: StaffProfile,
+  completedIds: string[],
+): ModuleCardSpec[] => {
+  const completed = new Set(completedIds);
+  const cards: ModuleCardSpec[] = PRACTITIONER_TOOLS.map((tool) => {
+    const id = `${tool}_practitioner`;
+    const flagKey = `${tool}_practitioner_evidenced` as keyof StaffProfile;
+    const evidenced = profile[flagKey] === true;
+    let status: ModuleStatus = "todo";
+    if (completed.has(id)) status = "completed";
+    else if (evidenced) status = "evidenced";
+    return { id, toolKey: tool, name: TOOL_LABEL[tool], description: DESCRIPTIONS[tool], status };
+  });
+  const immersiveId = "immersive_practitioner";
+  cards.push({
+    id: immersiveId,
+    toolKey: "immersive",
+    name: TOOL_LABEL.immersive,
+    description: DESCRIPTIONS.immersive,
+    status: completed.has(immersiveId) ? "completed" : "todo",
+  });
   return cards;
+};
+
+/** Effective-level-aware card builder (used for the main pathway zone). */
+export const buildModuleCards = (
+  profile: StaffProfile,
+  completedIds: string[],
+  level?: LevelKey,
+): ModuleCardSpec[] => {
+  const lvl = level ?? normaliseLevel(profile.assigned_level);
+  if (lvl === "Leader") return [];
+  if (lvl === "Practitioner") return buildPractitionerCards(profile, completedIds);
+  return buildExplorerCards(profile, completedIds);
+};
+
+/** Has the user started any Practitioner module on the platform? */
+export const hasAnyPractitionerCompletion = (completedIds: string[]) => {
+  const ids = new Set([
+    "teams_practitioner","forms_practitioner","canva_practitioner",
+    "edpuzzle_practitioner","copilot_practitioner","immersive_practitioner",
+  ]);
+  return completedIds.some((id) => ids.has(id));
 };
 
 export const countCompleteOrEvidenced = (cards: ModuleCardSpec[]) =>
