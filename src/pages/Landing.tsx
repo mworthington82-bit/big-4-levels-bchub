@@ -11,6 +11,7 @@ import StudentQuoteCarousel from "@/components/StudentQuoteCarousel";
 import ResourceBankButton from "@/components/ResourceBankButton";
 import StaffSpotlight from "@/components/StaffSpotlight";
 import LeadStrip from "@/components/LeadStrip";
+import SignOutButton from "@/components/SignOutButton";
 
 import bradfordLogo from "@/assets/bradford-college-logo.jpg";
 import teamsLogo from "@/assets/teams-logo.png";
@@ -102,6 +103,7 @@ const Landing = () => {
         <div className="container mx-auto px-4 py-6">
           <div className="flex items-center justify-between">
             <img src={bradfordLogo} alt="Bradford College logo" className="h-12 object-contain cursor-pointer" onClick={handleLogoClick} />
+            <SignOutButton />
           </div>
         </div>
       </header>
