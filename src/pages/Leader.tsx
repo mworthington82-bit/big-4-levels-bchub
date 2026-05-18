@@ -634,7 +634,11 @@ const EvidenceGalleryTab = ({ email }: { email: string | null }) => {
       </div>
 
       {loading ? (
-        <p className="text-sm text-[#5F6B7D]">Loading…</p>
+        <div className="grid gap-4 grid-cols-1 md:grid-cols-2" aria-busy="true" aria-label="Loading evidence gallery">
+          {[0,1,2,3].map((i) => (
+            <div key={i} className="bg-white rounded-xl border border-[#D0D7E2] h-48 animate-pulse" />
+          ))}
+        </div>
       ) : filtered.length === 0 ? (
         <div className="bg-white rounded-xl border border-[#D0D7E2] p-8 text-center text-[#1F3864] font-semibold">
           No examples shared yet — Leaders who submit classroom examples will appear here.
@@ -696,7 +700,11 @@ const MentorDirectoryTab = () => {
       </label>
 
       {loading ? (
-        <p className="text-sm text-[#5F6B7D]">Loading…</p>
+        <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3" aria-busy="true" aria-label="Loading mentor directory">
+          {[0,1,2].map((i) => (
+            <div key={i} className="bg-white rounded-xl border border-[#D0D7E2] h-40 animate-pulse" />
+          ))}
+        </div>
       ) : filtered.length === 0 ? (
         <div className="bg-white rounded-xl border border-[#D0D7E2] p-8 text-center text-[#1F3864] font-semibold">
           No mentors listed yet — Leaders who sign up will appear here.
