@@ -339,6 +339,10 @@ const Resources = () => {
     return resources.filter(matches);
   }, [resources, filters]);
 
+  useEffect(() => {
+    setVisibleCount(12);
+  }, [filters]);
+
   const bookmarkedList = resources.filter((r) => bookmarks.has(r.id));
   const hasActiveFilters =
     filters.tool !== "All" || filters.type !== "All" || filters.level !== "All" || filters.stage !== "All";
