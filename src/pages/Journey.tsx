@@ -217,7 +217,7 @@ const Journey = () => {
           <section>
             <h2 className="font-bold text-[#1F3864] text-lg md:text-xl mb-4">Quick access</h2>
             <div className="grid gap-4 grid-cols-1 md:grid-cols-3">
-              <QuickCard Icon={IconWand} title="Activity Planner" desc="Generate inclusion-focused lesson ideas" to="/resources" />
+              <QuickCard Icon={IconWand} title="Activity Planner" desc="Generate inclusion-focused lesson ideas" to="/resources#activity-planner" />
               <QuickCard Icon={IconCalendarEvent} title="Book Big 4 Day" desc="Reserve your sessions for the CPD day" to="/connect" />
               <QuickCard Icon={IconHeart} title="Inclusion Hub" desc="Practical guidance and downloadable tips" to="/connect" />
             </div>
