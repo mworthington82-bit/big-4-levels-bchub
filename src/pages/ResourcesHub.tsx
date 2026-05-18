@@ -1,6 +1,8 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AppShell from "@/components/AppShell";
+import PageError from "@/components/PageError";
+import { usePageTitle } from "@/lib/usePageTitle";
 import { supabase } from "@/integrations/supabase/client";
 import FromTheClassroom from "@/components/resources/FromTheClassroom";
 import {
@@ -256,6 +258,7 @@ const ResourceCard = ({
 
 // ───────── Page ─────────
 const Resources = () => {
+  usePageTitle("Resources");
   const navigate = useNavigate();
   const [tab, setTab] = useState<"ideas" | "bookmarks">("ideas");
   const [email, setEmail] = useState<string | null>(null);
@@ -263,47 +266,67 @@ const Resources = () => {
   const [bookmarks, setBookmarks] = useState<Set<string>>(new Set());
   const [filters, setFilters] = useState({ tool: "All", type: "All", level: "All", stage: "All" });
   const [loading, setLoading] = useState(true);
+  const [errored, setErrored] = useState(false);
+  const debounceRef = useRef<Record<string, ReturnType<typeof setTimeout>>>({});
+  const pendingDesiredRef = useRef<Record<string, boolean>>({});
 
   useEffect(() => {
     (async () => {
-      const { data: s } = await supabase.auth.getSession();
-      const userEmail = s.session?.user.email ?? null;
-      setEmail(userEmail);
+      try {
+        const { data: s } = await supabase.auth.getSession();
+        const userEmail = s.session?.user.email ?? null;
+        setEmail(userEmail);
 
-      const [{ data: res }, { data: bms }] = await Promise.all([
-        supabase.from("resources").select("*").eq("is_published", true).order("created_at", { ascending: false }),
-        userEmail
-          ? supabase.from("bookmarks").select("resource_id").ilike("staff_email", userEmail)
-          : Promise.resolve({ data: [] as any[] }),
-      ]);
-      setResources((res as ResourceRow[]) ?? []);
-      setBookmarks(new Set(((bms as any[]) ?? []).map((b) => b.resource_id as string)));
-      setLoading(false);
+        const [{ data: res, error: resErr }, { data: bms, error: bmErr }] = await Promise.all([
+          supabase.from("resources").select("*").eq("is_published", true).order("created_at", { ascending: false }),
+          userEmail
+            ? supabase.from("bookmarks").select("resource_id").ilike("staff_email", userEmail)
+            : Promise.resolve({ data: [] as any[], error: null as any }),
+        ]);
+        if (resErr || bmErr) {
+          setErrored(true);
+          setLoading(false);
+          return;
+        }
+        setResources((res as ResourceRow[]) ?? []);
+        setBookmarks(new Set(((bms as any[]) ?? []).map((b) => b.resource_id as string)));
+        setLoading(false);
 
-      if (window.location.hash === "#activity-planner") {
-        setTimeout(() => {
-          document.getElementById("activity-planner")?.scrollIntoView({ behavior: "smooth", block: "start" });
-        }, 150);
+        if (window.location.hash === "#activity-planner") {
+          setTimeout(() => {
+            document.getElementById("activity-planner")?.scrollIntoView({ behavior: "smooth", block: "start" });
+          }, 150);
+        }
+      } catch {
+        setErrored(true);
+        setLoading(false);
       }
     })();
   }, []);
 
-  const toggleBookmark = async (id: string) => {
+  // Debounced bookmark toggle: 300ms — only the latest desired state is written
+  const toggleBookmark = (id: string) => {
     if (!email) return;
-    const isBookmarked = bookmarks.has(id);
-    // optimistic
     setBookmarks((prev) => {
       const n = new Set(prev);
-      if (isBookmarked) n.delete(id); else n.add(id);
+      const willHave = !n.has(id);
+      if (willHave) n.add(id); else n.delete(id);
+      pendingDesiredRef.current[id] = willHave;
       return n;
     });
-    if (isBookmarked) {
-      const { error } = await supabase.from("bookmarks").delete().eq("resource_id", id).ilike("staff_email", email);
-      if (error) console.error("delete bookmark failed", error);
-    } else {
-      const { error } = await supabase.from("bookmarks").insert({ resource_id: id, staff_email: email.toLowerCase() });
-      if (error) console.error("insert bookmark failed", error);
-    }
+    if (debounceRef.current[id]) clearTimeout(debounceRef.current[id]);
+    debounceRef.current[id] = setTimeout(async () => {
+      const desired = pendingDesiredRef.current[id];
+      delete pendingDesiredRef.current[id];
+      delete debounceRef.current[id];
+      if (desired) {
+        const { error } = await supabase.from("bookmarks").insert({ resource_id: id, staff_email: email.toLowerCase() });
+        if (error && !String(error.message).includes("duplicate")) console.error("insert bookmark failed", error);
+      } else {
+        const { error } = await supabase.from("bookmarks").delete().eq("resource_id", id).ilike("staff_email", email);
+        if (error) console.error("delete bookmark failed", error);
+      }
+    }, 300);
   };
 
   const filtered = useMemo(() => {
