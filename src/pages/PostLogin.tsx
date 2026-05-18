@@ -1,0 +1,69 @@
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
+
+const ALLOWED_DOMAIN = "bradfordcollege.ac.uk";
+
+const PostLogin = () => {
+  const navigate = useNavigate();
+  const { toast } = useToast();
+
+  useEffect(() => {
+    let cancelled = false;
+
+    const route = async () => {
+      const { data: sessionData } = await supabase.auth.getSession();
+      const session = sessionData.session;
+      if (!session) {
+        navigate("/", { replace: true });
+        return;
+      }
+      const email = session.user.email?.toLowerCase() ?? "";
+
+      // Defensive domain check
+      if (!email.endsWith(`@${ALLOWED_DOMAIN}`)) {
+        await supabase.auth.signOut();
+        toast({
+          title: "Access denied",
+          description:
+            "This platform is for Bradford College staff only. Please sign in with your Bradford College account.",
+          variant: "destructive",
+        });
+        navigate("/", { replace: true });
+        return;
+      }
+
+      // Link auth.uid() to the staff_profiles row on first login (best effort)
+      try {
+        await supabase.functions.invoke("link-staff-profile");
+      } catch {
+        // non-fatal — RLS falls back to JWT email matching
+      }
+
+      // Look up the staff profile
+      const { data: profile } = await supabase
+        .from("staff_profiles")
+        .select("email")
+        .ilike("email", email)
+        .maybeSingle();
+
+      if (cancelled) return;
+      if (profile) navigate("/journey", { replace: true });
+      else navigate("/not-yet", { replace: true });
+    };
+
+    route();
+    return () => {
+      cancelled = true;
+    };
+  }, [navigate, toast]);
+
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-background">
+      <div className="text-muted-foreground text-sm">Signing you in…</div>
+    </div>
+  );
+};
+
+export default PostLogin;
