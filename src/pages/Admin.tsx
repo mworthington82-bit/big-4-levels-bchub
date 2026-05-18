@@ -42,6 +42,7 @@ interface Result {
 }
 
 const Admin = () => {
+  usePageTitle("Admin");
   const [file, setFile] = useState<File | null>(null);
   const [steps, setSteps] = useState<Step[]>([]);
   const [error, setError] = useState<string | null>(null);
