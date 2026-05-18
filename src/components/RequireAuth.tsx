@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
-import { Navigate } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { flagSessionExpired } from "@/lib/sessionExpiry";
+import { MAINTENANCE_MODE, isAllowedDuringMaintenance } from "@/lib/maintenanceMode";
 
 interface RequireAuthProps {
   children: React.ReactNode;
@@ -9,24 +10,28 @@ interface RequireAuthProps {
 
 const RequireAuth = ({ children }: RequireAuthProps) => {
   const [status, setStatus] = useState<"loading" | "in" | "out">("loading");
+  const [email, setEmail] = useState<string | null>(null);
   const [hadSession, setHadSession] = useState(false);
+  const location = useLocation();
 
   useEffect(() => {
     const { data: sub } = supabase.auth.onAuthStateChange((event, session) => {
       if (session) {
         setHadSession(true);
+        setEmail(session.user.email ?? null);
         setStatus("in");
       } else {
-        // If we previously had a session and now don't, treat as expiry
         if (event === "SIGNED_OUT" || event === "TOKEN_REFRESHED" || event === "USER_UPDATED") {
           if (hadSession) flagSessionExpired();
         }
+        setEmail(null);
         setStatus("out");
       }
     });
     supabase.auth.getSession().then(({ data }) => {
       if (data.session) {
         setHadSession(true);
+        setEmail(data.session.user.email ?? null);
         setStatus("in");
       } else {
         setStatus("out");
@@ -43,6 +48,14 @@ const RequireAuth = ({ children }: RequireAuthProps) => {
     );
   }
   if (status === "out") return <Navigate to="/" replace />;
+
+  // Pre-launch gate: non-allowlisted users can only see /not-yet
+  if (MAINTENANCE_MODE && !isAllowedDuringMaintenance(email)) {
+    if (location.pathname !== "/not-yet") {
+      return <Navigate to="/not-yet" replace />;
+    }
+  }
+
   return <>{children}</>;
 };
 
