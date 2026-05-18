@@ -5,6 +5,7 @@ import ProcessingStatus, { Step } from "@/components/admin/ProcessingStatus";
 import UploadSummary from "@/components/admin/UploadSummary";
 import UploadHistory from "@/components/admin/UploadHistory";
 import DatabaseSummary from "@/components/admin/DatabaseSummary";
+import StaffJourneySearch from "@/components/admin/StaffJourneySearch";
 import PendingEvidencePanel from "@/components/admin/PendingEvidencePanel";
 import { usePageTitle } from "@/lib/usePageTitle";
 import {
@@ -148,6 +149,7 @@ const Admin = () => {
 
         <UploadHistory refreshKey={refreshKey} />
         <DatabaseSummary refreshKey={refreshKey} />
+        <StaffJourneySearch />
         <PendingEvidencePanel />
       </div>
     </AppShell>
