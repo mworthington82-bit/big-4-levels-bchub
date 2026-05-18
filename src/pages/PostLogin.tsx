@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { MAINTENANCE_MODE, isAllowedDuringMaintenance } from "@/lib/maintenanceMode";
 
 const ALLOWED_DOMAIN = "bradfordcollege.ac.uk";
 
@@ -31,6 +32,12 @@ const PostLogin = () => {
           variant: "destructive",
         });
         navigate("/", { replace: true });
+        return;
+      }
+
+      // Pre-launch gate: non-allowlisted users go straight to /not-yet
+      if (MAINTENANCE_MODE && !isAllowedDuringMaintenance(email)) {
+        navigate("/not-yet", { replace: true });
         return;
       }
 
