@@ -12,6 +12,8 @@ import ResourceBankButton from "@/components/ResourceBankButton";
 import StaffSpotlight from "@/components/StaffSpotlight";
 import LeadStrip from "@/components/LeadStrip";
 import SignOutButton from "@/components/SignOutButton";
+import OnboardingModal from "@/components/journey/OnboardingModal";
+import { useStaffProfile } from "@/hooks/useStaffProfile";
 
 import bradfordLogo from "@/assets/bradford-college-logo.jpg";
 import teamsLogo from "@/assets/teams-logo.png";
@@ -52,10 +54,25 @@ const Landing = () => {
   const [logoClickCount, setLogoClickCount] = useState(0);
   const [showAdminDialog, setShowAdminDialog] = useState(false);
   const [adminPassword, setAdminPassword] = useState("");
+  const { profile, loading: profileLoading, email } = useStaffProfile();
+  const [showOnboarding, setShowOnboarding] = useState(false);
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+  const handleAlreadyAssessed = () => {
+    if (profileLoading) return;
+    if (!profile || !profile.assigned_level) {
+      toast({
+        title: "No assessment found",
+        description: "We couldn't find your self-assessment. Please complete it first.",
+        variant: "destructive",
+      });
+      return;
+    }
+    setShowOnboarding(true);
+  };
 
   const handleLogoClick = () => {
     const newCount = logoClickCount + 1;
@@ -229,22 +246,24 @@ const Landing = () => {
               </Button>
             </div>
 
-            <div className="bg-card rounded-2xl border border-border shadow-[var(--shadow-card)] p-6 animate-fade-in opacity-50 cursor-not-allowed" style={{ animationDelay: '200ms' }}>
+            <div className="bg-card rounded-2xl border border-border shadow-[var(--shadow-card)] p-6 animate-fade-in hover:shadow-[var(--shadow-hover)] transition-all duration-300" style={{ animationDelay: '200ms' }}>
               <div className="flex items-center gap-3 mb-3">
-                <div className="p-3 rounded-xl bg-muted">
-                  <CheckCircle className="w-6 h-6 text-muted-foreground" />
+                <div className="p-3 rounded-xl bg-[#F5A623]/15">
+                  <CheckCircle className="w-6 h-6 text-[#F5A623]" />
                 </div>
-                <h3 className="font-display text-xl font-bold text-muted-foreground">Already Assessed?</h3>
+                <h3 className="font-display text-xl font-bold text-foreground">Already Assessed?</h3>
               </div>
               <p className="text-muted-foreground text-sm mb-4">
-                You know your level — jump straight into the training pathways
+                You know your level — jump straight into your personalised journey
               </p>
               <Button
                 size="lg"
-                disabled
-                className="w-full py-6 text-lg rounded-xl font-semibold"
+                onClick={handleAlreadyAssessed}
+                disabled={profileLoading}
+                className="w-full py-6 text-lg rounded-xl font-semibold group"
               >
-                Coming Soon
+                {profileLoading ? "Loading…" : "Go to My Journey"}
+                <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
               </Button>
             </div>
           </div>
@@ -303,6 +322,17 @@ const Landing = () => {
         </form>
       </DialogContent>
     </Dialog>
+
+    {showOnboarding && profile && email && (
+      <OnboardingModal
+        profile={profile}
+        email={email}
+        onClose={() => {
+          setShowOnboarding(false);
+          navigate("/new/journey");
+        }}
+      />
+    )}
   </>
   );
 };
