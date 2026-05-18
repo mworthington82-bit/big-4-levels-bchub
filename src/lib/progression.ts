@@ -36,7 +36,6 @@ export const runProgressionCheck = async (
   email: string,
 ): Promise<boolean> => {
   const completed = new Set(completedIds);
-  const assigned = normaliseLevel(profile.assigned_level);
 
   // Build a working copy reflecting cumulative updates so subsequent checks see them
   const next: Partial<StaffProfile> = {};
