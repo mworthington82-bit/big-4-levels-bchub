@@ -54,10 +54,25 @@ const Landing = () => {
   const [logoClickCount, setLogoClickCount] = useState(0);
   const [showAdminDialog, setShowAdminDialog] = useState(false);
   const [adminPassword, setAdminPassword] = useState("");
+  const { profile, loading: profileLoading, email } = useStaffProfile();
+  const [showOnboarding, setShowOnboarding] = useState(false);
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+  const handleAlreadyAssessed = () => {
+    if (profileLoading) return;
+    if (!profile || !profile.assigned_level) {
+      toast({
+        title: "No assessment found",
+        description: "We couldn't find your self-assessment. Please complete it first.",
+        variant: "destructive",
+      });
+      return;
+    }
+    setShowOnboarding(true);
+  };
 
   const handleLogoClick = () => {
     const newCount = logoClickCount + 1;
