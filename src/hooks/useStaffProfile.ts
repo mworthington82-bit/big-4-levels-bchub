@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 
 export interface StaffProfile {
@@ -9,6 +9,10 @@ export interface StaffProfile {
   explorer_evidenced_count: number;
   practitioner_evidenced_count: number;
   onboarding_shown: boolean;
+  explorer_complete: boolean;
+  practitioner_unlocked: boolean;
+  practitioner_complete: boolean;
+  leader_unlocked: boolean;
   teams_explorer_evidenced: boolean;
   forms_explorer_evidenced: boolean;
   canva_explorer_evidenced: boolean;
@@ -32,6 +36,7 @@ interface State {
 const PROFILE_COLUMNS = [
   "email","name","department","assigned_level",
   "explorer_evidenced_count","practitioner_evidenced_count","onboarding_shown",
+  "explorer_complete","practitioner_unlocked","practitioner_complete","leader_unlocked",
   "teams_explorer_evidenced","forms_explorer_evidenced","canva_explorer_evidenced",
   "edpuzzle_explorer_evidenced","copilot_explorer_evidenced",
   "teams_practitioner_evidenced","forms_practitioner_evidenced","canva_practitioner_evidenced",
@@ -46,6 +51,9 @@ export const useStaffProfile = () => {
     notFound: false,
     completedModuleIds: [],
   });
+  const [reloadKey, setReloadKey] = useState(0);
+
+  const refresh = useCallback(() => setReloadKey((k) => k + 1), []);
 
   useEffect(() => {
     let cancelled = false;
@@ -91,7 +99,7 @@ export const useStaffProfile = () => {
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [reloadKey]);
 
-  return state;
+  return { ...state, refresh };
 };
