@@ -1,5 +1,6 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import OnboardingModal from "@/components/journey/OnboardingModal";
 import AppShell from "@/components/AppShell";
 import { useStaffProfile } from "@/hooks/useStaffProfile";
 import {
