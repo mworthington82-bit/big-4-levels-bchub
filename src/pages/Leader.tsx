@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import AppShell from "@/components/AppShell";
+import PageError from "@/components/PageError";
+import { usePageTitle } from "@/lib/usePageTitle";
 import { supabase } from "@/integrations/supabase/client";
 import { useStaffProfile } from "@/hooks/useStaffProfile";
 import { deriveEffectiveLevel } from "@/lib/progression";
@@ -93,12 +95,14 @@ const EvidenceCard = ({
         <span className="text-[12px] text-[#5F6B7D]">{formatDateUK(post.created_at)}</span>
         <button
           onClick={onToggleLike}
-          className="inline-flex items-center gap-1.5 px-2 py-1 rounded-md hover:bg-[#F4F6FB] text-[13px] font-semibold"
+          aria-label={liked ? "Unlike this post" : "Like this post"}
+          aria-pressed={liked ? "true" : "false"}
+          className="inline-flex items-center gap-1.5 min-h-11 px-2 py-1 rounded-md hover:bg-[#F4F6FB] text-[13px] font-semibold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F5A623]"
         >
           {liked ? (
-            <IconHeartFilled size={16} className="text-[#F5A623]" />
+            <IconHeartFilled size={16} className="text-[#F5A623]" aria-hidden="true" />
           ) : (
-            <IconHeart size={16} stroke={1.75} className="text-[#9AA3B0]" />
+            <IconHeart size={16} stroke={1.75} className="text-[#9AA3B0]" aria-hidden="true" />
           )}
           <span className={liked ? "text-[#F5A623]" : "text-[#5F6B7D]"}>{likeCount ?? 0}</span>
         </button>
@@ -172,9 +176,9 @@ const MyContributions = ({
           <p className="text-sm text-[#5F6B7D]">Loading…</p>
         ) : posts.length === 0 ? (
           <div className="bg-white rounded-xl border border-dashed border-[#D0D7E2] p-6 text-center">
-            <p className="text-[#1F3864] font-semibold">You have not shared anything yet.</p>
+            <p className="text-[#1F3864] font-semibold">You have not shared any classroom examples yet.</p>
             <p className="text-sm text-[#5F6B7D] mt-1">
-              Submit your first classroom example using the button below.
+              Your experience could inspire colleagues across the college.
             </p>
           </div>
         ) : (
