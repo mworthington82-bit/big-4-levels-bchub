@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
+import { hasMaintenanceBypass } from "@/lib/maintenanceMode";
 
 const ADMIN_EMAIL = "m.worthington@bradfordcollege.ac.uk";
 
@@ -10,8 +11,13 @@ const RequireAdmin = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
       const email = data.session?.user.email?.toLowerCase();
-      if (!email) setStatus("out");
-      else if (email === ADMIN_EMAIL) setStatus("admin");
+      if (!email) {
+        // Allow unauthenticated bypass holders to reach /admin too (test mode)
+        if (hasMaintenanceBypass()) setStatus("admin");
+        else setStatus("out");
+        return;
+      }
+      if (email === ADMIN_EMAIL || hasMaintenanceBypass()) setStatus("admin");
       else setStatus("not-admin");
     });
   }, []);
