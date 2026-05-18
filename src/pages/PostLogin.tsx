@@ -56,7 +56,7 @@ const PostLogin = () => {
         .maybeSingle();
 
       if (cancelled) return;
-      if (profile) navigate("/journey", { replace: true });
+      if (profile) navigate("/home", { replace: true });
       else navigate("/not-yet", { replace: true });
     };
 
