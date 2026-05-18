@@ -245,11 +245,12 @@ const ResourceCard = ({
           type="button"
           onClick={onToggleBookmark}
           aria-label={bookmarked ? "Remove bookmark" : "Add bookmark"}
-          className="p-1.5 rounded-md hover:bg-[#F4F6FB]"
+          aria-pressed={bookmarked}
+          className="inline-flex items-center justify-center min-h-11 min-w-11 rounded-md hover:bg-[#F4F6FB] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#185FA5]"
         >
           {bookmarked
-            ? <IconBookmarkFilled size={18} className="text-[#F5A623]" />
-            : <IconBookmark size={18} stroke={1.75} className="text-[#9AA3B0]" />}
+            ? <IconBookmarkFilled size={20} className="text-[#F5A623]" />
+            : <IconBookmark size={20} stroke={1.75} className="text-[#9AA3B0]" />}
         </button>
       </div>
     </div>
@@ -267,6 +268,7 @@ const Resources = () => {
   const [filters, setFilters] = useState({ tool: "All", type: "All", level: "All", stage: "All" });
   const [loading, setLoading] = useState(true);
   const [errored, setErrored] = useState(false);
+  const [visibleCount, setVisibleCount] = useState(12);
   const debounceRef = useRef<Record<string, ReturnType<typeof setTimeout>>>({});
   const pendingDesiredRef = useRef<Record<string, boolean>>({});
 
@@ -337,6 +339,10 @@ const Resources = () => {
       (filters.stage === "All" || r.lead_stage === filters.stage);
     return resources.filter(matches);
   }, [resources, filters]);
+
+  useEffect(() => {
+    setVisibleCount(12);
+  }, [filters]);
 
   const bookmarkedList = resources.filter((r) => bookmarks.has(r.id));
   const hasActiveFilters =
@@ -427,16 +433,28 @@ const Resources = () => {
                   )}
                 </div>
               ) : (
-                <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-                  {filtered.map((r) => (
-                    <ResourceCard
-                      key={r.id}
-                      r={r}
-                      bookmarked={bookmarks.has(r.id)}
-                      onToggleBookmark={() => toggleBookmark(r.id)}
-                    />
-                  ))}
-                </div>
+                <>
+                  <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+                    {filtered.slice(0, visibleCount).map((r) => (
+                      <ResourceCard
+                        key={r.id}
+                        r={r}
+                        bookmarked={bookmarks.has(r.id)}
+                        onToggleBookmark={() => toggleBookmark(r.id)}
+                      />
+                    ))}
+                  </div>
+                  {filtered.length > visibleCount && (
+                    <div className="flex justify-center mt-6">
+                      <button
+                        onClick={() => setVisibleCount((c) => c + 12)}
+                        className="inline-flex items-center min-h-11 px-6 py-2.5 rounded-full bg-white border border-[#D0D7E2] text-sm font-semibold text-[#1F3864] hover:bg-[#F4F6FB] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#185FA5]"
+                      >
+                        Load more ({filtered.length - visibleCount} remaining)
+                      </button>
+                    </div>
+                  )}
+                </>
               )}
 
               <FromTheClassroom />
