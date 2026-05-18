@@ -12,6 +12,7 @@ import Journey from "./pages/Journey";
 import ResourcesPlaceholder from "./pages/ResourcesPlaceholder";
 import Connect from "./pages/Connect";
 import Admin from "./pages/Admin";
+import ModulePlaceholder from "./pages/ModulePlaceholder";
 
 // Legacy pages — still reachable at /legacy/* for existing deep links
 import Landing from "./pages/Landing";
