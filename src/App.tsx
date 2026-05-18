@@ -12,7 +12,7 @@ import Journey from "./pages/Journey";
 import ResourcesPlaceholder from "./pages/ResourcesPlaceholder";
 import Connect from "./pages/Connect";
 import Admin from "./pages/Admin";
-import ModulePlaceholder from "./pages/ModulePlaceholder";
+import Module from "./pages/Module";
 
 // Legacy pages — still reachable at /legacy/* for existing deep links
 import Landing from "./pages/Landing";
@@ -40,7 +40,7 @@ const App = () => (
           <Route path="/post-login" element={<RequireAuth><PostLogin /></RequireAuth>} />
           <Route path="/not-yet" element={<RequireAuth><NotYet /></RequireAuth>} />
           <Route path="/journey" element={<RequireAuth><Journey /></RequireAuth>} />
-          <Route path="/module/:moduleId" element={<RequireAuth><ModulePlaceholder /></RequireAuth>} />
+          <Route path="/module/:moduleId" element={<RequireAuth><Module /></RequireAuth>} />
           <Route path="/resources" element={<RequireAuth><ResourcesPlaceholder /></RequireAuth>} />
           <Route path="/connect" element={<RequireAuth><Connect /></RequireAuth>} />
           <Route path="/admin" element={<RequireAdmin><Admin /></RequireAdmin>} />
