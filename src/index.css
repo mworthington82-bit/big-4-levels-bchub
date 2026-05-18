@@ -312,12 +312,12 @@ All colors MUST be HSL.
 
 /* Phase 9 — global accessibility polish */
 
-/* Visible focus indicator on every interactive element (navy + gold double ring) */
-*:focus-visible {
+/* Visible focus indicator on common interactive elements.
+   Uses :where() for zero specificity so per-component focus styles still win. */
+:where(button, a, [role="button"], input, select, textarea, summary):focus-visible {
   outline: 2px solid #1F3864;
   outline-offset: 2px;
   box-shadow: 0 0 0 4px rgba(245, 166, 35, 0.35);
-  border-radius: 4px;
 }
 
 /* Honour the user's reduced-motion preference */
