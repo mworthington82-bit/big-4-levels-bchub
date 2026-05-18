@@ -12,7 +12,16 @@ const AppShell = ({ children }: { children: React.ReactNode }) => {
   const navigate = useNavigate();
   const { profile } = useStaffProfile();
 
-  const showPill = !!profile?.assigned_level;
+  const level = profile?.assigned_level ?? null;
+  const showPill = !!profile && !!level;
+  let pillLabel = "";
+  if (level === "Leader") {
+    pillLabel = "Leader";
+  } else if (level === "Practitioner") {
+    pillLabel = `Practitioner · ${profile?.practitioner_evidenced_count ?? 0} of 5 evidenced`;
+  } else if (level === "Explorer") {
+    pillLabel = `Explorer · ${profile?.explorer_evidenced_count ?? 0} of 5 evidenced`;
+  }
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
@@ -34,9 +43,9 @@ const AppShell = ({ children }: { children: React.ReactNode }) => {
           </nav>
 
           <div className="flex items-center gap-3">
-            {showPill && profile && (
+            {showPill && (
               <span className="hidden sm:inline-flex items-center px-3 py-1.5 rounded-full border border-white/30 text-xs font-semibold bg-white/5">
-                {profile.assigned_level} · {profile.explorer_evidenced_count} of 5 evidenced
+                {pillLabel}
               </span>
             )}
             <button
