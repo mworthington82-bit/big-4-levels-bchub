@@ -267,6 +267,7 @@ const Resources = () => {
   const [filters, setFilters] = useState({ tool: "All", type: "All", level: "All", stage: "All" });
   const [loading, setLoading] = useState(true);
   const [errored, setErrored] = useState(false);
+  const [visibleCount, setVisibleCount] = useState(12);
   const debounceRef = useRef<Record<string, ReturnType<typeof setTimeout>>>({});
   const pendingDesiredRef = useRef<Record<string, boolean>>({});
 
