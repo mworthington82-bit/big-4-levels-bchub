@@ -79,7 +79,14 @@ const QuickCard = ({ Icon, title, desc, to }: { Icon: any; title: string; desc: 
 
 const Journey = () => {
   const navigate = useNavigate();
-  const { profile, loading, notFound, completedModuleIds } = useStaffProfile();
+  const { profile, email, loading, notFound, completedModuleIds } = useStaffProfile();
+  const [showOnboarding, setShowOnboarding] = useState(false);
+
+  useEffect(() => {
+    if (!loading && profile && profile.onboarding_shown === false) {
+      setShowOnboarding(true);
+    }
+  }, [loading, profile]);
 
   useEffect(() => {
     if (!loading && notFound) navigate("/not-yet", { replace: true });
