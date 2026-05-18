@@ -2,6 +2,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { LogOut } from "lucide-react";
 import { useStaffProfile } from "@/hooks/useStaffProfile";
 import { fullSignOut } from "@/lib/signOut";
+import { buildModuleCards, countCompleteOrEvidenced, normaliseLevel, totalForLevel } from "@/lib/journey";
 
 const navLinkClass = ({ isActive }: { isActive: boolean }) =>
   `px-4 py-2 rounded-full text-sm font-semibold transition-colors ${
@@ -10,17 +11,20 @@ const navLinkClass = ({ isActive }: { isActive: boolean }) =>
 
 const AppShell = ({ children }: { children: React.ReactNode }) => {
   const navigate = useNavigate();
-  const { profile } = useStaffProfile();
+  const { profile, completedModuleIds } = useStaffProfile();
 
-  const level = profile?.assigned_level ?? null;
-  const showPill = !!profile && !!level;
   let pillLabel = "";
-  if (level === "Leader") {
-    pillLabel = "Leader";
-  } else if (level === "Practitioner") {
-    pillLabel = `Practitioner · ${profile?.practitioner_evidenced_count ?? 0} of 5 evidenced`;
-  } else if (level === "Explorer") {
-    pillLabel = `Explorer · ${profile?.explorer_evidenced_count ?? 0} of 5 evidenced`;
+  let showPill = false;
+  if (profile) {
+    const level = normaliseLevel(profile.assigned_level);
+    showPill = true;
+    if (level === "Leader") {
+      pillLabel = "Leader";
+    } else {
+      const cards = buildModuleCards(profile, completedModuleIds);
+      const count = countCompleteOrEvidenced(cards);
+      pillLabel = `${level} · ${count} of ${totalForLevel(level)} complete`;
+    }
   }
 
   return (
