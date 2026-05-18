@@ -56,7 +56,7 @@ Deno.serve(async (req) => {
     const CHUNK = 200;
     for (let i = 0; i < rows.length; i += CHUNK) {
       const slice = rows.slice(i, i + CHUNK);
-      const { data, error } = await admin.rpc("admin_upsert_staff", {
+      const { data, error } = await userClient.rpc("admin_upsert_staff", {
         payload: slice,
       });
       if (error) throw error;
