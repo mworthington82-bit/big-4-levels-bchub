@@ -13,7 +13,8 @@ import {
   initialsOf,
   type ToolName,
 } from "@/lib/leaderHub";
-import { IconStar, IconHeart, IconHeartFilled, IconMail } from "@tabler/icons-react";
+import { IconHeart, IconHeartFilled, IconMail } from "@tabler/icons-react";
+import emblemLeader from "@/assets/emblem-leader.svg";
 
 type EvidencePost = {
   id: string;
@@ -843,7 +844,7 @@ const Leader = () => {
         <div className="bg-[#1F3864] text-white">
           <div className="container mx-auto px-4 py-10 md:py-12 max-w-6xl flex items-start gap-4">
             <div className="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center flex-shrink-0">
-              <IconStar size={28} stroke={1.75} className="text-[#F5A623]" />
+              <img src={emblemLeader} alt="Leader" className="w-8 h-8" />
             </div>
             <div>
               <h1 className="font-bold text-2xl md:text-3xl">
