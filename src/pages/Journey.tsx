@@ -283,7 +283,7 @@ const Journey = () => {
 
             {/* Main pathway content */}
             {effective === "Leader" ? (
-              <LeaderPreviewCards />
+              <LeaderTaskCard />
             ) : (
               <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
                 {cards.map((c) => (
