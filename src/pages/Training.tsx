@@ -51,6 +51,7 @@ type Stage = 'level-entry' | 'home' | 'tool-select' | 'level-select' | 'intro' |
 
 const Training = () => {
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [stage, setStage] = useState<Stage>('level-entry');
   const [showLevelConfirmation, setShowLevelConfirmation] = useState(false);
   const [showPrerequisiteChecklist, setShowPrerequisiteChecklist] = useState(false);
