@@ -64,24 +64,30 @@ const personalisedMessage = (
   return "You have evidenced all five tools at Practitioner level. The Immersive Room is the final step to complete your Practitioner pathway.";
 };
 
-const QuickCard = ({ Icon, title, desc, to }: { Icon: any; title: string; desc: string; to: string }) => {
+const QUICK_ACCENTS = ["border-l-[#1B4F8A]", "border-l-[#F5A623]", "border-l-[#1A6B3A]"];
+
+const QuickCard = ({ Icon, title, desc, to, accent }: { Icon: any; title: string; desc: string; to: string; accent: string }) => {
   const navigate = useNavigate();
   return (
     <button
       onClick={() => navigate(to)}
-      className="text-left bg-card rounded-2xl border border-border border-l-4 border-l-[#F5A623] p-5 flex items-start gap-4 hover:shadow-[var(--shadow-hover)] transition-shadow"
+      className={`text-left bg-white rounded-2xl border border-border border-l-4 ${accent} p-5 flex items-start gap-4 hover:shadow-md transition-shadow`}
     >
-      <div className="w-10 h-10 rounded-xl bg-surface flex items-center justify-center flex-shrink-0">
-        <Icon size={22} stroke={1.75} className="text-ink" />
+      <div className="w-10 h-10 rounded-xl bg-[#F4F6FB] flex items-center justify-center flex-shrink-0">
+        <Icon size={22} stroke={1.75} className="text-[#1F3864]" />
       </div>
       <div className="flex-1">
-        <h3 className="font-display font-bold text-[15px] text-foreground">{title}</h3>
+        <h3 className="font-display font-bold text-[15px] text-[#1F3864]">{title}</h3>
         <p className="text-[12px] text-muted-foreground mt-1">{desc}</p>
       </div>
-      <IconArrowRight size={16} stroke={2} className="text-ink mt-1" />
+      <span className="text-[#1F3864] text-sm font-semibold mt-1 inline-flex items-center gap-1">
+        Open
+        <IconArrowRight size={14} stroke={2.25} />
+      </span>
     </button>
   );
 };
+
 
 const JourneySkeleton = () => (
   <AppShell>
@@ -160,30 +166,28 @@ const Journey = () => {
 
   return (
     <AppShell>
-      <div className="min-h-full bg-background">
-        {/* Zone 1 — Dark ink hero matching landing page */}
-        <section className="relative bg-[#1C1C2E] overflow-hidden">
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_hsl(39_90%_56%_/_0.15)_0%,_transparent_70%)]" />
-          <div className="container mx-auto px-4 py-12 md:py-16 max-w-6xl relative z-10">
-            <p className="text-xs text-white/70 mb-2">{greeting()}</p>
+      <div className="min-h-full bg-[#F4F6FB]">
+        {/* Zone 1 — Light greeting card matching /resources */}
+        <section className="container mx-auto px-4 pt-8 md:pt-10 max-w-6xl">
+          <div className="bg-white rounded-2xl border border-border shadow-sm p-6 md:p-8">
+            <p className="text-xs text-muted-foreground mb-2">{greeting()}</p>
             <span
-              className={`font-display inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold ${styles.pillBg} ${styles.pillText} mb-5`}
+              className={`font-display inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold ${styles.pillBg} ${styles.pillText} mb-4`}
             >
               <span className={`w-1.5 h-1.5 rounded-full ${styles.dot}`} />
               {effective} level
             </span>
-            <p className="font-display text-white text-base md:text-lg leading-relaxed max-w-3xl">
+            <p className="font-display text-[#1F3864] text-base md:text-lg leading-relaxed max-w-3xl">
               {message}
             </p>
           </div>
-          {/* Soft gradient fade into content */}
-          <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-b from-transparent to-background pointer-events-none" />
         </section>
 
         <div className="container mx-auto px-4 py-8 md:py-10 max-w-6xl space-y-8">
           {/* Zone 2 — Pathway */}
           <section className="space-y-4">
-            <h2 className="font-display font-bold text-foreground text-lg md:text-xl">Your pathway</h2>
+            <h2 className="font-display font-bold text-[#1F3864] text-lg md:text-xl">Your pathway</h2>
+
 
             {showExplorerMilestone && <MilestoneBanner variant="explorer" />}
             {showPractitionerMilestone && <MilestoneBanner variant="practitioner" />}
@@ -231,9 +235,9 @@ const Journey = () => {
                   {progressCount} of {total} evidenced or complete
                 </span>
               </div>
-              <div className="w-full h-1.5 rounded-full bg-muted overflow-hidden">
+              <div className="w-full h-2 rounded-full bg-[#E5E7EB] overflow-hidden">
                 <div
-                  className={`h-full ${styles.bar} transition-all duration-500`}
+                  className="h-full bg-[#F5A623] transition-all duration-500"
                   style={{ width: `${progressPct}%` }}
                 />
               </div>
@@ -242,13 +246,14 @@ const Journey = () => {
 
           {/* Zone 4 — Quick access */}
           <section>
-            <h2 className="font-display font-bold text-foreground text-lg md:text-xl mb-4">Quick access</h2>
+            <h2 className="font-display font-bold text-[#1F3864] text-lg md:text-xl mb-4">Quick access</h2>
             <div className="grid gap-4 grid-cols-1 md:grid-cols-3">
-              <QuickCard Icon={IconWand} title="Activity Planner" desc="Generate inclusion-focused lesson ideas" to="/resources#activity-planner" />
-              <QuickCard Icon={IconCalendarEvent} title="Book Big 4 Day" desc="Reserve your sessions for the CPD day" to="/connect" />
-              <QuickCard Icon={IconHeart} title="Inclusion Hub" desc="Practical guidance and downloadable tips" to="/connect" />
+              <QuickCard accent={QUICK_ACCENTS[0]} Icon={IconWand} title="Activity Planner" desc="Generate inclusion-focused lesson ideas" to="/resources#activity-planner" />
+              <QuickCard accent={QUICK_ACCENTS[1]} Icon={IconCalendarEvent} title="Book Big 4 Day" desc="Reserve your sessions for the CPD day" to="/connect" />
+              <QuickCard accent={QUICK_ACCENTS[2]} Icon={IconHeart} title="Inclusion Hub" desc="Practical guidance and downloadable tips" to="/connect" />
             </div>
           </section>
+
         </div>
       </div>
       {showOnboarding && profile && email && (
