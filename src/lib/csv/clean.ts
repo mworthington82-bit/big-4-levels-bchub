@@ -11,13 +11,35 @@ import {
 export const HEADER_MISMATCH_MESSAGE =
   "This file does not match the expected format. Please check you are uploading the correct CSV and try again.";
 
+// Columns that MUST be stripped from the CSV immediately. The Canva Code
+// export includes its own `level`, `total_score`, `percentage`, etc. which use
+// different thresholds to ours. The platform calculates its own level and
+// weighted_score from the raw tool scores — these CSV columns must never be
+// stored, referenced, or used anywhere in the app.
+const FORBIDDEN_CSV_FIELDS = [
+  "level",
+  "total_score",
+  "percentage",
+  "profile_score",
+  "practice_score",
+  "responses",
+] as const;
+
 export async function parseCsv(file: File): Promise<RawRow[]> {
   return new Promise((resolve, reject) => {
-    Papa.parse<RawRow>(file, {
+    Papa.parse<Record<string, string>>(file, {
       header: true,
       skipEmptyLines: true,
       transformHeader: (h) => h.trim().toLowerCase(),
-      complete: (res) => resolve(res.data as RawRow[]),
+      complete: (res) => {
+        // Defence in depth: strip forbidden columns before any other code sees them.
+        const stripped = (res.data as Record<string, string>[]).map((row) => {
+          const clean: Record<string, string> = { ...row };
+          for (const k of FORBIDDEN_CSV_FIELDS) delete clean[k];
+          return clean as unknown as RawRow;
+        });
+        resolve(stripped);
+      },
       error: (err) => reject(err),
     });
   });

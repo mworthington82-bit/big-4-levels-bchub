@@ -16,7 +16,8 @@ interface Row extends StaffProfile {
 }
 
 const COLS = [
-  "email","name","department","assigned_level","data_uploaded_at","updated_at",
+  "email","name","department","assigned_level","weighted_score","data_uploaded_at","updated_at",
+  "teams_score","forms_score","canva_score","edpuzzle_score","copilot_score","xr_score",
   "explorer_evidenced_count","practitioner_evidenced_count","onboarding_shown",
   "explorer_complete","practitioner_unlocked","practitioner_complete","leader_unlocked",
   "teams_explorer_evidenced","forms_explorer_evidenced","canva_explorer_evidenced",
@@ -189,16 +190,37 @@ const StaffJourneySearch = () => {
               </span>
             </div>
             <div className="grid sm:grid-cols-4 gap-3 mt-4 text-xs">
-              <Stat label="Onboarding seen" value={selected.onboarding_shown ? "Yes" : "No"} />
+              <Stat
+                label="Weighted score (ours)"
+                value={
+                  (selected as any).weighted_score != null
+                    ? `${Number((selected as any).weighted_score).toFixed(2)}%`
+                    : "—"
+                }
+              />
+              <Stat label="Assigned level (ours)" value={selected.assigned_level ?? "—"} />
               <Stat label="Explorer evidenced" value={`${selected.explorer_evidenced_count}/5`} />
               <Stat
                 label="Practitioner evidenced"
                 value={`${selected.practitioner_evidenced_count}/5`}
               />
-              <Stat
-                label="Leader unlocked"
-                value={selected.leader_unlocked ? "Yes" : "No"}
-              />
+            </div>
+            <div className="grid sm:grid-cols-6 gap-2 mt-3 text-xs">
+              {(["teams","forms","canva","edpuzzle","copilot","xr"] as const).map((t) => (
+                <Stat
+                  key={t}
+                  label={t === "xr" ? "XR" : t[0].toUpperCase() + t.slice(1)}
+                  value={
+                    (selected as any)[`${t}_score`] != null
+                      ? String((selected as any)[`${t}_score`])
+                      : "—"
+                  }
+                />
+              ))}
+            </div>
+            <div className="text-[11px] text-slate-500 mt-3">
+              Onboarding seen: {selected.onboarding_shown ? "Yes" : "No"} · Leader unlocked:{" "}
+              {selected.leader_unlocked ? "Yes" : "No"}
             </div>
             <div className="text-[11px] text-slate-500 mt-3">
               CSV uploaded:{" "}
