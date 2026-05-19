@@ -3,6 +3,8 @@ import { IconChevronDown } from "@tabler/icons-react";
 import ModuleCard from "@/components/journey/ModuleCard";
 import { buildExplorerCards, buildPractitionerCards } from "@/lib/journey";
 import type { StaffProfile } from "@/hooks/useStaffProfile";
+import emblemExplorer from "@/assets/emblem-explorer.svg";
+import emblemPractitioner from "@/assets/emblem-practitioner.svg";
 
 interface Props {
   profile: StaffProfile;
@@ -13,9 +15,11 @@ interface Props {
 const META = {
   explorer: {
     label: "Explorer — complete",
+    emblem: emblemExplorer,
   },
   practitioner: {
     label: "Practitioner — complete",
+    emblem: emblemPractitioner,
   },
 };
 
@@ -36,7 +40,8 @@ const CompletedLevelStrip = ({ profile, completedIds, variant }: Props) => {
         aria-expanded={open}
       >
         <span className="inline-flex items-center gap-2">
-          {m.label} <span aria-hidden className="text-[hsl(var(--leader))]">✓</span>
+          <img src={m.emblem} alt="" aria-hidden className="h-5 w-5" />
+          {m.label}
         </span>
         <IconChevronDown
           size={18}
