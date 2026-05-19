@@ -13,15 +13,9 @@ interface Props {
 const META = {
   explorer: {
     label: "Explorer — complete",
-    bg: "bg-[#EAF3DE]",
-    border: "border-[#C0DD97]",
-    text: "text-[#1F3864]",
   },
   practitioner: {
     label: "Practitioner — complete",
-    bg: "bg-[#FEF6E8]",
-    border: "border-[#F0D8A4]",
-    text: "text-[#1F3864]",
   },
 };
 
@@ -34,15 +28,15 @@ const CompletedLevelStrip = ({ profile, completedIds, variant }: Props) => {
       : buildPractitionerCards(profile, completedIds);
 
   return (
-    <div className={`rounded-xl border ${m.border} ${m.bg}`}>
+    <div className="rounded-xl border border-border bg-card border-l-4 border-l-[hsl(var(--leader))]">
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
-        className={`w-full flex items-center justify-between px-4 py-3 ${m.text} text-sm font-semibold`}
+        className="w-full flex items-center justify-between px-4 py-3 text-foreground text-sm font-semibold font-display"
         aria-expanded={open}
       >
         <span className="inline-flex items-center gap-2">
-          {m.label} <span aria-hidden>✓</span>
+          {m.label} <span aria-hidden className="text-[hsl(var(--leader))]">✓</span>
         </span>
         <IconChevronDown
           size={18}
