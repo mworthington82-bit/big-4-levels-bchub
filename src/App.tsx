@@ -15,7 +15,6 @@ import Journey from "./pages/Journey";
 import ResourcesHub from "./pages/ResourcesHub";
 import Module from "./pages/Module";
 import Leader from "./pages/Leader";
-import Connect from "./pages/Connect";
 import BestPractice from "./pages/BestPractice";
 
 // Legacy pages — now the primary experience
