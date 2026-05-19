@@ -60,6 +60,23 @@ interface Props {
   card: ModuleCardSpec;
 }
 
+const TRAINING_TOOL: Record<string, string> = {
+  teams: "teams",
+  forms: "teams", // Forms is part of the combined Teams & Forms training module
+  canva: "canva",
+  edpuzzle: "edpuzzle",
+  copilot: "copilot",
+};
+
+const destinationFor = (card: ModuleCardSpec): string => {
+  // Immersive has no /training equivalent — use the Module page
+  if (card.toolKey === "immersive") return `/new/module/${card.id}`;
+  const tool = TRAINING_TOOL[card.toolKey];
+  const level = card.id.endsWith("_practitioner") ? "practitioner" : "explorer";
+  if (!tool) return `/new/module/${card.id}`;
+  return `/training?tool=${tool}&level=${level}`;
+};
+
 const ModuleCard = ({ card }: Props) => {
   const navigate = useNavigate();
   const Icon = ICON_FOR[card.toolKey];
@@ -71,7 +88,7 @@ const ModuleCard = ({ card }: Props) => {
   return (
     <button
       type="button"
-      onClick={() => navigate(`/module/${card.id}`)}
+      onClick={() => navigate(destinationFor(card))}
       className={`text-left rounded-2xl border ${s.border} ${s.cardBg} p-5 flex flex-col gap-3 hover:shadow-md transition-shadow focus:outline-none focus-visible:ring-2 focus-visible:ring-[#185FA5]`}
     >
       <div className="flex items-center justify-between">
