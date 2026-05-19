@@ -82,6 +82,30 @@ const Training = () => {
     window.scrollTo(0, 0);
   }, [stage]);
 
+  // Deep-link from /journey: /training?tool=teams&level=explorer jumps to intro
+  useEffect(() => {
+    const toolParam = searchParams.get('tool');
+    const levelParam = searchParams.get('level');
+    if (!toolParam || !levelParam) return;
+    const validTools = ['teams', 'canva', 'edpuzzle', 'copilot'] as const;
+    const validLevels = ['explorer', 'practitioner', 'leader'] as const;
+    if (!validTools.includes(toolParam as Tool) || !validLevels.includes(levelParam as Level)) {
+      setSearchParams({}, { replace: true });
+      return;
+    }
+    const tool = toolParam as Tool;
+    const level = levelParam as Level;
+    const pathwayData = getPathway(tool, level);
+    if (pathwayData) {
+      setSelectedTool(tool);
+      setSelectedLevel(level);
+      setPathway(pathwayData);
+      setStage('intro');
+    }
+    setSearchParams({}, { replace: true });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const [activityConfirmed, setActivityConfirmed] = useState(false);
 
   const tools = [{
