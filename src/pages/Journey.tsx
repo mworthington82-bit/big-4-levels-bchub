@@ -69,16 +69,16 @@ const QuickCard = ({ Icon, title, desc, to }: { Icon: any; title: string; desc: 
   return (
     <button
       onClick={() => navigate(to)}
-      className="text-left bg-white rounded-2xl border border-[#D0D7E2] p-5 flex items-start gap-4 hover:shadow-md transition-shadow"
+      className="text-left bg-card rounded-2xl border border-border border-l-4 border-l-[#F5A623] p-5 flex items-start gap-4 hover:shadow-[var(--shadow-hover)] transition-shadow"
     >
-      <div className="w-10 h-10 rounded-xl bg-[#F4F6FB] flex items-center justify-center flex-shrink-0">
-        <Icon size={22} stroke={1.75} className="text-[#1F3864]" />
+      <div className="w-10 h-10 rounded-xl bg-surface flex items-center justify-center flex-shrink-0">
+        <Icon size={22} stroke={1.75} className="text-ink" />
       </div>
       <div className="flex-1">
-        <h3 className="font-bold text-[15px] text-[#1F3864]">{title}</h3>
-        <p className="text-[12px] text-[#5F6B7D] mt-1">{desc}</p>
+        <h3 className="font-display font-bold text-[15px] text-foreground">{title}</h3>
+        <p className="text-[12px] text-muted-foreground mt-1">{desc}</p>
       </div>
-      <IconArrowRight size={16} stroke={2} className="text-[#1F3864] mt-1" />
+      <IconArrowRight size={16} stroke={2} className="text-ink mt-1" />
     </button>
   );
 };
