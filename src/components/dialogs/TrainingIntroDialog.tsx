@@ -9,6 +9,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Lightbulb, CheckCircle, BookOpen, Star, Rocket, Crown } from "lucide-react";
 import { Level, Tool } from "@/types/learning";
+import { hasSeen, markSeen } from "@/lib/onceFlags";
 
 interface TrainingIntroDialogProps {
   tool: Tool;
