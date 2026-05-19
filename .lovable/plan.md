@@ -1,63 +1,52 @@
-# Fix progression logic — Leader/Practitioner gating
+# Fix dead module links on Journey page
 
-Your diagnosis is spot-on. Confirmed in the DB: two profiles (`c.mitton`, `test.leader`) have `leader_unlocked = true` despite never completing `immersive_practitioner` on the platform, because the backfill grants it on first login.
+## The bug
 
-## Root cause
+On `/new/journey`, every module card calls `navigate('/module/{id}')`. That route in `src/App.tsx` is a `<Navigate to="/new/journey" replace />` redirect, so every click bounces back to the same page — the links look dead.
 
-`src/lib/progression.ts` runs two "backfill" blocks on every load that unlock pathways purely from `assigned_level` (the CSV self-assessment result), bypassing the platform completion gates:
+## Fix
 
-- **Leader backfill** sets `practitioner_complete = true` and `leader_unlocked = true` immediately.
-- **Practitioner backfill** sets `practitioner_unlocked = true` immediately, skipping Explorer.
-- **Explorer-complete check** is gated by `assigned === "Explorer"`, so Practitioner/Leader-assigned staff never get re-checked even after the backfills are removed.
+Repoint the journey module cards into `/training` with a deep link that jumps straight to that tool + level's intro stage, skipping the level confirmation dialog, prerequisite checklist, and tool picker.
 
-## Changes
+### 1. `src/components/journey/ModuleCard.tsx`
 
-### 1. `src/lib/progression.ts` (only file edited)
+Replace the `navigate('/module/${card.id}')` call with logic that maps the card to `/training?tool=X&level=Y`:
 
-**Leader backfill** — keep Explorer auto-complete + Practitioner unlock (so they can start Practitioner immediately after Explorer), but do NOT set `practitioner_complete` or `leader_unlocked`. The Practitioner-complete check already handles unlocking Leader once `immersive_practitioner` + all 5 tools are evidenced/completed.
+| Card id pattern         | Query string                          |
+| ----------------------- | ------------------------------------- |
+| `teams_explorer`        | `?tool=teams&level=explorer`          |
+| `teams_practitioner`    | `?tool=teams&level=practitioner`      |
+| `forms_explorer`        | `?tool=teams&level=explorer`          |
+| `forms_practitioner`    | `?tool=teams&level=practitioner`      |
+| `canva_*`               | `?tool=canva&level=*`                 |
+| `edpuzzle_*`            | `?tool=edpuzzle&level=*`              |
+| `copilot_*`             | `?tool=copilot&level=*`               |
+| `immersive_practitioner`| `/new/module/immersive_practitioner` (fallback — no /training equivalent) |
 
-```
-if (assigned === "Leader" && profile.leader_unlocked === false) {
-  setFlag("explorer_complete", true);
-  setFlag("practitioner_unlocked", true);
-}
-```
+(Forms is part of the combined "MS Teams & Forms" module in /training, so both `teams_*` and `forms_*` deep-link to the same place.)
 
-**Practitioner backfill** — remove entirely. All staff start on Explorer regardless of CSV level.
+### 2. `src/pages/Training.tsx`
 
-**Explorer-complete check** — drop the `assigned === "Explorer"` gate so it runs for everyone:
+Read `tool` and `level` from `useSearchParams` on mount. When both are present and valid:
 
-```
-if (cur("explorer_complete") === false && isExplorerDone(profile, completed)) {
-  setFlag("explorer_complete", true);
-  setFlag("practitioner_unlocked", true);
-}
-```
+- Set `selectedTool`, `selectedLevel`, and `pathway` (via `getPathway`) directly.
+- Set `stage` to `'intro'`.
+- Do NOT show `LevelConfirmationDialog` or `PrerequisiteChecklistDialog` — the user has already self-assessed and been gated on the journey page, so re-prompting is redundant and is what the user is trying to avoid.
+- The existing in-page back/restart flow continues to work from the intro stage onward.
 
-The Practitioner-complete check below it is unchanged (already correctly gated on `practitioner_unlocked`).
+Guard the effect so it only runs once per param change (don't fight the user if they click Restart and the URL still has params — strip them after consuming, using `setSearchParams({})`).
 
-### Note on Leader-assigned staff
+### 3. Remove the stale redirect
 
-With the Leader backfill still setting `explorer_complete = true` + `practitioner_unlocked = true`, Leader-assigned staff land on the Practitioner pathway (not Explorer). This matches your verification scenario #3's spirit (they must complete Practitioner including Immersive) but skips re-doing Explorer modules they were assessed as already strong in.
+In `src/App.tsx`, the `/module/:moduleId` → `/new/journey` redirect was masking this bug. Leave the redirect in place (other places may still link to `/module/...` from old emails/bookmarks) — the journey cards just won't hit it anymore.
 
-**Question:** Your verification scenario #3 says Leader-assigned staff "Should land on Explorer pathway". Do you want me to also remove the Leader backfill entirely so they start at Explorer like everyone else? If yes, the block becomes a no-op and Leader-assigned staff complete Explorer → Practitioner → Leader from scratch. I'll default to **yes, remove it entirely** to match your spec unless you say otherwise.
+## Out of scope
 
-### 2. Database cleanup migration
+- Visual changes to the Journey or Training pages.
+- Any progression logic changes (the recently fixed `src/lib/progression.ts` stays as-is).
+- The immersive Practitioner card keeps its current `/new/module/immersive_practitioner` destination since /training has no immersive flow.
 
-Reset the four progression flags for all staff so the corrected logic recalculates on next `/journey` load. `assigned_level`, evidencing flags, scores, and `module_completions` are untouched.
+## Files touched
 
-```sql
-UPDATE staff_profiles
-SET explorer_complete = false,
-    practitioner_unlocked = false,
-    practitioner_complete = false,
-    leader_unlocked = false
-WHERE explorer_complete OR practitioner_unlocked
-   OR practitioner_complete OR leader_unlocked;
-```
-
-(Run via the insert/update tool since it's data, not schema.)
-
-## Verification after deploy
-
-I'll re-query `staff_profiles` to confirm only flags earned through genuine module completion remain set.
+- `src/components/journey/ModuleCard.tsx` — navigation target
+- `src/pages/Training.tsx` — read `?tool=&level=` and jump to intro stage
