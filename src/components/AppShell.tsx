@@ -4,6 +4,7 @@ import { useStaffProfile } from "@/hooks/useStaffProfile";
 import { fullSignOut } from "@/lib/signOut";
 import { buildModuleCards, countCompleteOrEvidenced, totalForLevel } from "@/lib/journey";
 import { deriveEffectiveLevel } from "@/lib/progression";
+import { useIdleLogout } from "@/hooks/useIdleLogout";
 
 const navLinkClass = ({ isActive }: { isActive: boolean }) =>
   `px-4 py-2 rounded-full text-sm font-semibold transition-colors ${
