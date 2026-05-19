@@ -60,7 +60,8 @@ const App = () => (
           <Route path="/new/module/:moduleId" element={<RequireAuth><Module /></RequireAuth>} />
           <Route path="/new/resources" element={<RequireAuth><ResourcesHub /></RequireAuth>} />
           <Route path="/new/leader" element={<RequireAuth><Leader /></RequireAuth>} />
-          <Route path="/connect" element={<RequireAuth><Connect /></RequireAuth>} />
+          <Route path="/best-practice" element={<RequireAuth><BestPractice /></RequireAuth>} />
+          <Route path="/connect" element={<Navigate to="/best-practice" replace />} />
 
           {/* Back-compat redirects from old new-paths */}
           <Route path="/journey" element={<Navigate to="/new/journey" replace />} />
