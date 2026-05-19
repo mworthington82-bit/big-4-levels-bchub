@@ -18,6 +18,7 @@ import {
 } from "@/lib/journey";
 import { deriveEffectiveLevel, runProgressionCheck } from "@/lib/progression";
 import ModuleCard from "@/components/journey/ModuleCard";
+import LeaderPreviewCards from "@/components/journey/LeaderPreviewCards";
 import { IconWand, IconCalendarEvent, IconBulb, IconArrowRight } from "@tabler/icons-react";
 
 const greeting = () => {
