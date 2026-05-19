@@ -18,8 +18,17 @@ import {
 } from "@/lib/journey";
 import { deriveEffectiveLevel, runProgressionCheck } from "@/lib/progression";
 import ModuleCard from "@/components/journey/ModuleCard";
-import LeaderPreviewCards from "@/components/journey/LeaderPreviewCards";
+import LeaderTaskCard from "@/components/journey/LeaderTaskCard";
 import { IconWand, IconCalendarEvent, IconBulb, IconArrowRight } from "@tabler/icons-react";
+import emblemExplorer from "@/assets/emblem-explorer.svg";
+import emblemPractitioner from "@/assets/emblem-practitioner.svg";
+import emblemLeader from "@/assets/emblem-leader.svg";
+
+const LEVEL_EMBLEM = {
+  Explorer: emblemExplorer,
+  Practitioner: emblemPractitioner,
+  Leader: emblemLeader,
+} as const;
 
 const greeting = () => {
   const h = new Date().getHours();
