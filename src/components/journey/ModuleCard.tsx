@@ -1,22 +1,21 @@
-import {
-  IconBrandTeams,
-  IconForms,
-  IconPalette,
-  IconVideo,
-  IconSparkles,
-  IconBuildingArch,
-  IconCheck,
-} from "@tabler/icons-react";
+import { IconBuildingArch, IconCheck } from "@tabler/icons-react";
 import { useNavigate } from "react-router-dom";
 import type { ModuleCardSpec } from "@/lib/journey";
+import teamsLogo from "@/assets/teams-logo.png";
+import formsLogo from "@/assets/forms-logo.jpg";
+import canvaLogo from "@/assets/canva-logo.jpg";
+import edpuzzleLogo from "@/assets/edpuzzle-logo.png";
+import copilotLogo from "@/assets/copilot-logo.png";
+import emblemExplorer from "@/assets/emblem-explorer.svg";
+import emblemPractitioner from "@/assets/emblem-practitioner.svg";
 
-const ICON_FOR: Record<string, any> = {
-  teams: IconBrandTeams,
-  forms: IconForms,
-  canva: IconPalette,
-  edpuzzle: IconVideo,
-  copilot: IconSparkles,
-  immersive: IconBuildingArch,
+const LOGO_FOR: Record<string, string | null> = {
+  teams: teamsLogo,
+  forms: formsLogo,
+  canva: canvaLogo,
+  edpuzzle: edpuzzleLogo,
+  copilot: copilotLogo,
+  immersive: null,
 };
 
 const TOOL_HEADER_BG: Record<string, string> = {
@@ -35,6 +34,11 @@ const TOOL_LABEL: Record<string, string> = {
   edpuzzle: "Edpuzzle",
   copilot: "Microsoft Copilot",
   immersive: "Immersive Room",
+};
+
+const LEVEL_EMBLEM: Record<string, string> = {
+  explorer: emblemExplorer,
+  practitioner: emblemPractitioner,
 };
 
 const STATUS_BADGE: Record<string, { cls: string; label: string; tick: boolean }> = {
