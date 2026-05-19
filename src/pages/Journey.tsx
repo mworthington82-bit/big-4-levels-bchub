@@ -40,28 +40,26 @@ const personalisedMessage = (
   todoNames: string[],
 ): string => {
   if (level === "Leader") {
-    return "You have reached Leader level — the highest level on The Big 4: Level Up. Thank you for being a digital champion at Bradford College.";
+    return "You have reached Leader level — thank you for being a digital champion at Bradford College. Your best practice is inspiring colleagues across the college.";
   }
   const count = evidencedNames.length;
   if (level === "Explorer") {
     if (count === 0)
-      return "Your Explorer pathway is ready. Work through each module below — each one is hands-on and built around your learners.";
+      return "Welcome to your Big 4 journey. Five modules are ready for you below — each one is practical, hands-on, and built around your learners. Pick whichever feels right and start when you are ready.";
     if (count <= 2)
-      return `You are already showing strong confidence in ${formatList(evidencedNames)}. Your focus now is the remaining modules below.`;
+      return `Great start — you are already evidencing ${formatList(evidencedNames)}. Keep the momentum going with the remaining modules below and your Practitioner pathway will unlock.`;
     if (count === 3)
-      return `You are well on your way — you have evidenced three tools. Two modules to go: ${formatList(todoNames)}.`;
+      return `You are well on your way — ${formatList(evidencedNames)} are already evidenced. Just ${formatList(todoNames)} to go. You are closer to Practitioner than you might think.`;
     if (count === 4)
-      return `You are almost there. You have evidenced everything except ${todoNames[0]}. Complete that one module and your Practitioner pathway unlocks.`;
-    return "You have evidenced all five Explorer tools from your self-assessment. Your Practitioner pathway is coming soon — watch this space.";
+      return `Almost there — you have evidenced ${formatList(evidencedNames)} and that is brilliant. One module stands between you and your Practitioner pathway: ${todoNames[0]}. You've got this.`;
+    return "You have evidenced all five Explorer tools — that is a fantastic result. Your Practitioner pathway is on its way. Watch this space.";
   }
   // Practitioner
   if (count === 0)
-    return "Your Practitioner pathway is ready. Six modules to work through, including the Immersive Room which is required at this level.";
-  if (count >= 1 && count <= 3)
-    return `You have already evidenced ${formatList(evidencedNames)} at Practitioner level. Your focus now is ${formatList(todoNames)} and the Immersive Room.`;
-  if (count === 4)
-    return `You have evidenced almost everything at Practitioner level. Complete ${todoNames[0]} and the Immersive Room to finish your pathway.`;
-  return "You have evidenced all five tools at Practitioner level. The Immersive Room is the final step to complete your Practitioner pathway.";
+    return "Welcome to Practitioner level — this is where things get really interesting. Six modules await, including the Immersive Room. Dive in.";
+  if (count >= 1 && count <= 4)
+    return `You are hitting Practitioner level across ${formatList(evidencedNames)} — already evidenced and ready to go. Your focus now is ${formatList(todoNames)} and the Immersive Room.`;
+  return "You have evidenced all five Practitioner tools. The Immersive Room is the final step to complete this level and unlock Leader. Nearly there.";
 };
 
 const QUICK_ACCENTS = ["border-l-[#1B4F8A]", "border-l-[#F5A623]", "border-l-[#1A6B3A]"];
