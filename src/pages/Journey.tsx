@@ -161,13 +161,13 @@ const Journey = () => {
   return (
     <AppShell>
       <div className="min-h-full bg-background">
-        {/* Zone 1 — Dark ink hero matching legacy brand */}
+        {/* Zone 1 — Dark ink hero matching landing page */}
         <section className="relative bg-[#1C1C2E] overflow-hidden">
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_hsl(39_90%_56%_/_0.15)_0%,_transparent_70%)]" />
           <div className="container mx-auto px-4 py-12 md:py-16 max-w-6xl relative z-10">
             <p className="text-xs text-white/70 mb-2">{greeting()}</p>
             <span
-              className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold ${styles.pillBg} ${styles.pillText} mb-5`}
+              className={`font-display inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold ${styles.pillBg} ${styles.pillText} mb-5`}
             >
               <span className={`w-1.5 h-1.5 rounded-full ${styles.dot}`} />
               {effective} level
@@ -176,6 +176,8 @@ const Journey = () => {
               {message}
             </p>
           </div>
+          {/* Soft gradient fade into content */}
+          <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-b from-transparent to-background pointer-events-none" />
         </section>
 
         <div className="container mx-auto px-4 py-8 md:py-10 max-w-6xl space-y-8">
