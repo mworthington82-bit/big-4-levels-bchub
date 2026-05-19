@@ -178,15 +178,16 @@ const Journey = () => {
         <section className="container mx-auto px-4 pt-8 md:pt-10 max-w-6xl">
           <div className="bg-white rounded-2xl border border-border shadow-sm p-6 md:p-8">
             <p
-              className="mb-3 text-[#1F3864]"
+              className="mb-3 text-[#1F3864] inline-flex items-center gap-2"
               style={{ fontSize: "22px", fontWeight: 500 }}
             >
-              {greeting()}
+              <img src={LEVEL_EMBLEM[effective]} alt="" aria-hidden className="h-6 w-6" />
+              {greeting()}, {effective}
             </p>
             <span
               className={`font-display inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold ${styles.pillBg} ${styles.pillText} mb-4`}
             >
-              <span className={`w-1.5 h-1.5 rounded-full ${styles.dot}`} />
+              <img src={LEVEL_EMBLEM[effective]} alt="" aria-hidden className="h-3.5 w-3.5" />
               {effective} level
             </span>
             <p className="font-display text-[#1F3864] text-base md:text-lg leading-relaxed max-w-3xl">
