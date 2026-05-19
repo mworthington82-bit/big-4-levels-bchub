@@ -244,6 +244,14 @@ const Journey = () => {
                   >
                     {motivation}
                   </p>
+                  {effective === "Leader" && (
+                    <div className="mt-3">
+                      <span className="font-display inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold bg-[#EAF3DE] text-[#3B6D11] border border-[#CDE3B8]">
+                        <img src={LEVEL_EMBLEM.Leader} alt="" aria-hidden className="h-3.5 w-3.5" />
+                        Leader level
+                      </span>
+                    </div>
+                  )}
                 </div>
               );
             })()}
