@@ -235,9 +235,9 @@ const Journey = () => {
                   {progressCount} of {total} evidenced or complete
                 </span>
               </div>
-              <div className="w-full h-1.5 rounded-full bg-muted overflow-hidden">
+              <div className="w-full h-2 rounded-full bg-[#E5E7EB] overflow-hidden">
                 <div
-                  className={`h-full ${styles.bar} transition-all duration-500`}
+                  className="h-full bg-[#F5A623] transition-all duration-500"
                   style={{ width: `${progressPct}%` }}
                 />
               </div>
@@ -246,13 +246,14 @@ const Journey = () => {
 
           {/* Zone 4 — Quick access */}
           <section>
-            <h2 className="font-display font-bold text-foreground text-lg md:text-xl mb-4">Quick access</h2>
+            <h2 className="font-display font-bold text-[#1F3864] text-lg md:text-xl mb-4">Quick access</h2>
             <div className="grid gap-4 grid-cols-1 md:grid-cols-3">
-              <QuickCard Icon={IconWand} title="Activity Planner" desc="Generate inclusion-focused lesson ideas" to="/resources#activity-planner" />
-              <QuickCard Icon={IconCalendarEvent} title="Book Big 4 Day" desc="Reserve your sessions for the CPD day" to="/connect" />
-              <QuickCard Icon={IconHeart} title="Inclusion Hub" desc="Practical guidance and downloadable tips" to="/connect" />
+              <QuickCard accent={QUICK_ACCENTS[0]} Icon={IconWand} title="Activity Planner" desc="Generate inclusion-focused lesson ideas" to="/resources#activity-planner" />
+              <QuickCard accent={QUICK_ACCENTS[1]} Icon={IconCalendarEvent} title="Book Big 4 Day" desc="Reserve your sessions for the CPD day" to="/connect" />
+              <QuickCard accent={QUICK_ACCENTS[2]} Icon={IconHeart} title="Inclusion Hub" desc="Practical guidance and downloadable tips" to="/connect" />
             </div>
           </section>
+
         </div>
       </div>
       {showOnboarding && profile && email && (
