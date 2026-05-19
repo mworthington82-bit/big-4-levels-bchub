@@ -283,32 +283,16 @@ const Journey = () => {
             )}
           </section>
 
-          {/* Zone 3 — Progress */}
-          {effective !== "Leader" && (
-            <section>
-              <div className="flex justify-end mb-2">
-                <span className="text-xs font-semibold text-muted-foreground">
-                  {progressCount} of {total} evidenced or complete
-                </span>
-              </div>
-              <div className="w-full h-2 rounded-full bg-[#E5E7EB] overflow-hidden">
-                <div
-                  className="h-full bg-[#F5A623] transition-all duration-500"
-                  style={{ width: `${progressPct}%` }}
-                />
-              </div>
-            </section>
-          )}
-
           {/* Zone 4 — Quick access */}
           <section>
             <h2 className="font-display font-bold text-[#1F3864] text-lg md:text-xl mb-4">Quick access</h2>
             <div className="grid gap-4 grid-cols-1 md:grid-cols-3">
               <QuickCard accent={QUICK_ACCENTS[0]} Icon={IconWand} title="Activity Planner" desc="Generate inclusion-focused lesson ideas" to="/resources#activity-planner" />
-              <QuickCard accent={QUICK_ACCENTS[1]} Icon={IconCalendarEvent} title="Book Big 4 Day" desc="Reserve your sessions for the CPD day" to="/connect" />
-              <QuickCard accent={QUICK_ACCENTS[2]} Icon={IconHeart} title="Inclusion Hub" desc="Practical guidance and downloadable tips" to="/connect" />
+              <QuickCard accent={QUICK_ACCENTS[1]} Icon={IconCalendarEvent} title="Book Big 4 Day" desc="Reserve your sessions for the CPD day" to="/best-practice" />
+              <QuickCard accent={QUICK_ACCENTS[2]} Icon={IconBulb} title="Best Practice" desc="Ideas shared by Bradford College's Big 4 Leaders" to="/best-practice" />
             </div>
           </section>
+
 
         </div>
       </div>
