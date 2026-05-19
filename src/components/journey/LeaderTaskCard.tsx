@@ -43,20 +43,30 @@ const LeaderTaskCard = () => {
       <div className="pl-3">
         <h3
           className="font-display font-bold text-[#F5A623]"
-          style={{ fontSize: "18px" }}
+          style={{ fontSize: "20px" }}
         >
-          Your role as a Leader
+          Your next step as a Leader — required
         </h3>
-        <p
-          className="mt-3 text-white"
+        <div
+          className="mt-3 text-white space-y-3"
           style={{ fontSize: "14px", lineHeight: 1.7 }}
         >
-          Your task is to lead and inspire your colleagues. Choose a tool below
-          and share your best practice on the Padlet — it could be an activity
-          that worked well, a tip, a video, or a lesson plan. You can share as
-          many as you like. For each one, tell us: what it was, how you did it,
-          and what impact it had on your learners.
-        </p>
+          <p>
+            As a Bradford College Big 4 Leader, your role is to share your
+            practice with colleagues across the college. This is an expected
+            part of reaching Leader level.
+          </p>
+          <p>
+            Choose a tool below and contribute to its Padlet. It could be a
+            lesson activity that worked well, a practical tip, a short video,
+            or a lesson plan. You can share as many times as you like across
+            any tool.
+          </p>
+          <p>
+            For each contribution, tell your colleagues: what you did, how you
+            did it, and what difference it made for your learners.
+          </p>
+        </div>
 
         <div className="mt-5 flex flex-wrap gap-2.5">
           {PADLET_LINKS.map((p) => (
@@ -74,11 +84,11 @@ const LeaderTaskCard = () => {
         </div>
 
         <p
-          className="mt-4 italic text-[#F5A623]"
-          style={{ fontSize: "12px" }}
+          className="mt-4 font-bold text-[#F5A623]"
+          style={{ fontSize: "13px" }}
         >
-          All contributions are visible to staff across the college and help
-          build a culture of sharing.
+          Your contributions are visible to all Bradford College staff and
+          help build a culture of sharing.
         </p>
       </div>
     </div>
