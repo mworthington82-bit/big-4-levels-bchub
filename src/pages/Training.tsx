@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import LearningSummary from "@/components/LearningSummary";
 import ModuleHeroBanner from "@/components/ModuleHeroBanner";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import ToolCard from "@/components/ToolCard";
 import LevelCard from "@/components/LevelCard";
