@@ -1,22 +1,21 @@
-import {
-  IconBrandTeams,
-  IconForms,
-  IconPalette,
-  IconVideo,
-  IconSparkles,
-  IconBuildingArch,
-  IconCheck,
-} from "@tabler/icons-react";
+import { IconBuildingArch, IconCheck } from "@tabler/icons-react";
 import { useNavigate } from "react-router-dom";
 import type { ModuleCardSpec } from "@/lib/journey";
+import teamsLogo from "@/assets/teams-logo.png";
+import formsLogo from "@/assets/forms-logo.jpg";
+import canvaLogo from "@/assets/canva-logo.jpg";
+import edpuzzleLogo from "@/assets/edpuzzle-logo.png";
+import copilotLogo from "@/assets/copilot-logo.png";
+import emblemExplorer from "@/assets/emblem-explorer.svg";
+import emblemPractitioner from "@/assets/emblem-practitioner.svg";
 
-const ICON_FOR: Record<string, any> = {
-  teams: IconBrandTeams,
-  forms: IconForms,
-  canva: IconPalette,
-  edpuzzle: IconVideo,
-  copilot: IconSparkles,
-  immersive: IconBuildingArch,
+const LOGO_FOR: Record<string, string | null> = {
+  teams: teamsLogo,
+  forms: formsLogo,
+  canva: canvaLogo,
+  edpuzzle: edpuzzleLogo,
+  copilot: copilotLogo,
+  immersive: null,
 };
 
 const TOOL_HEADER_BG: Record<string, string> = {
@@ -35,6 +34,11 @@ const TOOL_LABEL: Record<string, string> = {
   edpuzzle: "Edpuzzle",
   copilot: "Microsoft Copilot",
   immersive: "Immersive Room",
+};
+
+const LEVEL_EMBLEM: Record<string, string> = {
+  explorer: emblemExplorer,
+  practitioner: emblemPractitioner,
 };
 
 const STATUS_BADGE: Record<string, { cls: string; label: string; tick: boolean }> = {
@@ -76,7 +80,7 @@ interface Props {
 
 const ModuleCard = ({ card }: Props) => {
   const navigate = useNavigate();
-  const Icon = ICON_FOR[card.toolKey];
+  const logo = LOGO_FOR[card.toolKey];
   const headerBg = TOOL_HEADER_BG[card.toolKey] ?? "bg-[#1F3864]";
   const toolLabel = TOOL_LABEL[card.toolKey] ?? card.name;
   const status = STATUS_BADGE[card.status];
@@ -95,7 +99,13 @@ const ModuleCard = ({ card }: Props) => {
       {/* Coloured tool header */}
       <div className={`${headerBg} px-4 py-3 flex items-center justify-between gap-3`}>
         <div className="flex items-center gap-2 min-w-0">
-          {Icon && <Icon size={18} stroke={2} className="text-white flex-shrink-0" />}
+          {logo ? (
+            <span className="h-6 w-6 rounded bg-white flex items-center justify-center p-0.5 flex-shrink-0">
+              <img src={logo} alt="" aria-hidden className="h-full w-full object-contain" />
+            </span>
+          ) : (
+            <IconBuildingArch size={18} stroke={2} className="text-white flex-shrink-0" />
+          )}
           <span className="font-display font-bold text-white text-sm truncate">
             {toolLabel}
           </span>
@@ -122,7 +132,10 @@ const ModuleCard = ({ card }: Props) => {
           )}
         </div>
         <div className="flex items-center justify-between gap-2 pt-1">
-          <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-[11px] font-semibold ${LEVEL_PILL[level]}`}>
+          <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-semibold ${LEVEL_PILL[level]}`}>
+            {LEVEL_EMBLEM[level] && (
+              <img src={LEVEL_EMBLEM[level]} alt="" aria-hidden className="h-3.5 w-3.5" />
+            )}
             {level.charAt(0).toUpperCase() + level.slice(1)}
           </span>
           <span className="inline-flex items-center px-3.5 py-2 rounded-lg bg-[#1F3864] text-white text-xs font-semibold">

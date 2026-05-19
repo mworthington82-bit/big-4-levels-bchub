@@ -18,8 +18,17 @@ import {
 } from "@/lib/journey";
 import { deriveEffectiveLevel, runProgressionCheck } from "@/lib/progression";
 import ModuleCard from "@/components/journey/ModuleCard";
-import LeaderPreviewCards from "@/components/journey/LeaderPreviewCards";
+import LeaderTaskCard from "@/components/journey/LeaderTaskCard";
 import { IconWand, IconCalendarEvent, IconBulb, IconArrowRight } from "@tabler/icons-react";
+import emblemExplorer from "@/assets/emblem-explorer.svg";
+import emblemPractitioner from "@/assets/emblem-practitioner.svg";
+import emblemLeader from "@/assets/emblem-leader.svg";
+
+const LEVEL_EMBLEM = {
+  Explorer: emblemExplorer,
+  Practitioner: emblemPractitioner,
+  Leader: emblemLeader,
+} as const;
 
 const greeting = () => {
   const h = new Date().getHours();
@@ -169,15 +178,16 @@ const Journey = () => {
         <section className="container mx-auto px-4 pt-8 md:pt-10 max-w-6xl">
           <div className="bg-white rounded-2xl border border-border shadow-sm p-6 md:p-8">
             <p
-              className="mb-3 text-[#1F3864]"
+              className="mb-3 text-[#1F3864] inline-flex items-center gap-2"
               style={{ fontSize: "22px", fontWeight: 500 }}
             >
-              {greeting()}
+              <img src={LEVEL_EMBLEM[effective]} alt="" aria-hidden className="h-6 w-6" />
+              {greeting()}, {effective}
             </p>
             <span
               className={`font-display inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold ${styles.pillBg} ${styles.pillText} mb-4`}
             >
-              <span className={`w-1.5 h-1.5 rounded-full ${styles.dot}`} />
+              <img src={LEVEL_EMBLEM[effective]} alt="" aria-hidden className="h-3.5 w-3.5" />
               {effective} level
             </span>
             <p className="font-display text-[#1F3864] text-base md:text-lg leading-relaxed max-w-3xl">
@@ -273,7 +283,7 @@ const Journey = () => {
 
             {/* Main pathway content */}
             {effective === "Leader" ? (
-              <LeaderPreviewCards />
+              <LeaderTaskCard />
             ) : (
               <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
                 {cards.map((c) => (
