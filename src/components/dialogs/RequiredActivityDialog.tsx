@@ -9,6 +9,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { BookOpen, Video, FolderOpen } from "lucide-react";
 import { Tool } from "@/types/learning";
+import { hasSeen, markSeen, hasSeenAnySync } from "@/lib/onceFlags";
 
 interface RequiredActivityDialogProps {
   tool: Tool;
@@ -17,24 +18,23 @@ interface RequiredActivityDialogProps {
 
 const RequiredActivityDialog = ({ tool, level }: RequiredActivityDialogProps) => {
   const [open, setOpen] = useState(false);
-  const sessionKey = `required_activity_dialog_${tool}_${level}_shown`;
+  const flagKey = `required_activity_dialog_${tool}_${level}_shown`;
 
   const isFirstTool = tool === 'teams';
   const isCanvaExplorer = tool === 'canva' && level === 'explorer';
   const hasSeenAnyBefore = (() => {
     const tools: Tool[] = ['teams', 'canva', 'edpuzzle', 'copilot'];
-    return tools.some(t => sessionStorage.getItem(`required_activity_dialog_${t}_${level}_shown`) === 'true');
+    return hasSeenAnySync(tools.map(t => `required_activity_dialog_${t}_${level}_shown`));
   })();
 
   useEffect(() => {
-    const hasShown = sessionStorage.getItem(sessionKey);
-    if (!hasShown) {
-      setOpen(true);
-    }
-  }, [sessionKey]);
+    hasSeen(flagKey).then((seen) => {
+      if (!seen) setOpen(true);
+    });
+  }, [flagKey]);
 
   const handleClose = () => {
-    sessionStorage.setItem(sessionKey, "true");
+    markSeen(flagKey);
     setOpen(false);
   };
 

@@ -9,6 +9,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Lightbulb, CheckCircle, BookOpen, Star, Rocket, Crown } from "lucide-react";
 import { Level, Tool } from "@/types/learning";
+import { hasSeen, markSeen } from "@/lib/onceFlags";
 
 interface TrainingIntroDialogProps {
   tool: Tool;
@@ -111,17 +112,16 @@ const levelTasks = {
 
 const TrainingIntroDialog = ({ tool, level }: TrainingIntroDialogProps) => {
   const [open, setOpen] = useState(false);
-  const sessionKey = `training_intro_${tool}_${level}_shown`;
+  const flagKey = `training_intro_${tool}_${level}_shown`;
 
   useEffect(() => {
-    const hasShown = sessionStorage.getItem(sessionKey);
-    if (!hasShown) {
-      setOpen(true);
-    }
-  }, [sessionKey]);
+    hasSeen(flagKey).then((seen) => {
+      if (!seen) setOpen(true);
+    });
+  }, [flagKey]);
 
   const handleClose = () => {
-    sessionStorage.setItem(sessionKey, "true");
+    markSeen(flagKey);
     setOpen(false);
   };
 

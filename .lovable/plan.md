@@ -1,52 +1,58 @@
-# Fix dead module links on Journey page
+# Make onboarding modals one-time-only per user
 
-## The bug
+With SSO now in place, users sign in frequently and the existing `sessionStorage`-based "shown" flags reset every new tab/session — so the intro dialogs keep reappearing. Switch them to **persistent, per-user** flags.
 
-On `/new/journey`, every module card calls `navigate('/module/{id}')`. That route in `src/App.tsx` is a `<Navigate to="/new/journey" replace />` redirect, so every click bounces back to the same page — the links look dead.
+## Scope (5 dialogs)
 
-## Fix
+All in `src/components/dialogs/`:
+1. `WelcomeDialog.tsx`
+2. `AssessmentIntroDialog.tsx`
+3. `LearningModulesDialog.tsx` (keyed by level)
+4. `TrainingIntroDialog.tsx` (keyed by tool/level)
+5. `RequiredActivityDialog.tsx` (keyed by tool/level)
 
-Repoint the journey module cards into `/training` with a deep link that jumps straight to that tool + level's intro stage, skipping the level confirmation dialog, prerequisite checklist, and tool picker.
+No other onboarding modals use the session-shown pattern.
 
-### 1. `src/components/journey/ModuleCard.tsx`
+## Approach
 
-Replace the `navigate('/module/${card.id}')` call with logic that maps the card to `/training?tool=X&level=Y`:
+Create a tiny helper `src/lib/onceFlags.ts`:
 
-| Card id pattern         | Query string                          |
-| ----------------------- | ------------------------------------- |
-| `teams_explorer`        | `?tool=teams&level=explorer`          |
-| `teams_practitioner`    | `?tool=teams&level=practitioner`      |
-| `forms_explorer`        | `?tool=teams&level=explorer`          |
-| `forms_practitioner`    | `?tool=teams&level=practitioner`      |
-| `canva_*`               | `?tool=canva&level=*`                 |
-| `edpuzzle_*`            | `?tool=edpuzzle&level=*`              |
-| `copilot_*`             | `?tool=copilot&level=*`               |
-| `immersive_practitioner`| `/new/module/immersive_practitioner` (fallback — no /training equivalent) |
+```ts
+// Persistent per-user "shown once" flags
+import { supabase } from "@/integrations/supabase/client";
 
-(Forms is part of the combined "MS Teams & Forms" module in /training, so both `teams_*` and `forms_*` deep-link to the same place.)
+let cachedUserKey: string | null = null;
 
-### 2. `src/pages/Training.tsx`
+async function getUserKey() {
+  if (cachedUserKey) return cachedUserKey;
+  const { data } = await supabase.auth.getUser();
+  cachedUserKey = data.user?.id ?? data.user?.email ?? "anon";
+  return cachedUserKey;
+}
 
-Read `tool` and `level` from `useSearchParams` on mount. When both are present and valid:
+export async function hasSeen(key: string): Promise<boolean> {
+  const u = await getUserKey();
+  return localStorage.getItem(`seen:${u}:${key}`) === "true";
+}
 
-- Set `selectedTool`, `selectedLevel`, and `pathway` (via `getPathway`) directly.
-- Set `stage` to `'intro'`.
-- Do NOT show `LevelConfirmationDialog` or `PrerequisiteChecklistDialog` — the user has already self-assessed and been gated on the journey page, so re-prompting is redundant and is what the user is trying to avoid.
-- The existing in-page back/restart flow continues to work from the intro stage onward.
+export async function markSeen(key: string) {
+  const u = await getUserKey();
+  localStorage.setItem(`seen:${u}:${key}`, "true");
+}
+```
 
-Guard the effect so it only runs once per param change (don't fight the user if they click Restart and the URL still has params — strip them after consuming, using `setSearchParams({})`).
+Then in each dialog, replace:
+- `sessionStorage.getItem(KEY)` → `await hasSeen(KEY)` inside the effect
+- `sessionStorage.setItem(KEY, "true")` → `markSeen(KEY)` in `handleClose`
 
-### 3. Remove the stale redirect
+Keys stay the same strings as today (e.g. `welcome_dialog_shown`, `assessment_intro_shown`, `learning_modules_${level}_shown`, `training_intro_${tool}_${level}_shown`, `required_activity_dialog_${tool}_${level}_shown`) — they're just stored under `seen:<user>:<key>` in `localStorage` instead of `sessionStorage`.
 
-In `src/App.tsx`, the `/module/:moduleId` → `/new/journey` redirect was masking this bug. Leave the redirect in place (other places may still link to `/module/...` from old emails/bookmarks) — the journey cards just won't hit it anymore.
+## Behaviour after change
+- First time a user sees a dialog → it opens. They close it → flag saved.
+- Any subsequent visit (new tab, new day, after SSO re-auth) → flag still present → dialog does not reopen.
+- Different user on same browser → different namespace → they see their own intros once.
 
 ## Out of scope
-
-- Visual changes to the Journey or Training pages.
-- Any progression logic changes (the recently fixed `src/lib/progression.ts` stays as-is).
-- The immersive Practitioner card keeps its current `/new/module/immersive_practitioner` destination since /training has no immersive flow.
-
-## Files touched
-
-- `src/components/journey/ModuleCard.tsx` — navigation target
-- `src/pages/Training.tsx` — read `?tool=&level=` and jump to intro stage
+- No DB table — `localStorage` is sufficient and matches existing progress-persistence pattern. (If you want it to follow the user across devices too, say so and I'll add a Supabase-backed version.)
+- No changes to the dialog content, styling, or trigger conditions.
+- `GatedRoute`'s admin-bypass flag stays in `sessionStorage` (that's intentional — admin bypass should not persist).
