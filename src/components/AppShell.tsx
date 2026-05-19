@@ -44,7 +44,7 @@ const AppShell = ({ children }: { children: React.ReactNode }) => {
           <nav className="hidden md:flex items-center gap-1">
             <NavLink to="/journey" className={navLinkClass}>My Journey</NavLink>
             <NavLink to="/resources" className={navLinkClass}>Resources</NavLink>
-            <NavLink to="/connect" className={navLinkClass}>Connect</NavLink>
+            <NavLink to="/best-practice" className={navLinkClass}>Best Practice</NavLink>
           </nav>
 
           <div className="flex items-center gap-3">
