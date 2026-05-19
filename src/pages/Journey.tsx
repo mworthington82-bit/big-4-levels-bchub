@@ -29,9 +29,9 @@ const greeting = () => {
 };
 
 const LEVEL_STYLES = {
-  Explorer: { pillBg: "bg-[#E6F1FB]", pillText: "text-[#185FA5]", dot: "bg-[#185FA5]", bar: "bg-[#4A90D9]" },
-  Practitioner: { pillBg: "bg-[#FEF6E8]", pillText: "text-[#854F0B]", dot: "bg-[#854F0B]", bar: "bg-[#F5A623]" },
-  Leader: { pillBg: "bg-[#EAF3DE]", pillText: "text-[#3B6D11]", dot: "bg-[#3B6D11]", bar: "bg-[#27AE60]" },
+  Explorer: { pillBg: "bg-gold-light", pillText: "text-gold-dark", dot: "bg-[#F5A623]", bar: "bg-[#F5A623]" },
+  Practitioner: { pillBg: "bg-[hsl(var(--practitioner-bg))]", pillText: "text-[#5B5FC7]", dot: "bg-[#5B5FC7]", bar: "bg-[#5B5FC7]" },
+  Leader: { pillBg: "bg-[hsl(var(--leader-bg))]", pillText: "text-[hsl(var(--leader))]", dot: "bg-[hsl(var(--leader))]", bar: "bg-[hsl(var(--leader))]" },
 } as const;
 
 const personalisedMessage = (
@@ -69,42 +69,42 @@ const QuickCard = ({ Icon, title, desc, to }: { Icon: any; title: string; desc: 
   return (
     <button
       onClick={() => navigate(to)}
-      className="text-left bg-white rounded-2xl border border-[#D0D7E2] p-5 flex items-start gap-4 hover:shadow-md transition-shadow"
+      className="text-left bg-card rounded-2xl border border-border border-l-4 border-l-[#F5A623] p-5 flex items-start gap-4 hover:shadow-[var(--shadow-hover)] transition-shadow"
     >
-      <div className="w-10 h-10 rounded-xl bg-[#F4F6FB] flex items-center justify-center flex-shrink-0">
-        <Icon size={22} stroke={1.75} className="text-[#1F3864]" />
+      <div className="w-10 h-10 rounded-xl bg-surface flex items-center justify-center flex-shrink-0">
+        <Icon size={22} stroke={1.75} className="text-ink" />
       </div>
       <div className="flex-1">
-        <h3 className="font-bold text-[15px] text-[#1F3864]">{title}</h3>
-        <p className="text-[12px] text-[#5F6B7D] mt-1">{desc}</p>
+        <h3 className="font-display font-bold text-[15px] text-foreground">{title}</h3>
+        <p className="text-[12px] text-muted-foreground mt-1">{desc}</p>
       </div>
-      <IconArrowRight size={16} stroke={2} className="text-[#1F3864] mt-1" />
+      <IconArrowRight size={16} stroke={2} className="text-ink mt-1" />
     </button>
   );
 };
 
 const JourneySkeleton = () => (
   <AppShell>
-    <div className="min-h-full bg-[#F4F6FB]" aria-busy="true" aria-label="Loading your journey">
+    <div className="min-h-full bg-background" aria-busy="true" aria-label="Loading your journey">
       <div className="container mx-auto px-4 py-8 md:py-10 max-w-6xl space-y-8">
-        <section className="bg-white rounded-2xl border border-[#D0D7E2] p-6 md:p-8">
-          <div className="h-3 w-24 bg-[#E5E9F0] rounded mb-3 animate-pulse" />
-          <div className="h-6 w-32 bg-[#E5E9F0] rounded-full mb-4 animate-pulse" />
+        <section className="bg-card rounded-3xl border border-border p-6 md:p-8">
+          <div className="h-3 w-24 bg-muted rounded mb-3 animate-pulse" />
+          <div className="h-6 w-32 bg-muted rounded-full mb-4 animate-pulse" />
           <div className="space-y-2 max-w-3xl">
-            <div className="h-4 bg-[#E5E9F0] rounded w-full animate-pulse" />
-            <div className="h-4 bg-[#E5E9F0] rounded w-5/6 animate-pulse" />
+            <div className="h-4 bg-muted rounded w-full animate-pulse" />
+            <div className="h-4 bg-muted rounded w-5/6 animate-pulse" />
           </div>
         </section>
         <section className="space-y-4">
-          <div className="h-5 w-40 bg-[#E5E9F0] rounded animate-pulse" />
+          <div className="h-5 w-40 bg-muted rounded animate-pulse" />
           <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
             {[0,1,2,3,4,5].map((i) => (
-              <div key={i} className="bg-white rounded-xl border border-[#D0D7E2] h-48 animate-pulse" />
+              <div key={i} className="bg-card rounded-xl border border-border h-48 animate-pulse" />
             ))}
           </div>
         </section>
         <section>
-          <div className="h-1.5 w-full rounded-full bg-[#E5E9F0] animate-pulse" />
+          <div className="h-1.5 w-full rounded-full bg-muted animate-pulse" />
         </section>
       </div>
     </div>
@@ -160,25 +160,28 @@ const Journey = () => {
 
   return (
     <AppShell>
-      <div className="min-h-full bg-[#F4F6FB]">
-        <div className="container mx-auto px-4 py-8 md:py-10 max-w-6xl space-y-8">
-          {/* Zone 1 — Who you are right now */}
-          <section className="bg-white rounded-2xl border border-[#D0D7E2] p-6 md:p-8">
-            <p className="text-xs text-[#7A8595] mb-2">{greeting()}</p>
+      <div className="min-h-full bg-background">
+        {/* Zone 1 — Dark ink hero matching legacy brand */}
+        <section className="relative bg-[#1C1C2E] overflow-hidden">
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_hsl(39_90%_56%_/_0.15)_0%,_transparent_70%)]" />
+          <div className="container mx-auto px-4 py-12 md:py-16 max-w-6xl relative z-10">
+            <p className="text-xs text-white/70 mb-2">{greeting()}</p>
             <span
-              className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold ${styles.pillBg} ${styles.pillText} mb-4`}
+              className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold ${styles.pillBg} ${styles.pillText} mb-5`}
             >
               <span className={`w-1.5 h-1.5 rounded-full ${styles.dot}`} />
               {effective} level
             </span>
-            <p className="text-[#1F3864] text-base md:text-lg leading-relaxed max-w-3xl">
+            <p className="font-display text-white text-base md:text-lg leading-relaxed max-w-3xl">
               {message}
             </p>
-          </section>
+          </div>
+        </section>
 
+        <div className="container mx-auto px-4 py-8 md:py-10 max-w-6xl space-y-8">
           {/* Zone 2 — Pathway */}
           <section className="space-y-4">
-            <h2 className="font-bold text-[#1F3864] text-lg md:text-xl">Your pathway</h2>
+            <h2 className="font-display font-bold text-foreground text-lg md:text-xl">Your pathway</h2>
 
             {showExplorerMilestone && <MilestoneBanner variant="explorer" />}
             {showPractitionerMilestone && <MilestoneBanner variant="practitioner" />}
@@ -222,11 +225,11 @@ const Journey = () => {
           {effective !== "Leader" && (
             <section>
               <div className="flex justify-end mb-2">
-                <span className="text-xs font-semibold text-[#5F6B7D]">
+                <span className="text-xs font-semibold text-muted-foreground">
                   {progressCount} of {total} evidenced or complete
                 </span>
               </div>
-              <div className="w-full h-1.5 rounded-full bg-[#E5E9F0] overflow-hidden">
+              <div className="w-full h-1.5 rounded-full bg-muted overflow-hidden">
                 <div
                   className={`h-full ${styles.bar} transition-all duration-500`}
                   style={{ width: `${progressPct}%` }}
@@ -237,7 +240,7 @@ const Journey = () => {
 
           {/* Zone 4 — Quick access */}
           <section>
-            <h2 className="font-bold text-[#1F3864] text-lg md:text-xl mb-4">Quick access</h2>
+            <h2 className="font-display font-bold text-foreground text-lg md:text-xl mb-4">Quick access</h2>
             <div className="grid gap-4 grid-cols-1 md:grid-cols-3">
               <QuickCard Icon={IconWand} title="Activity Planner" desc="Generate inclusion-focused lesson ideas" to="/resources#activity-planner" />
               <QuickCard Icon={IconCalendarEvent} title="Book Big 4 Day" desc="Reserve your sessions for the CPD day" to="/connect" />
