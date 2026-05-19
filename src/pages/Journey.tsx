@@ -160,25 +160,28 @@ const Journey = () => {
 
   return (
     <AppShell>
-      <div className="min-h-full bg-[#F4F6FB]">
-        <div className="container mx-auto px-4 py-8 md:py-10 max-w-6xl space-y-8">
-          {/* Zone 1 — Who you are right now */}
-          <section className="bg-white rounded-2xl border border-[#D0D7E2] p-6 md:p-8">
-            <p className="text-xs text-[#7A8595] mb-2">{greeting()}</p>
+      <div className="min-h-full bg-background">
+        {/* Zone 1 — Dark ink hero matching legacy brand */}
+        <section className="relative bg-[#1C1C2E] overflow-hidden">
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_hsl(39_90%_56%_/_0.15)_0%,_transparent_70%)]" />
+          <div className="container mx-auto px-4 py-12 md:py-16 max-w-6xl relative z-10">
+            <p className="text-xs text-white/70 mb-2">{greeting()}</p>
             <span
-              className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold ${styles.pillBg} ${styles.pillText} mb-4`}
+              className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold ${styles.pillBg} ${styles.pillText} mb-5`}
             >
               <span className={`w-1.5 h-1.5 rounded-full ${styles.dot}`} />
               {effective} level
             </span>
-            <p className="text-[#1F3864] text-base md:text-lg leading-relaxed max-w-3xl">
+            <p className="font-display text-white text-base md:text-lg leading-relaxed max-w-3xl">
               {message}
             </p>
-          </section>
+          </div>
+        </section>
 
+        <div className="container mx-auto px-4 py-8 md:py-10 max-w-6xl space-y-8">
           {/* Zone 2 — Pathway */}
           <section className="space-y-4">
-            <h2 className="font-bold text-[#1F3864] text-lg md:text-xl">Your pathway</h2>
+            <h2 className="font-display font-bold text-foreground text-lg md:text-xl">Your pathway</h2>
 
             {showExplorerMilestone && <MilestoneBanner variant="explorer" />}
             {showPractitionerMilestone && <MilestoneBanner variant="practitioner" />}
@@ -222,11 +225,11 @@ const Journey = () => {
           {effective !== "Leader" && (
             <section>
               <div className="flex justify-end mb-2">
-                <span className="text-xs font-semibold text-[#5F6B7D]">
+                <span className="text-xs font-semibold text-muted-foreground">
                   {progressCount} of {total} evidenced or complete
                 </span>
               </div>
-              <div className="w-full h-1.5 rounded-full bg-[#E5E9F0] overflow-hidden">
+              <div className="w-full h-1.5 rounded-full bg-muted overflow-hidden">
                 <div
                   className={`h-full ${styles.bar} transition-all duration-500`}
                   style={{ width: `${progressPct}%` }}
@@ -237,7 +240,7 @@ const Journey = () => {
 
           {/* Zone 4 — Quick access */}
           <section>
-            <h2 className="font-bold text-[#1F3864] text-lg md:text-xl mb-4">Quick access</h2>
+            <h2 className="font-display font-bold text-foreground text-lg md:text-xl mb-4">Quick access</h2>
             <div className="grid gap-4 grid-cols-1 md:grid-cols-3">
               <QuickCard Icon={IconWand} title="Activity Planner" desc="Generate inclusion-focused lesson ideas" to="/resources#activity-planner" />
               <QuickCard Icon={IconCalendarEvent} title="Book Big 4 Day" desc="Reserve your sessions for the CPD day" to="/connect" />
