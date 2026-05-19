@@ -263,32 +263,28 @@ const Journey = () => {
         <div className="container mx-auto px-4 py-8 md:py-10 max-w-6xl space-y-8">
           {/* Zone 2 — Pathway */}
           <section className="space-y-4">
-            <h2 className="font-display font-bold text-[#1F3864] text-lg md:text-xl">Your pathway</h2>
+            <h2 className="font-display font-bold text-[#1F3864] text-lg md:text-xl">
+              {effective === "Leader" ? "Your journey" : "Your pathway"}
+            </h2>
 
 
-            {showExplorerMilestone && <MilestoneBanner variant="explorer" />}
-            {showPractitionerMilestone && <MilestoneBanner variant="practitioner" />}
-
-            {/* Collapsed prior-level strips */}
-            {effective === "Practitioner" && (
-              <CompletedLevelStrip
+            {effective === "Leader" ? (
+              <LeaderAchievementStrip
                 profile={profile}
                 completedIds={completedModuleIds}
-                variant="explorer"
               />
-            )}
-            {effective === "Leader" && (
+            ) : (
               <>
-                <CompletedLevelStrip
-                  profile={profile}
-                  completedIds={completedModuleIds}
-                  variant="explorer"
-                />
-                <CompletedLevelStrip
-                  profile={profile}
-                  completedIds={completedModuleIds}
-                  variant="practitioner"
-                />
+                {showExplorerMilestone && <MilestoneBanner variant="explorer" />}
+                {showPractitionerMilestone && <MilestoneBanner variant="practitioner" />}
+
+                {effective === "Practitioner" && (
+                  <CompletedLevelStrip
+                    profile={profile}
+                    completedIds={completedModuleIds}
+                    variant="explorer"
+                  />
+                )}
               </>
             )}
 
