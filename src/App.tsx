@@ -15,7 +15,7 @@ import Journey from "./pages/Journey";
 import ResourcesHub from "./pages/ResourcesHub";
 import Module from "./pages/Module";
 import Leader from "./pages/Leader";
-import Connect from "./pages/Connect";
+import BestPractice from "./pages/BestPractice";
 
 // Legacy pages — now the primary experience
 import Landing from "./pages/Landing";
@@ -59,7 +59,8 @@ const App = () => (
           <Route path="/new/module/:moduleId" element={<RequireAuth><Module /></RequireAuth>} />
           <Route path="/new/resources" element={<RequireAuth><ResourcesHub /></RequireAuth>} />
           <Route path="/new/leader" element={<RequireAuth><Leader /></RequireAuth>} />
-          <Route path="/connect" element={<RequireAuth><Connect /></RequireAuth>} />
+          <Route path="/best-practice" element={<RequireAuth><BestPractice /></RequireAuth>} />
+          <Route path="/connect" element={<Navigate to="/best-practice" replace />} />
 
           {/* Back-compat redirects from old new-paths */}
           <Route path="/journey" element={<Navigate to="/new/journey" replace />} />

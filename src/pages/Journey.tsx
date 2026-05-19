@@ -19,7 +19,7 @@ import {
 import { deriveEffectiveLevel, runProgressionCheck } from "@/lib/progression";
 import ModuleCard from "@/components/journey/ModuleCard";
 import LeaderPreviewCards from "@/components/journey/LeaderPreviewCards";
-import { IconWand, IconCalendarEvent, IconHeart, IconArrowRight } from "@tabler/icons-react";
+import { IconWand, IconCalendarEvent, IconBulb, IconArrowRight } from "@tabler/icons-react";
 
 const greeting = () => {
   const h = new Date().getHours();
@@ -40,28 +40,26 @@ const personalisedMessage = (
   todoNames: string[],
 ): string => {
   if (level === "Leader") {
-    return "You have reached Leader level — the highest level on The Big 4: Level Up. Thank you for being a digital champion at Bradford College.";
+    return "You have reached Leader level — thank you for being a digital champion at Bradford College. Your best practice is inspiring colleagues across the college.";
   }
   const count = evidencedNames.length;
   if (level === "Explorer") {
     if (count === 0)
-      return "Your Explorer pathway is ready. Work through each module below — each one is hands-on and built around your learners.";
+      return "Welcome to your Big 4 journey. Five modules are ready for you below — each one is practical, hands-on, and built around your learners. Pick whichever feels right and start when you are ready.";
     if (count <= 2)
-      return `You are already showing strong confidence in ${formatList(evidencedNames)}. Your focus now is the remaining modules below.`;
+      return `Great start — you are already evidencing ${formatList(evidencedNames)}. Keep the momentum going with the remaining modules below and your Practitioner pathway will unlock.`;
     if (count === 3)
-      return `You are well on your way — you have evidenced three tools. Two modules to go: ${formatList(todoNames)}.`;
+      return `You are well on your way — ${formatList(evidencedNames)} are already evidenced. Just ${formatList(todoNames)} to go. You are closer to Practitioner than you might think.`;
     if (count === 4)
-      return `You are almost there. You have evidenced everything except ${todoNames[0]}. Complete that one module and your Practitioner pathway unlocks.`;
-    return "You have evidenced all five Explorer tools from your self-assessment. Your Practitioner pathway is coming soon — watch this space.";
+      return `Almost there — you have evidenced ${formatList(evidencedNames)} and that is brilliant. One module stands between you and your Practitioner pathway: ${todoNames[0]}. You've got this.`;
+    return "You have evidenced all five Explorer tools — that is a fantastic result. Your Practitioner pathway is on its way. Watch this space.";
   }
   // Practitioner
   if (count === 0)
-    return "Your Practitioner pathway is ready. Six modules to work through, including the Immersive Room which is required at this level.";
-  if (count >= 1 && count <= 3)
-    return `You have already evidenced ${formatList(evidencedNames)} at Practitioner level. Your focus now is ${formatList(todoNames)} and the Immersive Room.`;
-  if (count === 4)
-    return `You have evidenced almost everything at Practitioner level. Complete ${todoNames[0]} and the Immersive Room to finish your pathway.`;
-  return "You have evidenced all five tools at Practitioner level. The Immersive Room is the final step to complete your Practitioner pathway.";
+    return "Welcome to Practitioner level — this is where things get really interesting. Six modules await, including the Immersive Room. Dive in.";
+  if (count >= 1 && count <= 4)
+    return `You are hitting Practitioner level across ${formatList(evidencedNames)} — already evidenced and ready to go. Your focus now is ${formatList(todoNames)} and the Immersive Room.`;
+  return "You have evidenced all five Practitioner tools. The Immersive Room is the final step to complete this level and unlock Leader. Nearly there.";
 };
 
 const QUICK_ACCENTS = ["border-l-[#1B4F8A]", "border-l-[#F5A623]", "border-l-[#1A6B3A]"];
@@ -170,7 +168,12 @@ const Journey = () => {
         {/* Zone 1 — Light greeting card matching /resources */}
         <section className="container mx-auto px-4 pt-8 md:pt-10 max-w-6xl">
           <div className="bg-white rounded-2xl border border-border shadow-sm p-6 md:p-8">
-            <p className="text-xs text-muted-foreground mb-2">{greeting()}</p>
+            <p
+              className="mb-3 text-[#1F3864]"
+              style={{ fontSize: "22px", fontWeight: 500 }}
+            >
+              {greeting()}
+            </p>
             <span
               className={`font-display inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold ${styles.pillBg} ${styles.pillText} mb-4`}
             >
@@ -180,8 +183,61 @@ const Journey = () => {
             <p className="font-display text-[#1F3864] text-base md:text-lg leading-relaxed max-w-3xl">
               {message}
             </p>
+
+            {/* Progress */}
+            {(() => {
+              const fillColor =
+                effective === "Explorer"
+                  ? "#F5A623"
+                  : effective === "Practitioner"
+                  ? "#E08A00"
+                  : "#27AE60";
+              const motivation =
+                effective === "Explorer"
+                  ? "Complete all 5 to unlock Practitioner"
+                  : effective === "Practitioner"
+                  ? "Complete all 6 to unlock Leader"
+                  : "All levels complete";
+              const displayCount = effective === "Leader" ? 0 : progressCount;
+              const displayTotal = effective === "Leader" ? 0 : total;
+              const displayPct = effective === "Leader" ? 100 : progressPct;
+              return (
+                <div className="mt-6">
+                  <div className="flex justify-end mb-1.5">
+                    <span
+                      className="font-bold text-[#1F3864]"
+                      style={{ fontSize: "13px" }}
+                    >
+                      {effective === "Leader"
+                        ? "All complete"
+                        : `${displayCount} of ${displayTotal} complete`}
+                    </span>
+                  </div>
+                  <div
+                    className="w-full rounded-full overflow-hidden"
+                    style={{ height: "10px", backgroundColor: "#E5E9F0" }}
+                  >
+                    <div
+                      className="h-full transition-all duration-500"
+                      style={{
+                        width: `${displayPct}%`,
+                        backgroundColor: fillColor,
+                      }}
+                    />
+                  </div>
+                  <p
+                    className="mt-1.5 text-muted-foreground"
+                    style={{ fontSize: "11px" }}
+                  >
+                    {motivation}
+                  </p>
+                </div>
+              );
+            })()}
           </div>
         </section>
+
+
 
         <div className="container mx-auto px-4 py-8 md:py-10 max-w-6xl space-y-8">
           {/* Zone 2 — Pathway */}
@@ -227,32 +283,16 @@ const Journey = () => {
             )}
           </section>
 
-          {/* Zone 3 — Progress */}
-          {effective !== "Leader" && (
-            <section>
-              <div className="flex justify-end mb-2">
-                <span className="text-xs font-semibold text-muted-foreground">
-                  {progressCount} of {total} evidenced or complete
-                </span>
-              </div>
-              <div className="w-full h-2 rounded-full bg-[#E5E7EB] overflow-hidden">
-                <div
-                  className="h-full bg-[#F5A623] transition-all duration-500"
-                  style={{ width: `${progressPct}%` }}
-                />
-              </div>
-            </section>
-          )}
-
           {/* Zone 4 — Quick access */}
           <section>
             <h2 className="font-display font-bold text-[#1F3864] text-lg md:text-xl mb-4">Quick access</h2>
             <div className="grid gap-4 grid-cols-1 md:grid-cols-3">
               <QuickCard accent={QUICK_ACCENTS[0]} Icon={IconWand} title="Activity Planner" desc="Generate inclusion-focused lesson ideas" to="/resources#activity-planner" />
-              <QuickCard accent={QUICK_ACCENTS[1]} Icon={IconCalendarEvent} title="Book Big 4 Day" desc="Reserve your sessions for the CPD day" to="/connect" />
-              <QuickCard accent={QUICK_ACCENTS[2]} Icon={IconHeart} title="Inclusion Hub" desc="Practical guidance and downloadable tips" to="/connect" />
+              <QuickCard accent={QUICK_ACCENTS[1]} Icon={IconCalendarEvent} title="Book Big 4 Day" desc="Reserve your sessions for the CPD day" to="/best-practice" />
+              <QuickCard accent={QUICK_ACCENTS[2]} Icon={IconBulb} title="Best Practice" desc="Ideas shared by Bradford College's Big 4 Leaders" to="/best-practice" />
             </div>
           </section>
+
 
         </div>
       </div>
