@@ -185,12 +185,14 @@ const Journey = () => {
               <img src={LEVEL_EMBLEM[effective]} alt="" aria-hidden className="h-6 w-6" />
               {greeting()}, {effective}
             </p>
-            <span
-              className={`font-display inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold ${styles.pillBg} ${styles.pillText} mb-4`}
-            >
-              <img src={LEVEL_EMBLEM[effective]} alt="" aria-hidden className="h-3.5 w-3.5" />
-              {effective} level
-            </span>
+            {effective !== "Leader" && (
+              <span
+                className={`font-display inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold ${styles.pillBg} ${styles.pillText} mb-4`}
+              >
+                <img src={LEVEL_EMBLEM[effective]} alt="" aria-hidden className="h-3.5 w-3.5" />
+                {effective} level
+              </span>
+            )}
             <p className="font-display text-[#1F3864] text-base md:text-lg leading-relaxed max-w-3xl">
               {message}
             </p>
