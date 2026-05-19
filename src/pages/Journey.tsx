@@ -29,9 +29,9 @@ const greeting = () => {
 };
 
 const LEVEL_STYLES = {
-  Explorer: { pillBg: "bg-[#E6F1FB]", pillText: "text-[#185FA5]", dot: "bg-[#185FA5]", bar: "bg-[#4A90D9]" },
-  Practitioner: { pillBg: "bg-[#FEF6E8]", pillText: "text-[#854F0B]", dot: "bg-[#854F0B]", bar: "bg-[#F5A623]" },
-  Leader: { pillBg: "bg-[#EAF3DE]", pillText: "text-[#3B6D11]", dot: "bg-[#3B6D11]", bar: "bg-[#27AE60]" },
+  Explorer: { pillBg: "bg-gold-light", pillText: "text-gold-dark", dot: "bg-[#F5A623]", bar: "bg-[#F5A623]" },
+  Practitioner: { pillBg: "bg-[hsl(var(--practitioner-bg))]", pillText: "text-[#5B5FC7]", dot: "bg-[#5B5FC7]", bar: "bg-[#5B5FC7]" },
+  Leader: { pillBg: "bg-[hsl(var(--leader-bg))]", pillText: "text-[hsl(var(--leader))]", dot: "bg-[hsl(var(--leader))]", bar: "bg-[hsl(var(--leader))]" },
 } as const;
 
 const personalisedMessage = (
