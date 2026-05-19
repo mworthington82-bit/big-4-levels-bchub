@@ -64,24 +64,30 @@ const personalisedMessage = (
   return "You have evidenced all five tools at Practitioner level. The Immersive Room is the final step to complete your Practitioner pathway.";
 };
 
-const QuickCard = ({ Icon, title, desc, to }: { Icon: any; title: string; desc: string; to: string }) => {
+const QUICK_ACCENTS = ["border-l-[#1B4F8A]", "border-l-[#F5A623]", "border-l-[#1A6B3A]"];
+
+const QuickCard = ({ Icon, title, desc, to, accent }: { Icon: any; title: string; desc: string; to: string; accent: string }) => {
   const navigate = useNavigate();
   return (
     <button
       onClick={() => navigate(to)}
-      className="text-left bg-card rounded-2xl border border-border border-l-4 border-l-[#F5A623] p-5 flex items-start gap-4 hover:shadow-[var(--shadow-hover)] transition-shadow"
+      className={`text-left bg-white rounded-2xl border border-border border-l-4 ${accent} p-5 flex items-start gap-4 hover:shadow-md transition-shadow`}
     >
-      <div className="w-10 h-10 rounded-xl bg-surface flex items-center justify-center flex-shrink-0">
-        <Icon size={22} stroke={1.75} className="text-ink" />
+      <div className="w-10 h-10 rounded-xl bg-[#F4F6FB] flex items-center justify-center flex-shrink-0">
+        <Icon size={22} stroke={1.75} className="text-[#1F3864]" />
       </div>
       <div className="flex-1">
-        <h3 className="font-display font-bold text-[15px] text-foreground">{title}</h3>
+        <h3 className="font-display font-bold text-[15px] text-[#1F3864]">{title}</h3>
         <p className="text-[12px] text-muted-foreground mt-1">{desc}</p>
       </div>
-      <IconArrowRight size={16} stroke={2} className="text-ink mt-1" />
+      <span className="text-[#1F3864] text-sm font-semibold mt-1 inline-flex items-center gap-1">
+        Open
+        <IconArrowRight size={14} stroke={2.25} />
+      </span>
     </button>
   );
 };
+
 
 const JourneySkeleton = () => (
   <AppShell>
