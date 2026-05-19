@@ -168,7 +168,12 @@ const Journey = () => {
         {/* Zone 1 — Light greeting card matching /resources */}
         <section className="container mx-auto px-4 pt-8 md:pt-10 max-w-6xl">
           <div className="bg-white rounded-2xl border border-border shadow-sm p-6 md:p-8">
-            <p className="text-xs text-muted-foreground mb-2">{greeting()}</p>
+            <p
+              className="mb-3 text-[#1F3864]"
+              style={{ fontSize: "22px", fontWeight: 500 }}
+            >
+              {greeting()}
+            </p>
             <span
               className={`font-display inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold ${styles.pillBg} ${styles.pillText} mb-4`}
             >
@@ -178,8 +183,61 @@ const Journey = () => {
             <p className="font-display text-[#1F3864] text-base md:text-lg leading-relaxed max-w-3xl">
               {message}
             </p>
+
+            {/* Progress */}
+            {(() => {
+              const fillColor =
+                effective === "Explorer"
+                  ? "#F5A623"
+                  : effective === "Practitioner"
+                  ? "#E08A00"
+                  : "#27AE60";
+              const motivation =
+                effective === "Explorer"
+                  ? "Complete all 5 to unlock Practitioner"
+                  : effective === "Practitioner"
+                  ? "Complete all 6 to unlock Leader"
+                  : "All levels complete";
+              const displayCount = effective === "Leader" ? 0 : progressCount;
+              const displayTotal = effective === "Leader" ? 0 : total;
+              const displayPct = effective === "Leader" ? 100 : progressPct;
+              return (
+                <div className="mt-6">
+                  <div className="flex justify-end mb-1.5">
+                    <span
+                      className="font-bold text-[#1F3864]"
+                      style={{ fontSize: "13px" }}
+                    >
+                      {effective === "Leader"
+                        ? "All complete"
+                        : `${displayCount} of ${displayTotal} complete`}
+                    </span>
+                  </div>
+                  <div
+                    className="w-full rounded-full overflow-hidden"
+                    style={{ height: "10px", backgroundColor: "#E5E9F0" }}
+                  >
+                    <div
+                      className="h-full transition-all duration-500"
+                      style={{
+                        width: `${displayPct}%`,
+                        backgroundColor: fillColor,
+                      }}
+                    />
+                  </div>
+                  <p
+                    className="mt-1.5 text-muted-foreground"
+                    style={{ fontSize: "11px" }}
+                  >
+                    {motivation}
+                  </p>
+                </div>
+              );
+            })()}
           </div>
         </section>
+
+
 
         <div className="container mx-auto px-4 py-8 md:py-10 max-w-6xl space-y-8">
           {/* Zone 2 — Pathway */}
