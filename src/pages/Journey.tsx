@@ -19,6 +19,7 @@ import {
 import { deriveEffectiveLevel, runProgressionCheck } from "@/lib/progression";
 import ModuleCard from "@/components/journey/ModuleCard";
 import LeaderTaskCard from "@/components/journey/LeaderTaskCard";
+import LeaderAchievementStrip from "@/components/journey/LeaderAchievementStrip";
 import { IconWand, IconCalendarEvent, IconBulb, IconArrowRight } from "@tabler/icons-react";
 import emblemExplorer from "@/assets/emblem-explorer.svg";
 import emblemPractitioner from "@/assets/emblem-practitioner.svg";
@@ -184,12 +185,14 @@ const Journey = () => {
               <img src={LEVEL_EMBLEM[effective]} alt="" aria-hidden className="h-6 w-6" />
               {greeting()}, {effective}
             </p>
-            <span
-              className={`font-display inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold ${styles.pillBg} ${styles.pillText} mb-4`}
-            >
-              <img src={LEVEL_EMBLEM[effective]} alt="" aria-hidden className="h-3.5 w-3.5" />
-              {effective} level
-            </span>
+            {effective !== "Leader" && (
+              <span
+                className={`font-display inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold ${styles.pillBg} ${styles.pillText} mb-4`}
+              >
+                <img src={LEVEL_EMBLEM[effective]} alt="" aria-hidden className="h-3.5 w-3.5" />
+                {effective} level
+              </span>
+            )}
             <p className="font-display text-[#1F3864] text-base md:text-lg leading-relaxed max-w-3xl">
               {message}
             </p>
@@ -241,6 +244,14 @@ const Journey = () => {
                   >
                     {motivation}
                   </p>
+                  {effective === "Leader" && (
+                    <div className="mt-3">
+                      <span className="font-display inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold bg-[#EAF3DE] text-[#3B6D11] border border-[#CDE3B8]">
+                        <img src={LEVEL_EMBLEM.Leader} alt="" aria-hidden className="h-3.5 w-3.5" />
+                        Leader level
+                      </span>
+                    </div>
+                  )}
                 </div>
               );
             })()}
@@ -252,32 +263,28 @@ const Journey = () => {
         <div className="container mx-auto px-4 py-8 md:py-10 max-w-6xl space-y-8">
           {/* Zone 2 — Pathway */}
           <section className="space-y-4">
-            <h2 className="font-display font-bold text-[#1F3864] text-lg md:text-xl">Your pathway</h2>
+            <h2 className="font-display font-bold text-[#1F3864] text-lg md:text-xl">
+              {effective === "Leader" ? "Your journey" : "Your pathway"}
+            </h2>
 
 
-            {showExplorerMilestone && <MilestoneBanner variant="explorer" />}
-            {showPractitionerMilestone && <MilestoneBanner variant="practitioner" />}
-
-            {/* Collapsed prior-level strips */}
-            {effective === "Practitioner" && (
-              <CompletedLevelStrip
+            {effective === "Leader" ? (
+              <LeaderAchievementStrip
                 profile={profile}
                 completedIds={completedModuleIds}
-                variant="explorer"
               />
-            )}
-            {effective === "Leader" && (
+            ) : (
               <>
-                <CompletedLevelStrip
-                  profile={profile}
-                  completedIds={completedModuleIds}
-                  variant="explorer"
-                />
-                <CompletedLevelStrip
-                  profile={profile}
-                  completedIds={completedModuleIds}
-                  variant="practitioner"
-                />
+                {showExplorerMilestone && <MilestoneBanner variant="explorer" />}
+                {showPractitionerMilestone && <MilestoneBanner variant="practitioner" />}
+
+                {effective === "Practitioner" && (
+                  <CompletedLevelStrip
+                    profile={profile}
+                    completedIds={completedModuleIds}
+                    variant="explorer"
+                  />
+                )}
               </>
             )}
 
