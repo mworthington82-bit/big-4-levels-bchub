@@ -8,21 +8,21 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { ClipboardCheck, TrendingUp, Heart, Target } from "lucide-react";
+import { hasSeen, markSeen } from "@/lib/onceFlags";
 
-const SESSION_KEY = "assessment_intro_shown";
+const FLAG_KEY = "assessment_intro_shown";
 
 const AssessmentIntroDialog = () => {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    const hasShown = sessionStorage.getItem(SESSION_KEY);
-    if (!hasShown) {
-      setOpen(true);
-    }
+    hasSeen(FLAG_KEY).then((seen) => {
+      if (!seen) setOpen(true);
+    });
   }, []);
 
   const handleClose = () => {
-    sessionStorage.setItem(SESSION_KEY, "true");
+    markSeen(FLAG_KEY);
     setOpen(false);
   };
 

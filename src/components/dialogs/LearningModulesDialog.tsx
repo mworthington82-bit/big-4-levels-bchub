@@ -56,19 +56,20 @@ const levelContent = {
   },
 };
 
+import { hasSeen, markSeen } from "@/lib/onceFlags";
+
 const LearningModulesDialog = ({ level }: LearningModulesDialogProps) => {
   const [open, setOpen] = useState(false);
-  const sessionKey = `learning_modules_${level}_shown`;
+  const flagKey = `learning_modules_${level}_shown`;
 
   useEffect(() => {
-    const hasShown = sessionStorage.getItem(sessionKey);
-    if (!hasShown) {
-      setOpen(true);
-    }
-  }, [sessionKey]);
+    hasSeen(flagKey).then((seen) => {
+      if (!seen) setOpen(true);
+    });
+  }, [flagKey]);
 
   const handleClose = () => {
-    sessionStorage.setItem(sessionKey, "true");
+    markSeen(flagKey);
     setOpen(false);
   };
 
