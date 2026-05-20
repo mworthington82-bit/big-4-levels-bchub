@@ -25,6 +25,7 @@ import Resources from "./pages/Resources";
 import Inclusion from "./pages/Inclusion";
 import Bookings from "./pages/Bookings";
 import Planner from "./pages/Planner";
+import Profile from "./pages/Profile";
 
 import NotFound from "./pages/NotFound";
 import RequireAuth from "./components/RequireAuth";
@@ -55,6 +56,7 @@ const App = () => (
           <Route path="/planner" element={<RequireAuth><Planner /></RequireAuth>} />
           <Route path="/inclusion" element={<RequireAuth><Inclusion /></RequireAuth>} />
           <Route path="/bookings" element={<RequireAuth><Bookings /></RequireAuth>} />
+          <Route path="/profile" element={<RequireAuth><Profile /></RequireAuth>} />
 
           {/* New pages — kept in background under /new/* */}
           <Route path="/new/journey" element={<RequireAuth><Journey /></RequireAuth>} />

@@ -6,10 +6,11 @@ import { fullSignOut } from "@/lib/signOut";
 import { buildModuleCards, countCompleteOrEvidenced, totalForLevel } from "@/lib/journey";
 import { deriveEffectiveLevel } from "@/lib/progression";
 import { useIdleLogout } from "@/hooks/useIdleLogout";
-import bradfordLogo from "@/assets/bradford-college-logo.jpg";
+import { getInitials } from "@/pages/Profile";
+import bradfordLogo from "@/assets/bradford-college-logo.png";
 
 const navLinkClass = ({ isActive }: { isActive: boolean }) =>
-  `px-4 min-h-[44px] inline-flex items-center rounded-full text-sm font-semibold transition-colors shrink-0 whitespace-nowrap ${
+  `px-3 min-h-[44px] inline-flex items-center rounded-full text-sm font-semibold transition-colors shrink-0 whitespace-nowrap ${
     isActive ? "bg-white/15 text-white" : "text-white/80 hover:text-white hover:bg-white/10"
   }`;
 
@@ -40,44 +41,81 @@ const AppShell = ({ children }: { children: React.ReactNode }) => {
     }
   }
 
+  const initials = getInitials(profile?.name);
+
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <header className="bg-[#1F3864] text-white shadow-md">
-        <div className="container mx-auto px-4 py-3 flex items-center justify-between gap-x-4 gap-y-2 min-h-[64px]">
+        <div
+          className="container mx-auto px-4 py-3 flex items-center gap-4 min-h-[64px]"
+          style={{ flexWrap: "nowrap" }}
+        >
+          {/* Logo + title (left) */}
           <button
             onClick={() => navigate("/journey")}
-            className="flex items-center gap-2 font-bold text-base md:text-lg shrink-0 min-h-[44px]"
+            className="flex items-center gap-3 shrink-0 min-h-[44px]"
             aria-label="The Big 4: Level Up — home"
+            style={{ minWidth: "fit-content" }}
           >
-            <img src={bradfordLogo} alt="" className="h-8 w-8 rounded object-contain bg-white/95 p-0.5" />
-            <span className="w-2.5 h-2.5 rounded-full bg-[#F5A623]" aria-hidden />
-            <span className="whitespace-nowrap hidden sm:inline">The Big 4: Level Up</span>
+            <img src={bradfordLogo} alt="Bradford College" className="h-8 w-auto object-contain" style={{ background: "transparent" }} />
+            <span className="hidden sm:inline-block h-6 w-px" style={{ background: "rgba(255,255,255,0.2)" }} aria-hidden />
+            <span className="hidden sm:inline font-bold text-base md:text-lg whitespace-nowrap" style={{ minWidth: "fit-content" }}>
+              The Big 4: Level Up
+            </span>
           </button>
 
-          <nav className="hidden md:flex items-center gap-1 flex-wrap">
+          {/* Center nav */}
+          <nav className="hidden lg:flex items-center gap-1 mx-auto" style={{ flexWrap: "nowrap" }}>
             {NAV_ITEMS.map((item) => (
-              <NavLink key={item.to} to={item.to} className={navLinkClass}>{item.label}</NavLink>
+              <NavLink key={item.to} to={item.to} className={navLinkClass} style={{ minWidth: "fit-content" }}>
+                {item.label}
+              </NavLink>
             ))}
           </nav>
 
-          <div className="flex items-center gap-3 shrink-0">
+          {/* Right cluster: pill + avatar + sign out (never shares space with nav) */}
+          <div className="flex items-center gap-2 shrink-0 ml-auto lg:ml-0" style={{ minWidth: "fit-content", flexWrap: "nowrap" }}>
             {showPill && (
-              <span className="hidden md:inline-flex items-center px-3 py-1.5 rounded-full border border-white/30 text-xs font-semibold bg-white/5 whitespace-nowrap shrink-0">
+              <span
+                className="hidden md:inline-flex items-center px-3 py-1.5 rounded-full border border-white/30 text-xs font-semibold bg-white/5 whitespace-nowrap shrink-0"
+                style={{ minWidth: "fit-content" }}
+              >
                 {pillLabel}
               </span>
             )}
+            {profile && (
+              <button
+                onClick={() => navigate("/profile")}
+                aria-label="Open profile"
+                title={profile.name || "Profile"}
+                className="hidden md:inline-flex items-center justify-center shrink-0 hover:opacity-90 transition"
+                style={{
+                  width: 32,
+                  height: 32,
+                  borderRadius: "9999px",
+                  background: "#1F3864",
+                  color: "#fff",
+                  fontSize: 12,
+                  fontWeight: 500,
+                  border: "1.5px solid rgba(255,255,255,0.3)",
+                }}
+              >
+                {initials}
+              </button>
+            )}
             <button
               onClick={fullSignOut}
-              className="hidden md:inline-flex items-center justify-center gap-1.5 text-white/80 hover:text-white text-sm shrink-0 min-h-[44px] rounded-full hover:bg-white/10 px-3"
+              className="hidden md:inline-flex items-center justify-center gap-1.5 text-white/80 hover:text-white text-sm shrink-0 min-h-[44px] rounded-full hover:bg-white/10 px-2 lg:px-3"
               aria-label="Sign out"
               title="Sign out"
+              style={{ minWidth: "fit-content" }}
             >
               <LogOut className="w-4 h-4" />
-              <span>Sign out</span>
+              <span className="hidden xl:inline whitespace-nowrap">Sign out</span>
             </button>
             <button
               onClick={() => setMobileOpen((v) => !v)}
-              className="md:hidden inline-flex items-center justify-center min-h-[44px] min-w-[44px] rounded-full hover:bg-white/10"
+              className="lg:hidden inline-flex items-center justify-center min-h-[44px] min-w-[44px] rounded-full hover:bg-white/10 shrink-0"
               aria-label={mobileOpen ? "Close menu" : "Open menu"}
               aria-expanded={mobileOpen}
             >
@@ -95,7 +133,7 @@ const AppShell = ({ children }: { children: React.ReactNode }) => {
         )}
 
         {mobileOpen && (
-          <nav className="md:hidden border-t border-white/10 px-4 pb-3 pt-2 flex flex-col gap-1">
+          <nav className="lg:hidden border-t border-white/10 px-4 pb-3 pt-2 flex flex-col gap-1">
             {NAV_ITEMS.map((item) => (
               <NavLink
                 key={item.to}
@@ -106,6 +144,24 @@ const AppShell = ({ children }: { children: React.ReactNode }) => {
                 {item.label}
               </NavLink>
             ))}
+            {profile && (
+              <button
+                onClick={() => { setMobileOpen(false); navigate("/profile"); }}
+                className="inline-flex items-center gap-2 px-4 min-h-[44px] rounded-full text-sm font-semibold text-white/80 hover:text-white hover:bg-white/10"
+              >
+                <span
+                  style={{
+                    width: 24, height: 24, borderRadius: "9999px",
+                    background: "#1F3864", color: "#fff", fontSize: 11, fontWeight: 500,
+                    border: "1.5px solid rgba(255,255,255,0.3)",
+                    display: "inline-flex", alignItems: "center", justifyContent: "center",
+                  }}
+                >
+                  {initials}
+                </span>
+                Profile
+              </button>
+            )}
             <button
               onClick={fullSignOut}
               className="inline-flex items-center gap-2 px-4 min-h-[44px] rounded-full text-sm font-semibold text-white/80 hover:text-white hover:bg-white/10"

@@ -5,14 +5,17 @@ import { Input } from '@/components/ui/input';
 import { Switch } from '@/components/ui/switch';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import {
-  Home, Search, ArrowLeft, X, Bookmark, BookmarkCheck,
-  ChevronRight, Download, SlidersHorizontal, Pin,
+  Search, ArrowLeft, X, Bookmark, BookmarkCheck,
+  ChevronRight, ChevronDown, Download, SlidersHorizontal, Pin, Calendar,
 } from 'lucide-react';
 import { resources, searchResources, toolDisplayNames, Resource } from '@/data/resources';
 import CheatSheetButton from '@/components/CheatSheetButton';
 import ActivityPlanner from '@/components/ActivityPlanner';
+import AppShell from '@/components/AppShell';
+import { useStaffProfile } from '@/hooks/useStaffProfile';
+import { buildModuleCards, countCompleteOrEvidenced, totalForLevel } from '@/lib/journey';
+import { deriveEffectiveLevel } from '@/lib/progression';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
-import bradfordLogo from '@/assets/bradford-college-logo.jpg';
 import teamsLogo from '@/assets/teams-logo.png';
 import canvaLogo from '@/assets/canva-logo.jpg';
 import edpuzzleLogo from '@/assets/edpuzzle-logo.png';
@@ -75,6 +78,23 @@ const Resources = () => {
   const [showBookmarksOnly, setShowBookmarksOnly] = useState(false);
   const [plannerOpen, setPlannerOpen] = useState(false);
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
+  const [expandedId, setExpandedId] = useState<string | null>(null);
+  const { profile, completedModuleIds } = useStaffProfile();
+
+  // Progress for banner
+  let bannerCount = 0;
+  let bannerTotal = 0;
+  if (profile) {
+    const lvl = deriveEffectiveLevel(profile);
+    if (lvl === 'Leader') {
+      bannerCount = 1; bannerTotal = 1;
+    } else {
+      const cards = buildModuleCards(profile, completedModuleIds, lvl);
+      bannerCount = countCompleteOrEvidenced(cards);
+      bannerTotal = totalForLevel(lvl);
+    }
+  }
+  const bannerPct = bannerTotal > 0 ? Math.round((bannerCount / bannerTotal) * 100) : 0;
 
   useEffect(() => {
     const stored = localStorage.getItem('bookmarked_resources');
@@ -246,25 +266,51 @@ const Resources = () => {
 
   // ───────────────────────── Render ─────────────────────────
   return (
+    <AppShell>
     <div className="min-h-screen bg-muted/20">
-      <header className="border-b border-border bg-card shadow-sm sticky top-0 z-10">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <img src={bradfordLogo} alt="Bradford College logo" className="h-10 object-contain cursor-pointer" onClick={() => navigate("/")} />
-              <h1 className="font-display text-xl md:text-2xl font-bold text-foreground">Training Resources</h1>
-            </div>
-            <Button variant="outline" onClick={() => navigate('/')} className="border-border hover:bg-accent hover:text-accent-foreground">
-              <Home className="mr-2 h-4 w-4" /> Home
-            </Button>
+      {/* Two-part banner: progress + Big 4 Day */}
+      <div className="border-b border-border bg-card">
+        <div className="container mx-auto px-4">
+          <div className="grid w-full overflow-hidden" style={{ gridTemplateColumns: "minmax(0,70fr) minmax(0,30fr)" }}>
+            <button
+              onClick={() => navigate('/journey')}
+              className="text-left flex items-stretch min-h-[48px] hover:bg-muted/30 transition"
+              style={{ borderBottom: "0.5px solid #F5A623" }}
+              aria-label="View your journey progress"
+            >
+              <div style={{ width: 4, background: "#F5A623" }} aria-hidden />
+              <div className="flex-1 flex items-center gap-3 px-3 py-2 min-w-0">
+                <span className="text-[11px] uppercase tracking-wide text-muted-foreground font-semibold shrink-0 whitespace-nowrap">Your progress</span>
+                <div className="flex-1 h-1.5 rounded-full bg-muted overflow-hidden">
+                  <div className="h-full rounded-full" style={{ width: `${bannerPct}%`, background: "#F5A623" }} />
+                </div>
+                <span className="text-xs font-semibold text-foreground shrink-0 whitespace-nowrap">{bannerCount} of {bannerTotal} complete</span>
+              </div>
+            </button>
+            <button
+              onClick={() => navigate('/bookings')}
+              className="text-left flex items-center gap-2 px-3 py-2 min-h-[48px] hover:opacity-95 transition"
+              style={{ background: "#1F3864", color: "#fff", minWidth: "fit-content" }}
+              aria-label="Book Big 4 Day"
+            >
+              <Calendar className="h-4 w-4 shrink-0" />
+              <div className="flex flex-col min-w-0">
+                <span className="text-[13px] font-medium whitespace-nowrap">Book Big 4 Day</span>
+                <span className="text-[11px] text-white/70 whitespace-nowrap">29th June</span>
+              </div>
+            </button>
           </div>
         </div>
-      </header>
+      </div>
+
+      <div className="container mx-auto px-4 pt-6">
+        <h1 className="font-display text-xl md:text-2xl font-bold text-foreground">Training Resources</h1>
+      </div>
 
       <main className="container mx-auto px-4 py-6 md:py-8">
-        <div className="flex gap-6">
+        <div className="grid gap-6" style={{ gridTemplateColumns: "260px minmax(0,1fr)" }} data-resources-grid>
           {/* ───── Sidebar (desktop) ───── */}
-          <aside className="hidden md:flex md:flex-col gap-4 w-[260px] flex-shrink-0">
+          <aside className="hidden lg:flex lg:flex-col gap-4 min-w-0">
             <PlannerCard />
             <LeadCard />
             <div className="flex flex-col gap-4 p-4 rounded-xl border border-border bg-muted/30">
@@ -272,16 +318,13 @@ const Resources = () => {
             </div>
           </aside>
 
-          {/* ───── Right content ───── */}
-          <section className="flex-1 min-w-0">
-            {/* Mobile pinned cards */}
-            <div className="md:hidden grid grid-cols-1 gap-3 mb-4">
+          <section className="min-w-0 mx-auto w-full" style={{ maxWidth: 800 }}>
+            <div className="lg:hidden grid grid-cols-1 gap-3 mb-4">
               <PlannerCard />
               <LeadCard />
             </div>
 
-            {/* Mobile filters trigger */}
-            <div className="md:hidden mb-3">
+            <div className="lg:hidden mb-3">
               <Sheet open={mobileFiltersOpen} onOpenChange={setMobileFiltersOpen}>
                 <SheetTrigger asChild>
                   <Button variant="outline" className="w-full">
@@ -346,82 +389,103 @@ const Resources = () => {
               {filteredResources.length} resource{filteredResources.length !== 1 ? 's' : ''} found
             </p>
 
-            {/* Resource grid */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-              {filteredResources.map((resource, index) => {
+            {/* Resource list — single column, expandable */}
+            <div className="flex flex-col gap-2">
+              {filteredResources.map((resource) => {
                 const brand = toolBrandColors[resource.tool] || toolBrandColors.immersive;
                 const badge = getTypeBadge(resource.type);
+                const isOpen = expandedId === resource.id;
+                const toolLogo = toolLogos[resource.tool] || toolLogos.teams;
 
                 return (
                   <div
                     key={resource.id}
-                    className="bg-card rounded-2xl border border-border shadow-sm hover:shadow-[var(--shadow-hover)] transition-all duration-300 overflow-hidden animate-fade-in flex flex-col"
-                    style={{ animationDelay: `${index * 30}ms` }}
+                    className="bg-card rounded-lg border border-border shadow-sm overflow-hidden transition-all duration-200"
+                    style={{ borderWidth: "0.5px" }}
                   >
-                    <div className={`${brand.header} px-4 py-3 flex items-center justify-between`}>
-                      <div className="flex items-center gap-2">
-                        <div className="h-6 w-6 rounded bg-white/20 p-0.5 flex-shrink-0">
-                          <img src={toolLogos[resource.tool] || teamsLogo} alt="" className="h-full w-full object-contain" />
+                    <button
+                      onClick={() => setExpandedId(isOpen ? null : resource.id)}
+                      className="w-full flex items-center justify-between gap-3 px-4 min-h-[56px] text-left hover:bg-muted/30 transition"
+                      aria-expanded={isOpen}
+                    >
+                      <div className="flex items-center gap-3 min-w-0">
+                        <div className="h-6 w-6 rounded bg-muted p-0.5 flex items-center justify-center shrink-0">
+                          <img src={toolLogo} alt="" className="h-full w-full object-contain" />
                         </div>
-                        <span className={`text-sm font-semibold ${brand.text}`}>{toolDisplayNames[resource.tool]}</span>
+                        <span className="text-[14px] font-bold text-[#1F3864] truncate">{resource.title}</span>
                       </div>
-                      <span className={`text-xs font-semibold px-2 py-1 rounded-full ${badge.color}`}>
-                        {badge.label}
-                      </span>
-                    </div>
-
-                    <div className="p-5 flex flex-col flex-1">
-                      <div className="flex items-start justify-between gap-2 mb-2">
-                        <h3 className="font-display text-base font-bold text-foreground line-clamp-2">{resource.title}</h3>
-                        <button
-                          onClick={(e) => { e.stopPropagation(); toggleBookmark(resource.id); }}
-                          className="flex-shrink-0 p-1 rounded hover:bg-muted transition-colors"
-                          aria-label={bookmarks.has(resource.id) ? "Remove from favourites" : "Add to favourites"}
-                        >
-                          {bookmarks.has(resource.id)
-                            ? <BookmarkCheck className="h-4 w-4 text-accent" />
-                            : <Bookmark className="h-4 w-4 text-muted-foreground" />}
-                        </button>
+                      <div className="flex items-center gap-2 shrink-0">
+                        <span className={`text-[11px] font-semibold px-2 py-0.5 rounded-full whitespace-nowrap ${badge.color}`}>{badge.label}</span>
+                        <ChevronDown
+                          className="h-4 w-4 text-muted-foreground transition-transform duration-200"
+                          style={{ transform: isOpen ? "rotate(180deg)" : "rotate(0deg)" }}
+                        />
                       </div>
-                      <p className="text-sm text-muted-foreground mb-3 line-clamp-2 flex-1">{resource.description}</p>
+                    </button>
 
-                      <div className="flex items-center justify-between gap-2 mt-auto">
-                        <div className="flex items-center gap-2 flex-wrap">
-                          <span className="text-xs text-muted-foreground bg-muted px-2 py-1 rounded">{resource.function}</span>
-                          {resource.level && resource.level !== 'all' && (
-                            <span className={`text-xs px-2 py-1 rounded capitalize ${
-                              resource.level === 'explorer' ? 'bg-[#F5A623]/20 text-[#B8860B]' :
-                              resource.level === 'practitioner' ? 'bg-[#5B5FC7]/20 text-[#5B5FC7]' :
-                              'bg-green-500/20 text-green-700'
-                            }`}>
-                              {resource.level}
-                            </span>
-                          )}
-                        </div>
-                        <div className="flex items-center gap-1.5 flex-shrink-0">
-                          {resource.pdfUrl && resource.type === 'link' && (
-                            <Button
-                              size="sm"
-                              variant="outline"
-                              className="rounded-full px-3 text-xs font-semibold border-primary/30 hover:bg-primary/10"
-                              onClick={(e) => { e.stopPropagation(); window.open(resource.pdfUrl, '_blank'); }}
+                    {isOpen && (
+                      <div className="border-t border-border animate-fade-in">
+                        <div className={`${brand.header} px-4 py-3 flex items-center justify-between`}>
+                          <div className="flex items-center gap-2 min-w-0">
+                            <div className="h-6 w-6 rounded bg-white/20 p-0.5 flex-shrink-0">
+                              <img src={toolLogo} alt="" className="h-full w-full object-contain" />
+                            </div>
+                            <span className={`text-sm font-semibold ${brand.text} truncate`}>{toolDisplayNames[resource.tool]}</span>
+                          </div>
+                          <div className="flex items-center gap-2 shrink-0">
+                            <span className={`text-xs font-semibold px-2 py-1 rounded-full whitespace-nowrap ${badge.color}`}>{badge.label}</span>
+                            <button
+                              onClick={(e) => { e.stopPropagation(); toggleBookmark(resource.id); }}
+                              className="p-1 rounded hover:bg-white/20 transition-colors"
+                              aria-label={bookmarks.has(resource.id) ? "Remove from favourites" : "Add to favourites"}
                             >
-                              <Download className="h-3 w-3 mr-1" /> PDF
-                            </Button>
-                          )}
-                          <Button
-                            size="sm"
-                            className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-full px-4 text-xs font-semibold"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              window.open(resource.pdfUrl && resource.type !== 'link' ? resource.pdfUrl : resource.url, '_blank');
-                            }}
-                          >
-                            {resource.type === 'video' ? 'Watch Video ▶' : resource.type === 'pdf' ? 'Download PDF ⬇' : 'Open Guide ↗'}
-                          </Button>
+                              {bookmarks.has(resource.id)
+                                ? <BookmarkCheck className="h-4 w-4 text-white" />
+                                : <Bookmark className="h-4 w-4 text-white" />}
+                            </button>
+                          </div>
+                        </div>
+                        <div className="p-5">
+                          <p className="text-sm text-muted-foreground mb-3">{resource.description}</p>
+                          <div className="flex items-center justify-between gap-2 flex-wrap">
+                            <div className="flex items-center gap-2 flex-wrap">
+                              <span className="text-xs text-muted-foreground bg-muted px-2 py-1 rounded whitespace-nowrap">{resource.function}</span>
+                              {resource.level && resource.level !== 'all' && (
+                                <span className={`text-xs px-2 py-1 rounded capitalize whitespace-nowrap ${
+                                  resource.level === 'explorer' ? 'bg-[#F5A623]/20 text-[#B8860B]' :
+                                  resource.level === 'practitioner' ? 'bg-[#5B5FC7]/20 text-[#5B5FC7]' :
+                                  'bg-green-500/20 text-green-700'
+                                }`}>{resource.level}</span>
+                              )}
+                            </div>
+                            <div className="flex items-center gap-1.5 flex-wrap" style={{ minWidth: "fit-content" }}>
+                              {resource.pdfUrl && resource.type === 'link' && (
+                                <Button
+                                  size="sm"
+                                  variant="outline"
+                                  className="rounded-full px-3 text-xs font-semibold border-primary/30 hover:bg-primary/10 whitespace-nowrap"
+                                  style={{ minWidth: "fit-content" }}
+                                  onClick={(e) => { e.stopPropagation(); window.open(resource.pdfUrl, '_blank'); }}
+                                >
+                                  <Download className="h-3 w-3 mr-1" /> PDF
+                                </Button>
+                              )}
+                              <Button
+                                size="sm"
+                                className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-full px-4 text-xs font-semibold whitespace-nowrap"
+                                style={{ minWidth: "fit-content" }}
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  window.open(resource.pdfUrl && resource.type !== 'link' ? resource.pdfUrl : resource.url, '_blank');
+                                }}
+                              >
+                                {resource.type === 'video' ? 'Watch Video' : resource.type === 'pdf' ? 'Download PDF' : 'Open Guide'}
+                              </Button>
+                            </div>
+                          </div>
                         </div>
                       </div>
-                    </div>
+                    )}
                   </div>
                 );
               })}
@@ -500,7 +564,16 @@ const Resources = () => {
           {plannerOpen && <ActivityPlanner />}
         </DialogContent>
       </Dialog>
+
+      <style>{`
+        @media (max-width: 1023px) {
+          [data-resources-grid] {
+            grid-template-columns: minmax(0, 1fr) !important;
+          }
+        }
+      `}</style>
     </div>
+    </AppShell>
   );
 };
 
