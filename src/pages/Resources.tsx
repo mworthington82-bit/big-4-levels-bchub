@@ -225,16 +225,16 @@ const Resources = () => {
               <button
                 key={tool.id}
                 onClick={() => setSelectedTool(active ? 'all' : tool.id)}
-                className={`flex flex-col items-center gap-1.5 p-2.5 rounded-lg border-2 bg-card transition ${
+                className={`flex items-center gap-2 px-2.5 py-1.5 rounded-lg border bg-card transition ${
                   active ? 'border-[#F5A623]' : 'border-border hover:border-border/70'
                 }`}
               >
-                <div className="h-8 w-8 rounded bg-white p-1 flex items-center justify-center">
+                <div className="h-5 w-5 rounded bg-white p-0.5 flex items-center justify-center shrink-0">
                   {tool.logo
                     ? <img src={tool.logo} alt="" className="h-full w-full object-contain" />
-                    : <span className="w-5 h-5 rounded-full bg-[#F5A623]" />}
+                    : <span className="w-3 h-3 rounded-full bg-[#F5A623]" />}
                 </div>
-                <span className={`text-[12px] font-medium ${active ? 'text-[#F5A623]' : 'text-foreground'}`}>
+                <span className={`text-[12px] font-medium truncate ${active ? 'text-[#F5A623]' : 'text-foreground'}`}>
                   {tool.name}
                 </span>
               </button>
