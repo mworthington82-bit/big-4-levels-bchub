@@ -25,6 +25,7 @@ import Resources from "./pages/Resources";
 import Inclusion from "./pages/Inclusion";
 import Bookings from "./pages/Bookings";
 import Planner from "./pages/Planner";
+import Profile from "./pages/Profile";
 
 import NotFound from "./pages/NotFound";
 import RequireAuth from "./components/RequireAuth";
