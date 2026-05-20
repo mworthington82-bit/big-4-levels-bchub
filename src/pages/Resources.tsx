@@ -2,11 +2,15 @@ import { useState, useEffect, useRef } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Home, Search, ArrowLeft, X, Play, Download, Bookmark, BookmarkCheck, Pin, Lightbulb, Sparkles, ChevronRight } from 'lucide-react';
+import { Switch } from '@/components/ui/switch';
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
+import {
+  Home, Search, ArrowLeft, X, Bookmark, BookmarkCheck,
+  ChevronRight, Download, SlidersHorizontal, Pin,
+} from 'lucide-react';
 import { resources, searchResources, toolDisplayNames, Resource } from '@/data/resources';
 import CheatSheetButton from '@/components/CheatSheetButton';
 import ActivityPlanner from '@/components/ActivityPlanner';
-import ActivityIdeasWall from '@/components/ActivityIdeasWall';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import bradfordLogo from '@/assets/bradford-college-logo.jpg';
 import teamsLogo from '@/assets/teams-logo.png';
@@ -22,13 +26,8 @@ type ToolFilter = 'all' | 'teams' | 'forms' | 'canva' | 'edpuzzle' | 'copilot' |
 type LevelFilter = 'all' | 'explorer' | 'practitioner' | 'leader';
 
 const toolLogos: Record<string, string> = {
-  teams: teamsLogo,
-  forms: formsLogo,
-  canva: canvaLogo,
-  edpuzzle: edpuzzleLogo,
-  copilot: copilotLogo,
-  notebook: teamsLogo,
-  immersive: teamsLogo,
+  teams: teamsLogo, forms: formsLogo, canva: canvaLogo,
+  edpuzzle: edpuzzleLogo, copilot: copilotLogo, notebook: teamsLogo, immersive: teamsLogo,
 };
 
 const toolBrandColors: Record<string, { header: string; text: string }> = {
@@ -43,25 +42,30 @@ const toolBrandColors: Record<string, { header: string; text: string }> = {
 
 const getTypeBadge = (type: string) => {
   switch (type) {
-    case 'pdf': return { icon: '⬇️', label: 'Download', color: 'bg-green-100 text-green-800' };
-    case 'video': return { icon: '🎬', label: 'Video', color: 'bg-red-100 text-red-800' };
-    default: return { icon: '📄', label: 'Guide', color: 'bg-blue-100 text-blue-800' };
+    case 'pdf': return { label: 'Download', color: 'bg-green-100 text-green-800' };
+    case 'video': return { label: 'Video', color: 'bg-red-100 text-red-800' };
+    default: return { label: 'Guide', color: 'bg-blue-100 text-blue-800' };
   }
 };
 
-const getActionButton = (resource: Resource) => {
-  if (resource.pdfUrl) {
-    return { label: 'Download PDF ⬇', url: resource.pdfUrl };
-  }
-  if (resource.type === 'video') {
-    return { label: 'Watch Video ▶', url: resource.url };
-  }
-  return { label: 'Open Guide ↗', url: resource.url };
-};
+const TOOL_BUTTONS: { id: Exclude<ToolFilter, 'all'>; name: string; logo: string | null }[] = [
+  { id: 'teams', name: 'MS Teams', logo: teamsLogo },
+  { id: 'forms', name: 'MS Forms', logo: formsLogo },
+  { id: 'canva', name: 'Canva', logo: canvaLogo },
+  { id: 'edpuzzle', name: 'Edpuzzle', logo: edpuzzleLogo },
+  { id: 'copilot', name: 'Copilot', logo: copilotLogo },
+  { id: 'immersive', name: 'Immersive', logo: null },
+];
+
+const LEVEL_BUTTONS: { id: Exclude<LevelFilter, 'all'>; name: string; icon: string; color: string }[] = [
+  { id: 'explorer', name: 'Explorer', icon: emblemExplorer, color: '#F5A623' },
+  { id: 'practitioner', name: 'Practitioner', icon: emblemPractitioner, color: '#16a085' },
+  { id: 'leader', name: 'Leader', icon: emblemLeader, color: '#2E86DE' },
+];
 
 const Resources = () => {
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const leadCardRef = useRef<HTMLDivElement | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedTool, setSelectedTool] = useState<ToolFilter>('all');
@@ -70,6 +74,7 @@ const Resources = () => {
   const [bookmarks, setBookmarks] = useState<Set<string>>(new Set());
   const [showBookmarksOnly, setShowBookmarksOnly] = useState(false);
   const [plannerOpen, setPlannerOpen] = useState(false);
+  const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
 
   useEffect(() => {
     const stored = localStorage.getItem('bookmarked_resources');
@@ -78,12 +83,18 @@ const Resources = () => {
 
   useEffect(() => { window.scrollTo(0, 0); }, []);
 
+  // Auto-open planner via ?planner=1
   useEffect(() => {
-    if (searchParams.get('pinned') === 'lead' && leadCardRef.current) {
-      setTimeout(() => {
-        leadCardRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }, 200);
+    if (searchParams.get('planner') === '1') {
+      setPlannerOpen(true);
+      const next = new URLSearchParams(searchParams);
+      next.delete('planner');
+      setSearchParams(next, { replace: true });
     }
+    if (searchParams.get('pinned') === 'lead' && leadCardRef.current) {
+      setTimeout(() => leadCardRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' }), 200);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams]);
 
   useEffect(() => {
@@ -104,25 +115,136 @@ const Resources = () => {
     });
   };
 
-  const toolButtons = [
-    { id: 'teams' as ToolFilter, name: 'MS Teams', logo: teamsLogo, color: '#5B5FC7' },
-    { id: 'forms' as ToolFilter, name: 'MS Forms', logo: formsLogo, color: '#5B5FC7' },
-    { id: 'canva' as ToolFilter, name: 'Canva', logo: canvaLogo, color: '#7D2AE8' },
-    { id: 'edpuzzle' as ToolFilter, name: 'Edpuzzle', logo: edpuzzleLogo, color: '#1DA1F2' },
-    { id: 'copilot' as ToolFilter, name: 'Copilot', logo: copilotLogo, color: '#0078D4' },
-    { id: 'immersive' as ToolFilter, name: 'Immersive', logo: null, color: '#F5A623' },
-  ];
+  const clearFilters = () => {
+    setSearchQuery(''); setSelectedTool('all'); setSelectedLevel('all'); setShowBookmarksOnly(false);
+  };
 
-  const levelButtons: { id: LevelFilter; name: string; icon: string | null; color: string; activeColor: string }[] = [
-    { id: 'all' as LevelFilter, name: 'All Levels', icon: null, color: 'border-border', activeColor: 'border-accent bg-accent/10' },
-    { id: 'explorer', name: 'Explorer', icon: emblemExplorer, color: 'border-border', activeColor: 'border-[#F5A623] bg-[#F5A623]/10' },
-    { id: 'practitioner', name: 'Practitioner', icon: emblemPractitioner, color: 'border-border', activeColor: 'border-[#16a085] bg-[#16a085]/10' },
-    { id: 'leader', name: 'Leader', icon: emblemLeader, color: 'border-border', activeColor: 'border-[#2E86DE] bg-[#2E86DE]/10' },
-  ];
+  const hasActiveFilters = selectedTool !== 'all' || selectedLevel !== 'all' || searchQuery || showBookmarksOnly;
 
-  const handleToolSelect = (tool: ToolFilter) => setSelectedTool(selectedTool === tool ? 'all' : tool);
-  const clearFilters = () => { setSearchQuery(''); setSelectedTool('all'); setSelectedLevel('all'); setShowBookmarksOnly(false); };
+  // ───────────────────────── Sidebar pieces ─────────────────────────
+  const PlannerCard = () => (
+    <div className="bg-card rounded-xl border border-border shadow-sm overflow-hidden">
+      <div className="flex">
+        <div className="w-1 bg-[#F5A623]" aria-hidden />
+        <div className="p-4 flex-1">
+          <span className="inline-block text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-[#F5A623] text-[#1F3864] mb-2">
+            AI-Powered
+          </span>
+          <h3 className="font-display text-[15px] font-bold text-foreground mb-1">Activity Planner</h3>
+          <p className="text-xs text-muted-foreground leading-relaxed mb-3 line-clamp-2">
+            Tell us what you want learners to achieve and we will suggest the right Big 4 tool and how to use it.
+          </p>
+          <Button
+            onClick={() => setPlannerOpen(true)}
+            className="w-full bg-[#F5A623] hover:bg-[#F5A623]/90 text-[#1F3864] font-semibold rounded-full"
+            size="sm"
+          >
+            Open Planner <ChevronRight className="h-4 w-4 ml-1" />
+          </Button>
+        </div>
+      </div>
+    </div>
+  );
 
+  const LeadCard = () => (
+    <div ref={leadCardRef} className="bg-card rounded-xl border border-border shadow-sm overflow-hidden">
+      <div className="h-1 bg-[#1F3864]" aria-hidden />
+      <div className="p-4">
+        <span className="inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-[#1F3864] text-white mb-2">
+          <Pin className="h-3 w-3" /> Pinned
+        </span>
+        <h3 className="font-display text-sm font-bold text-foreground mb-1">Big 4 × LEAD Model</h3>
+        <p className="text-xs text-muted-foreground leading-relaxed mb-3">
+          How to use every tool at every stage of your lesson.
+        </p>
+        <Button
+          onClick={() => window.open('/resources/Big4_LEAD_Guide.docx', '_blank')}
+          className="w-full bg-[#1F3864] hover:bg-[#1F3864]/90 text-white font-semibold rounded-full"
+          size="sm"
+        >
+          Open Guide <ChevronRight className="h-4 w-4 ml-1" />
+        </Button>
+      </div>
+    </div>
+  );
+
+  const FilterControls = () => (
+    <>
+      <div>
+        <p className="text-[11px] uppercase tracking-wide text-muted-foreground font-semibold mb-2">
+          Filter by tool
+        </p>
+        <div className="grid grid-cols-2 gap-2">
+          {TOOL_BUTTONS.map((tool) => {
+            const active = selectedTool === tool.id;
+            return (
+              <button
+                key={tool.id}
+                onClick={() => setSelectedTool(active ? 'all' : tool.id)}
+                className={`flex flex-col items-center gap-1.5 p-2.5 rounded-lg border-2 bg-card transition ${
+                  active ? 'border-[#F5A623]' : 'border-border hover:border-border/70'
+                }`}
+              >
+                <div className="h-8 w-8 rounded bg-white p-1 flex items-center justify-center">
+                  {tool.logo
+                    ? <img src={tool.logo} alt="" className="h-full w-full object-contain" />
+                    : <span className="w-5 h-5 rounded-full bg-[#F5A623]" />}
+                </div>
+                <span className={`text-[12px] font-medium ${active ? 'text-[#F5A623]' : 'text-foreground'}`}>
+                  {tool.name}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      <div>
+        <p className="text-[11px] uppercase tracking-wide text-muted-foreground font-semibold mb-2">
+          Filter by level
+        </p>
+        <div className="flex flex-wrap gap-2">
+          {LEVEL_BUTTONS.map((lv) => {
+            const active = selectedLevel === lv.id;
+            return (
+              <button
+                key={lv.id}
+                onClick={() => setSelectedLevel(active ? 'all' : lv.id)}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border-2 text-xs font-semibold transition"
+                style={
+                  active
+                    ? { borderColor: lv.color, background: `${lv.color}20`, color: lv.color }
+                    : { borderColor: 'hsl(var(--border))', background: 'hsl(var(--card))' }
+                }
+              >
+                <img src={lv.icon} alt="" className="h-4 w-4" />
+                {lv.name}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      <div className="flex items-center justify-between gap-3 p-3 rounded-lg border border-border bg-card">
+        <label htmlFor="fav-toggle" className="flex items-center gap-2 text-sm font-medium text-foreground cursor-pointer">
+          {showBookmarksOnly
+            ? <BookmarkCheck className="h-4 w-4 text-[#F5A623]" />
+            : <Bookmark className="h-4 w-4 text-muted-foreground" />}
+          My Favourites only
+          {bookmarks.size > 0 && (
+            <span className="text-xs text-muted-foreground">({bookmarks.size})</span>
+          )}
+        </label>
+        <Switch
+          id="fav-toggle"
+          checked={showBookmarksOnly}
+          onCheckedChange={setShowBookmarksOnly}
+        />
+      </div>
+    </>
+  );
+
+  // ───────────────────────── Render ─────────────────────────
   return (
     <div className="min-h-screen bg-muted/20">
       <header className="border-b border-border bg-card shadow-sm sticky top-0 z-10">
@@ -139,348 +261,245 @@ const Resources = () => {
         </div>
       </header>
 
-      <main className="container mx-auto px-4 py-8">
-        {/* Search */}
-        <div className="max-w-2xl mx-auto mb-8">
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-            <Input type="text" placeholder="Search resources..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} className="pl-10 pr-10 py-6 text-lg border-border" />
-            {searchQuery && (
-              <button onClick={() => setSearchQuery('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground">
-                <X className="h-5 w-5" />
-              </button>
-            )}
-          </div>
-        </div>
+      <main className="container mx-auto px-4 py-6 md:py-8">
+        <div className="flex gap-6">
+          {/* ───── Sidebar (desktop) ───── */}
+          <aside className="hidden md:flex md:flex-col gap-4 w-[260px] flex-shrink-0">
+            <PlannerCard />
+            <LeadCard />
+            <div className="flex flex-col gap-4 p-4 rounded-xl border border-border bg-muted/30">
+              <FilterControls />
+            </div>
+          </aside>
 
-        {/* Tool Filter - Larger with logos */}
-        <div className="grid grid-cols-3 md:grid-cols-6 gap-3 mb-6 max-w-5xl mx-auto">
-          {toolButtons.map((tool) => (
-            <button
-              key={tool.id}
-              onClick={() => handleToolSelect(tool.id)}
-              className={`p-4 rounded-xl border-2 transition-all duration-300 flex flex-col items-center gap-2 ${
-                selectedTool === tool.id
-                  ? 'shadow-md scale-105'
-                  : 'border-border bg-card hover:shadow-sm'
-              }`}
-              style={selectedTool === tool.id ? { borderColor: tool.color, backgroundColor: `${tool.color}15` } : {}}
-            >
-              <div className="h-14 w-14 rounded-xl bg-white p-2 shadow-sm flex items-center justify-center">
-                {tool.logo ? (
-                  <img src={tool.logo} alt={tool.name} className="h-full w-full object-contain" />
-                ) : (
-                  <span className="text-2xl">🌐</span>
-                )}
-              </div>
-              <span className="text-sm font-semibold text-card-foreground">{tool.name}</span>
-            </button>
-          ))}
-        </div>
+          {/* ───── Right content ───── */}
+          <section className="flex-1 min-w-0">
+            {/* Mobile pinned cards */}
+            <div className="md:hidden grid grid-cols-1 gap-3 mb-4">
+              <PlannerCard />
+              <LeadCard />
+            </div>
 
-        {/* Level Filter Row */}
-        <div className="flex flex-wrap justify-center gap-3 mb-8">
-          {levelButtons.map((level) => (
-            <button
-              key={level.id}
-              onClick={() => setSelectedLevel(selectedLevel === level.id ? 'all' : level.id)}
-              className={`px-5 py-2.5 rounded-full text-sm font-semibold transition-all duration-300 border-2 flex items-center gap-2 ${
-                selectedLevel === level.id ? level.activeColor : level.color + ' bg-card hover:border-accent/50'
-              }`}
-            >
-              {level.icon ? <img src={level.icon} alt={level.name} className="h-5 w-5" /> : <span>📚</span>}
-              {level.name}
-            </button>
-          ))}
-        </div>
+            {/* Mobile filters trigger */}
+            <div className="md:hidden mb-3">
+              <Sheet open={mobileFiltersOpen} onOpenChange={setMobileFiltersOpen}>
+                <SheetTrigger asChild>
+                  <Button variant="outline" className="w-full">
+                    <SlidersHorizontal className="h-4 w-4 mr-2" /> Filters
+                  </Button>
+                </SheetTrigger>
+                <SheetContent side="bottom" className="rounded-t-2xl max-h-[85vh] overflow-y-auto">
+                  <SheetHeader>
+                    <SheetTitle>Filters</SheetTitle>
+                  </SheetHeader>
+                  <div className="flex flex-col gap-4 pt-4">
+                    <FilterControls />
+                  </div>
+                </SheetContent>
+              </Sheet>
+            </div>
 
-        {/* Bookmark filter */}
-        <div className="flex flex-wrap justify-center gap-3 mb-6">
-          <button
-            onClick={() => setShowBookmarksOnly(!showBookmarksOnly)}
-            className={`px-5 py-2.5 rounded-full text-sm font-semibold transition-all duration-300 border-2 flex items-center gap-2 ${
-              showBookmarksOnly ? 'border-accent bg-accent/10' : 'border-border bg-card hover:border-accent/50'
-            }`}
-          >
-            {showBookmarksOnly ? <BookmarkCheck className="h-4 w-4 text-accent" /> : <Bookmark className="h-4 w-4" />}
-            My Favourites {bookmarks.size > 0 && `(${bookmarks.size})`}
-          </button>
-        </div>
+            {/* Search */}
+            <div className="relative mb-4">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+              <Input
+                type="text"
+                placeholder="Search resources..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="pl-10 pr-10 py-6 text-base border-border"
+              />
+              {searchQuery && (
+                <button onClick={() => setSearchQuery('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground">
+                  <X className="h-5 w-5" />
+                </button>
+              )}
+            </div>
 
-        {/* Active Filters */}
-        {(selectedTool !== 'all' || selectedLevel !== 'all' || searchQuery || showBookmarksOnly) && (
-          <div className="flex items-center justify-center gap-2 mb-6">
-            <span className="text-sm text-muted-foreground">Active filters:</span>
-            {selectedTool !== 'all' && (
-              <span className="inline-flex items-center gap-1 px-3 py-1 bg-accent/20 rounded-full text-sm">
-                {toolDisplayNames[selectedTool]}
-                <button onClick={() => setSelectedTool('all')}><X className="h-3 w-3" /></button>
-              </span>
-            )}
-            {selectedLevel !== 'all' && (
-              <span className="inline-flex items-center gap-1 px-3 py-1 bg-primary/10 rounded-full text-sm capitalize">
-                {selectedLevel}
-                <button onClick={() => setSelectedLevel('all')}><X className="h-3 w-3" /></button>
-              </span>
-            )}
-            <button onClick={clearFilters} className="text-sm text-accent hover:underline ml-2">Clear all</button>
-          </div>
-        )}
-
-        <p className="text-center text-muted-foreground mb-6">
-          {filteredResources.length} resource{filteredResources.length !== 1 ? 's' : ''} found
-        </p>
-
-        {/* Activity Planner — compact trigger card opening a dialog */}
-        <div className="max-w-4xl mx-auto mb-8 animate-fade-in">
-          <button
-            type="button"
-            onClick={() => setPlannerOpen(true)}
-            className="group w-full text-left bg-card rounded-2xl border border-border hover:border-teal-600/40 shadow-sm hover:shadow-[var(--shadow-hover)] transition-all duration-300 overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-600 focus-visible:ring-offset-2"
-            aria-label="Open the Big 4 Activity Planner"
-          >
-            <div className="flex items-center gap-4 p-4 md:p-5">
-              <div className="flex-shrink-0 h-12 w-12 md:h-14 md:w-14 rounded-xl bg-gradient-to-br from-teal-600 to-blue-700 flex items-center justify-center shadow-sm">
-                <Lightbulb className="h-6 w-6 md:h-7 md:w-7 text-white" aria-hidden="true" />
-              </div>
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-2 flex-wrap mb-0.5">
-                  <h3 className="font-display text-base md:text-lg font-bold text-foreground">Big 4 Activity Planner</h3>
-                  <span className="inline-flex items-center gap-1 text-[10px] md:text-[11px] font-semibold uppercase tracking-wide px-2 py-0.5 rounded-full bg-teal-50 text-teal-700 border border-teal-200">
-                    <Sparkles className="h-3 w-3" aria-hidden="true" />
-                    AI-Powered
+            {/* Active filters */}
+            {hasActiveFilters && (
+              <div className="flex items-center flex-wrap gap-2 mb-3">
+                <span className="text-xs text-muted-foreground">Active filters:</span>
+                {selectedTool !== 'all' && (
+                  <span className="inline-flex items-center gap-1 px-3 py-1 bg-accent/20 rounded-full text-xs">
+                    {toolDisplayNames[selectedTool]}
+                    <button onClick={() => setSelectedTool('all')} aria-label="Clear tool filter"><X className="h-3 w-3" /></button>
                   </span>
-                </div>
-                <p className="text-xs md:text-sm text-muted-foreground line-clamp-2">
-                  Tell us what you want learners to achieve — we'll recommend the right Big 4 tool and how to set it up.
+                )}
+                {selectedLevel !== 'all' && (
+                  <span className="inline-flex items-center gap-1 px-3 py-1 bg-primary/10 rounded-full text-xs capitalize">
+                    {selectedLevel}
+                    <button onClick={() => setSelectedLevel('all')} aria-label="Clear level filter"><X className="h-3 w-3" /></button>
+                  </span>
+                )}
+                {showBookmarksOnly && (
+                  <span className="inline-flex items-center gap-1 px-3 py-1 bg-[#F5A623]/20 rounded-full text-xs">
+                    Favourites
+                    <button onClick={() => setShowBookmarksOnly(false)} aria-label="Clear favourites filter"><X className="h-3 w-3" /></button>
+                  </span>
+                )}
+                <button onClick={clearFilters} className="text-xs text-accent hover:underline ml-1">Clear all</button>
+              </div>
+            )}
+
+            <p className="text-sm text-muted-foreground mb-4">
+              {filteredResources.length} resource{filteredResources.length !== 1 ? 's' : ''} found
+            </p>
+
+            {/* Resource grid */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+              {filteredResources.map((resource, index) => {
+                const brand = toolBrandColors[resource.tool] || toolBrandColors.immersive;
+                const badge = getTypeBadge(resource.type);
+
+                return (
+                  <div
+                    key={resource.id}
+                    className="bg-card rounded-2xl border border-border shadow-sm hover:shadow-[var(--shadow-hover)] transition-all duration-300 overflow-hidden animate-fade-in flex flex-col"
+                    style={{ animationDelay: `${index * 30}ms` }}
+                  >
+                    <div className={`${brand.header} px-4 py-3 flex items-center justify-between`}>
+                      <div className="flex items-center gap-2">
+                        <div className="h-6 w-6 rounded bg-white/20 p-0.5 flex-shrink-0">
+                          <img src={toolLogos[resource.tool] || teamsLogo} alt="" className="h-full w-full object-contain" />
+                        </div>
+                        <span className={`text-sm font-semibold ${brand.text}`}>{toolDisplayNames[resource.tool]}</span>
+                      </div>
+                      <span className={`text-xs font-semibold px-2 py-1 rounded-full ${badge.color}`}>
+                        {badge.label}
+                      </span>
+                    </div>
+
+                    <div className="p-5 flex flex-col flex-1">
+                      <div className="flex items-start justify-between gap-2 mb-2">
+                        <h3 className="font-display text-base font-bold text-foreground line-clamp-2">{resource.title}</h3>
+                        <button
+                          onClick={(e) => { e.stopPropagation(); toggleBookmark(resource.id); }}
+                          className="flex-shrink-0 p-1 rounded hover:bg-muted transition-colors"
+                          aria-label={bookmarks.has(resource.id) ? "Remove from favourites" : "Add to favourites"}
+                        >
+                          {bookmarks.has(resource.id)
+                            ? <BookmarkCheck className="h-4 w-4 text-accent" />
+                            : <Bookmark className="h-4 w-4 text-muted-foreground" />}
+                        </button>
+                      </div>
+                      <p className="text-sm text-muted-foreground mb-3 line-clamp-2 flex-1">{resource.description}</p>
+
+                      <div className="flex items-center justify-between gap-2 mt-auto">
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <span className="text-xs text-muted-foreground bg-muted px-2 py-1 rounded">{resource.function}</span>
+                          {resource.level && resource.level !== 'all' && (
+                            <span className={`text-xs px-2 py-1 rounded capitalize ${
+                              resource.level === 'explorer' ? 'bg-[#F5A623]/20 text-[#B8860B]' :
+                              resource.level === 'practitioner' ? 'bg-[#5B5FC7]/20 text-[#5B5FC7]' :
+                              'bg-green-500/20 text-green-700'
+                            }`}>
+                              {resource.level}
+                            </span>
+                          )}
+                        </div>
+                        <div className="flex items-center gap-1.5 flex-shrink-0">
+                          {resource.pdfUrl && resource.type === 'link' && (
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              className="rounded-full px-3 text-xs font-semibold border-primary/30 hover:bg-primary/10"
+                              onClick={(e) => { e.stopPropagation(); window.open(resource.pdfUrl, '_blank'); }}
+                            >
+                              <Download className="h-3 w-3 mr-1" /> PDF
+                            </Button>
+                          )}
+                          <Button
+                            size="sm"
+                            className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-full px-4 text-xs font-semibold"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              window.open(resource.pdfUrl && resource.type !== 'link' ? resource.pdfUrl : resource.url, '_blank');
+                            }}
+                          >
+                            {resource.type === 'video' ? 'Watch Video ▶' : resource.type === 'pdf' ? 'Download PDF ⬇' : 'Open Guide ↗'}
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            {filteredResources.length === 0 && (
+              <div className="text-center py-12">
+                <Search className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                <h3 className="font-display text-xl font-semibold text-foreground mb-2">No resources found</h3>
+                <p className="text-muted-foreground mb-4">Try adjusting your search or filter criteria</p>
+                <Button onClick={clearFilters} variant="outline">Clear filters</Button>
+              </div>
+            )}
+
+            {/* Cheat sheets */}
+            <div className="mt-10">
+              <div className="mb-4">
+                <h2 className="font-display text-lg md:text-xl font-bold text-foreground mb-1">
+                  Quick Reference Cheat Sheets
+                </h2>
+                <p className="text-sm text-muted-foreground">
+                  Downloadable one-page guides for each of the Big 4 tools
                 </p>
               </div>
-              <div className="hidden sm:flex items-center gap-1.5 flex-shrink-0 text-sm font-semibold text-teal-700 group-hover:translate-x-0.5 transition-transform">
-                Open Planner
-                <ChevronRight className="h-4 w-4" aria-hidden="true" />
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
+                {[
+                  { id: 'teams', name: 'MS Teams', logo: teamsLogo, color: '#5B5FC7' },
+                  { id: 'forms', name: 'MS Forms', logo: formsLogo, color: '#5B5FC7' },
+                  { id: 'canva', name: 'Canva', logo: canvaLogo, color: '#7D2AE8' },
+                  { id: 'edpuzzle', name: 'Edpuzzle', logo: edpuzzleLogo, color: '#1DA1F2' },
+                  { id: 'copilot', name: 'Copilot', logo: copilotLogo, color: '#0078D4' },
+                ].map((tool) => (
+                  <CheatSheetButton
+                    key={tool.id}
+                    toolId={tool.id}
+                    className="group block w-full text-left rounded-2xl overflow-hidden border-2 border-border bg-card shadow-sm hover:shadow-[var(--shadow-hover)] hover:-translate-y-0.5 transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+                  >
+                    <div className="px-3 py-2.5 flex items-center justify-between" style={{ backgroundColor: tool.color }}>
+                      <div className="h-7 w-7 rounded bg-white/95 p-1 flex items-center justify-center">
+                        <img src={tool.logo} alt="" className="h-full w-full object-contain" />
+                      </div>
+                      <span className="text-[10px] font-bold uppercase tracking-wider text-white/90">PDF</span>
+                    </div>
+                    <div className="p-3">
+                      <h3 className="font-display text-sm font-bold text-foreground leading-tight mb-0.5">{tool.name}</h3>
+                      <p className="text-[11px] text-muted-foreground mb-3">Quick Reference</p>
+                      <div
+                        className="inline-flex items-center gap-1.5 text-xs font-semibold rounded-full px-3 py-1.5 text-white group-hover:brightness-110 transition"
+                        style={{ backgroundColor: tool.color }}
+                      >
+                        <Download className="h-3 w-3" /> Download
+                      </div>
+                    </div>
+                  </CheatSheetButton>
+                ))}
               </div>
-              <ChevronRight className="sm:hidden h-5 w-5 flex-shrink-0 text-teal-700" aria-hidden="true" />
-            </div>
-          </button>
-        </div>
-
-        <Dialog open={plannerOpen} onOpenChange={setPlannerOpen}>
-          <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto p-0 gap-0">
-            <DialogHeader className="sr-only">
-              <DialogTitle>Big 4 Activity Planner</DialogTitle>
-              <DialogDescription>
-                Tell us what you want learners to achieve and we will recommend the right Big 4 tool, show you how to set it up, and check it for inclusion.
-              </DialogDescription>
-            </DialogHeader>
-            {plannerOpen && <ActivityPlanner />}
-          </DialogContent>
-        </Dialog>
-
-        {/* Pinned LEAD Guide Card */}
-        <div ref={leadCardRef} className="max-w-4xl mx-auto mb-8 animate-fade-in">
-          <div className="bg-card rounded-2xl border-2 border-[#0078D4]/40 shadow-[var(--shadow-hover)] overflow-hidden">
-            <div className="bg-[#0078D4] px-5 py-3 flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <Pin className="h-4 w-4 text-white" />
-                <span className="text-sm font-semibold text-white">Pinned · Bradford College</span>
-              </div>
-              <span className="text-xs font-bold uppercase tracking-wider text-white bg-white/20 px-2 py-1 rounded-full">
-                LEAD Guide
-              </span>
-            </div>
-
-            {/* LEAD strip badges */}
-            <div className="grid grid-cols-4 gap-0">
-              <div className="bg-green-600 text-white text-center py-2 text-xs md:text-sm font-bold">L — Launch</div>
-              <div className="bg-blue-600 text-white text-center py-2 text-xs md:text-sm font-bold">E — Establish</div>
-              <div className="bg-amber-500 text-white text-center py-2 text-xs md:text-sm font-bold">A — Apply</div>
-              <div className="bg-purple-600 text-white text-center py-2 text-xs md:text-sm font-bold">D — Demonstrate</div>
             </div>
 
-            <div className="p-6">
-              <h3 className="font-display text-xl md:text-2xl font-bold text-foreground mb-2">
-                Big 4 x LEAD Model — Teaching Guide
-              </h3>
-              <p className="text-sm md:text-base text-muted-foreground mb-4 leading-relaxed">
-                A practical guide showing how each of the Big 4 tools — MS Teams, Canva, Edpuzzle, Copilot, and the Immersive Room — can be used at every stage of the LEAD model: Launch, Establish, Apply, and Demonstrate. Use this as your planning reference to embed digital tools purposefully into every lesson.
-              </p>
-              <div className="flex flex-wrap items-center gap-2 mb-5">
-                <span className="text-xs px-2.5 py-1 rounded-full bg-[#F5A623]/20 text-[#B8860B] font-semibold">Explorer</span>
-                <span className="text-xs px-2.5 py-1 rounded-full bg-[#16a085]/20 text-[#16a085] font-semibold">Practitioner</span>
-                <span className="text-xs px-2.5 py-1 rounded-full bg-[#2E86DE]/20 text-[#2E86DE] font-semibold">Leader</span>
-                <span className="text-xs px-2.5 py-1 rounded-full bg-muted text-muted-foreground font-medium">All tools</span>
-              </div>
-              <Button
-                size="lg"
-                className="w-full md:w-auto bg-[#0078D4] hover:bg-[#0078D4]/90 text-white rounded-full px-6 font-semibold"
-                onClick={() => window.open('/resources/Big4_LEAD_Guide.docx', '_blank')}
-              >
-                <Download className="h-4 w-4 mr-2" />
-                Download the Big 4 x LEAD Guide
+            <div className="text-center mt-8">
+              <Button variant="outline" onClick={() => navigate(-1)} className="border-border hover:bg-accent hover:text-accent-foreground">
+                <ArrowLeft className="mr-2 h-4 w-4" /> Go Back
               </Button>
             </div>
-          </div>
-        </div>
-
-        {/* Quick Reference Cheat Sheets */}
-        <div className="max-w-6xl mx-auto mb-10 animate-fade-in">
-          <div className="text-center mb-5">
-            <h2 className="font-display text-xl md:text-2xl font-bold text-foreground mb-1">
-              Quick Reference Cheat Sheets
-            </h2>
-            <p className="text-sm md:text-base text-muted-foreground">
-              Downloadable one-page guides for each of the Big 4 tools
-            </p>
-          </div>
-
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 md:gap-4">
-            {[
-              { id: 'teams', name: 'MS Teams', logo: teamsLogo, color: '#5B5FC7' },
-              { id: 'forms', name: 'MS Forms', logo: formsLogo, color: '#5B5FC7' },
-              { id: 'canva', name: 'Canva', logo: canvaLogo, color: '#7D2AE8' },
-              { id: 'edpuzzle', name: 'Edpuzzle', logo: edpuzzleLogo, color: '#1DA1F2' },
-              { id: 'copilot', name: 'Copilot', logo: copilotLogo, color: '#0078D4' },
-            ].map((tool) => (
-              <CheatSheetButton
-                key={tool.id}
-                toolId={tool.id}
-                className="group block w-full text-left rounded-2xl overflow-hidden border-2 border-border bg-card shadow-sm hover:shadow-[var(--shadow-hover)] hover:-translate-y-0.5 transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
-              >
-                <div className="px-3 py-2.5 flex items-center justify-between" style={{ backgroundColor: tool.color }}>
-                  <div className="h-7 w-7 rounded bg-white/95 p-1 flex items-center justify-center">
-                    <img src={tool.logo} alt="" className="h-full w-full object-contain" />
-                  </div>
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-white/90">PDF</span>
-                </div>
-                <div className="p-3 md:p-4">
-                  <h3 className="font-display text-sm md:text-base font-bold text-foreground leading-tight mb-0.5">
-                    {tool.name}
-                  </h3>
-                  <p className="text-[11px] md:text-xs text-muted-foreground mb-3">
-                    Quick Reference
-                  </p>
-                  <div
-                    className="inline-flex items-center gap-1.5 text-xs font-semibold rounded-full px-3 py-1.5 text-white group-hover:brightness-110 transition"
-                    style={{ backgroundColor: tool.color }}
-                  >
-                    <Download className="h-3 w-3" />
-                    Download
-                  </div>
-                </div>
-              </CheatSheetButton>
-            ))}
-          </div>
-        </div>
-
-        {/* Resource Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-          {filteredResources.map((resource, index) => {
-            const brand = toolBrandColors[resource.tool] || toolBrandColors.immersive;
-            const badge = getTypeBadge(resource.type);
-            const action = getActionButton(resource);
-
-            return (
-              <div
-                key={resource.id}
-                className="bg-card rounded-2xl border border-border shadow-sm hover:shadow-[var(--shadow-hover)] transition-all duration-300 overflow-hidden animate-fade-in flex flex-col"
-                style={{ animationDelay: `${index * 30}ms` }}
-              >
-                {/* Colored header strip */}
-                <div className={`${brand.header} px-4 py-3 flex items-center justify-between`}>
-                  <div className="flex items-center gap-2">
-                    <div className="h-6 w-6 rounded bg-white/20 p-0.5 flex-shrink-0">
-                      <img src={toolLogos[resource.tool] || teamsLogo} alt="" className="h-full w-full object-contain" />
-                    </div>
-                    <span className={`text-sm font-semibold ${brand.text}`}>{toolDisplayNames[resource.tool]}</span>
-                  </div>
-                  <span className={`text-xs font-semibold px-2 py-1 rounded-full ${badge.color}`}>
-                    {badge.icon} {badge.label}
-                  </span>
-                </div>
-
-                {/* Card body */}
-                <div className="p-5 flex flex-col flex-1">
-                  <div className="flex items-start justify-between gap-2 mb-2">
-                    <h3 className="font-display text-base font-bold text-foreground line-clamp-2">{resource.title}</h3>
-                    <button
-                      onClick={(e) => { e.stopPropagation(); toggleBookmark(resource.id); }}
-                      className="flex-shrink-0 p-1 rounded hover:bg-muted transition-colors"
-                      aria-label={bookmarks.has(resource.id) ? "Remove from favourites" : "Add to favourites"}
-                    >
-                      {bookmarks.has(resource.id) ? (
-                        <BookmarkCheck className="h-4 w-4 text-accent" />
-                      ) : (
-                        <Bookmark className="h-4 w-4 text-muted-foreground" />
-                      )}
-                    </button>
-                  </div>
-                  <p className="text-sm text-muted-foreground mb-3 line-clamp-2 flex-1">{resource.description}</p>
-
-                  <div className="flex items-center justify-between gap-2 mt-auto">
-                    <div className="flex items-center gap-2 flex-wrap">
-                      <span className="text-xs text-muted-foreground bg-muted px-2 py-1 rounded">{resource.function}</span>
-                      {resource.level && resource.level !== 'all' && (
-                        <span className={`text-xs px-2 py-1 rounded capitalize ${
-                          resource.level === 'explorer' ? 'bg-[#F5A623]/20 text-[#B8860B]' :
-                          resource.level === 'practitioner' ? 'bg-[#5B5FC7]/20 text-[#5B5FC7]' :
-                          'bg-green-500/20 text-green-700'
-                        }`}>
-                          {resource.level}
-                        </span>
-                      )}
-                    </div>
-                    <div className="flex items-center gap-1.5 flex-shrink-0">
-                      {resource.pdfUrl && resource.type === 'link' && (
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          className="rounded-full px-3 text-xs font-semibold border-primary/30 hover:bg-primary/10"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            window.open(resource.pdfUrl, '_blank');
-                          }}
-                        >
-                          <Download className="h-3 w-3 mr-1" /> PDF
-                        </Button>
-                      )}
-                      <Button
-                        size="sm"
-                        className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-full px-4 text-xs font-semibold"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          window.open(resource.pdfUrl && resource.type !== 'link' ? resource.pdfUrl : resource.url, '_blank');
-                        }}
-                      >
-                        {resource.type === 'video' ? 'Watch Video ▶' : resource.type === 'pdf' ? 'Download PDF ⬇' : 'Open Guide ↗'}
-                      </Button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-
-        {filteredResources.length === 0 && (
-          <div className="text-center py-12">
-            <Search className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-            <h3 className="font-display text-xl font-semibold text-foreground mb-2">No resources found</h3>
-            <p className="text-muted-foreground mb-4">Try adjusting your search or filter criteria</p>
-            <Button onClick={clearFilters} variant="outline">Clear filters</Button>
-          </div>
-        )}
-
-        {/* Activity Ideas Wall */}
-        <div className="max-w-6xl mx-auto">
-          <ActivityIdeasWall />
-        </div>
-
-        <div className="text-center mt-8">
-          <Button variant="outline" onClick={() => navigate(-1)} className="border-border hover:bg-accent hover:text-accent-foreground">
-            <ArrowLeft className="mr-2 h-4 w-4" /> Go Back
-          </Button>
+          </section>
         </div>
       </main>
+
+      <Dialog open={plannerOpen} onOpenChange={setPlannerOpen}>
+        <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto p-0 gap-0">
+          <DialogHeader className="sr-only">
+            <DialogTitle>Big 4 Activity Planner</DialogTitle>
+            <DialogDescription>
+              Tell us what you want learners to achieve and we will recommend the right Big 4 tool, show you how to set it up, and check it for inclusion.
+            </DialogDescription>
+          </DialogHeader>
+          {plannerOpen && <ActivityPlanner />}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
