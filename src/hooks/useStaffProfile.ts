@@ -13,6 +13,7 @@ export interface StaffProfile {
   practitioner_unlocked: boolean;
   practitioner_complete: boolean;
   leader_unlocked: boolean;
+  data_uploaded_at: string | null;
   teams_explorer_evidenced: boolean;
   forms_explorer_evidenced: boolean;
   canva_explorer_evidenced: boolean;
@@ -35,7 +36,7 @@ interface State {
 }
 
 const PROFILE_COLUMNS = [
-  "email","name","department","assigned_level",
+  "email","name","department","assigned_level","data_uploaded_at",
   "explorer_evidenced_count","practitioner_evidenced_count","onboarding_shown",
   "explorer_complete","practitioner_unlocked","practitioner_complete","leader_unlocked",
   "teams_explorer_evidenced","forms_explorer_evidenced","canva_explorer_evidenced",
