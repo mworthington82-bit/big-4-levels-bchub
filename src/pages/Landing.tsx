@@ -301,52 +301,6 @@ const Landing = () => {
           {/* Staff Spotlight */}
           <StaffSpotlight />
 
-
-          {/* Action Buttons */}
-          <div className="max-w-4xl mx-auto grid md:grid-cols-2 gap-6">
-            <div className="bg-card rounded-2xl border border-border shadow-[var(--shadow-card)] p-6 animate-fade-in hover:shadow-[var(--shadow-hover)] transition-all duration-300" style={{ animationDelay: '100ms' }}>
-              <div className="flex items-center gap-3 mb-3">
-                <div className="p-3 rounded-xl bg-secondary/20">
-                  <ArrowRight className="w-6 h-6 text-muted-foreground" />
-                </div>
-                <h3 className="font-display text-xl font-bold text-foreground">First Time?</h3>
-              </div>
-              <p className="text-muted-foreground text-sm mb-4">
-                Complete the digital self-assessment first to discover your skill level
-              </p>
-              <Button
-                size="lg"
-                variant="secondary"
-                onClick={() => navigate("/self-assessment")}
-                className="w-full py-6 text-lg rounded-xl transition-all duration-300 font-semibold group"
-              >
-                Take the Self-Assessment
-                <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-              </Button>
-            </div>
-
-            <div className="bg-card rounded-2xl border border-border shadow-[var(--shadow-card)] p-6 animate-fade-in hover:shadow-[var(--shadow-hover)] transition-all duration-300" style={{ animationDelay: '200ms' }}>
-              <div className="flex items-center gap-3 mb-3">
-                <div className="p-3 rounded-xl bg-[#F5A623]/15">
-                  <CheckCircle className="w-6 h-6 text-[#F5A623]" />
-                </div>
-                <h3 className="font-display text-xl font-bold text-foreground">Already Assessed?</h3>
-              </div>
-              <p className="text-muted-foreground text-sm mb-4">
-                You know your level — jump straight into your personalised journey
-              </p>
-              <Button
-                size="lg"
-                onClick={handleAlreadyAssessed}
-                disabled={profileLoading}
-                className="w-full py-6 text-lg rounded-xl font-semibold group"
-              >
-                {profileLoading ? "Loading…" : "Go to My Journey"}
-                <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-              </Button>
-            </div>
-          </div>
-
           {/* Inclusion & Accessibility Signpost Banner */}
           <div className="max-w-4xl mx-auto mt-8 animate-fade-in" style={{ animationDelay: '300ms' }}>
             <div
