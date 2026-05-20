@@ -546,7 +546,16 @@ const Resources = () => {
           {plannerOpen && <ActivityPlanner />}
         </DialogContent>
       </Dialog>
+
+      <style>{`
+        @media (max-width: 1023px) {
+          [data-resources-grid] {
+            grid-template-columns: minmax(0, 1fr) !important;
+          }
+        }
+      `}</style>
     </div>
+    </AppShell>
   );
 };
 
