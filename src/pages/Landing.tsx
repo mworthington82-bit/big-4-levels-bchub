@@ -16,7 +16,7 @@ import SignOutButton from "@/components/SignOutButton";
 import OnboardingModal from "@/components/journey/OnboardingModal";
 import { useStaffProfile } from "@/hooks/useStaffProfile";
 
-import bradfordLogo from "@/assets/bradford-college-logo.jpg";
+import bradfordLogo from "@/assets/bradford-college-logo.png";
 import teamsLogo from "@/assets/teams-logo.png";
 import canvaLogo from "@/assets/canva-logo.jpg";
 import edpuzzleLogo from "@/assets/edpuzzle-logo.png";
