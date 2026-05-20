@@ -217,21 +217,24 @@ const Module = () => {
         {/* Header */}
         <header className="bg-white border-b border-[#D0D7E2]">
           <div className="container mx-auto px-4 py-6 max-w-5xl">
-            <button
-              onClick={() => navigate("/journey")}
-              className="inline-flex items-center gap-1.5 text-sm text-[#185FA5] font-semibold mb-4 hover:underline"
-            >
-              <IconArrowLeft size={16} stroke={2} />
-              Back to my journey
-            </button>
-            <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
-              <div className="flex-1 text-center md:text-left">
+            {/* Back button row — dedicated, never shares a row */}
+            <div className="my-3">
+              <button
+                onClick={() => navigate("/journey")}
+                className="inline-flex items-center gap-1.5 text-sm text-[#185FA5] font-semibold hover:underline min-h-[44px]"
+              >
+                <IconArrowLeft size={16} stroke={2} />
+                Back to my journey
+              </button>
+            </div>
+            <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
+              <div className="flex-1 text-center sm:text-left">
                 <h1 className="font-bold text-[#1F3864] text-2xl md:text-3xl">
                   {module.tool_name}
                 </h1>
-                <div className="mt-2 flex flex-wrap items-center gap-2 justify-center md:justify-start">
+                <div className="mt-2 flex flex-col sm:flex-row sm:flex-wrap items-center sm:items-center gap-2 justify-center sm:justify-start">
                   <span
-                    className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-bold ${
+                    className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-bold shrink-0 ${
                       LEVEL_PILL[module.level] ?? LEVEL_PILL.Explorer
                     }`}
                   >
@@ -245,8 +248,8 @@ const Module = () => {
                   <p className="mt-1 text-[#5F6B7D] text-sm">{module.module_subtitle}</p>
                 )}
               </div>
-              <div className="shrink-0 flex md:block justify-center">
-                <span className="inline-flex items-center gap-1.5 bg-[#F4F6FB] border border-[#D0D7E2] text-[#1F3864] text-sm font-semibold px-3 py-1.5 rounded-full">
+              <div className="shrink-0 flex sm:block justify-center">
+                <span className="inline-flex items-center gap-1.5 bg-[#F4F6FB] border border-[#D0D7E2] text-[#1F3864] text-sm font-semibold px-3 py-1.5 rounded-full whitespace-nowrap">
                   <IconClock size={14} stroke={2} />
                   About {module.estimated_minutes} minutes
                 </span>
