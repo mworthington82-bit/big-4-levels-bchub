@@ -337,33 +337,14 @@ const Resources = () => {
           <aside className="hidden lg:flex lg:flex-col gap-4 min-w-0">
             <PlannerCard />
             <LeadCard />
-            <div className="flex flex-col gap-4 p-4 rounded-xl border border-border bg-muted/30">
-              <FilterControls />
-            </div>
+            <InclusionCard />
           </aside>
 
           <section className="min-w-0 mx-auto w-full" style={{ maxWidth: 800 }}>
             <div className="lg:hidden grid grid-cols-1 gap-3 mb-4">
               <PlannerCard />
               <LeadCard />
-            </div>
-
-            <div className="lg:hidden mb-3">
-              <Sheet open={mobileFiltersOpen} onOpenChange={setMobileFiltersOpen}>
-                <SheetTrigger asChild>
-                  <Button variant="outline" className="w-full">
-                    <SlidersHorizontal className="h-4 w-4 mr-2" /> Filters
-                  </Button>
-                </SheetTrigger>
-                <SheetContent side="bottom" className="rounded-t-2xl max-h-[85vh] overflow-y-auto">
-                  <SheetHeader>
-                    <SheetTitle>Filters</SheetTitle>
-                  </SheetHeader>
-                  <div className="flex flex-col gap-4 pt-4">
-                    <FilterControls />
-                  </div>
-                </SheetContent>
-              </Sheet>
+              <InclusionCard />
             </div>
 
             {/* Search */}
@@ -382,6 +363,12 @@ const Resources = () => {
                 </button>
               )}
             </div>
+
+            {/* Filters — inline below search */}
+            <div className="flex flex-col gap-3 p-4 rounded-xl border border-border bg-muted/30 mb-4">
+              <FilterControls />
+            </div>
+
 
             {/* Active filters */}
             {hasActiveFilters && (
