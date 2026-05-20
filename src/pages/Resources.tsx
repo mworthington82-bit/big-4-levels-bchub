@@ -17,7 +17,6 @@ import { buildModuleCards, countCompleteOrEvidenced, totalForLevel } from '@/lib
 import { deriveEffectiveLevel } from '@/lib/progression';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import teamsLogo from '@/assets/teams-logo.png';
-import teamsLogo from '@/assets/teams-logo.png';
 import canvaLogo from '@/assets/canva-logo.jpg';
 import edpuzzleLogo from '@/assets/edpuzzle-logo.png';
 import copilotLogo from '@/assets/copilot-logo.png';
