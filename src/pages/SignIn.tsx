@@ -4,7 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { consumeSessionExpired } from "@/lib/sessionExpiry";
 import { usePageTitle } from "@/lib/usePageTitle";
-import bradfordLogo from "@/assets/bradford-college-logo.jpg";
+import bradfordLogo from "@/assets/bradford-college-logo.png";
 import emblemExplorer from "@/assets/emblem-explorer.svg";
 import emblemPractitioner from "@/assets/emblem-practitioner.svg";
 import emblemLeader from "@/assets/emblem-leader.svg";
