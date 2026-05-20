@@ -16,7 +16,7 @@ const navLinkClass = ({ isActive }: { isActive: boolean }) =>
 const NAV_ITEMS = [
   { to: "/journey", label: "My Journey" },
   { to: "/resources", label: "Resources" },
-  { to: "/connect", label: "Training" },
+  { to: "/bookings", label: "Training" },
   { to: "/best-practice", label: "Best Practice" },
 ];
 
