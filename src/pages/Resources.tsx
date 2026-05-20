@@ -6,7 +6,7 @@ import { Switch } from '@/components/ui/switch';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import {
   Search, ArrowLeft, X, Bookmark, BookmarkCheck,
-  ChevronRight, ChevronDown, Download, SlidersHorizontal, Pin, Calendar,
+  ChevronRight, ChevronDown, Download, SlidersHorizontal, Pin, Calendar, Heart,
 } from 'lucide-react';
 import { resources, searchResources, toolDisplayNames, Resource } from '@/data/resources';
 import CheatSheetButton from '@/components/CheatSheetButton';
@@ -188,6 +188,30 @@ const Resources = () => {
     </div>
   );
 
+  const InclusionCard = () => (
+    <div className="bg-card rounded-xl border border-border shadow-sm overflow-hidden">
+      <div className="flex">
+        <div className="w-1 bg-[#5B2D8E]" aria-hidden />
+        <div className="p-4 flex-1">
+          <div className="flex items-center gap-2 mb-2">
+            <Heart className="h-4 w-4 text-[#5B2D8E]" />
+            <h3 className="font-display text-[15px] font-bold text-[#1F3864]">Inclusion Hub</h3>
+          </div>
+          <p className="text-[12px] text-muted-foreground leading-relaxed mb-3">
+            Practical tips and guides for making the Big 4 tools work for every learner.
+          </p>
+          <Button
+            onClick={() => navigate('/inclusion')}
+            className="w-full bg-[#5B2D8E] hover:bg-[#5B2D8E]/90 text-white font-semibold rounded-full"
+            size="sm"
+          >
+            Explore the Hub <ChevronRight className="h-4 w-4 ml-1" />
+          </Button>
+        </div>
+      </div>
+    </div>
+  );
+
   const FilterControls = () => (
     <>
       <div>
@@ -201,16 +225,16 @@ const Resources = () => {
               <button
                 key={tool.id}
                 onClick={() => setSelectedTool(active ? 'all' : tool.id)}
-                className={`flex flex-col items-center gap-1.5 p-2.5 rounded-lg border-2 bg-card transition ${
+                className={`flex items-center gap-2 px-2.5 py-1.5 rounded-lg border bg-card transition ${
                   active ? 'border-[#F5A623]' : 'border-border hover:border-border/70'
                 }`}
               >
-                <div className="h-8 w-8 rounded bg-white p-1 flex items-center justify-center">
+                <div className="h-5 w-5 rounded bg-white p-0.5 flex items-center justify-center shrink-0">
                   {tool.logo
                     ? <img src={tool.logo} alt="" className="h-full w-full object-contain" />
-                    : <span className="w-5 h-5 rounded-full bg-[#F5A623]" />}
+                    : <span className="w-3 h-3 rounded-full bg-[#F5A623]" />}
                 </div>
-                <span className={`text-[12px] font-medium ${active ? 'text-[#F5A623]' : 'text-foreground'}`}>
+                <span className={`text-[12px] font-medium truncate ${active ? 'text-[#F5A623]' : 'text-foreground'}`}>
                   {tool.name}
                 </span>
               </button>
@@ -313,33 +337,14 @@ const Resources = () => {
           <aside className="hidden lg:flex lg:flex-col gap-4 min-w-0">
             <PlannerCard />
             <LeadCard />
-            <div className="flex flex-col gap-4 p-4 rounded-xl border border-border bg-muted/30">
-              <FilterControls />
-            </div>
+            <InclusionCard />
           </aside>
 
           <section className="min-w-0 mx-auto w-full" style={{ maxWidth: 800 }}>
             <div className="lg:hidden grid grid-cols-1 gap-3 mb-4">
               <PlannerCard />
               <LeadCard />
-            </div>
-
-            <div className="lg:hidden mb-3">
-              <Sheet open={mobileFiltersOpen} onOpenChange={setMobileFiltersOpen}>
-                <SheetTrigger asChild>
-                  <Button variant="outline" className="w-full">
-                    <SlidersHorizontal className="h-4 w-4 mr-2" /> Filters
-                  </Button>
-                </SheetTrigger>
-                <SheetContent side="bottom" className="rounded-t-2xl max-h-[85vh] overflow-y-auto">
-                  <SheetHeader>
-                    <SheetTitle>Filters</SheetTitle>
-                  </SheetHeader>
-                  <div className="flex flex-col gap-4 pt-4">
-                    <FilterControls />
-                  </div>
-                </SheetContent>
-              </Sheet>
+              <InclusionCard />
             </div>
 
             {/* Search */}
@@ -358,6 +363,12 @@ const Resources = () => {
                 </button>
               )}
             </div>
+
+            {/* Filters — inline below search */}
+            <div className="flex flex-col gap-3 p-4 rounded-xl border border-border bg-muted/30 mb-4">
+              <FilterControls />
+            </div>
+
 
             {/* Active filters */}
             {hasActiveFilters && (
