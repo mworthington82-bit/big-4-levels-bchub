@@ -5,7 +5,6 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 // Auth + entry
-import SignIn from "./pages/SignIn";
 import PostLogin from "./pages/PostLogin";
 import NotYet from "./pages/NotYet";
 import Admin from "./pages/Admin";
