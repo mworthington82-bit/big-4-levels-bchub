@@ -41,14 +41,14 @@ const App = () => (
       <BrowserRouter>
         <FloatingPlannerButton />
         <Routes>
-          {/* Entry */}
-          <Route path="/" element={<SignIn />} />
+          {/* Entry — public landing with sign-in */}
+          <Route path="/" element={<Landing />} />
+          <Route path="/home" element={<Navigate to="/" replace />} />
           <Route path="/post-login" element={<RequireAuth><PostLogin /></RequireAuth>} />
           <Route path="/not-yet" element={<RequireAuth><NotYet /></RequireAuth>} />
           <Route path="/admin" element={<RequireAdmin><Admin /></RequireAdmin>} />
 
           {/* Legacy — primary experience */}
-          <Route path="/home" element={<RequireAuth><Landing /></RequireAuth>} />
           <Route path="/self-assessment" element={<RequireAuth><SelfAssessment /></RequireAuth>} />
           <Route path="/training" element={<RequireAuth><Training /></RequireAuth>} />
           <Route path="/resources" element={<RequireAuth><Resources /></RequireAuth>} />
