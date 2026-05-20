@@ -9,7 +9,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { BookOpen, Video, FolderOpen } from "lucide-react";
 import { Tool } from "@/types/learning";
-import { hasSeen, markSeen, hasSeenAnySync } from "@/lib/onceFlags";
+import { supabase } from "@/integrations/supabase/client";
 
 interface RequiredActivityDialogProps {
   tool: Tool;
@@ -18,24 +18,50 @@ interface RequiredActivityDialogProps {
 
 const RequiredActivityDialog = ({ tool, level }: RequiredActivityDialogProps) => {
   const [open, setOpen] = useState(false);
-  const flagKey = `required_activity_dialog_${tool}_${level}_shown`;
+  const [email, setEmail] = useState<string | null>(null);
+  const [seenList, setSeenList] = useState<string[]>([]);
+  const moduleKey = `${tool}_${level}`;
 
-  const isFirstTool = tool === 'teams';
-  const isCanvaExplorer = tool === 'canva' && level === 'explorer';
-  const hasSeenAnyBefore = (() => {
-    const tools: Tool[] = ['teams', 'canva', 'edpuzzle', 'copilot'];
-    return hasSeenAnySync(tools.map(t => `required_activity_dialog_${t}_${level}_shown`));
-  })();
+  const isFirstTool = tool === "teams";
+  const isCanvaExplorer = tool === "canva" && level === "explorer";
 
   useEffect(() => {
-    hasSeen(flagKey).then((seen) => {
-      if (!seen) setOpen(true);
-    });
-  }, [flagKey]);
+    let cancelled = false;
+    (async () => {
+      const { data: sess } = await supabase.auth.getSession();
+      const userEmail = sess.session?.user.email ?? null;
+      if (!userEmail) return;
+      const { data } = await supabase
+        .from("staff_profiles")
+        .select("module_popups_shown")
+        .ilike("email", userEmail)
+        .maybeSingle();
+      if (cancelled) return;
+      const shown: string[] = (data as any)?.module_popups_shown ?? [];
+      setEmail(userEmail);
+      setSeenList(shown);
+      if (!shown.includes(moduleKey)) setOpen(true);
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [moduleKey]);
 
-  const handleClose = () => {
-    markSeen(flagKey);
+  const hasSeenAnyBefore = seenList.some((k) => k.endsWith(`_${level}`));
+
+  const handleClose = async () => {
     setOpen(false);
+    if (!email) return;
+    const nextList = Array.from(new Set([...seenList, moduleKey]));
+    setSeenList(nextList);
+    try {
+      await supabase
+        .from("staff_profiles")
+        .update({ module_popups_shown: nextList, updated_at: new Date().toISOString() })
+        .ilike("email", email);
+    } catch {
+      // silent
+    }
   };
 
   return (
@@ -48,7 +74,11 @@ const RequiredActivityDialog = ({ tool, level }: RequiredActivityDialogProps) =>
             </div>
           </div>
           <DialogTitle className="text-2xl">
-            {isCanvaExplorer ? "Required Activity" : isFirstTool && !hasSeenAnyBefore ? "About Your Required Activities" : "Reminder: Required Activities"}
+            {isCanvaExplorer
+              ? "Required Activity"
+              : isFirstTool && !hasSeenAnyBefore
+              ? "About Your Required Activities"
+              : "Reminder: Required Activities"}
           </DialogTitle>
           <DialogDescription className="text-base">
             {isCanvaExplorer ? (

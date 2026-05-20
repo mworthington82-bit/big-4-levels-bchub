@@ -860,6 +860,7 @@ export type Database = {
           forms_practitioner_evidenced: boolean
           forms_score: number | null
           leader_unlocked: boolean
+          module_popups_shown: string[]
           name: string | null
           onboarding_shown: boolean
           practitioner_complete: boolean
@@ -894,6 +895,7 @@ export type Database = {
           forms_practitioner_evidenced?: boolean
           forms_score?: number | null
           leader_unlocked?: boolean
+          module_popups_shown?: string[]
           name?: string | null
           onboarding_shown?: boolean
           practitioner_complete?: boolean
@@ -928,6 +930,7 @@ export type Database = {
           forms_practitioner_evidenced?: boolean
           forms_score?: number | null
           leader_unlocked?: boolean
+          module_popups_shown?: string[]
           name?: string | null
           onboarding_shown?: boolean
           practitioner_complete?: boolean

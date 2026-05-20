@@ -6,9 +6,9 @@ import {
   formatList,
   listEvidencedToolNames,
   listToDoToolNames,
-  normaliseLevel,
   type LevelKey,
 } from "@/lib/journey";
+import { deriveEffectiveLevel } from "@/lib/progression";
 
 const LEVEL_STYLES = {
   Explorer: { pillBg: "bg-[#E6F1FB]", pillText: "text-[#185FA5]", dot: "bg-[#185FA5]" },
@@ -96,7 +96,7 @@ const OnboardingModal = ({ profile, email, onClose }: Props) => {
   const [open, setOpen] = useState(true);
   const [saving, setSaving] = useState(false);
 
-  const level = normaliseLevel(profile.assigned_level);
+  const level = deriveEffectiveLevel(profile);
   const styles = LEVEL_STYLES[level];
   const evidenced = listEvidencedToolNames(profile, level);
   const todo = listToDoToolNames(profile, level);
@@ -118,13 +118,16 @@ const OnboardingModal = ({ profile, email, onClose }: Props) => {
 
   const handleCta = async () => {
     setSaving(true);
-    try {
-      await supabase
+    const writeOnce = () =>
+      supabase
         .from("staff_profiles")
         .update({ onboarding_shown: true, updated_at: new Date().toISOString() })
         .ilike("email", email);
+    try {
+      const { error } = await writeOnce();
+      if (error) await writeOnce(); // silent retry once
     } catch {
-      // silent — retry on next load
+      // try again on next load
     }
     setOpen(false);
     onClose();
