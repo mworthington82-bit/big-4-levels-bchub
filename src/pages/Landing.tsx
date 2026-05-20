@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, CheckCircle, KeyRound, Heart } from "lucide-react";
+import { ArrowRight, KeyRound } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
@@ -168,21 +168,27 @@ const Landing = () => {
                 ))}
               </div>
 
-              {/* Auth + Journey actions */}
+              {/* Primary actions — ordered: First Time, Sign in, My Journey */}
               <div className="flex flex-col items-center gap-3 mt-10 animate-fade-in" style={{ animationDelay: '300ms' }}>
+                <button
+                  onClick={() => navigate("/self-assessment")}
+                  className="inline-flex items-center justify-center gap-2 min-h-11 px-8 py-4 rounded-xl bg-white/10 text-white font-bold text-base border border-white/30 hover:bg-white/15 transition-colors backdrop-blur-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white w-full sm:w-[320px]"
+                >
+                  First time? Take the Self-Assessment <ArrowRight className="h-5 w-5" />
+                </button>
                 <button
                   onClick={handleSignIn}
                   disabled={signingIn}
-                  className="inline-flex items-center justify-center min-h-11 px-8 py-4 rounded-xl bg-[#F5A623] text-[#1F3864] font-bold text-base hover:bg-[#F5A623]/90 transition-colors disabled:opacity-60 shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+                  className="inline-flex items-center justify-center min-h-11 px-8 py-4 rounded-xl bg-[#F5A623] text-[#1F3864] font-bold text-base hover:bg-[#F5A623]/90 transition-colors disabled:opacity-60 shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white w-full sm:w-[320px]"
                 >
                   {signingIn ? "Redirecting…" : "Sign in with Microsoft"}
                 </button>
-                <p className="text-[12px] text-white/60">First time here? Sign in with Microsoft first.</p>
                 <button
-                  onClick={() => navigate("/journey")}
-                  className="inline-flex items-center justify-center gap-2 min-h-11 px-8 py-4 rounded-xl bg-white text-[#1F3864] font-bold text-base border border-[#1F3864] hover:bg-white/90 transition-colors shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+                  onClick={handleAlreadyAssessed}
+                  disabled={profileLoading}
+                  className="inline-flex items-center justify-center gap-2 min-h-11 px-8 py-4 rounded-xl bg-white text-[#1F3864] font-bold text-base border border-[#1F3864] hover:bg-white/90 transition-colors shadow-lg disabled:opacity-60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white w-full sm:w-[320px]"
                 >
-                  Go to My Journey <ArrowRight className="h-5 w-5" />
+                  {profileLoading ? "Loading…" : "Go to My Journey"} <ArrowRight className="h-5 w-5" />
                 </button>
               </div>
             </div>
@@ -190,50 +196,7 @@ const Landing = () => {
         </section>
 
         <div className="container mx-auto px-4 py-8 md:py-12">
-          {/* Action Buttons — moved to top */}
-          <div className="max-w-4xl mx-auto grid md:grid-cols-2 gap-6 mb-12">
-            <div className="bg-card rounded-2xl border border-border shadow-[var(--shadow-card)] p-6 animate-fade-in hover:shadow-[var(--shadow-hover)] transition-all duration-300" style={{ animationDelay: '100ms' }}>
-              <div className="flex items-center gap-3 mb-3">
-                <div className="p-3 rounded-xl bg-secondary/20">
-                  <ArrowRight className="w-6 h-6 text-muted-foreground" />
-                </div>
-                <h3 className="font-display text-xl font-bold text-foreground">First Time?</h3>
-              </div>
-              <p className="text-muted-foreground text-sm mb-4">
-                Complete the digital self-assessment first to discover your skill level
-              </p>
-              <Button
-                size="lg"
-                variant="secondary"
-                onClick={() => navigate("/self-assessment")}
-                className="w-full py-6 text-lg rounded-xl transition-all duration-300 font-semibold group"
-              >
-                Take the Self-Assessment
-                <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-              </Button>
-            </div>
 
-            <div className="bg-card rounded-2xl border border-border shadow-[var(--shadow-card)] p-6 animate-fade-in hover:shadow-[var(--shadow-hover)] transition-all duration-300" style={{ animationDelay: '200ms' }}>
-              <div className="flex items-center gap-3 mb-3">
-                <div className="p-3 rounded-xl bg-[#F5A623]/15">
-                  <CheckCircle className="w-6 h-6 text-[#F5A623]" />
-                </div>
-                <h3 className="font-display text-xl font-bold text-foreground">Already Assessed?</h3>
-              </div>
-              <p className="text-muted-foreground text-sm mb-4">
-                You know your level — jump straight into your personalised journey
-              </p>
-              <Button
-                size="lg"
-                onClick={handleAlreadyAssessed}
-                disabled={profileLoading}
-                className="w-full py-6 text-lg rounded-xl font-semibold group"
-              >
-                {profileLoading ? "Loading…" : "Go to My Journey"}
-                <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-              </Button>
-            </div>
-          </div>
 
           {/* LEAD model strip */}
           <div className="mb-8 animate-fade-in">
@@ -301,35 +264,6 @@ const Landing = () => {
           {/* Staff Spotlight */}
           <StaffSpotlight />
 
-          {/* Inclusion & Accessibility Signpost Banner */}
-          <div className="max-w-4xl mx-auto mt-8 animate-fade-in" style={{ animationDelay: '300ms' }}>
-            <div
-              className="rounded-2xl bg-[#F3EEF9] border-l-4 border-l-[#5B2D8E] p-6 hover:shadow-md transition-all duration-300 cursor-pointer"
-              onClick={() => navigate("/inclusion")}
-              role="link"
-              tabIndex={0}
-              onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") navigate("/inclusion"); }}
-            >
-              <div className="flex items-center gap-4 flex-wrap md:flex-nowrap">
-                <div className="p-3 rounded-xl bg-[#5B2D8E]/10 flex-shrink-0">
-                  <Heart className="w-7 h-7 text-[#5B2D8E]" />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <h3 className="font-display text-lg font-bold text-[#5B2D8E]">Inclusion & Accessibility Hub</h3>
-                  <p className="text-[#5B2D8E]/70 text-sm mt-1">
-                    Explore practical tips and downloadable guides for making The Big 4 tools work for every learner in your classroom.
-                  </p>
-                </div>
-                <Button
-                  size="sm"
-                  className="bg-[#5B2D8E] hover:bg-[#5B2D8E]/90 text-white gap-2 flex-shrink-0"
-                  onClick={(e) => { e.stopPropagation(); navigate("/inclusion"); }}
-                >
-                  Explore the Hub <ArrowRight className="w-4 h-4" />
-                </Button>
-              </div>
-            </div>
-          </div>
         </div>
       </main>
     </div>
