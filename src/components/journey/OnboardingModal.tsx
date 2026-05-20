@@ -96,7 +96,7 @@ const OnboardingModal = ({ profile, email, onClose }: Props) => {
   const [open, setOpen] = useState(true);
   const [saving, setSaving] = useState(false);
 
-  const level = normaliseLevel(profile.assigned_level);
+  const level = deriveEffectiveLevel(profile);
   const styles = LEVEL_STYLES[level];
   const evidenced = listEvidencedToolNames(profile, level);
   const todo = listToDoToolNames(profile, level);
