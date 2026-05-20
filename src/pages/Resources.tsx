@@ -389,82 +389,103 @@ const Resources = () => {
               {filteredResources.length} resource{filteredResources.length !== 1 ? 's' : ''} found
             </p>
 
-            {/* Resource grid */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-              {filteredResources.map((resource, index) => {
+            {/* Resource list — single column, expandable */}
+            <div className="flex flex-col gap-2">
+              {filteredResources.map((resource) => {
                 const brand = toolBrandColors[resource.tool] || toolBrandColors.immersive;
                 const badge = getTypeBadge(resource.type);
+                const isOpen = expandedId === resource.id;
+                const toolLogo = toolLogos[resource.tool] || toolLogos.teams;
 
                 return (
                   <div
                     key={resource.id}
-                    className="bg-card rounded-2xl border border-border shadow-sm hover:shadow-[var(--shadow-hover)] transition-all duration-300 overflow-hidden animate-fade-in flex flex-col"
-                    style={{ animationDelay: `${index * 30}ms` }}
+                    className="bg-card rounded-lg border border-border shadow-sm overflow-hidden transition-all duration-200"
+                    style={{ borderWidth: "0.5px" }}
                   >
-                    <div className={`${brand.header} px-4 py-3 flex items-center justify-between`}>
-                      <div className="flex items-center gap-2">
-                        <div className="h-6 w-6 rounded bg-white/20 p-0.5 flex-shrink-0">
-                          <img src={toolLogos[resource.tool] || teamsLogo} alt="" className="h-full w-full object-contain" />
+                    <button
+                      onClick={() => setExpandedId(isOpen ? null : resource.id)}
+                      className="w-full flex items-center justify-between gap-3 px-4 min-h-[56px] text-left hover:bg-muted/30 transition"
+                      aria-expanded={isOpen}
+                    >
+                      <div className="flex items-center gap-3 min-w-0">
+                        <div className="h-6 w-6 rounded bg-muted p-0.5 flex items-center justify-center shrink-0">
+                          <img src={toolLogo} alt="" className="h-full w-full object-contain" />
                         </div>
-                        <span className={`text-sm font-semibold ${brand.text}`}>{toolDisplayNames[resource.tool]}</span>
+                        <span className="text-[14px] font-bold text-[#1F3864] truncate">{resource.title}</span>
                       </div>
-                      <span className={`text-xs font-semibold px-2 py-1 rounded-full ${badge.color}`}>
-                        {badge.label}
-                      </span>
-                    </div>
-
-                    <div className="p-5 flex flex-col flex-1">
-                      <div className="flex items-start justify-between gap-2 mb-2">
-                        <h3 className="font-display text-base font-bold text-foreground line-clamp-2">{resource.title}</h3>
-                        <button
-                          onClick={(e) => { e.stopPropagation(); toggleBookmark(resource.id); }}
-                          className="flex-shrink-0 p-1 rounded hover:bg-muted transition-colors"
-                          aria-label={bookmarks.has(resource.id) ? "Remove from favourites" : "Add to favourites"}
-                        >
-                          {bookmarks.has(resource.id)
-                            ? <BookmarkCheck className="h-4 w-4 text-accent" />
-                            : <Bookmark className="h-4 w-4 text-muted-foreground" />}
-                        </button>
+                      <div className="flex items-center gap-2 shrink-0">
+                        <span className={`text-[11px] font-semibold px-2 py-0.5 rounded-full whitespace-nowrap ${badge.color}`}>{badge.label}</span>
+                        <ChevronDown
+                          className="h-4 w-4 text-muted-foreground transition-transform duration-200"
+                          style={{ transform: isOpen ? "rotate(180deg)" : "rotate(0deg)" }}
+                        />
                       </div>
-                      <p className="text-sm text-muted-foreground mb-3 line-clamp-2 flex-1">{resource.description}</p>
+                    </button>
 
-                      <div className="flex items-center justify-between gap-2 mt-auto">
-                        <div className="flex items-center gap-2 flex-wrap">
-                          <span className="text-xs text-muted-foreground bg-muted px-2 py-1 rounded">{resource.function}</span>
-                          {resource.level && resource.level !== 'all' && (
-                            <span className={`text-xs px-2 py-1 rounded capitalize ${
-                              resource.level === 'explorer' ? 'bg-[#F5A623]/20 text-[#B8860B]' :
-                              resource.level === 'practitioner' ? 'bg-[#5B5FC7]/20 text-[#5B5FC7]' :
-                              'bg-green-500/20 text-green-700'
-                            }`}>
-                              {resource.level}
-                            </span>
-                          )}
-                        </div>
-                        <div className="flex items-center gap-1.5 flex-shrink-0">
-                          {resource.pdfUrl && resource.type === 'link' && (
-                            <Button
-                              size="sm"
-                              variant="outline"
-                              className="rounded-full px-3 text-xs font-semibold border-primary/30 hover:bg-primary/10"
-                              onClick={(e) => { e.stopPropagation(); window.open(resource.pdfUrl, '_blank'); }}
+                    {isOpen && (
+                      <div className="border-t border-border animate-fade-in">
+                        <div className={`${brand.header} px-4 py-3 flex items-center justify-between`}>
+                          <div className="flex items-center gap-2 min-w-0">
+                            <div className="h-6 w-6 rounded bg-white/20 p-0.5 flex-shrink-0">
+                              <img src={toolLogo} alt="" className="h-full w-full object-contain" />
+                            </div>
+                            <span className={`text-sm font-semibold ${brand.text} truncate`}>{toolDisplayNames[resource.tool]}</span>
+                          </div>
+                          <div className="flex items-center gap-2 shrink-0">
+                            <span className={`text-xs font-semibold px-2 py-1 rounded-full whitespace-nowrap ${badge.color}`}>{badge.label}</span>
+                            <button
+                              onClick={(e) => { e.stopPropagation(); toggleBookmark(resource.id); }}
+                              className="p-1 rounded hover:bg-white/20 transition-colors"
+                              aria-label={bookmarks.has(resource.id) ? "Remove from favourites" : "Add to favourites"}
                             >
-                              <Download className="h-3 w-3 mr-1" /> PDF
-                            </Button>
-                          )}
-                          <Button
-                            size="sm"
-                            className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-full px-4 text-xs font-semibold"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              window.open(resource.pdfUrl && resource.type !== 'link' ? resource.pdfUrl : resource.url, '_blank');
-                            }}
-                          >
-                            {resource.type === 'video' ? 'Watch Video ▶' : resource.type === 'pdf' ? 'Download PDF ⬇' : 'Open Guide ↗'}
-                          </Button>
+                              {bookmarks.has(resource.id)
+                                ? <BookmarkCheck className="h-4 w-4 text-white" />
+                                : <Bookmark className="h-4 w-4 text-white" />}
+                            </button>
+                          </div>
+                        </div>
+                        <div className="p-5">
+                          <p className="text-sm text-muted-foreground mb-3">{resource.description}</p>
+                          <div className="flex items-center justify-between gap-2 flex-wrap">
+                            <div className="flex items-center gap-2 flex-wrap">
+                              <span className="text-xs text-muted-foreground bg-muted px-2 py-1 rounded whitespace-nowrap">{resource.function}</span>
+                              {resource.level && resource.level !== 'all' && (
+                                <span className={`text-xs px-2 py-1 rounded capitalize whitespace-nowrap ${
+                                  resource.level === 'explorer' ? 'bg-[#F5A623]/20 text-[#B8860B]' :
+                                  resource.level === 'practitioner' ? 'bg-[#5B5FC7]/20 text-[#5B5FC7]' :
+                                  'bg-green-500/20 text-green-700'
+                                }`}>{resource.level}</span>
+                              )}
+                            </div>
+                            <div className="flex items-center gap-1.5 flex-wrap" style={{ minWidth: "fit-content" }}>
+                              {resource.pdfUrl && resource.type === 'link' && (
+                                <Button
+                                  size="sm"
+                                  variant="outline"
+                                  className="rounded-full px-3 text-xs font-semibold border-primary/30 hover:bg-primary/10 whitespace-nowrap"
+                                  style={{ minWidth: "fit-content" }}
+                                  onClick={(e) => { e.stopPropagation(); window.open(resource.pdfUrl, '_blank'); }}
+                                >
+                                  <Download className="h-3 w-3 mr-1" /> PDF
+                                </Button>
+                              )}
+                              <Button
+                                size="sm"
+                                className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-full px-4 text-xs font-semibold whitespace-nowrap"
+                                style={{ minWidth: "fit-content" }}
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  window.open(resource.pdfUrl && resource.type !== 'link' ? resource.pdfUrl : resource.url, '_blank');
+                                }}
+                              >
+                                {resource.type === 'video' ? 'Watch Video' : resource.type === 'pdf' ? 'Download PDF' : 'Open Guide'}
+                              </Button>
+                            </div>
+                          </div>
                         </div>
                       </div>
-                    </div>
+                    )}
                   </div>
                 );
               })}
