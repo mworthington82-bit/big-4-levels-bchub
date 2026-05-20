@@ -6,7 +6,7 @@ import { Switch } from '@/components/ui/switch';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import {
   Search, ArrowLeft, X, Bookmark, BookmarkCheck,
-  ChevronRight, ChevronDown, Download, SlidersHorizontal, Pin, Calendar,
+  ChevronRight, ChevronDown, Download, SlidersHorizontal, Pin, Calendar, Heart,
 } from 'lucide-react';
 import { resources, searchResources, toolDisplayNames, Resource } from '@/data/resources';
 import CheatSheetButton from '@/components/CheatSheetButton';
