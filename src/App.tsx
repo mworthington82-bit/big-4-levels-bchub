@@ -29,6 +29,7 @@ import Planner from "./pages/Planner";
 import NotFound from "./pages/NotFound";
 import RequireAuth from "./components/RequireAuth";
 import RequireAdmin from "./components/RequireAdmin";
+import FloatingPlannerButton from "./components/FloatingPlannerButton";
 
 const queryClient = new QueryClient();
 
