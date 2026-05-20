@@ -266,23 +266,49 @@ const Resources = () => {
 
   // ───────────────────────── Render ─────────────────────────
   return (
+    <AppShell>
     <div className="min-h-screen bg-muted/20">
-      <header className="border-b border-border bg-card shadow-sm sticky top-0 z-10">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <img src={bradfordLogo} alt="Bradford College logo" className="h-10 object-contain cursor-pointer" onClick={() => navigate("/")} />
-              <h1 className="font-display text-xl md:text-2xl font-bold text-foreground">Training Resources</h1>
-            </div>
-            <Button variant="outline" onClick={() => navigate('/')} className="border-border hover:bg-accent hover:text-accent-foreground">
-              <Home className="mr-2 h-4 w-4" /> Home
-            </Button>
+      {/* Two-part banner: progress + Big 4 Day */}
+      <div className="border-b border-border bg-card">
+        <div className="container mx-auto px-4">
+          <div className="grid w-full overflow-hidden" style={{ gridTemplateColumns: "minmax(0,70fr) minmax(0,30fr)" }}>
+            <button
+              onClick={() => navigate('/journey')}
+              className="text-left flex items-stretch min-h-[48px] hover:bg-muted/30 transition"
+              style={{ borderBottom: "0.5px solid #F5A623" }}
+              aria-label="View your journey progress"
+            >
+              <div style={{ width: 4, background: "#F5A623" }} aria-hidden />
+              <div className="flex-1 flex items-center gap-3 px-3 py-2 min-w-0">
+                <span className="text-[11px] uppercase tracking-wide text-muted-foreground font-semibold shrink-0 whitespace-nowrap">Your progress</span>
+                <div className="flex-1 h-1.5 rounded-full bg-muted overflow-hidden">
+                  <div className="h-full rounded-full" style={{ width: `${bannerPct}%`, background: "#F5A623" }} />
+                </div>
+                <span className="text-xs font-semibold text-foreground shrink-0 whitespace-nowrap">{bannerCount} of {bannerTotal} complete</span>
+              </div>
+            </button>
+            <button
+              onClick={() => navigate('/bookings')}
+              className="text-left flex items-center gap-2 px-3 py-2 min-h-[48px] hover:opacity-95 transition"
+              style={{ background: "#1F3864", color: "#fff", minWidth: "fit-content" }}
+              aria-label="Book Big 4 Day"
+            >
+              <Calendar className="h-4 w-4 shrink-0" />
+              <div className="flex flex-col min-w-0">
+                <span className="text-[13px] font-medium whitespace-nowrap">Book Big 4 Day</span>
+                <span className="text-[11px] text-white/70 whitespace-nowrap">29th June</span>
+              </div>
+            </button>
           </div>
         </div>
-      </header>
+      </div>
+
+      <div className="container mx-auto px-4 pt-6">
+        <h1 className="font-display text-xl md:text-2xl font-bold text-foreground">Training Resources</h1>
+      </div>
 
       <main className="container mx-auto px-4 py-6 md:py-8">
-        <div className="flex gap-6">
+        <div className="grid gap-6" style={{ gridTemplateColumns: "260px minmax(0,1fr)" }} data-resources-grid>
           {/* ───── Sidebar (desktop) ───── */}
           <aside className="hidden md:flex md:flex-col gap-4 w-[260px] flex-shrink-0">
             <PlannerCard />
