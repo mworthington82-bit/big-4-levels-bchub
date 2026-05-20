@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, CheckCircle, KeyRound, Heart } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
@@ -15,7 +16,7 @@ import SignOutButton from "@/components/SignOutButton";
 import OnboardingModal from "@/components/journey/OnboardingModal";
 import { useStaffProfile } from "@/hooks/useStaffProfile";
 
-import bradfordLogo from "@/assets/bradford-college-logo.jpg";
+import bradfordLogo from "@/assets/bradford-college-logo.png";
 import teamsLogo from "@/assets/teams-logo.png";
 import canvaLogo from "@/assets/canva-logo.jpg";
 import edpuzzleLogo from "@/assets/edpuzzle-logo.png";
@@ -56,6 +57,21 @@ const Landing = () => {
   const [adminPassword, setAdminPassword] = useState("");
   const { profile, loading: profileLoading, email } = useStaffProfile();
   const [showOnboarding, setShowOnboarding] = useState(false);
+  const [signingIn, setSigningIn] = useState(false);
+
+  const handleSignIn = async () => {
+    setSigningIn(true);
+    const { data, error } = await supabase.auth.signInWithSSO({
+      domain: "bradfordcollege.ac.uk",
+      options: { redirectTo: `${window.location.origin}/post-login` },
+    });
+    if (error) {
+      setSigningIn(false);
+      toast({ title: "Sign-in failed", description: error.message, variant: "destructive" });
+      return;
+    }
+    if (data?.url) window.location.href = data.url;
+  };
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -151,11 +167,74 @@ const Landing = () => {
                   </div>
                 ))}
               </div>
+
+              {/* Auth + Journey actions */}
+              <div className="flex flex-col items-center gap-3 mt-10 animate-fade-in" style={{ animationDelay: '300ms' }}>
+                <button
+                  onClick={handleSignIn}
+                  disabled={signingIn}
+                  className="inline-flex items-center justify-center min-h-11 px-8 py-4 rounded-xl bg-[#F5A623] text-[#1F3864] font-bold text-base hover:bg-[#F5A623]/90 transition-colors disabled:opacity-60 shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+                >
+                  {signingIn ? "Redirecting…" : "Sign in with Microsoft"}
+                </button>
+                <p className="text-[12px] text-white/60">First time here? Sign in with Microsoft first.</p>
+                <button
+                  onClick={() => navigate("/journey")}
+                  className="inline-flex items-center justify-center gap-2 min-h-11 px-8 py-4 rounded-xl bg-white text-[#1F3864] font-bold text-base border border-[#1F3864] hover:bg-white/90 transition-colors shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+                >
+                  Go to My Journey <ArrowRight className="h-5 w-5" />
+                </button>
+              </div>
             </div>
           </div>
         </section>
 
         <div className="container mx-auto px-4 py-8 md:py-12">
+          {/* Action Buttons — moved to top */}
+          <div className="max-w-4xl mx-auto grid md:grid-cols-2 gap-6 mb-12">
+            <div className="bg-card rounded-2xl border border-border shadow-[var(--shadow-card)] p-6 animate-fade-in hover:shadow-[var(--shadow-hover)] transition-all duration-300" style={{ animationDelay: '100ms' }}>
+              <div className="flex items-center gap-3 mb-3">
+                <div className="p-3 rounded-xl bg-secondary/20">
+                  <ArrowRight className="w-6 h-6 text-muted-foreground" />
+                </div>
+                <h3 className="font-display text-xl font-bold text-foreground">First Time?</h3>
+              </div>
+              <p className="text-muted-foreground text-sm mb-4">
+                Complete the digital self-assessment first to discover your skill level
+              </p>
+              <Button
+                size="lg"
+                variant="secondary"
+                onClick={() => navigate("/self-assessment")}
+                className="w-full py-6 text-lg rounded-xl transition-all duration-300 font-semibold group"
+              >
+                Take the Self-Assessment
+                <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+              </Button>
+            </div>
+
+            <div className="bg-card rounded-2xl border border-border shadow-[var(--shadow-card)] p-6 animate-fade-in hover:shadow-[var(--shadow-hover)] transition-all duration-300" style={{ animationDelay: '200ms' }}>
+              <div className="flex items-center gap-3 mb-3">
+                <div className="p-3 rounded-xl bg-[#F5A623]/15">
+                  <CheckCircle className="w-6 h-6 text-[#F5A623]" />
+                </div>
+                <h3 className="font-display text-xl font-bold text-foreground">Already Assessed?</h3>
+              </div>
+              <p className="text-muted-foreground text-sm mb-4">
+                You know your level — jump straight into your personalised journey
+              </p>
+              <Button
+                size="lg"
+                onClick={handleAlreadyAssessed}
+                disabled={profileLoading}
+                className="w-full py-6 text-lg rounded-xl font-semibold group"
+              >
+                {profileLoading ? "Loading…" : "Go to My Journey"}
+                <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+              </Button>
+            </div>
+          </div>
+
           {/* LEAD model strip */}
           <div className="mb-8 animate-fade-in">
             <LeadStrip />
@@ -221,52 +300,6 @@ const Landing = () => {
 
           {/* Staff Spotlight */}
           <StaffSpotlight />
-
-
-          {/* Action Buttons */}
-          <div className="max-w-4xl mx-auto grid md:grid-cols-2 gap-6">
-            <div className="bg-card rounded-2xl border border-border shadow-[var(--shadow-card)] p-6 animate-fade-in hover:shadow-[var(--shadow-hover)] transition-all duration-300" style={{ animationDelay: '100ms' }}>
-              <div className="flex items-center gap-3 mb-3">
-                <div className="p-3 rounded-xl bg-secondary/20">
-                  <ArrowRight className="w-6 h-6 text-muted-foreground" />
-                </div>
-                <h3 className="font-display text-xl font-bold text-foreground">First Time?</h3>
-              </div>
-              <p className="text-muted-foreground text-sm mb-4">
-                Complete the digital self-assessment first to discover your skill level
-              </p>
-              <Button
-                size="lg"
-                variant="secondary"
-                onClick={() => navigate("/self-assessment")}
-                className="w-full py-6 text-lg rounded-xl transition-all duration-300 font-semibold group"
-              >
-                Take the Self-Assessment
-                <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-              </Button>
-            </div>
-
-            <div className="bg-card rounded-2xl border border-border shadow-[var(--shadow-card)] p-6 animate-fade-in hover:shadow-[var(--shadow-hover)] transition-all duration-300" style={{ animationDelay: '200ms' }}>
-              <div className="flex items-center gap-3 mb-3">
-                <div className="p-3 rounded-xl bg-[#F5A623]/15">
-                  <CheckCircle className="w-6 h-6 text-[#F5A623]" />
-                </div>
-                <h3 className="font-display text-xl font-bold text-foreground">Already Assessed?</h3>
-              </div>
-              <p className="text-muted-foreground text-sm mb-4">
-                You know your level — jump straight into your personalised journey
-              </p>
-              <Button
-                size="lg"
-                onClick={handleAlreadyAssessed}
-                disabled={profileLoading}
-                className="w-full py-6 text-lg rounded-xl font-semibold group"
-              >
-                {profileLoading ? "Loading…" : "Go to My Journey"}
-                <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-              </Button>
-            </div>
-          </div>
 
           {/* Inclusion & Accessibility Signpost Banner */}
           <div className="max-w-4xl mx-auto mt-8 animate-fade-in" style={{ animationDelay: '300ms' }}>
