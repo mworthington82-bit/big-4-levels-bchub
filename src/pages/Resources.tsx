@@ -188,6 +188,30 @@ const Resources = () => {
     </div>
   );
 
+  const InclusionCard = () => (
+    <div className="bg-card rounded-xl border border-border shadow-sm overflow-hidden">
+      <div className="flex">
+        <div className="w-1 bg-[#5B2D8E]" aria-hidden />
+        <div className="p-4 flex-1">
+          <div className="flex items-center gap-2 mb-2">
+            <Heart className="h-4 w-4 text-[#5B2D8E]" />
+            <h3 className="font-display text-[15px] font-bold text-[#1F3864]">Inclusion Hub</h3>
+          </div>
+          <p className="text-[12px] text-muted-foreground leading-relaxed mb-3">
+            Practical tips and guides for making the Big 4 tools work for every learner.
+          </p>
+          <Button
+            onClick={() => navigate('/inclusion')}
+            className="w-full bg-[#5B2D8E] hover:bg-[#5B2D8E]/90 text-white font-semibold rounded-full"
+            size="sm"
+          >
+            Explore the Hub <ChevronRight className="h-4 w-4 ml-1" />
+          </Button>
+        </div>
+      </div>
+    </div>
+  );
+
   const FilterControls = () => (
     <>
       <div>
