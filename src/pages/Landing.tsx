@@ -57,6 +57,21 @@ const Landing = () => {
   const [adminPassword, setAdminPassword] = useState("");
   const { profile, loading: profileLoading, email } = useStaffProfile();
   const [showOnboarding, setShowOnboarding] = useState(false);
+  const [signingIn, setSigningIn] = useState(false);
+
+  const handleSignIn = async () => {
+    setSigningIn(true);
+    const { data, error } = await supabase.auth.signInWithSSO({
+      domain: "bradfordcollege.ac.uk",
+      options: { redirectTo: `${window.location.origin}/post-login` },
+    });
+    if (error) {
+      setSigningIn(false);
+      toast({ title: "Sign-in failed", description: error.message, variant: "destructive" });
+      return;
+    }
+    if (data?.url) window.location.href = data.url;
+  };
 
   useEffect(() => {
     window.scrollTo(0, 0);
