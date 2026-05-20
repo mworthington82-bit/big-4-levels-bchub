@@ -6,9 +6,9 @@ import {
   formatList,
   listEvidencedToolNames,
   listToDoToolNames,
-  normaliseLevel,
   type LevelKey,
 } from "@/lib/journey";
+import { deriveEffectiveLevel } from "@/lib/progression";
 
 const LEVEL_STYLES = {
   Explorer: { pillBg: "bg-[#E6F1FB]", pillText: "text-[#185FA5]", dot: "bg-[#185FA5]" },
