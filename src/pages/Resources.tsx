@@ -310,7 +310,7 @@ const Resources = () => {
       <main className="container mx-auto px-4 py-6 md:py-8">
         <div className="grid gap-6" style={{ gridTemplateColumns: "260px minmax(0,1fr)" }} data-resources-grid>
           {/* ───── Sidebar (desktop) ───── */}
-          <aside className="hidden md:flex md:flex-col gap-4 w-[260px] flex-shrink-0">
+          <aside className="hidden lg:flex lg:flex-col gap-4 min-w-0">
             <PlannerCard />
             <LeadCard />
             <div className="flex flex-col gap-4 p-4 rounded-xl border border-border bg-muted/30">
@@ -318,16 +318,13 @@ const Resources = () => {
             </div>
           </aside>
 
-          {/* ───── Right content ───── */}
-          <section className="flex-1 min-w-0">
-            {/* Mobile pinned cards */}
-            <div className="md:hidden grid grid-cols-1 gap-3 mb-4">
+          <section className="min-w-0 mx-auto w-full" style={{ maxWidth: 800 }}>
+            <div className="lg:hidden grid grid-cols-1 gap-3 mb-4">
               <PlannerCard />
               <LeadCard />
             </div>
 
-            {/* Mobile filters trigger */}
-            <div className="md:hidden mb-3">
+            <div className="lg:hidden mb-3">
               <Sheet open={mobileFiltersOpen} onOpenChange={setMobileFiltersOpen}>
                 <SheetTrigger asChild>
                   <Button variant="outline" className="w-full">
