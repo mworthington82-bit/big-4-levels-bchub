@@ -5,14 +5,18 @@ import { Input } from '@/components/ui/input';
 import { Switch } from '@/components/ui/switch';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import {
-  Home, Search, ArrowLeft, X, Bookmark, BookmarkCheck,
-  ChevronRight, Download, SlidersHorizontal, Pin,
+  Search, ArrowLeft, X, Bookmark, BookmarkCheck,
+  ChevronRight, ChevronDown, Download, SlidersHorizontal, Pin, Calendar,
 } from 'lucide-react';
 import { resources, searchResources, toolDisplayNames, Resource } from '@/data/resources';
 import CheatSheetButton from '@/components/CheatSheetButton';
 import ActivityPlanner from '@/components/ActivityPlanner';
+import AppShell from '@/components/AppShell';
+import { useStaffProfile } from '@/hooks/useStaffProfile';
+import { buildModuleCards, countCompleteOrEvidenced, totalForLevel } from '@/lib/journey';
+import { deriveEffectiveLevel } from '@/lib/progression';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
-import bradfordLogo from '@/assets/bradford-college-logo.jpg';
+import teamsLogo from '@/assets/teams-logo.png';
 import teamsLogo from '@/assets/teams-logo.png';
 import canvaLogo from '@/assets/canva-logo.jpg';
 import edpuzzleLogo from '@/assets/edpuzzle-logo.png';
