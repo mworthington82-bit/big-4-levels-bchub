@@ -78,6 +78,23 @@ const Resources = () => {
   const [showBookmarksOnly, setShowBookmarksOnly] = useState(false);
   const [plannerOpen, setPlannerOpen] = useState(false);
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
+  const [expandedId, setExpandedId] = useState<string | null>(null);
+  const { profile, completedModuleIds } = useStaffProfile();
+
+  // Progress for banner
+  let bannerCount = 0;
+  let bannerTotal = 0;
+  if (profile) {
+    const lvl = deriveEffectiveLevel(profile);
+    if (lvl === 'Leader') {
+      bannerCount = 1; bannerTotal = 1;
+    } else {
+      const cards = buildModuleCards(profile, completedModuleIds, lvl);
+      bannerCount = countCompleteOrEvidenced(cards);
+      bannerTotal = totalForLevel(lvl);
+    }
+  }
+  const bannerPct = bannerTotal > 0 ? Math.round((bannerCount / bannerTotal) * 100) : 0;
 
   useEffect(() => {
     const stored = localStorage.getItem('bookmarked_resources');
