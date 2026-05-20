@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import WelcomeDialog from "@/components/dialogs/WelcomeDialog";
 import StudentQuoteCarousel from "@/components/StudentQuoteCarousel";
-import ResourceBankButton from "@/components/ResourceBankButton";
+
 import StaffSpotlight from "@/components/StaffSpotlight";
 import LeadStrip from "@/components/LeadStrip";
 import SignOutButton from "@/components/SignOutButton";
@@ -129,7 +129,7 @@ const Landing = () => {
   return (
     <>
     <div className="min-h-screen bg-background">
-      <ResourceBankButton />
+      
       <WelcomeDialog />
 
       <header className="border-b border-border bg-card shadow-sm">
