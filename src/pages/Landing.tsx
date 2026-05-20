@@ -129,7 +129,7 @@ const Landing = () => {
   return (
     <>
     <div className="min-h-screen bg-background">
-      <ResourceBankButton />
+      
       <WelcomeDialog />
 
       <header className="border-b border-border bg-card shadow-sm">
