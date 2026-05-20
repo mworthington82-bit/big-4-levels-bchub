@@ -264,35 +264,6 @@ const Landing = () => {
           {/* Staff Spotlight */}
           <StaffSpotlight />
 
-          {/* Inclusion & Accessibility Signpost Banner */}
-          <div className="max-w-4xl mx-auto mt-8 animate-fade-in" style={{ animationDelay: '300ms' }}>
-            <div
-              className="rounded-2xl bg-[#F3EEF9] border-l-4 border-l-[#5B2D8E] p-6 hover:shadow-md transition-all duration-300 cursor-pointer"
-              onClick={() => navigate("/inclusion")}
-              role="link"
-              tabIndex={0}
-              onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") navigate("/inclusion"); }}
-            >
-              <div className="flex items-center gap-4 flex-wrap md:flex-nowrap">
-                <div className="p-3 rounded-xl bg-[#5B2D8E]/10 flex-shrink-0">
-                  <Heart className="w-7 h-7 text-[#5B2D8E]" />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <h3 className="font-display text-lg font-bold text-[#5B2D8E]">Inclusion & Accessibility Hub</h3>
-                  <p className="text-[#5B2D8E]/70 text-sm mt-1">
-                    Explore practical tips and downloadable guides for making The Big 4 tools work for every learner in your classroom.
-                  </p>
-                </div>
-                <Button
-                  size="sm"
-                  className="bg-[#5B2D8E] hover:bg-[#5B2D8E]/90 text-white gap-2 flex-shrink-0"
-                  onClick={(e) => { e.stopPropagation(); navigate("/inclusion"); }}
-                >
-                  Explore the Hub <ArrowRight className="w-4 h-4" />
-                </Button>
-              </div>
-            </div>
-          </div>
         </div>
       </main>
     </div>
