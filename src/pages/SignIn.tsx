@@ -59,11 +59,16 @@ const SignIn = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#1F3864] text-white flex flex-col">
+    <div className="relative min-h-screen bg-[#1F3864] text-white flex flex-col">
+      <img
+        src={bradfordLogo}
+        alt="Bradford College"
+        className="absolute top-6 left-8 h-10 w-10 rounded-md object-contain bg-white/95 p-1 shadow"
+      />
       <main className="flex-1 flex items-center justify-center px-4 py-12">
         <div className="w-full max-w-xl text-center space-y-8">
           <div className="space-y-3">
-            <div className="inline-flex items-center gap-2 text-white/70 text-sm font-semibold tracking-wide uppercase">
+            <div className="inline-flex items-center gap-2 text-[#F5A623] text-sm font-semibold tracking-wide uppercase">
               <span className="w-2 h-2 rounded-full bg-[#F5A623]" aria-hidden />
               Bradford College
             </div>
@@ -84,6 +89,23 @@ const SignIn = () => {
           >
             {loading ? "Redirecting…" : "Sign in with Microsoft"}
           </button>
+
+          <div className="flex flex-wrap justify-center gap-8 pt-4">
+            {LEVEL_BADGES.map((b) => (
+              <div
+                key={b.name}
+                className="flex flex-col items-center text-center px-5 py-4 rounded-lg"
+                style={{
+                  background: "rgba(255,255,255,0.08)",
+                  border: "0.5px solid rgba(255,255,255,0.15)",
+                }}
+              >
+                <img src={b.icon} alt="" className="h-10 w-10 mb-2" />
+                <span className="text-[13px] font-semibold text-white">{b.name}</span>
+                <span className="text-[11px] text-white/60 mt-0.5">{b.desc}</span>
+              </div>
+            ))}
+          </div>
 
           {expired && (
             <div
