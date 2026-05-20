@@ -5,7 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Switch } from '@/components/ui/switch';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import {
-  Home, Search, ArrowLeft, X, Bookmark, BookmarkCheck, Sparkles,
+  Home, Search, ArrowLeft, X, Bookmark, BookmarkCheck,
   ChevronRight, Download, SlidersHorizontal, Pin,
 } from 'lucide-react';
 import { resources, searchResources, toolDisplayNames, Resource } from '@/data/resources';
