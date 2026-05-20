@@ -4,8 +4,18 @@ import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { consumeSessionExpired } from "@/lib/sessionExpiry";
 import { usePageTitle } from "@/lib/usePageTitle";
+import bradfordLogo from "@/assets/bradford-college-logo.jpg";
+import emblemExplorer from "@/assets/emblem-explorer.svg";
+import emblemPractitioner from "@/assets/emblem-practitioner.svg";
+import emblemLeader from "@/assets/emblem-leader.svg";
 
 const SSO_DOMAIN = "bradfordcollege.ac.uk";
+
+const LEVEL_BADGES = [
+  { icon: emblemExplorer, name: "Explorer", desc: "Building your foundations" },
+  { icon: emblemPractitioner, name: "Practitioner", desc: "Deepening your practice" },
+  { icon: emblemLeader, name: "Leader", desc: "Leading and inspiring others" },
+];
 
 const SignIn = () => {
   usePageTitle("Sign in");
