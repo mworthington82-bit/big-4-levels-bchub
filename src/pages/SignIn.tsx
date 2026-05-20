@@ -60,18 +60,15 @@ const SignIn = () => {
 
   return (
     <div className="relative min-h-screen bg-[#1F3864] text-white flex flex-col">
-      <img
-        src={bradfordLogo}
-        alt="Bradford College"
-        className="absolute top-6 left-8 h-10 w-10 rounded-md object-contain bg-white/95 p-1 shadow"
-      />
       <main className="flex-1 flex items-center justify-center px-4 py-12">
         <div className="w-full max-w-xl text-center space-y-8">
           <div className="space-y-3">
-            <div className="inline-flex items-center gap-2 text-[#F5A623] text-sm font-semibold tracking-wide uppercase">
-              <span className="w-2 h-2 rounded-full bg-[#F5A623]" aria-hidden />
-              Bradford College
-            </div>
+            <img
+              src={bradfordLogo}
+              alt="Bradford College"
+              className="mx-auto object-contain"
+              style={{ height: 40, width: "auto", background: "transparent" }}
+            />
             <h1 className="text-4xl md:text-6xl font-bold leading-tight">
               The Big 4: <span className="text-[#F5A623]">Level Up</span>
             </h1>
