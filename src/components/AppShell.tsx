@@ -7,7 +7,7 @@ import { deriveEffectiveLevel } from "@/lib/progression";
 import { useIdleLogout } from "@/hooks/useIdleLogout";
 
 const navLinkClass = ({ isActive }: { isActive: boolean }) =>
-  `px-4 py-2 rounded-full text-sm font-semibold transition-colors ${
+  `px-4 min-h-[44px] inline-flex items-center rounded-full text-sm font-semibold transition-colors shrink-0 whitespace-nowrap ${
     isActive ? "bg-white/15 text-white" : "text-white/80 hover:text-white hover:bg-white/10"
   }`;
 
