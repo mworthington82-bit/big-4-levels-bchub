@@ -118,13 +118,16 @@ const OnboardingModal = ({ profile, email, onClose }: Props) => {
 
   const handleCta = async () => {
     setSaving(true);
-    try {
-      await supabase
+    const writeOnce = () =>
+      supabase
         .from("staff_profiles")
         .update({ onboarding_shown: true, updated_at: new Date().toISOString() })
         .ilike("email", email);
+    try {
+      const { error } = await writeOnce();
+      if (error) await writeOnce(); // silent retry once
     } catch {
-      // silent — retry on next load
+      // try again on next load
     }
     setOpen(false);
     onClose();
