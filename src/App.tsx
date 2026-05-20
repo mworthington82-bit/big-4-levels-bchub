@@ -39,6 +39,7 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
+        <FloatingPlannerButton />
         <Routes>
           {/* Entry */}
           <Route path="/" element={<SignIn />} />
