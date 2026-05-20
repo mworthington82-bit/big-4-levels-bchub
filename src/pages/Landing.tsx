@@ -168,21 +168,27 @@ const Landing = () => {
                 ))}
               </div>
 
-              {/* Auth + Journey actions */}
+              {/* Primary actions — ordered: First Time, Sign in, My Journey */}
               <div className="flex flex-col items-center gap-3 mt-10 animate-fade-in" style={{ animationDelay: '300ms' }}>
+                <button
+                  onClick={() => navigate("/self-assessment")}
+                  className="inline-flex items-center justify-center gap-2 min-h-11 px-8 py-4 rounded-xl bg-white/10 text-white font-bold text-base border border-white/30 hover:bg-white/15 transition-colors backdrop-blur-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white w-full sm:w-[320px]"
+                >
+                  First time? Take the Self-Assessment <ArrowRight className="h-5 w-5" />
+                </button>
                 <button
                   onClick={handleSignIn}
                   disabled={signingIn}
-                  className="inline-flex items-center justify-center min-h-11 px-8 py-4 rounded-xl bg-[#F5A623] text-[#1F3864] font-bold text-base hover:bg-[#F5A623]/90 transition-colors disabled:opacity-60 shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+                  className="inline-flex items-center justify-center min-h-11 px-8 py-4 rounded-xl bg-[#F5A623] text-[#1F3864] font-bold text-base hover:bg-[#F5A623]/90 transition-colors disabled:opacity-60 shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white w-full sm:w-[320px]"
                 >
                   {signingIn ? "Redirecting…" : "Sign in with Microsoft"}
                 </button>
-                <p className="text-[12px] text-white/60">First time here? Sign in with Microsoft first.</p>
                 <button
-                  onClick={() => navigate("/journey")}
-                  className="inline-flex items-center justify-center gap-2 min-h-11 px-8 py-4 rounded-xl bg-white text-[#1F3864] font-bold text-base border border-[#1F3864] hover:bg-white/90 transition-colors shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+                  onClick={handleAlreadyAssessed}
+                  disabled={profileLoading}
+                  className="inline-flex items-center justify-center gap-2 min-h-11 px-8 py-4 rounded-xl bg-white text-[#1F3864] font-bold text-base border border-[#1F3864] hover:bg-white/90 transition-colors shadow-lg disabled:opacity-60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white w-full sm:w-[320px]"
                 >
-                  Go to My Journey <ArrowRight className="h-5 w-5" />
+                  {profileLoading ? "Loading…" : "Go to My Journey"} <ArrowRight className="h-5 w-5" />
                 </button>
               </div>
             </div>
