@@ -107,7 +107,7 @@ const Landing = () => {
       <header className="border-b border-border bg-card shadow-sm">
         <div className="container mx-auto px-4 py-6">
           <div className="flex items-center justify-between">
-            <img src={bradfordLogo} alt="Bradford College logo" className="h-12 object-contain cursor-pointer" onClick={handleLogoClick} />
+            <img src={bradfordLogo} alt="Bradford College logo" className="h-12 object-contain" />
             <SignOutButton />
           </div>
         </div>
@@ -240,27 +240,8 @@ const Landing = () => {
       </main>
     </div>
 
-    <Dialog open={showAdminDialog} onOpenChange={setShowAdminDialog}>
-      <DialogContent className="sm:max-w-sm">
-        <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
-            <KeyRound className="w-5 h-5 text-primary" />
-            Admin Access
-          </DialogTitle>
-          <DialogDescription>Enter your admin password to unlock training content.</DialogDescription>
-        </DialogHeader>
-        <form onSubmit={(e) => { e.preventDefault(); handleAdminLogin(); }} className="space-y-4">
-          <Input
-            type="password"
-            placeholder="Enter password"
-            value={adminPassword}
-            onChange={(e) => setAdminPassword(e.target.value)}
-            autoFocus
-          />
-          <Button type="submit" className="w-full">Unlock</Button>
-        </form>
-      </DialogContent>
-    </Dialog>
+    {/* Admin password dialog removed — admin access is validated server-side. */}
+
 
     {showOnboarding && profile && email && (
       <OnboardingModal
