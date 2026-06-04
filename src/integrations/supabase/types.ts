@@ -536,6 +536,7 @@ export type Database = {
       module_completions: {
         Row: {
           completed_at: string
+          created_at: string
           id: string
           module_id: string
           quiz_passed: boolean
@@ -543,6 +544,7 @@ export type Database = {
         }
         Insert: {
           completed_at?: string
+          created_at?: string
           id?: string
           module_id: string
           quiz_passed?: boolean
@@ -550,6 +552,7 @@ export type Database = {
         }
         Update: {
           completed_at?: string
+          created_at?: string
           id?: string
           module_id?: string
           quiz_passed?: boolean
@@ -958,6 +961,7 @@ export type Database = {
           updated: number
         }[]
       }
+      apply_data_retention: { Args: never; Returns: undefined }
       is_admin: { Args: never; Returns: boolean }
       is_leader: { Args: never; Returns: boolean }
     }
