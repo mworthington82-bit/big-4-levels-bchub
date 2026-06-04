@@ -8,7 +8,11 @@ const corsHeaders = {
   "Access-Control-Allow-Methods": "POST, OPTIONS",
 };
 
-const ADMIN_EMAIL = "m.worthington@bradfordcollege.ac.uk";
+const ADMIN_EMAILS = new Set([
+  "m.worthington@bradfordcollege.ac.uk",
+  "c.mitton@bradfordcollege.ac.uk",
+  "p.richardson@bradfordcollege.ac.uk",
+]);
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {
