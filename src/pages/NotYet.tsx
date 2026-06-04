@@ -1,8 +1,6 @@
-import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { fullSignOut } from "@/lib/signOut";
 import { usePageTitle } from "@/lib/usePageTitle";
-import { ADMIN_BYPASS_PASSWORD, grantMaintenanceBypass } from "@/lib/maintenanceMode";
 
 const SELF_ASSESSMENT_URL =
   "https://bradfordcollege.kallidus-suite.com/learn/#/course/a0ada9f6-7556-4a4f-8c72-827eb247b456";
@@ -10,31 +8,16 @@ const SELF_ASSESSMENT_URL =
 const NotYet = () => {
   usePageTitle();
   const navigate = useNavigate();
-  const clicksRef = useRef(0);
-  const resetTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const [showPrompt, setShowPrompt] = useState(false);
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState<string | null>(null);
-
-  const handleLogoClick = () => {
-    clicksRef.current += 1;
-    if (resetTimerRef.current) clearTimeout(resetTimerRef.current);
-    resetTimerRef.current = setTimeout(() => { clicksRef.current = 0; }, 2000);
-    if (clicksRef.current >= 5) {
-      clicksRef.current = 0;
-      setShowPrompt(true);
-    }
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (password.trim() === ADMIN_BYPASS_PASSWORD) {
-      grantMaintenanceBypass();
-      navigate("/admin", { replace: true });
-    } else {
-      setError("Incorrect password.");
-    }
-  };
+  const showPrompt = false;
+  const handleLogoClick = () => { /* admin password bypass removed */ };
+  const handleSubmit = (_e: React.FormEvent) => { /* removed */ };
+  const password = "";
+  const setPassword = (_v: string) => {};
+  const setShowPrompt = (_v: boolean) => {};
+  const setError = (_v: string | null) => {};
+  const error: string | null = null;
+  // Reference to silence unused warnings
+  void navigate; void handleSubmit; void password; void setPassword; void setShowPrompt; void setError; void error;
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
