@@ -173,6 +173,12 @@ const AppShell = ({ children }: { children: React.ReactNode }) => {
       </header>
 
       <main className="flex-1">{children}</main>
+      <footer className="border-t border-border bg-card">
+        <div className="container mx-auto px-4 py-5 flex flex-col md:flex-row items-center justify-between gap-3 text-xs md:text-sm text-muted-foreground">
+          <span>© {new Date().getFullYear()} Bradford College — The Big 4: Level Up</span>
+          <a href="/privacy" className="hover:text-foreground underline-offset-4 hover:underline font-medium">Privacy Notice</a>
+        </div>
+      </footer>
     </div>
   );
 };
