@@ -1,4 +1,3 @@
-import { useNavigate } from "react-router-dom";
 import { fullSignOut } from "@/lib/signOut";
 import { usePageTitle } from "@/lib/usePageTitle";
 
@@ -7,31 +6,15 @@ const SELF_ASSESSMENT_URL =
 
 const NotYet = () => {
   usePageTitle();
-  const navigate = useNavigate();
-  const showPrompt = false;
-  const handleLogoClick = () => { /* admin password bypass removed */ };
-  const handleSubmit = (_e: React.FormEvent) => { /* removed */ };
-  const password = "";
-  const setPassword = (_v: string) => {};
-  const setShowPrompt = (_v: boolean) => {};
-  const setError = (_v: string | null) => {};
-  const error: string | null = null;
-  // Reference to silence unused warnings
-  void navigate; void handleSubmit; void password; void setPassword; void setShowPrompt; void setError; void error;
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <header className="bg-[#1F3864] text-white">
         <div className="container mx-auto px-4 h-16 flex items-center gap-2">
-          <button
-            type="button"
-            onClick={handleLogoClick}
-            className="flex items-center gap-2 focus:outline-none"
-            aria-label="The Big 4: Level Up"
-          >
+          <span className="flex items-center gap-2">
             <span className="w-2.5 h-2.5 rounded-full bg-[#F5A623]" aria-hidden />
             <span className="font-bold">The Big 4: Level Up</span>
-          </button>
+          </span>
         </div>
       </header>
 
@@ -72,49 +55,6 @@ const NotYet = () => {
           </div>
         </div>
       </main>
-
-      {showPrompt && (
-        <div
-          className="fixed inset-0 z-50 bg-black/60 flex items-center justify-center px-4"
-          role="dialog"
-          aria-modal="true"
-          aria-label="Admin access"
-        >
-          <form
-            onSubmit={handleSubmit}
-            className="w-full max-w-sm bg-white rounded-2xl p-6 space-y-4 shadow-2xl"
-          >
-            <h2 className="text-lg font-bold text-[#1F3864]">Admin access</h2>
-            <p className="text-sm text-muted-foreground">
-              Enter the admin password to unlock the full platform on this device.
-            </p>
-            <input
-              type="password"
-              autoFocus
-              value={password}
-              onChange={(e) => { setPassword(e.target.value); setError(null); }}
-              className="w-full rounded-lg border border-[#D0D7E2] px-3 py-2.5 text-sm focus:border-[#185FA5] focus:outline-none focus:ring-2 focus:ring-[#185FA5]/20"
-              placeholder="Password"
-            />
-            {error && <p className="text-sm text-red-600">{error}</p>}
-            <div className="flex justify-end gap-2 pt-2">
-              <button
-                type="button"
-                onClick={() => { setShowPrompt(false); setPassword(""); setError(null); }}
-                className="px-4 py-2 rounded-lg text-sm font-semibold text-[#5F6B7D] hover:bg-[#F4F6FB]"
-              >
-                Cancel
-              </button>
-              <button
-                type="submit"
-                className="px-4 py-2 rounded-lg text-sm font-bold bg-[#1F3864] text-white hover:bg-[#2A4A80]"
-              >
-                Unlock
-              </button>
-            </div>
-          </form>
-        </div>
-      )}
     </div>
   );
 };

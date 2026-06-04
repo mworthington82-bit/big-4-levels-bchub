@@ -1,11 +1,8 @@
 import { useEffect, useState } from "react";
-import { Button } from "@/components/ui/button";
-import { ArrowRight, KeyRound } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import WelcomeDialog from "@/components/dialogs/WelcomeDialog";
 import StudentQuoteCarousel from "@/components/StudentQuoteCarousel";
@@ -52,9 +49,6 @@ const Landing = () => {
   const navigate = useNavigate();
 
   const { toast } = useToast();
-  const [logoClickCount, setLogoClickCount] = useState(0);
-  const [showAdminDialog, setShowAdminDialog] = useState(false);
-  const [adminPassword, setAdminPassword] = useState("");
   const { profile, loading: profileLoading, email } = useStaffProfile();
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [signingIn, setSigningIn] = useState(false);
@@ -88,28 +82,6 @@ const Landing = () => {
       return;
     }
     setShowOnboarding(true);
-  };
-
-  const handleLogoClick = () => {
-    const newCount = logoClickCount + 1;
-    setLogoClickCount(newCount);
-    if (newCount >= 5) {
-      setShowAdminDialog(true);
-      setLogoClickCount(0);
-    }
-  };
-
-  const handleAdminLogin = () => {
-    if (adminPassword === "1610") {
-      sessionStorage.setItem("admin_access_unlocked", "true");
-      setShowAdminDialog(false);
-      setAdminPassword("");
-      toast({ title: "Welcome, Admin!", description: "Training content is now unlocked." });
-      navigate("/training");
-    } else {
-      toast({ title: "Incorrect password", description: "Please try again.", variant: "destructive" });
-      setAdminPassword("");
-    }
   };
 
   const appChips = [
