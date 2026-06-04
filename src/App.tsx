@@ -27,9 +27,11 @@ import Planner from "./pages/Planner";
 import Profile from "./pages/Profile";
 
 import NotFound from "./pages/NotFound";
+import Privacy from "./pages/Privacy";
 import RequireAuth from "./components/RequireAuth";
 import RequireAdmin from "./components/RequireAdmin";
 import FloatingPlannerButton from "./components/FloatingPlannerButton";
+import CookieBanner from "./components/CookieBanner";
 
 const queryClient = new QueryClient();
 
@@ -40,10 +42,12 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <FloatingPlannerButton />
+        <CookieBanner />
         <Routes>
           {/* Entry — public landing with sign-in */}
           <Route path="/" element={<Landing />} />
           <Route path="/home" element={<Navigate to="/" replace />} />
+          <Route path="/privacy" element={<Privacy />} />
           <Route path="/post-login" element={<RequireAuth><PostLogin /></RequireAuth>} />
           <Route path="/not-yet" element={<RequireAuth><NotYet /></RequireAuth>} />
           <Route path="/admin" element={<RequireAdmin><Admin /></RequireAdmin>} />
