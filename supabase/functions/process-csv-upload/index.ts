@@ -39,7 +39,7 @@ Deno.serve(async (req) => {
       return json({ error: "Not authenticated" }, 401);
     }
     const email = String(userRes.user.email ?? "").toLowerCase();
-    if (email !== ADMIN_EMAIL) {
+    if (!ADMIN_EMAILS.has(email)) {
       console.error("Admin check failed for email:", email);
       return json({ error: "Not authorised" }, 403);
     }
