@@ -400,11 +400,30 @@ const Training = () => {
             </div>
 
             {/* Gold reassurance note */}
-            <div className="bg-[#F5A623]/10 border border-[#F5A623]/30 rounded-xl px-5 py-3 mb-6 text-center animate-fade-in">
+            <div className="bg-[#F5A623]/10 border border-[#F5A623]/30 rounded-xl px-5 py-3 mb-4 text-center animate-fade-in">
               <p className="text-sm text-foreground">
                 <span className="font-semibold">Not sure which level?</span> Your self-assessment result will have indicated Explorer, Practitioner, or Leader.
               </p>
             </div>
+
+            {/* How your level was calculated */}
+            <div className="bg-card border border-border rounded-xl p-5 mb-6 animate-fade-in">
+              <h3 className="font-display font-bold text-foreground mb-2">How your level was calculated</h3>
+              <p className="text-sm text-muted-foreground leading-relaxed mb-3">
+                Your level has been calculated based on your quiz scores across the
+                five Big 4 tool areas. <strong>Leader</strong> requires 85% or above overall,
+                with strong scores across at least three categories. <strong>Practitioner</strong> requires
+                60–84% overall. <strong>Explorer</strong> is below 60%. If you think your level does
+                not reflect your skills, please speak to your Learning Innovation team.
+              </p>
+              <p className="text-sm text-muted-foreground">
+                To query your level assignment, contact the Learning Innovation team at{" "}
+                <a href="mailto:m.worthington@bradfordcollege.ac.uk" className="text-[#1F3864] font-semibold underline">
+                  m.worthington@bradfordcollege.ac.uk
+                </a>.
+              </p>
+            </div>
+
 
             {/* Vertical stacked level rows */}
             <div className="space-y-3 mb-8 animate-fade-in">
