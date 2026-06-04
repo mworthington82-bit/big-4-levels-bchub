@@ -238,7 +238,14 @@ const Landing = () => {
 
         </div>
       </main>
+      <footer className="border-t border-border bg-card mt-12">
+        <div className="container mx-auto px-4 py-6 flex flex-col md:flex-row items-center justify-between gap-3 text-sm text-muted-foreground">
+          <span>© {new Date().getFullYear()} Bradford College — The Big 4: Level Up</span>
+          <a href="/privacy" className="hover:text-foreground underline-offset-4 hover:underline font-medium">Privacy Notice</a>
+        </div>
+      </footer>
     </div>
+
 
     {/* Admin password dialog removed — admin access is validated server-side. */}
 
