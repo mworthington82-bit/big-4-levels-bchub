@@ -8,7 +8,11 @@ const corsHeaders = {
   "Access-Control-Allow-Methods": "POST, OPTIONS",
 };
 
-const ADMIN_EMAIL = "m.worthington@bradfordcollege.ac.uk";
+const ADMIN_EMAILS = new Set([
+  "m.worthington@bradfordcollege.ac.uk",
+  "c.mitton@bradfordcollege.ac.uk",
+  "p.richardson@bradfordcollege.ac.uk",
+]);
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {
@@ -35,7 +39,7 @@ Deno.serve(async (req) => {
       return json({ error: "Not authenticated" }, 401);
     }
     const email = String(userRes.user.email ?? "").toLowerCase();
-    if (email !== ADMIN_EMAIL) {
+    if (!ADMIN_EMAILS.has(email)) {
       console.error("Admin check failed for email:", email);
       return json({ error: "Not authorised" }, 403);
     }
