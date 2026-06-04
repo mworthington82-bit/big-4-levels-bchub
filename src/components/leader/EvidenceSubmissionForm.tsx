@@ -75,11 +75,13 @@ const EvidenceSubmissionForm = ({ tool, toolDisplayName, onSuccess, userId }: Ev
 
       if (uploadError) throw uploadError;
 
-      const { data } = supabase.storage
+      // Bucket is private — issue a long-lived signed URL (1 year)
+      const { data, error: signError } = await supabase.storage
         .from('leader-evidence')
-        .getPublicUrl(fileName);
+        .createSignedUrl(fileName, 60 * 60 * 24 * 365);
+      if (signError || !data?.signedUrl) throw signError ?? new Error('Could not sign URL');
 
-      return data.publicUrl;
+      return data.signedUrl;
     } catch (error) {
       console.error('Upload error:', error);
       toast({

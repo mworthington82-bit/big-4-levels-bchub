@@ -72,11 +72,12 @@ const ImmersiveSessionForm = ({ sessionNumber, onSuccess, userId, existingSessio
 
       if (uploadError) throw uploadError;
 
-      const { data } = supabase.storage
+      const { data, error: signError } = await supabase.storage
         .from('leader-evidence')
-        .getPublicUrl(fileName);
+        .createSignedUrl(fileName, 60 * 60 * 24 * 365);
+      if (signError || !data?.signedUrl) throw signError ?? new Error('Could not sign URL');
 
-      return data.publicUrl;
+      return data.signedUrl;
     } catch (error) {
       console.error('Upload error:', error);
       return null;
