@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 
 import type { StaffProfile } from "@/hooks/useStaffProfile";
+import { deriveEffectiveLevel } from "@/lib/progression";
 import emblemExplorer from "@/assets/emblem-explorer.svg";
 import emblemPractitioner from "@/assets/emblem-practitioner.svg";
 import emblemLeader from "@/assets/emblem-leader.svg";
@@ -24,20 +25,15 @@ const LEVEL_META = {
 
 type LevelKey = keyof typeof LEVEL_META;
 
-const normaliseLevel = (lvl: string | null | undefined): LevelKey => {
-  const l = (lvl ?? "").toLowerCase();
-  if (l.startsWith("lead")) return "Leader";
-  if (l.startsWith("prac")) return "Practitioner";
-  return "Explorer";
-};
-
 const WelcomeCompletionModal = ({ profile }: Props) => {
   const navigate = useNavigate();
   const [open, setOpen] = useState(true);
   const [aiText, setAiText] = useState<string | null>(null);
   const [loadingAi, setLoadingAi] = useState(true);
 
-  const level = normaliseLevel(profile.assigned_level);
+  // Use the *effective* level (factors in practitioner_unlocked / leader_unlocked)
+  // so a learner who finished Explorer is correctly shown as Practitioner here.
+  const level = deriveEffectiveLevel(profile) as LevelKey;
   const meta = LEVEL_META[level];
 
   const lvlKey = level.toLowerCase() as "explorer" | "practitioner" | "leader";
@@ -50,6 +46,7 @@ const WelcomeCompletionModal = ({ profile }: Props) => {
       else toDo.push(t);
     });
   }
+
 
   useEffect(() => {
     let cancelled = false;
