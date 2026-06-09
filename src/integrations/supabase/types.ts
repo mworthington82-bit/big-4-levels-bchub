@@ -949,6 +949,36 @@ export type Database = {
         }
         Relationships: []
       }
+      training_bookings: {
+        Row: {
+          booking_url: string
+          created_at: string
+          created_by: string | null
+          id: string
+          level: string
+          name: string
+          tool: string
+        }
+        Insert: {
+          booking_url: string
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          level: string
+          name: string
+          tool: string
+        }
+        Update: {
+          booking_url?: string
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          level?: string
+          name?: string
+          tool?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           email: string
