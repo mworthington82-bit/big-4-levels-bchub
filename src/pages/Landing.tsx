@@ -53,6 +53,39 @@ const Landing = () => {
   const { profile, loading: profileLoading, email } = useStaffProfile();
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [signingIn, setSigningIn] = useState(false);
+  const [testEmail, setTestEmail] = useState("");
+  const [testPassword, setTestPassword] = useState("");
+  const [testBusy, setTestBusy] = useState(false);
+  const [seeding, setSeeding] = useState(false);
+
+  const handleTestLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setTestBusy(true);
+    const { error } = await supabase.auth.signInWithPassword({
+      email: testEmail.trim(),
+      password: testPassword,
+    });
+    setTestBusy(false);
+    if (error) {
+      toast({ title: "Login failed", description: error.message, variant: "destructive" });
+      return;
+    }
+    navigate("/post-login");
+  };
+
+  const handleSeedTestUsers = async () => {
+    setSeeding(true);
+    try {
+      const { data, error } = await supabase.functions.invoke("seed-test-users");
+      if (error) throw error;
+      toast({ title: "Test users ready", description: "8 accounts created/updated. Password: Psycho1610" });
+      console.log("seed-test-users result", data);
+    } catch (err: any) {
+      toast({ title: "Seed failed", description: err.message ?? String(err), variant: "destructive" });
+    } finally {
+      setSeeding(false);
+    }
+  };
 
   const handleSignIn = async () => {
     setSigningIn(true);
