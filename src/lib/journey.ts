@@ -9,6 +9,7 @@ export interface ModuleCardSpec {
   name: string;
   description: string;
   status: ModuleStatus;
+  completedVia?: "quiz" | "in_person";
 }
 
 const TOOL_LABEL: Record<string, string> = {
