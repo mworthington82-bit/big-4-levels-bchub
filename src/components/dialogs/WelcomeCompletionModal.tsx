@@ -51,21 +51,8 @@ const WelcomeCompletionModal = ({ profile }: Props) => {
     });
   }
 
-  const scoreSum =
-    (Number((profile as any).teams_score) || 0) +
-    (Number((profile as any).forms_score) || 0) +
-    (Number((profile as any).canva_score) || 0) +
-    (Number((profile as any).edpuzzle_score) || 0) +
-    (Number((profile as any).copilot_score) || 0);
-  const lowScores = scoreSum < 10;
-
   useEffect(() => {
     let cancelled = false;
-    if (lowScores) {
-      setAiText(FALLBACK);
-      setLoadingAi(false);
-      return;
-    }
     const controller = new AbortController();
     const t = setTimeout(() => controller.abort(), 12000);
     (async () => {
