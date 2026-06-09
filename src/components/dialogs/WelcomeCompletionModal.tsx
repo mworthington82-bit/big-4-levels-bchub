@@ -116,13 +116,8 @@ const WelcomeCompletionModal = ({ profile }: Props) => {
         className="relative bg-white shadow-2xl flex flex-col w-[92%] sm:w-full overflow-hidden"
         style={{ maxWidth: 820, borderRadius: 20, maxHeight: "92vh" }}
       >
-        <button
-          onClick={() => setOpen(false)}
-          aria-label="Close"
-          className="absolute top-4 right-4 z-10 w-11 h-11 inline-flex items-center justify-center rounded-full bg-white/90 hover:bg-white text-slate-700"
-        >
-          <X className="w-5 h-5" />
-        </button>
+        {/* Modal is intentionally non-dismissible — exit only via "Book my sessions" CTA */}
+
 
         {/* Gold header bar */}
         <div style={{ height: 10, background: "#F5A623" }} />
