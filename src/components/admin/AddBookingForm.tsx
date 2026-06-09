@@ -190,15 +190,23 @@ const AddBookingForm = () => {
           <ul className="divide-y divide-slate-200 border border-slate-200 rounded-lg">
             {bookings.map((b) => (
               <li key={b.id} className="flex items-center justify-between gap-3 p-3">
-                <div className="min-w-0">
+                <div className="min-w-0 flex-1">
                   <p className="font-medium truncate">{b.name}</p>
                   <p className="text-xs text-slate-500 capitalize">
                     {TOOL_OPTIONS.find((t) => t.value === b.tool)?.label ?? b.tool} · {b.level}
                   </p>
+                  <a href={b.booking_url} target="_blank" rel="noopener noreferrer" className="text-xs text-blue-700 hover:underline truncate block max-w-full">
+                    {b.booking_url}
+                  </a>
                 </div>
-                <Button variant="ghost" size="icon" onClick={() => remove(b.id)} aria-label="Remove">
-                  <Trash2 className="w-4 h-4 text-red-600" />
-                </Button>
+                <div className="flex items-center gap-1 flex-shrink-0">
+                  <Button variant="ghost" size="icon" onClick={() => startEdit(b)} aria-label="Edit">
+                    <Pencil className="w-4 h-4" />
+                  </Button>
+                  <Button variant="ghost" size="icon" onClick={() => remove(b.id)} aria-label="Remove">
+                    <Trash2 className="w-4 h-4 text-red-600" />
+                  </Button>
+                </div>
               </li>
             ))}
           </ul>
