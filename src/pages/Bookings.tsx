@@ -83,6 +83,19 @@ const Bookings = () => {
   const visible = bookings.filter((b) => {
     // Inclusion: visible to everyone
     if (b.tool === "inclusion") return true;
+    // Immersive Room: only Practitioners who have evidenced all 5 Practitioner
+    // tools but have not yet unlocked Leader (i.e. still need XR training).
+    if (b.tool === "immersive") {
+      if (!profile) return false;
+      if (profile.leader_unlocked) return false;
+      return (
+        profile.teams_practitioner_evidenced &&
+        profile.forms_practitioner_evidenced &&
+        profile.canva_practitioner_evidenced &&
+        profile.edpuzzle_practitioner_evidenced &&
+        profile.copilot_practitioner_evidenced
+      );
+    }
     if (!currentLevel) return false;
     if (b.level !== currentLevel) return false;
     const field = evidencedField(b.tool, b.level);
