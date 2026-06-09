@@ -2,7 +2,14 @@ import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import { IconArrowLeft, IconArrowRight, IconClock } from "@tabler/icons-react";
+import {
+  IconArrowLeft,
+  IconArrowRight,
+  IconCheck,
+  IconClock,
+  IconLock,
+  IconLoader2,
+} from "@tabler/icons-react";
 import AppShell from "@/components/AppShell";
 import PageError from "@/components/PageError";
 import { usePageTitle } from "@/lib/usePageTitle";
