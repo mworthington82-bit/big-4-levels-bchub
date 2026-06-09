@@ -214,61 +214,66 @@ const Landing = () => {
                 ))}
               </div>
 
-              {/* Primary action — Microsoft SSO only. Self-assessment and My Journey live behind login. */}
-              <div className="flex flex-col items-center gap-3 mt-10 animate-fade-in" style={{ animationDelay: '300ms' }}>
-                <button
-                  onClick={handleSignIn}
-                  disabled={signingIn}
-                  className="inline-flex items-center justify-center min-h-11 px-8 py-4 rounded-xl bg-[#F5A623] text-[#1F3864] font-bold text-base hover:bg-[#F5A623]/90 transition-colors disabled:opacity-60 shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white w-full sm:w-[320px]"
-                >
-                  {signingIn ? "Redirecting…" : "Sign in with Microsoft"}
-                </button>
-              </div>
+              {/* Primary action — Microsoft SSO only. Hidden once signed in. */}
+              {!email && (
+                <div className="flex flex-col items-center gap-3 mt-10 animate-fade-in" style={{ animationDelay: '300ms' }}>
+                  <button
+                    onClick={handleSignIn}
+                    disabled={signingIn}
+                    className="inline-flex items-center justify-center min-h-11 px-8 py-4 rounded-xl bg-[#F5A623] text-[#1F3864] font-bold text-base hover:bg-[#F5A623]/90 transition-colors disabled:opacity-60 shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white w-full sm:w-[320px]"
+                  >
+                    {signingIn ? "Redirecting…" : "Sign in with Microsoft"}
+                  </button>
+                </div>
+              )}
 
-              {/* Test login panel — for QA only */}
-              <details className="mt-8 mx-auto max-w-md text-left bg-white/5 border border-white/15 rounded-xl backdrop-blur-sm">
-                <summary className="cursor-pointer px-4 py-3 text-sm font-semibold text-white/80 hover:text-white">
-                  Test login (QA)
-                </summary>
-                <form onSubmit={handleTestLogin} className="px-4 pb-4 space-y-2">
-                  <input
-                    type="email"
-                    required
-                    value={testEmail}
-                    onChange={(e) => setTestEmail(e.target.value)}
-                    placeholder="test1@big4.com"
-                    className="w-full rounded-md bg-white/10 border border-white/20 px-3 py-2 text-white placeholder-white/50 text-sm focus:outline-none focus:ring-2 focus:ring-[#F5A623]"
-                  />
-                  <input
-                    type="password"
-                    required
-                    value={testPassword}
-                    onChange={(e) => setTestPassword(e.target.value)}
-                    placeholder="Password"
-                    className="w-full rounded-md bg-white/10 border border-white/20 px-3 py-2 text-white placeholder-white/50 text-sm focus:outline-none focus:ring-2 focus:ring-[#F5A623]"
-                  />
-                  <div className="flex gap-2">
-                    <button
-                      type="submit"
-                      disabled={testBusy}
-                      className="flex-1 inline-flex items-center justify-center min-h-11 px-4 py-2 rounded-md bg-[#F5A623] text-[#1F3864] font-bold text-sm hover:bg-[#F5A623]/90 disabled:opacity-60"
-                    >
-                      {testBusy ? "Signing in…" : "Sign in"}
-                    </button>
-                    <button
-                      type="button"
-                      onClick={handleSeedTestUsers}
-                      disabled={seeding}
-                      className="inline-flex items-center justify-center min-h-11 px-4 py-2 rounded-md bg-white/10 text-white text-sm border border-white/20 hover:bg-white/20 disabled:opacity-60"
-                    >
-                      {seeding ? "Seeding…" : "Seed 8 users"}
-                    </button>
-                  </div>
-                  <p className="text-xs text-white/60 pt-1">
-                    test1–test8@big4.com · password <span className="font-mono">Psycho1610</span>
-                  </p>
-                </form>
-              </details>
+              {/* Test login panel — for QA only, hidden when signed in */}
+              {!email && (
+                <details className="mt-8 mx-auto max-w-md text-left bg-white/5 border border-white/15 rounded-xl backdrop-blur-sm">
+                  <summary className="cursor-pointer px-4 py-3 text-sm font-semibold text-white/80 hover:text-white">
+                    Test login (QA)
+                  </summary>
+                  <form onSubmit={handleTestLogin} className="px-4 pb-4 space-y-2">
+                    <input
+                      type="email"
+                      required
+                      value={testEmail}
+                      onChange={(e) => setTestEmail(e.target.value)}
+                      placeholder="test1@big4.com"
+                      className="w-full rounded-md bg-white/10 border border-white/20 px-3 py-2 text-white placeholder-white/50 text-sm focus:outline-none focus:ring-2 focus:ring-[#F5A623]"
+                    />
+                    <input
+                      type="password"
+                      required
+                      value={testPassword}
+                      onChange={(e) => setTestPassword(e.target.value)}
+                      placeholder="Password"
+                      className="w-full rounded-md bg-white/10 border border-white/20 px-3 py-2 text-white placeholder-white/50 text-sm focus:outline-none focus:ring-2 focus:ring-[#F5A623]"
+                    />
+                    <div className="flex gap-2">
+                      <button
+                        type="submit"
+                        disabled={testBusy}
+                        className="flex-1 inline-flex items-center justify-center min-h-11 px-4 py-2 rounded-md bg-[#F5A623] text-[#1F3864] font-bold text-sm hover:bg-[#F5A623]/90 disabled:opacity-60"
+                      >
+                        {testBusy ? "Signing in…" : "Sign in"}
+                      </button>
+                      <button
+                        type="button"
+                        onClick={handleSeedTestUsers}
+                        disabled={seeding}
+                        className="inline-flex items-center justify-center min-h-11 px-4 py-2 rounded-md bg-white/10 text-white text-sm border border-white/20 hover:bg-white/20 disabled:opacity-60"
+                      >
+                        {seeding ? "Seeding…" : "Seed 8 users"}
+                      </button>
+                    </div>
+                    <p className="text-xs text-white/60 pt-1">
+                      test1–test8@big4.com · password <span className="font-mono">Psycho1610</span>
+                    </p>
+                  </form>
+                </details>
+              )}
+
             </div>
           </div>
         </section>
