@@ -140,10 +140,63 @@ const Module = () => {
   }, [moduleId]);
 
   useEffect(() => {
+    if (!moduleId) return;
+    let cancelled = false;
+    (async () => {
+      const { data } = await supabase
+        .from("training_sessions" as any)
+        .select("id")
+        .eq("module_id", moduleId)
+        .eq("is_active", true)
+        .limit(1);
+      if (!cancelled) setHasActiveSession(((data as any[]) ?? []).length > 0);
+    })();
+    return () => { cancelled = true; };
+  }, [moduleId]);
+
+  useEffect(() => {
     if (!warning) return;
     const t = setTimeout(() => setWarning(null), 2500);
     return () => clearTimeout(t);
   }, [warning]);
+
+  const submitBypass = async () => {
+    if (!moduleId || !email) return;
+    if (!bypassPwd.trim()) return;
+    setBypassBusy(true);
+    setBypassError(null);
+    try {
+      const { data, error } = await supabase.functions.invoke("validate-session-password", {
+        body: { module_id: moduleId, password: bypassPwd, staff_email: email },
+      });
+      if (error || !data?.success) {
+        setBypassError(
+          "That password is not correct. Please check with your trainer or contact m.worthington@bradfordcollege.ac.uk",
+        );
+        setBypassPwd("");
+        setBypassBusy(false);
+        return;
+      }
+      setBypassSuccess(true);
+      setBypassBusy(false);
+      // mark steps 1-4 as visited, step 5 unlocked
+      setVisited(new Set([1, 2, 3, 4, 5]));
+      try {
+        const { runProgressionCheckByEmail } = await import("@/lib/progression");
+        await runProgressionCheckByEmail(email);
+      } catch (e) {
+        console.error("progression check failed", e);
+      }
+      setTimeout(() => setCurrentStep(5), 1500);
+    } catch (e) {
+      setBypassError(
+        "That password is not correct. Please check with your trainer or contact m.worthington@bradfordcollege.ac.uk",
+      );
+      setBypassPwd("");
+      setBypassBusy(false);
+    }
+  };
+
 
   const step = useMemo(
     () => steps.find((s) => s.step_number === currentStep) ?? null,
