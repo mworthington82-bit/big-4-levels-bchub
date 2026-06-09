@@ -248,14 +248,7 @@ const Landing = () => {
         </section>
 
         <div className="container mx-auto px-4 py-8 md:py-12">
-          {/* placeholder kept for diff stability */}
-          <div style={{ display: "none" }}>__</div>
-              </div>
-            </div>
-          </div>
-        </section>
 
-        <div className="container mx-auto px-4 py-8 md:py-12">
 
 
           {/* LEAD model strip */}
