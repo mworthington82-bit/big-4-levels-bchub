@@ -100,34 +100,15 @@ const InclusionEmbed = ({ tool, level, brandColor }: InclusionEmbedProps) => {
     const ratingVals = Object.values(ratings);
     const avg = ratingVals.length > 0 ? ratingVals.reduce((a, b) => a + b, 0) / ratingVals.length : 0;
 
-    const { data: existing } = await supabase
-      .from("inclusion_responses")
-      .select("id")
-      .eq("session_id", sessionId)
-      .maybeSingle();
-
-    if (existing) {
-      await supabase
-        .from("inclusion_responses")
-        .update({
-          checklist_data: checkedItems as any,
-          ratings_data: ratings as any,
-          total_checked: allChecked,
-          avg_rating: Math.round(avg * 100) / 100,
-          updated_at: new Date().toISOString(),
-        })
-        .eq("session_id", sessionId);
-    } else {
-      await supabase
-        .from("inclusion_responses")
-        .insert({
-          session_id: sessionId,
-          checklist_data: checkedItems as any,
-          ratings_data: ratings as any,
-          total_checked: allChecked,
-          avg_rating: Math.round(avg * 100) / 100,
-        });
-    }
+    await supabase.functions.invoke("submit-inclusion-response", {
+      body: {
+        session_id: sessionId,
+        checklist_data: checkedItems,
+        ratings_data: ratings,
+        total_checked: allChecked,
+        avg_rating: Math.round(avg * 100) / 100,
+      },
+    });
 
     localStorage.setItem("inclusion_submitted", "true");
     setSaved(true);

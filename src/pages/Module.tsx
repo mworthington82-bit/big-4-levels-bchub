@@ -144,7 +144,7 @@ const Module = () => {
     let cancelled = false;
     (async () => {
       const { data } = await supabase
-        .from("training_sessions" as any)
+        .from("training_sessions_safe" as any)
         .select("id")
         .eq("module_id", moduleId)
         .eq("is_active", true)

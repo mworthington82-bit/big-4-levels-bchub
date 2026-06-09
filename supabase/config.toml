@@ -8,3 +8,6 @@ verify_jwt = false
 
 [functions.welcome-summary]
 verify_jwt = false
+
+[functions.submit-inclusion-response]
+verify_jwt = false

@@ -58,10 +58,7 @@ const TrainingSessions = () => {
   const [editingId, setEditingId] = useState<string | null>(null);
 
   const load = async () => {
-    const { data, error } = await supabase
-      .from("training_sessions" as any)
-      .select("id, module_id, session_title, session_date, bypass_password, is_active")
-      .order("created_at", { ascending: false });
+    const { data, error } = await supabase.rpc("admin_list_training_sessions" as any);
     if (!error && data) setSessions(data as any);
   };
 

@@ -60,7 +60,7 @@ const EvidenceGallery = ({ tool, toolDisplayName }: EvidenceGalleryProps) => {
   const fetchEvidence = async () => {
     try {
       let query = supabase
-        .from('leader_evidence')
+        .from('leader_evidence_public' as any)
         .select('*')
         .order('created_at', { ascending: false });
 
