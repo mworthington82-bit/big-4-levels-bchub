@@ -29,8 +29,8 @@ Deno.serve(async (req) => {
     }
 
     const body = await req.json().catch(() => ({}));
-    const { level, evidenced, toDo } = body ?? {};
-    console.log("welcome-summary request", { level, evCount: evidenced?.length, toDoCount: toDo?.length });
+    const { level, evidenced, toDo, immersiveDone } = body ?? {};
+    console.log("welcome-summary request", { level, evCount: evidenced?.length, toDoCount: toDo?.length, immersiveDone });
 
     if (!level || !Array.isArray(evidenced) || !Array.isArray(toDo)) {
       return new Response(JSON.stringify({ error: "Bad request" }), {
@@ -43,14 +43,21 @@ Deno.serve(async (req) => {
     const todoList = toDo.map((t: string) => TOOL_LABELS[t] ?? t).join(", ") || "none";
 
     const systemPrompt =
-      "You are a friendly, professional CPD coordinator at Bradford College. Write a single short paragraph of no more than 80 words for a member of teaching staff. Tell them what they did well in their Big 4 digital self-assessment and what they need to focus on to progress to the next level. Use the tool names MS Teams, MS Forms, Canva, Edpuzzle, and Microsoft Copilot. Tone: warm, encouraging, and professional. Not patronising. Not corporate. Sound like a real person who is genuinely pleased for them. Do not mention scores or percentages. Do not use bullet points. Write in second person (you / your).";
+      "You are a friendly, professional CPD coordinator at Bradford College. Write a single short paragraph of no more than 90 words for a member of teaching staff. Tell them what they did well in their Big 4 digital self-assessment and what they need to focus on to progress to the next level. Use the tool names MS Teams, MS Forms, Canva, Edpuzzle, Microsoft Copilot, and the Immersive Room. Tone: warm, encouraging, and professional. Not patronising. Not corporate. Sound like a real person who is genuinely pleased for them. Do not mention scores or percentages. Do not use bullet points. Write in second person (you / your).";
 
-    const extraContext =
-      level === "Practitioner" && toDo.length === 0
-        ? " They have evidenced all five Practitioner tools. Mention that the Immersive Room is the final step to unlock Leader level."
-        : "";
+    // Immersive Room Practitioner is mandatory for ALL staff to reach Leader level
+    let immersiveContext = "";
+    if (level === "Explorer") {
+      immersiveContext = " Also remind them that once they progress to Practitioner, every member of staff must complete an Immersive Room session as part of that level.";
+    } else if (level === "Practitioner") {
+      if (immersiveDone) {
+        immersiveContext = " They have already completed their Immersive Room Practitioner session — acknowledge this warmly.";
+      } else {
+        immersiveContext = " IMPORTANT: They have NOT yet completed the Immersive Room Practitioner session, which is mandatory for every member of staff at Practitioner level and is the final step to unlock Leader level. Explicitly tell them they still need to book and complete an Immersive Room session.";
+      }
+    }
 
-    const userPrompt = `Staff member level: ${level}\n\nTools already evidenced at their level:\n${evList}\n\nTools still to evidence:\n${todoList}\n${extraContext}\n\nWrite the personalised paragraph.`;
+    const userPrompt = `Staff member level: ${level}\n\nTools already evidenced at their level:\n${evList}\n\nTools still to evidence:\n${todoList}\n${immersiveContext}\n\nWrite the personalised paragraph.`;
 
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 15000);

@@ -57,8 +57,19 @@ const WelcomeCompletionModal = ({ profile }: Props) => {
     const t = setTimeout(() => controller.abort(), 12000);
     (async () => {
       try {
+        let immersiveDone = false;
+        try {
+          const { data: comp } = await supabase
+            .from("module_completions")
+            .select("module_id")
+            .ilike("staff_email", profile.email)
+            .eq("module_id", "immersive_practitioner")
+            .maybeSingle();
+          immersiveDone = !!comp;
+        } catch { /* ignore */ }
+
         const { data, error } = await supabase.functions.invoke("welcome-summary", {
-          body: { level, evidenced, toDo },
+          body: { level, evidenced, toDo, immersiveDone },
         });
         if (cancelled) return;
         if (error) {
