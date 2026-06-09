@@ -56,6 +56,7 @@ export const useStaffProfile = () => {
     notFound: false,
     error: false,
     completedModuleIds: [],
+    completions: [],
   });
   const [reloadKey, setReloadKey] = useState(0);
 
@@ -69,7 +70,7 @@ export const useStaffProfile = () => {
         const email = sessionData.session?.user.email ?? null;
         if (!email) {
           if (!cancelled)
-            setState({ profile: null, email: null, loading: false, notFound: false, error: false, completedModuleIds: [] });
+            setState({ profile: null, email: null, loading: false, notFound: false, error: false, completedModuleIds: [], completions: [] });
           return;
         }
         const { data, error } = await supabase
@@ -79,21 +80,26 @@ export const useStaffProfile = () => {
           .maybeSingle();
 
         let completedModuleIds: string[] = [];
+        let completions: CompletionInfo[] = [];
         try {
           const { data: comps } = await supabase
             .from("module_completions")
-            .select("module_id,quiz_passed")
+            .select("module_id,quiz_passed,completed_via")
             .ilike("staff_email", email);
-          completedModuleIds = (comps ?? [])
-            .filter((c: any) => c.quiz_passed === true)
-            .map((c: any) => c.module_id as string);
+          const passed = (comps ?? []).filter((c: any) => c.quiz_passed === true);
+          completedModuleIds = passed.map((c: any) => c.module_id as string);
+          completions = passed.map((c: any) => ({
+            moduleId: c.module_id as string,
+            via: ((c.completed_via as string) === "in_person" ? "in_person" : "quiz") as "quiz" | "in_person",
+          }));
         } catch {
           completedModuleIds = [];
+          completions = [];
         }
 
         if (cancelled) return;
         if (error) {
-          setState({ profile: null, email, loading: false, notFound: true, error: false, completedModuleIds });
+          setState({ profile: null, email, loading: false, notFound: true, error: false, completedModuleIds, completions });
           return;
         }
         setState({
@@ -103,10 +109,11 @@ export const useStaffProfile = () => {
           notFound: !data,
           error: false,
           completedModuleIds,
+          completions,
         });
       } catch {
         if (!cancelled)
-          setState({ profile: null, email: null, loading: false, notFound: false, error: true, completedModuleIds: [] });
+          setState({ profile: null, email: null, loading: false, notFound: false, error: true, completedModuleIds: [], completions: [] });
       }
     })();
     return () => {
