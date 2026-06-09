@@ -949,6 +949,29 @@ export type Database = {
         }
         Relationships: []
       }
+      user_roles: {
+        Row: {
+          email: string
+          role: string
+        }
+        Insert: {
+          email: string
+          role: string
+        }
+        Update: {
+          email?: string
+          role?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_roles_email_fkey"
+            columns: ["email"]
+            isOneToOne: true
+            referencedRelation: "staff_profiles"
+            referencedColumns: ["email"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
