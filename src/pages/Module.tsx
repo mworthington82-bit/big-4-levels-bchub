@@ -429,26 +429,92 @@ const Module = () => {
 
           {/* Footer nav (hide on assess so quiz controls own flow) */}
           {step && step.step_type !== "assess" && (
-            <div className="mt-6 flex items-center justify-between">
-              {currentStep > 1 ? (
+            <>
+              <div className="mt-6 flex items-center justify-between">
+                {currentStep > 1 ? (
+                  <button
+                    onClick={handlePrev}
+                    className="inline-flex items-center gap-1.5 text-[#185FA5] font-semibold px-5 py-2.5 rounded-full hover:bg-white"
+                  >
+                    <IconArrowLeft size={16} stroke={2} />
+                    Previous
+                  </button>
+                ) : (
+                  <span />
+                )}
                 <button
-                  onClick={handlePrev}
-                  className="inline-flex items-center gap-1.5 text-[#185FA5] font-semibold px-5 py-2.5 rounded-full hover:bg-white"
+                  onClick={handleNext}
+                  className="inline-flex items-center gap-1.5 bg-[#185FA5] hover:bg-[#13497F] text-white font-semibold px-6 py-2.5 rounded-full"
                 >
-                  <IconArrowLeft size={16} stroke={2} />
-                  Previous
+                  {currentStep === 4 ? "Start quiz" : "Next"}
+                  <IconArrowRight size={16} stroke={2} />
                 </button>
-              ) : (
-                <span />
+              </div>
+
+              {currentStep === 2 && hasActiveSession && (
+                <div className="mt-6">
+                  <div className="flex items-center gap-3 my-4">
+                    <div className="flex-1 h-px bg-[#D0D7E2]" />
+                    <span className="text-xs uppercase tracking-wide text-[#5F6B7D]">or</span>
+                    <div className="flex-1 h-px bg-[#D0D7E2]" />
+                  </div>
+
+                  {!bypassOpen ? (
+                    <button
+                      onClick={() => setBypassOpen(true)}
+                      className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 bg-white border-2 border-[#1F3864] text-[#1F3864] font-semibold px-5 py-2.5 rounded-full hover:bg-[#F4F6FB]"
+                    >
+                      I completed in-person training
+                    </button>
+                  ) : (
+                    <div className="bg-white rounded-xl border border-[#D0D7E2] p-5 space-y-3 max-w-md">
+                      <label htmlFor="bypass-pwd" className="block text-sm font-semibold text-[#1F3864]">
+                        Enter your session password
+                      </label>
+                      <input
+                        id="bypass-pwd"
+                        type="text"
+                        autoComplete="off"
+                        value={bypassPwd}
+                        onChange={(e) => setBypassPwd(e.target.value)}
+                        placeholder="Password given at your session"
+                        disabled={bypassBusy || bypassSuccess}
+                        className="w-full rounded-lg border-2 border-[#D0D7E2] focus:border-[#185FA5] focus:outline-none p-2.5 text-[#1F3864] text-sm"
+                      />
+                      <div className="flex items-center gap-2">
+                        <button
+                          onClick={submitBypass}
+                          disabled={bypassBusy || bypassSuccess || !bypassPwd.trim()}
+                          className="inline-flex items-center justify-center gap-1.5 bg-[#1F3864] hover:bg-[#162B4D] text-white font-semibold px-5 py-2.5 rounded-full disabled:opacity-50"
+                        >
+                          {bypassBusy && <IconLoader2 size={14} className="animate-spin" />}
+                          {bypassBusy ? "Validating…" : "Confirm attendance"}
+                        </button>
+                        {!bypassSuccess && (
+                          <button
+                            onClick={() => { setBypassOpen(false); setBypassPwd(""); setBypassError(null); }}
+                            className="text-sm text-[#5F6B7D] hover:underline px-2"
+                            disabled={bypassBusy}
+                          >
+                            Cancel
+                          </button>
+                        )}
+                      </div>
+                      {bypassError && (
+                        <p className="text-sm text-red-700 bg-red-50 border border-red-200 rounded-lg p-3">
+                          {bypassError}
+                        </p>
+                      )}
+                      {bypassSuccess && (
+                        <p className="text-sm text-green-800 bg-green-50 border border-green-200 rounded-lg p-3">
+                          Attendance confirmed — well done for completing your in-person session.
+                        </p>
+                      )}
+                    </div>
+                  )}
+                </div>
               )}
-              <button
-                onClick={handleNext}
-                className="inline-flex items-center gap-1.5 bg-[#185FA5] hover:bg-[#13497F] text-white font-semibold px-6 py-2.5 rounded-full"
-              >
-                {currentStep === 4 ? "Start quiz" : "Next"}
-                <IconArrowRight size={16} stroke={2} />
-              </button>
-            </div>
+            </>
           )}
         </div>
       </div>
