@@ -47,6 +47,7 @@ const AddBookingForm = () => {
   const [url, setUrl] = useState("");
   const [busy, setBusy] = useState(false);
   const [bookings, setBookings] = useState<Booking[]>([]);
+  const [editingId, setEditingId] = useState<string | null>(null);
 
   const load = async () => {
     const { data, error } = await supabase
