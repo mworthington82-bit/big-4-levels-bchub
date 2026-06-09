@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { ArrowLeft, ExternalLink, ShieldCheck } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 
-type Tool = "teams" | "forms" | "canva" | "edpuzzle" | "copilot" | "inclusion";
+type Tool = "teams" | "forms" | "canva" | "edpuzzle" | "copilot" | "inclusion" | "immersive";
 type Level = "explorer" | "practitioner" | "leader";
 
 interface Booking {
@@ -24,6 +24,7 @@ const TOOL_LABEL: Record<Tool, string> = {
   edpuzzle: "Edpuzzle",
   copilot: "Microsoft Copilot",
   inclusion: "Inclusion",
+  immersive: "Immersive Room",
 };
 
 const toolColor: Record<Tool, string> = {
@@ -33,12 +34,14 @@ const toolColor: Record<Tool, string> = {
   edpuzzle: "bg-[#1DA1F2] text-white hover:bg-[#1DA1F2]",
   copilot: "bg-[#0078D4] text-white hover:bg-[#0078D4]",
   inclusion: "bg-accent text-accent-foreground hover:bg-accent",
+  immersive: "bg-accent text-accent-foreground hover:bg-accent",
 };
 
 // Map (tool, level) → staff_profiles boolean column
 const evidencedField = (tool: Tool, level: Level): string | null => {
   if (level === "leader") return null; // no per-tool leader evidence column
   if (tool === "inclusion") return null;
+  if (tool === "immersive") return null;
   return `${tool}_${level}_evidenced`;
 };
 
