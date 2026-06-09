@@ -5,3 +5,6 @@ verify_jwt = false
 
 [functions.seed-test-users]
 verify_jwt = false
+
+[functions.welcome-summary]
+verify_jwt = false
