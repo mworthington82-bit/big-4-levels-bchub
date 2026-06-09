@@ -34,7 +34,12 @@ Deno.serve(async (req) => {
     const systemPrompt =
       "You are a friendly, professional CPD coordinator at Bradford College. Write a single short paragraph of no more than 80 words for a member of teaching staff. Tell them what they did well in their Big 4 digital self-assessment and what they need to focus on to progress to the next level. Use the tool names MS Teams, MS Forms, Canva, Edpuzzle, and Microsoft Copilot. Tone: warm, encouraging, and professional. Not patronising. Not corporate. Sound like a real person who is genuinely pleased for them. Do not mention scores or percentages. Do not use bullet points. Write in second person (you / your).";
 
-    const userPrompt = `Staff member level: ${level}\n\nTools already evidenced at their level:\n${evList}\n\nTools still to evidence:\n${todoList}\n\nWrite the personalised paragraph.`;
+    const extraContext =
+      level === "Practitioner" && toDo.length === 0
+        ? " They have evidenced all five Practitioner tools. Mention that the Immersive Room is the final step to unlock Leader level."
+        : "";
+
+    const userPrompt = `Staff member level: ${level}\n\nTools already evidenced at their level:\n${evList}\n\nTools still to evidence:\n${todoList}\n${extraContext}\n\nWrite the personalised paragraph.`;
 
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 8000);
