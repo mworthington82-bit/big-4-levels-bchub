@@ -67,19 +67,24 @@ const WelcomeCompletionModal = ({ profile }: Props) => {
       return;
     }
     const controller = new AbortController();
-    const t = setTimeout(() => controller.abort(), 8500);
+    const t = setTimeout(() => controller.abort(), 12000);
     (async () => {
       try {
         const { data, error } = await supabase.functions.invoke("welcome-summary", {
           body: { level, evidenced, toDo },
         });
         if (cancelled) return;
-        if (error || !data?.text) {
+        if (error) {
+          console.error("welcome-summary invoke error", error);
+          setAiText(FALLBACK);
+        } else if (!data?.text) {
+          console.warn("welcome-summary returned no text", data);
           setAiText(FALLBACK);
         } else {
           setAiText(data.text);
         }
-      } catch {
+      } catch (err) {
+        console.error("welcome-summary threw", err);
         if (!cancelled) setAiText(FALLBACK);
       } finally {
         clearTimeout(t);
