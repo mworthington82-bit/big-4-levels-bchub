@@ -86,8 +86,9 @@ const Landing = () => {
       if (error) throw error;
       toast({ title: "Test users ready", description: "8 accounts created/updated. Password: Psycho1610" });
       console.log("seed-test-users result", data);
-    } catch (err: any) {
-      toast({ title: "Seed failed", description: err.message ?? String(err), variant: "destructive" });
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : String(err);
+      toast({ title: "Seed failed", description: message, variant: "destructive" });
     } finally {
       setSeeding(false);
     }
