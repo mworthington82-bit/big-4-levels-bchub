@@ -22,18 +22,9 @@ export function assignLevel(r: CleanedRow, weighted: number): Level {
   ];
   const countAtOrAbove = (n: number) => tools.filter((t) => t >= n).length;
   const countBelow = (n: number) => tools.filter((t) => t < n).length;
-  const minTool = Math.min(...tools);
 
-  // Leader
-  if (
-    weighted >= 85 &&
-    countAtOrAbove(80) >= 3 &&
-    minTool >= 50 &&
-    r.xr_score >= 50
-  ) {
-    return "Leader";
-  }
-  // Practitioner
+  // Leader is never assigned via CSV — it can only be unlocked in-platform
+  // by completing all 6 Practitioner modules including immersive_practitioner.
   if (weighted >= 60 && countAtOrAbove(60) >= 2 && countBelow(40) <= 1) {
     return "Practitioner";
   }
