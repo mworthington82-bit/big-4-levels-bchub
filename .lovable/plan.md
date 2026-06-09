@@ -1,58 +1,36 @@
-# Make onboarding modals one-time-only per user
+## 1. Remove the `/post-login` interstitial page
 
-With SSO now in place, users sign in frequently and the existing `sessionStorage`-based "shown" flags reset every new tab/session — so the intro dialogs keep reappearing. Switch them to **persistent, per-user** flags.
+The page currently shows "Signing you in…" for a moment, then routes to `/home`. Its only real jobs are:
+- Defensive domain check (`@bradfordcollege.ac.uk`)
+- Maintenance-mode redirect to `/not-yet`
+- Best-effort call to `link-staff-profile` edge function
 
-## Scope (5 dialogs)
+All of this can run on `/home` itself (inside `AppShell` / a small effect), so the user no longer sees the interstitial.
 
-All in `src/components/dialogs/`:
-1. `WelcomeDialog.tsx`
-2. `AssessmentIntroDialog.tsx`
-3. `LearningModulesDialog.tsx` (keyed by level)
-4. `TrainingIntroDialog.tsx` (keyed by tool/level)
-5. `RequiredActivityDialog.tsx` (keyed by tool/level)
+Changes:
+- Change the SAML `redirect_to` in `src/pages/Landing.tsx` from `/post-login` to `/home`.
+- Move the domain check, maintenance-mode redirect, and `link-staff-profile` invocation into a tiny effect that runs once on `/home` (added to `src/pages/Journey.tsx`, which is what `/home` renders, or into `AppShell`).
+- Delete `src/pages/PostLogin.tsx` and remove its route from `src/App.tsx`.
 
-No other onboarding modals use the session-shown pattern.
+Result: after Microsoft SSO, users land directly on `/home` with the welcome modal — no blank "Signing you in…" screen.
 
-## Approach
+## 2. Fix the welcome-summary AI paragraph
 
-Create a tiny helper `src/lib/onceFlags.ts`:
+The edge function currently shows only a `shutdown` log — meaning either it is failing to boot or the browser invoke is erroring before reaching it. Likely causes in `supabase/functions/welcome-summary/index.ts`:
 
-```ts
-// Persistent per-user "shown once" flags
-import { supabase } from "@/integrations/supabase/client";
+- `import { corsHeaders } from "npm:@supabase/supabase-js@2/cors"` — this sub-path export is not reliable and can cause the function to fail to start. Replace with an inline `corsHeaders` constant (standard Lovable pattern).
+- Add proper error logging (`console.log`/`console.error`) at entry, before the AI call, and on AI response status so we can see in logs exactly where it fails.
+- Use the documented Lovable AI Gateway request shape with `Authorization: Bearer ${LOVABLE_API_KEY}` (the most reliable pattern), keep `X-Lovable-AIG-SDK: raw`, and verify the model id `google/gemini-2.5-flash` (a known-good Gateway model) instead of the preview id.
+- Handle 429 / 402 explicitly and return a friendly fallback message so the modal never gets stuck on the loading skeleton.
 
-let cachedUserKey: string | null = null;
+After redeploy, trigger the modal once and inspect `edge_function_logs` to confirm a successful 200 from the Gateway. If it still fails, the logs will now show exactly why (missing key, model rejection, etc.) and we can iterate.
 
-async function getUserKey() {
-  if (cachedUserKey) return cachedUserKey;
-  const { data } = await supabase.auth.getUser();
-  cachedUserKey = data.user?.id ?? data.user?.email ?? "anon";
-  return cachedUserKey;
-}
+### Files touched
+- `src/pages/Landing.tsx` — change redirect target
+- `src/App.tsx` — remove `/post-login` route
+- `src/pages/Journey.tsx` (or `AppShell`) — absorb the post-login checks
+- `src/pages/PostLogin.tsx` — delete
+- `supabase/functions/welcome-summary/index.ts` — inline CORS, add logging, switch model/auth header
+- `supabase/config.toml` — keep `verify_jwt = false` for `welcome-summary` (already set)
 
-export async function hasSeen(key: string): Promise<boolean> {
-  const u = await getUserKey();
-  return localStorage.getItem(`seen:${u}:${key}`) === "true";
-}
-
-export async function markSeen(key: string) {
-  const u = await getUserKey();
-  localStorage.setItem(`seen:${u}:${key}`, "true");
-}
-```
-
-Then in each dialog, replace:
-- `sessionStorage.getItem(KEY)` → `await hasSeen(KEY)` inside the effect
-- `sessionStorage.setItem(KEY, "true")` → `markSeen(KEY)` in `handleClose`
-
-Keys stay the same strings as today (e.g. `welcome_dialog_shown`, `assessment_intro_shown`, `learning_modules_${level}_shown`, `training_intro_${tool}_${level}_shown`, `required_activity_dialog_${tool}_${level}_shown`) — they're just stored under `seen:<user>:<key>` in `localStorage` instead of `sessionStorage`.
-
-## Behaviour after change
-- First time a user sees a dialog → it opens. They close it → flag saved.
-- Any subsequent visit (new tab, new day, after SSO re-auth) → flag still present → dialog does not reopen.
-- Different user on same browser → different namespace → they see their own intros once.
-
-## Out of scope
-- No DB table — `localStorage` is sufficient and matches existing progress-persistence pattern. (If you want it to follow the user across devices too, say so and I'll add a Supabase-backed version.)
-- No changes to the dialog content, styling, or trigger conditions.
-- `GatedRoute`'s admin-bypass flag stays in `sessionStorage` (that's intentional — admin bypass should not persist).
+No database or schema changes.

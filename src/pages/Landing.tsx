@@ -70,7 +70,7 @@ const Landing = () => {
       toast({ title: "Login failed", description: error.message, variant: "destructive" });
       return;
     }
-    navigate("/post-login");
+    // Stay on landing — post-login housekeeping runs here automatically.
   };
 
   const handleSeedTestUsers = async () => {
@@ -91,7 +91,7 @@ const Landing = () => {
     setSigningIn(true);
     const { data, error } = await supabase.auth.signInWithSSO({
       domain: "bradfordcollege.ac.uk",
-      options: { redirectTo: `${window.location.origin}/post-login` },
+      options: { redirectTo: `${window.location.origin}/` },
     });
     if (error) {
       setSigningIn(false);
@@ -104,6 +104,44 @@ const Landing = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+  // Post-login housekeeping: domain check, maintenance gate, link auth.uid()
+  // to staff_profiles. Replaces the old /post-login interstitial.
+  useEffect(() => {
+    if (!email) return;
+    let cancelled = false;
+    (async () => {
+      const lower = email.toLowerCase();
+      if (!lower.endsWith("@bradfordcollege.ac.uk")) {
+        await supabase.auth.signOut();
+        if (cancelled) return;
+        toast({
+          title: "Access denied",
+          description:
+            "This platform is for Bradford College staff only. Please sign in with your Bradford College account.",
+          variant: "destructive",
+        });
+        return;
+      }
+      try {
+        const { MAINTENANCE_MODE, isAllowedDuringMaintenance } = await import("@/lib/maintenanceMode");
+        if (MAINTENANCE_MODE && !isAllowedDuringMaintenance(lower)) {
+          navigate("/not-yet", { replace: true });
+          return;
+        }
+      } catch {
+        /* non-fatal */
+      }
+      try {
+        await supabase.functions.invoke("link-staff-profile");
+      } catch {
+        /* non-fatal */
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [email, navigate, toast]);
 
   const handleAlreadyAssessed = () => {
     if (profileLoading) return;
