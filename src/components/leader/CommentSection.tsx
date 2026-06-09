@@ -83,13 +83,13 @@ const CommentSection = ({ evidenceId, evidenceOwnerId, evidenceTitle }: CommentS
 
   const fetchUserProfile = async (userId: string) => {
     const { data } = await supabase
-      .from('profiles')
+      .from('profiles_public' as any)
       .select('full_name, department')
       .eq('user_id', userId)
       .maybeSingle();
 
     if (data) {
-      setUserProfile(data);
+      setUserProfile(data as any);
     }
   };
 

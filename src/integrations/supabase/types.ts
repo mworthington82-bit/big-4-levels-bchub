@@ -187,6 +187,13 @@ export type Database = {
             referencedRelation: "leader_evidence"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "evidence_comments_evidence_id_fkey"
+            columns: ["evidence_id"]
+            isOneToOne: false
+            referencedRelation: "leader_evidence_public"
+            referencedColumns: ["id"]
+          },
         ]
       }
       evidence_likes: {
@@ -687,6 +694,13 @@ export type Database = {
             referencedRelation: "leader_evidence"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "notifications_evidence_id_fkey"
+            columns: ["evidence_id"]
+            isOneToOne: false
+            referencedRelation: "leader_evidence_public"
+            referencedColumns: ["id"]
+          },
         ]
       }
       profiles: {
@@ -1048,9 +1062,191 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      immersive_sessions_public: {
+        Row: {
+          created_at: string | null
+          department: string | null
+          evidence_type: Database["public"]["Enums"]["evidence_type"] | null
+          file_url: string | null
+          full_name: string | null
+          how_enhanced: string | null
+          id: string | null
+          immersive_activity: string | null
+          impact_reflection: string | null
+          learner_context: string | null
+          lesson_plan_url: string | null
+          photos_urls: string[] | null
+          session_number: number | null
+          title: string | null
+          user_id: string | null
+          video_link: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          department?: string | null
+          evidence_type?: Database["public"]["Enums"]["evidence_type"] | null
+          file_url?: string | null
+          full_name?: string | null
+          how_enhanced?: string | null
+          id?: string | null
+          immersive_activity?: string | null
+          impact_reflection?: string | null
+          learner_context?: string | null
+          lesson_plan_url?: string | null
+          photos_urls?: string[] | null
+          session_number?: number | null
+          title?: string | null
+          user_id?: string | null
+          video_link?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          department?: string | null
+          evidence_type?: Database["public"]["Enums"]["evidence_type"] | null
+          file_url?: string | null
+          full_name?: string | null
+          how_enhanced?: string | null
+          id?: string | null
+          immersive_activity?: string | null
+          impact_reflection?: string | null
+          learner_context?: string | null
+          lesson_plan_url?: string | null
+          photos_urls?: string[] | null
+          session_number?: number | null
+          title?: string | null
+          user_id?: string | null
+          video_link?: string | null
+        }
+        Relationships: []
+      }
+      leader_evidence_public: {
+        Row: {
+          case_study_how: string | null
+          case_study_what: string | null
+          case_study_why: string | null
+          created_at: string | null
+          department: string | null
+          description: string | null
+          evidence_type: Database["public"]["Enums"]["evidence_type"] | null
+          file_url: string | null
+          full_name: string | null
+          id: string | null
+          impact_reflection: string | null
+          title: string | null
+          tool: Database["public"]["Enums"]["leader_tool"] | null
+          updated_at: string | null
+          user_id: string | null
+          video_link: string | null
+        }
+        Insert: {
+          case_study_how?: string | null
+          case_study_what?: string | null
+          case_study_why?: string | null
+          created_at?: string | null
+          department?: string | null
+          description?: string | null
+          evidence_type?: Database["public"]["Enums"]["evidence_type"] | null
+          file_url?: string | null
+          full_name?: string | null
+          id?: string | null
+          impact_reflection?: string | null
+          title?: string | null
+          tool?: Database["public"]["Enums"]["leader_tool"] | null
+          updated_at?: string | null
+          user_id?: string | null
+          video_link?: string | null
+        }
+        Update: {
+          case_study_how?: string | null
+          case_study_what?: string | null
+          case_study_why?: string | null
+          created_at?: string | null
+          department?: string | null
+          description?: string | null
+          evidence_type?: Database["public"]["Enums"]["evidence_type"] | null
+          file_url?: string | null
+          full_name?: string | null
+          id?: string | null
+          impact_reflection?: string | null
+          title?: string | null
+          tool?: Database["public"]["Enums"]["leader_tool"] | null
+          updated_at?: string | null
+          user_id?: string | null
+          video_link?: string | null
+        }
+        Relationships: []
+      }
+      profiles_public: {
+        Row: {
+          department: string | null
+          full_name: string | null
+          user_id: string | null
+        }
+        Insert: {
+          department?: string | null
+          full_name?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          department?: string | null
+          full_name?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      training_sessions_safe: {
+        Row: {
+          created_at: string | null
+          id: string | null
+          is_active: boolean | null
+          module_id: string | null
+          session_date: string | null
+          session_title: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string | null
+          is_active?: boolean | null
+          module_id?: string | null
+          session_date?: string | null
+          session_title?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string | null
+          is_active?: boolean | null
+          module_id?: string | null
+          session_date?: string | null
+          session_title?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "training_sessions_module_id_fkey"
+            columns: ["module_id"]
+            isOneToOne: false
+            referencedRelation: "modules"
+            referencedColumns: ["module_id"]
+          },
+        ]
+      }
     }
     Functions: {
+      admin_list_training_sessions: {
+        Args: never
+        Returns: {
+          bypass_password: string
+          created_at: string
+          id: string
+          is_active: boolean
+          module_id: string
+          session_date: string
+          session_title: string
+          updated_at: string
+        }[]
+      }
       admin_mark_module_complete: {
         Args: { _emails: string[]; _module_id: string }
         Returns: Json

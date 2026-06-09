@@ -60,7 +60,7 @@ const EvidenceGallery = ({ tool, toolDisplayName }: EvidenceGalleryProps) => {
   const fetchEvidence = async () => {
     try {
       let query = supabase
-        .from('leader_evidence')
+        .from('leader_evidence_public' as any)
         .select('*')
         .order('created_at', { ascending: false });
 
@@ -71,7 +71,7 @@ const EvidenceGallery = ({ tool, toolDisplayName }: EvidenceGalleryProps) => {
       const { data, error } = await query;
 
       if (error) throw error;
-      setEvidence(data || []);
+      setEvidence((data as any) || []);
     } catch (error) {
       console.error('Error fetching evidence:', error);
     } finally {
