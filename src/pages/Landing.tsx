@@ -181,8 +181,9 @@ const Landing = () => {
         <div className="container mx-auto px-4 py-6">
           <div className="flex items-center justify-between">
             <img src={bradfordLogo} alt="Bradford College logo" className="h-12 object-contain" />
-            <SignOutButton />
+            {email && <SignOutButton />}
           </div>
+
         </div>
       </header>
 
