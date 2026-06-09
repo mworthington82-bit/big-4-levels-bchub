@@ -172,10 +172,13 @@ const AddBookingForm = () => {
           />
         </div>
 
-        <div className="md:col-span-2">
+        <div className="md:col-span-2 flex gap-2">
           <Button type="submit" disabled={busy} className="bg-[#1F3864] hover:bg-[#1F3864]/90">
-            {busy ? "Submitting…" : "Submit training"}
+            {busy ? "Saving…" : editingId ? "Save changes" : "Submit training"}
           </Button>
+          {editingId && (
+            <Button type="button" variant="outline" onClick={reset}>Cancel</Button>
+          )}
         </div>
       </form>
 
