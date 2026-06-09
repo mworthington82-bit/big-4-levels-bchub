@@ -67,19 +67,24 @@ const WelcomeCompletionModal = ({ profile }: Props) => {
       return;
     }
     const controller = new AbortController();
-    const t = setTimeout(() => controller.abort(), 8500);
+    const t = setTimeout(() => controller.abort(), 12000);
     (async () => {
       try {
         const { data, error } = await supabase.functions.invoke("welcome-summary", {
           body: { level, evidenced, toDo },
         });
         if (cancelled) return;
-        if (error || !data?.text) {
+        if (error) {
+          console.error("welcome-summary invoke error", error);
+          setAiText(FALLBACK);
+        } else if (!data?.text) {
+          console.warn("welcome-summary returned no text", data);
           setAiText(FALLBACK);
         } else {
           setAiText(data.text);
         }
-      } catch {
+      } catch (err) {
+        console.error("welcome-summary threw", err);
         if (!cancelled) setAiText(FALLBACK);
       } finally {
         clearTimeout(t);
@@ -111,70 +116,70 @@ const WelcomeCompletionModal = ({ profile }: Props) => {
     >
       <div
         className="relative bg-white shadow-2xl flex flex-col w-[92%] sm:w-full overflow-hidden"
-        style={{ maxWidth: 580, borderRadius: 16, maxHeight: "90vh" }}
+        style={{ maxWidth: 820, borderRadius: 20, maxHeight: "92vh" }}
       >
         <button
           onClick={() => setOpen(false)}
           aria-label="Close"
-          className="absolute top-3 right-3 z-10 w-11 h-11 inline-flex items-center justify-center rounded-full bg-white/90 hover:bg-white text-slate-700"
+          className="absolute top-4 right-4 z-10 w-11 h-11 inline-flex items-center justify-center rounded-full bg-white/90 hover:bg-white text-slate-700"
         >
           <X className="w-5 h-5" />
         </button>
 
         {/* Gold header bar */}
-        <div style={{ height: 8, background: "#F5A623" }} />
+        <div style={{ height: 10, background: "#F5A623" }} />
 
         <div className="flex-1 overflow-y-auto">
           {/* Navy heading section */}
-          <div style={{ background: "#1F3864", padding: "28px 28px 20px", color: "#fff" }}>
+          <div style={{ background: "#1F3864", padding: "36px 40px 28px", color: "#fff" }}>
             <h2
               id="welcome-modal-heading"
               className="font-bold"
-              style={{ fontSize: 22, lineHeight: 1.3 }}
+              style={{ fontSize: 28, lineHeight: 1.25 }}
             >
-              Well done — you have completed your Big 4 self-assessment!
+              Well done — you have completed your <span style={{ color: "#F5A623" }}>Big 4 self-assessment!</span>
             </h2>
-            <div className="mt-4 flex items-center gap-3">
+            <div className="mt-5 flex items-center gap-4">
               <img
                 src={meta.emblem}
                 alt=""
-                className="w-12 h-12 sm:w-14 sm:h-14"
+                className="w-16 h-16 sm:w-20 sm:h-20"
                 aria-hidden
               />
               <span
                 className="font-bold leading-none"
-                style={{ color: meta.color, fontSize: "clamp(36px, 8vw, 48px)" }}
+                style={{ color: meta.color, fontSize: "clamp(44px, 9vw, 64px)" }}
               >
                 {level}
               </span>
             </div>
-            <p style={{ fontSize: 13, color: "rgba(255,255,255,0.7)", marginTop: 8 }}>
+            <p style={{ fontSize: 14, color: "rgba(255,255,255,0.75)", marginTop: 10 }}>
               Your current level
             </p>
           </div>
 
           {/* AI paragraph */}
-          <div style={{ background: "#fff", padding: "24px 28px" }}>
+          <div style={{ background: "#fff", padding: "28px 40px" }}>
             <p
               style={{
-                fontSize: 11,
-                letterSpacing: "0.08em",
+                fontSize: 12,
+                letterSpacing: "0.1em",
                 color: "#1F3864",
-                fontWeight: 600,
-                marginBottom: 10,
+                fontWeight: 700,
+                marginBottom: 12,
               }}
             >
               YOUR PERSONALISED SUMMARY
             </p>
             {loadingAi ? (
               <div className="space-y-2 animate-pulse" aria-label="Loading summary">
-                <div className="h-3 rounded bg-slate-200 w-full" />
-                <div className="h-3 rounded bg-slate-200 w-11/12" />
-                <div className="h-3 rounded bg-slate-200 w-10/12" />
-                <div className="h-3 rounded bg-slate-200 w-9/12" />
+                <div className="h-4 rounded bg-slate-200 w-full" />
+                <div className="h-4 rounded bg-slate-200 w-11/12" />
+                <div className="h-4 rounded bg-slate-200 w-10/12" />
+                <div className="h-4 rounded bg-slate-200 w-9/12" />
               </div>
             ) : (
-              <p style={{ color: "#333", fontSize: 14, lineHeight: 1.6 }}>{aiText}</p>
+              <p style={{ color: "#222", fontSize: 17, lineHeight: 1.65 }}>{aiText}</p>
             )}
           </div>
 
@@ -182,30 +187,30 @@ const WelcomeCompletionModal = ({ profile }: Props) => {
           <div
             style={{
               background: "#F4F6FB",
-              padding: "20px 28px",
-              fontSize: 14,
+              padding: "28px 40px",
+              fontSize: 16,
               lineHeight: 1.7,
-              color: "#333333",
+              color: "#2a2a2a",
             }}
           >
             <p>
-              On the week commencing the 29th of June, the full Big 4 platform will be live for you
-              to move up through the levels and receive badges as you progress.
+              On the week commencing <strong>29th of June</strong>, the full Big 4 platform will be live for you
+              to <strong>move up through the levels</strong> and <strong>receive badges</strong> as you progress.
             </p>
-            <p style={{ marginTop: 12 }}>
-              To help you progress to the next level faster, we are offering face to face training
-              on all apps across all levels which will allow you to ask questions and speak to
-              experts about these apps.
+            <p style={{ marginTop: 14 }}>
+              To help you progress to the next level faster, we are offering{" "}
+              <strong>face-to-face training on all apps across all levels</strong>, where you can ask questions
+              and speak directly to experts about each tool.
             </p>
-            <p style={{ marginTop: 12 }}>
-              To book sessions, click the button below to see ones bespoke to your own learning
+            <p style={{ marginTop: 14 }}>
+              To book sessions, <strong>click the button below</strong> to see ones bespoke to your own learning
               journey.
             </p>
-            <p style={{ marginTop: 12 }}>
-              For any additional support on this please contact{" "}
+            <p style={{ marginTop: 14 }}>
+              For any additional support, please contact{" "}
               <a
                 href="mailto:m.worthington@bradfordcollege.ac.uk"
-                style={{ color: "#1F3864", fontWeight: 600 }}
+                style={{ color: "#1F3864", fontWeight: 700 }}
                 className="underline"
               >
                 m.worthington@bradfordcollege.ac.uk
@@ -215,17 +220,17 @@ const WelcomeCompletionModal = ({ profile }: Props) => {
         </div>
 
         {/* CTA button — sticky bottom */}
-        <div style={{ padding: "16px 28px", background: "#fff", borderTop: "1px solid #eee" }}>
+        <div style={{ padding: "20px 40px", background: "#fff", borderTop: "1px solid #eee" }}>
           <button
             onClick={handleBook}
             className="w-full font-bold"
             style={{
               background: "#F5A623",
               color: "#1F3864",
-              fontSize: 16,
-              borderRadius: 10,
-              padding: "14px 16px",
-              minHeight: 44,
+              fontSize: 18,
+              borderRadius: 12,
+              padding: "16px 20px",
+              minHeight: 52,
             }}
           >
             Book my sessions →
@@ -233,8 +238,8 @@ const WelcomeCompletionModal = ({ profile }: Props) => {
         </div>
 
         {/* Footer */}
-        <div style={{ padding: 12, textAlign: "center" }}>
-          <p style={{ fontSize: 11, color: "#AAAAAA" }}>
+        <div style={{ padding: 14, textAlign: "center" }}>
+          <p style={{ fontSize: 12, color: "#AAAAAA" }}>
             Bradford College · The Big 4: Level Up
           </p>
         </div>
