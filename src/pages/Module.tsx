@@ -342,15 +342,29 @@ const Module = () => {
               {STEP_LABELS.map((label, i) => {
                 const n = i + 1;
                 const isActive = currentStep === n;
-                const isVisited = visited.has(n) && !isActive;
+                const unlocked = isStepUnlocked(n);
+                const isComplete = visited.has(n) && !isActive;
                 let cls =
                   "shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold transition-colors ";
                 if (isActive) cls += "bg-[#1F3864] text-white";
-                else if (isVisited) cls += "bg-[#E6F1FB] text-[#185FA5] hover:bg-[#D7E8F8]";
+                else if (!unlocked) cls += "bg-[#E5E9F0] text-[#A0A8B5] cursor-not-allowed";
+                else if (isComplete) cls += "bg-[#E6F1FB] text-[#185FA5] hover:bg-[#D7E8F8]";
                 else cls += "bg-[#E5E9F0] text-[#5F6B7D] hover:bg-[#D7DCE6]";
                 return (
-                  <button key={n} onClick={() => goToStep(n)} className={cls}>
-                    <span className="opacity-70">{n}</span>
+                  <button
+                    key={n}
+                    onClick={() => goToStep(n)}
+                    disabled={!unlocked}
+                    aria-disabled={!unlocked}
+                    className={cls}
+                  >
+                    {!unlocked ? (
+                      <IconLock size={12} stroke={2} />
+                    ) : isComplete ? (
+                      <IconCheck size={12} stroke={3} />
+                    ) : (
+                      <span className="opacity-70">{n}</span>
+                    )}
                     <span>{label}</span>
                   </button>
                 );
