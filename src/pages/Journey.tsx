@@ -157,7 +157,8 @@ const Journey = () => {
 
   const effective = deriveEffectiveLevel(profile);
   const styles = LEVEL_STYLES[effective];
-  const cards = buildModuleCards(profile, completedModuleIds, effective);
+  const viaMap = new Map(completions.map((c) => [c.moduleId, c.via]));
+  const cards = buildModuleCards(profile, completedModuleIds, effective, viaMap);
   const total = totalForLevel(effective);
   const progressCount = countCompleteOrEvidenced(cards);
   const progressPct = total ? Math.round((progressCount / total) * 100) : 0;
