@@ -155,7 +155,9 @@ const Admin = () => {
         <StaffJourneySearch />
         <PendingEvidencePanel />
         <AddBookingForm />
+        <TrainingSessions />
         <MarkSessionsComplete />
+
       </div>
     </AppShell>
   );
