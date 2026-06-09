@@ -181,9 +181,16 @@ const Module = () => {
     return <NotFoundCard />;
   }
 
+  const maxUnlocked = useMemo(() => {
+    const m = Math.max(...Array.from(visited));
+    return Math.min(5, m + 1);
+  }, [visited]);
+
+  const isStepUnlocked = (n: number) => n <= maxUnlocked;
+
   const goToStep = (n: number) => {
-    if (n === 5 && !visited.has(4)) {
-      setWarning("Complete the previous steps first");
+    if (!isStepUnlocked(n)) {
+      setWarning("Complete the previous step first");
       return;
     }
     setVisited((v) => new Set(v).add(n));
@@ -194,7 +201,11 @@ const Module = () => {
     if (currentStep > 1) goToStep(currentStep - 1);
   };
   const handleNext = () => {
-    if (currentStep < 5) goToStep(currentStep + 1);
+    if (currentStep < 5) {
+      // mark current as visited so next unlocks
+      setVisited((v) => new Set(v).add(currentStep).add(currentStep + 1));
+      setCurrentStep(currentStep + 1);
+    }
   };
 
   const writeCompletion = async () => {
