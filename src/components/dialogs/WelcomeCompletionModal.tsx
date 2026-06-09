@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { X } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+
 import type { StaffProfile } from "@/hooks/useStaffProfile";
 import emblemExplorer from "@/assets/emblem-explorer.svg";
 import emblemPractitioner from "@/assets/emblem-practitioner.svg";
@@ -97,6 +97,20 @@ const WelcomeCompletionModal = ({ profile }: Props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // Block Escape key from dismissing the modal
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+    };
+    window.addEventListener("keydown", onKey, true);
+    return () => window.removeEventListener("keydown", onKey, true);
+  }, [open]);
+
+
   if (!open) return null;
 
   const handleBook = () => {
@@ -116,13 +130,8 @@ const WelcomeCompletionModal = ({ profile }: Props) => {
         className="relative bg-white shadow-2xl flex flex-col w-[92%] sm:w-full overflow-hidden"
         style={{ maxWidth: 820, borderRadius: 20, maxHeight: "92vh" }}
       >
-        <button
-          onClick={() => setOpen(false)}
-          aria-label="Close"
-          className="absolute top-4 right-4 z-10 w-11 h-11 inline-flex items-center justify-center rounded-full bg-white/90 hover:bg-white text-slate-700"
-        >
-          <X className="w-5 h-5" />
-        </button>
+        {/* Modal is intentionally non-dismissible — exit only via "Book my sessions" CTA */}
+
 
         {/* Gold header bar */}
         <div style={{ height: 10, background: "#F5A623" }} />

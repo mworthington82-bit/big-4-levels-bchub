@@ -1,29 +1,29 @@
-## Three fixes
+## Goal
 
-### 1. Immersive Room booking — 400 error
-The `training_bookings_tool_check` constraint in the database still only allows `teams / forms / canva / edpuzzle / copilot / inclusion`. The earlier migration file was written but never executed, so `'immersive'` is rejected.
+Stop the welcome completion modal from being dismissible, and stop the Landing page from showing sign-in UI to a user who is already signed in.
 
-**Fix:** Run a migration that drops and recreates the check constraint to include `'immersive'`.
+## Changes
 
-### 2. Personalised summary always showing the fallback
-In `WelcomeCompletionModal.tsx` there is a `lowScores` guard: if the sum of the five tool scores is `< 10`, it short-circuits to the canned "Welcome to The Big 4…" fallback and never calls the edge function. Test users (and any real staff with a low self-assessment) all hit this. The edge function itself works — recent logs show a successful 394-character response.
+### 1. `src/components/dialogs/WelcomeCompletionModal.tsx` — make it truly modal
+- Remove the X close button (the `<button aria-label="Close">` block and the `X` import).
+- Remove the backdrop click handler behaviour by not wiring any `onClick` to the overlay (it already has none, good) — but also block Escape: add a `useEffect` that listens for `keydown` and calls `e.preventDefault()` on `Escape` while the modal is open.
+- Keep `setOpen(false)` only inside `handleBook` so the only way out is the "Book my sessions" CTA (which navigates to `/bookings`).
 
-**Fix:** Remove the `lowScores` short-circuit so every user gets the real AI paragraph. The edge function already falls back gracefully on its own errors.
+### 2. `src/pages/Landing.tsx` — hide sign-in UI when signed in
+The page already has `email` from `useStaffProfile()`. Use it as the signed-in signal:
+- When `email` is truthy:
+  - Hide the "Sign in with Microsoft" button.
+  - Hide the "Test login (QA)" `<details>` panel.
+  - Keep the `SignOutButton` in the header (correct for a signed-in user).
+- When `email` is falsy:
+  - Hide the `SignOutButton` in the header.
+  - Show the sign-in button + QA panel as today.
 
-### 3. Auth — sign-out behaviour
-You chose **sessionStorage + 2-minute idle**.
+This removes the contradiction of seeing "Sign out" and "Sign in with Microsoft" simultaneously.
 
-**Fix:**
-- In `src/integrations/supabase/client.ts` swap `storage: localStorage` for `storage: sessionStorage`. This ends the Lovable Cloud session as soon as the tab/browser is closed.
-- In `src/components/AppShell.tsx` (where `useIdleLogout()` is called) drop the timeout from 5 minutes to 2 minutes.
-- Idle logout already runs `fullSignOut()`, which also ends the Microsoft Entra session, so the next visit forces fresh SSO.
+### 3. No backend or data changes
+No migrations, no edge function changes, no changes to `welcome-summary` or `useStaffProfile`. Purely presentation fixes.
 
-Note: `src/integrations/supabase/client.ts` is normally auto-generated, but the storage swap is a one-line, low-risk change and is the documented way to scope sessions to a tab.
+## Why this resolves the screenshot
 
-### Files touched
-- new migration to fix the tool check constraint
-- `src/components/dialogs/WelcomeCompletionModal.tsx` (remove `lowScores` guard)
-- `src/integrations/supabase/client.ts` (sessionStorage)
-- `src/components/AppShell.tsx` (2-minute idle)
-
-No schema changes beyond the constraint update.
+In the screenshot the user is signed in (modal rendered, "Sign out" visible), but the hero still offers "Sign in with Microsoft" and the QA login. After (1) they can't dismiss the modal at all; after (2), even if some future path lets them past it, the page won't offer sign-in to an already-signed-in account.
