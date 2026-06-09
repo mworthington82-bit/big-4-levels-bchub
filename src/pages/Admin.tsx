@@ -7,6 +7,7 @@ import UploadHistory from "@/components/admin/UploadHistory";
 import DatabaseSummary from "@/components/admin/DatabaseSummary";
 import StaffJourneySearch from "@/components/admin/StaffJourneySearch";
 import PendingEvidencePanel from "@/components/admin/PendingEvidencePanel";
+import AddBookingForm from "@/components/admin/AddBookingForm";
 import { usePageTitle } from "@/lib/usePageTitle";
 import {
   HEADER_MISMATCH_MESSAGE,
@@ -151,6 +152,7 @@ const Admin = () => {
         <DatabaseSummary refreshKey={refreshKey} />
         <StaffJourneySearch />
         <PendingEvidencePanel />
+        <AddBookingForm />
       </div>
     </AppShell>
   );
