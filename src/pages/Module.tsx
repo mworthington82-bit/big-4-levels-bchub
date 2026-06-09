@@ -83,6 +83,12 @@ const Module = () => {
   const [reflectText, setReflectText] = useState("");
   const [warning, setWarning] = useState<string | null>(null);
   const [email, setEmail] = useState<string | null>(null);
+  const [hasActiveSession, setHasActiveSession] = useState(false);
+  const [bypassOpen, setBypassOpen] = useState(false);
+  const [bypassPwd, setBypassPwd] = useState("");
+  const [bypassBusy, setBypassBusy] = useState(false);
+  const [bypassError, setBypassError] = useState<string | null>(null);
+  const [bypassSuccess, setBypassSuccess] = useState(false);
 
   usePageTitle(module?.module_title);
 
