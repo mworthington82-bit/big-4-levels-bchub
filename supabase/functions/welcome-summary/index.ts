@@ -53,7 +53,7 @@ Deno.serve(async (req) => {
       if (immersiveDone) {
         immersiveContext = " They have already completed their Immersive Room Practitioner session — acknowledge this warmly.";
       } else {
-        immersiveContext = " IMPORTANT: They have NOT yet completed the Immersive Room Practitioner session, which is mandatory for every member of staff at Practitioner level and is the final step to unlock Leader level. Explicitly tell them they still need to book and complete an Immersive Room session.";
+        immersiveContext = " The Immersive Room Practitioner session is a mandatory part of the Practitioner level and is the final step to unlock Leader. Frame it as a positive next step they can book once they begin working through Practitioner — do NOT describe it as 'still outstanding', 'overdue', or 'mandatory' in a stern way, and do NOT imply they were supposed to have done it already.";
       }
     }
 
