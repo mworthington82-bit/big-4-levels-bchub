@@ -267,9 +267,6 @@ const Landing = () => {
                         {seeding ? "Seeding…" : "Seed 8 users"}
                       </button>
                     </div>
-                    <p className="text-xs text-white/60 pt-1">
-                      test1–test8@big4.com · password <span className="font-mono">Psycho1610</span>
-                    </p>
                   </form>
                 </details>
               )}
