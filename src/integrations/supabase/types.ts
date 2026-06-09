@@ -949,6 +949,59 @@ export type Database = {
         }
         Relationships: []
       }
+      training_bookings: {
+        Row: {
+          booking_url: string
+          created_at: string
+          created_by: string | null
+          id: string
+          level: string
+          name: string
+          tool: string
+        }
+        Insert: {
+          booking_url: string
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          level: string
+          name: string
+          tool: string
+        }
+        Update: {
+          booking_url?: string
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          level?: string
+          name?: string
+          tool?: string
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          email: string
+          role: string
+        }
+        Insert: {
+          email: string
+          role: string
+        }
+        Update: {
+          email?: string
+          role?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_roles_email_fkey"
+            columns: ["email"]
+            isOneToOne: true
+            referencedRelation: "staff_profiles"
+            referencedColumns: ["email"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
