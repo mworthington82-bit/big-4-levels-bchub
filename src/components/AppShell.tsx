@@ -25,7 +25,7 @@ const AppShell = ({ children }: { children: React.ReactNode }) => {
   const navigate = useNavigate();
   const { profile, completedModuleIds } = useStaffProfile();
   const [mobileOpen, setMobileOpen] = useState(false);
-  useIdleLogout(5 * 60 * 1000);
+  useIdleLogout(2 * 60 * 1000);
 
   let pillLabel = "";
   let showPill = false;
