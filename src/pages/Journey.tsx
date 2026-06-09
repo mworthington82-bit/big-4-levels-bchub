@@ -128,7 +128,7 @@ const JourneySkeleton = () => (
 const Journey = () => {
   usePageTitle("My Journey");
   const navigate = useNavigate();
-  const { profile, email, loading, notFound, error, completedModuleIds, refresh } = useStaffProfile();
+  const { profile, email, loading, notFound, error, completedModuleIds, completions, refresh } = useStaffProfile();
   const [showOnboarding, setShowOnboarding] = useState(false);
   const progressionRan = useRef(false);
 
