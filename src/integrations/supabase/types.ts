@@ -1234,6 +1234,19 @@ export type Database = {
       }
     }
     Functions: {
+      admin_list_training_sessions: {
+        Args: never
+        Returns: {
+          bypass_password: string
+          created_at: string
+          id: string
+          is_active: boolean
+          module_id: string
+          session_date: string
+          session_title: string
+          updated_at: string
+        }[]
+      }
       admin_mark_module_complete: {
         Args: { _emails: string[]; _module_id: string }
         Returns: Json
