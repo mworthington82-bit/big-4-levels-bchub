@@ -13,7 +13,7 @@ import {
 import { toast } from "@/hooks/use-toast";
 import { Trash2, Calendar } from "lucide-react";
 
-type Tool = "teams" | "forms" | "canva" | "edpuzzle" | "copilot" | "inclusion";
+type Tool = "teams" | "forms" | "canva" | "edpuzzle" | "copilot" | "inclusion" | "immersive";
 type Level = "explorer" | "practitioner" | "leader";
 
 interface Booking {
@@ -31,7 +31,7 @@ const TOOL_OPTIONS: { value: Tool; label: string }[] = [
   { value: "canva", label: "Canva" },
   { value: "edpuzzle", label: "Edpuzzle" },
   { value: "copilot", label: "Microsoft Copilot" },
-  { value: "inclusion", label: "Inclusion & Accessibility" },
+  { value: "immersive", label: "Immersive Room (XR)" },
 ];
 
 const LEVEL_OPTIONS: { value: Level; label: string }[] = [
