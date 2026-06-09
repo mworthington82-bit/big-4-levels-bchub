@@ -5,7 +5,6 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 // Auth + entry
-import PostLogin from "./pages/PostLogin";
 import NotYet from "./pages/NotYet";
 import Admin from "./pages/Admin";
 
@@ -48,7 +47,7 @@ const App = () => (
           <Route path="/" element={<Landing />} />
           <Route path="/home" element={<Navigate to="/" replace />} />
           <Route path="/privacy" element={<Privacy />} />
-          <Route path="/post-login" element={<RequireAuth><PostLogin /></RequireAuth>} />
+          <Route path="/post-login" element={<Navigate to="/" replace />} />
           <Route path="/not-yet" element={<RequireAuth><NotYet /></RequireAuth>} />
           <Route path="/admin" element={<RequireAdmin><Admin /></RequireAdmin>} />
 
