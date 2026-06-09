@@ -26,6 +26,8 @@ export interface StaffProfile {
   copilot_practitioner_evidenced: boolean;
 }
 
+export type CompletionInfo = { moduleId: string; via: "quiz" | "in_person" };
+
 interface State {
   profile: StaffProfile | null;
   email: string | null;
@@ -33,6 +35,7 @@ interface State {
   notFound: boolean;
   error: boolean;
   completedModuleIds: string[];
+  completions: CompletionInfo[];
 }
 
 const PROFILE_COLUMNS = [
