@@ -5,6 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
 import { useToast } from "@/hooks/use-toast";
 import WelcomeDialog from "@/components/dialogs/WelcomeDialog";
+import WelcomeCompletionModal from "@/components/dialogs/WelcomeCompletionModal";
 import StudentQuoteCarousel from "@/components/StudentQuoteCarousel";
 
 import StaffSpotlight from "@/components/StaffSpotlight";
