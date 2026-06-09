@@ -46,11 +46,16 @@ const toolLevelInfo: Record<string, { explorer: string; practitioner: string; le
   },
 };
 
+const QA_TEST_EMAILS = new Set(Array.from({ length: 8 }, (_, index) => `test${index + 1}@big4.com`));
+
+const isAllowedLoginEmail = (emailAddress: string) =>
+  emailAddress.endsWith("@bradfordcollege.ac.uk") || QA_TEST_EMAILS.has(emailAddress);
+
 const Landing = () => {
   const navigate = useNavigate();
 
   const { toast } = useToast();
-  const { profile, loading: profileLoading, email } = useStaffProfile();
+  const { profile, loading: profileLoading, email, refresh } = useStaffProfile();
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [signingIn, setSigningIn] = useState(false);
   const [testEmail, setTestEmail] = useState("");
@@ -62,7 +67,7 @@ const Landing = () => {
     e.preventDefault();
     setTestBusy(true);
     const { error } = await supabase.auth.signInWithPassword({
-      email: testEmail.trim(),
+      email: testEmail.trim().toLowerCase(),
       password: testPassword,
     });
     setTestBusy(false);
@@ -70,6 +75,7 @@ const Landing = () => {
       toast({ title: "Login failed", description: error.message, variant: "destructive" });
       return;
     }
+    refresh();
     // Stay on landing — post-login housekeeping runs here automatically.
   };
 
@@ -112,7 +118,7 @@ const Landing = () => {
     let cancelled = false;
     (async () => {
       const lower = email.toLowerCase();
-      if (!lower.endsWith("@bradfordcollege.ac.uk")) {
+      if (!isAllowedLoginEmail(lower)) {
         await supabase.auth.signOut();
         if (cancelled) return;
         toast({
