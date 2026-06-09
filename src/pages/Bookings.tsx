@@ -49,6 +49,7 @@ const Bookings = () => {
   const navigate = useNavigate();
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [profile, setProfile] = useState<any | null>(null);
+  const [immersiveDone, setImmersiveDone] = useState(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -57,14 +58,23 @@ const Bookings = () => {
     (async () => {
       const { data: sess } = await supabase.auth.getSession();
       const email = sess.session?.user?.email?.toLowerCase();
-      const [{ data: bks }, prof] = await Promise.all([
+      const [{ data: bks }, prof, comp] = await Promise.all([
         supabase.from("training_bookings" as any).select("*").order("created_at", { ascending: false }),
         email
           ? supabase.from("staff_profiles").select("*").eq("email", email).maybeSingle()
           : Promise.resolve({ data: null } as any),
+        email
+          ? supabase
+              .from("module_completions")
+              .select("module_id")
+              .ilike("staff_email", email)
+              .eq("module_id", "immersive_practitioner")
+              .maybeSingle()
+          : Promise.resolve({ data: null } as any),
       ]);
       setBookings((bks as any) ?? []);
       setProfile((prof as any)?.data ?? null);
+      setImmersiveDone(!!(comp as any)?.data);
       setLoading(false);
     })();
   }, []);
@@ -83,18 +93,19 @@ const Bookings = () => {
   const visible = bookings.filter((b) => {
     // Inclusion: visible to everyone
     if (b.tool === "inclusion") return true;
-    // Immersive Room: only Practitioners who have evidenced all 5 Practitioner
-    // tools but have not yet unlocked Leader (i.e. still need XR training).
+    // Immersive Room is MANDATORY for every member of staff at Practitioner
+    // level. Show it to anyone who has reached (or been assigned) Practitioner
+    // or above, until they have completed the Immersive Room Practitioner module.
     if (b.tool === "immersive") {
       if (!profile) return false;
-      if (profile.leader_unlocked) return false;
-      return (
-        profile.teams_practitioner_evidenced &&
-        profile.forms_practitioner_evidenced &&
-        profile.canva_practitioner_evidenced &&
-        profile.edpuzzle_practitioner_evidenced &&
-        profile.copilot_practitioner_evidenced
-      );
+      if (immersiveDone) return false;
+      const assigned = (profile.assigned_level || "").toLowerCase();
+      const atPractitionerOrAbove =
+        profile.practitioner_unlocked ||
+        profile.leader_unlocked ||
+        assigned === "practitioner" ||
+        assigned === "leader";
+      return atPractitionerOrAbove;
     }
     if (!currentLevel) return false;
     if (b.level !== currentLevel) return false;
@@ -102,6 +113,7 @@ const Bookings = () => {
     if (!field) return true;
     return !profile?.[field];
   });
+
 
   return (
     <div className="min-h-screen bg-background">
