@@ -104,6 +104,7 @@ const Landing = () => {
     <div className="min-h-screen bg-background">
       
       <WelcomeDialog />
+      {profile && !profileLoading && <WelcomeCompletionModal key={profile.email} profile={profile} />}
 
       <header className="border-b border-border bg-card shadow-sm">
         <div className="container mx-auto px-4 py-6">
