@@ -61,6 +61,10 @@ const AddBookingForm = () => {
     load();
   }, []);
 
+  const reset = () => {
+    setName(""); setTool(""); setLevel(""); setUrl(""); setEditingId(null);
+  };
+
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!name || !tool || !level || !url) {
@@ -76,20 +80,28 @@ const AddBookingForm = () => {
     setBusy(true);
     const { data: sess } = await supabase.auth.getSession();
     const email = sess.session?.user?.email ?? null;
-    const { error } = await supabase
-      .from("training_bookings" as any)
-      .insert({ name, tool, level, booking_url: url, created_by: email });
+    const { error } = editingId
+      ? await supabase.from("training_bookings" as any)
+          .update({ name, tool, level, booking_url: url })
+          .eq("id", editingId)
+      : await supabase.from("training_bookings" as any)
+          .insert({ name, tool, level, booking_url: url, created_by: email });
     setBusy(false);
     if (error) {
-      toast({ title: "Could not add booking", description: error.message, variant: "destructive" });
+      toast({ title: editingId ? "Could not update booking" : "Could not add booking", description: error.message, variant: "destructive" });
       return;
     }
-    toast({ title: "Training added", description: "Staff at this level will now see it on their Bookings page." });
-    setName("");
-    setTool("");
-    setLevel("");
-    setUrl("");
+    toast({ title: editingId ? "Booking updated" : "Training added" });
+    reset();
     load();
+  };
+
+  const startEdit = (b: Booking) => {
+    setEditingId(b.id);
+    setName(b.name);
+    setTool(b.tool);
+    setLevel(b.level);
+    setUrl(b.booking_url);
   };
 
   const remove = async (id: string) => {
@@ -99,6 +111,7 @@ const AddBookingForm = () => {
       toast({ title: "Could not remove", description: error.message, variant: "destructive" });
       return;
     }
+    if (editingId === id) reset();
     load();
   };
 
