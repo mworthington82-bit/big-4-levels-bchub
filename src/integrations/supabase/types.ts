@@ -536,6 +536,7 @@ export type Database = {
       module_completions: {
         Row: {
           completed_at: string
+          completed_via: string
           created_at: string
           id: string
           module_id: string
@@ -544,6 +545,7 @@ export type Database = {
         }
         Insert: {
           completed_at?: string
+          completed_via?: string
           created_at?: string
           id?: string
           module_id: string
@@ -552,6 +554,7 @@ export type Database = {
         }
         Update: {
           completed_at?: string
+          completed_via?: string
           created_at?: string
           id?: string
           module_id?: string
@@ -978,6 +981,47 @@ export type Database = {
           tool?: string
         }
         Relationships: []
+      }
+      training_sessions: {
+        Row: {
+          bypass_password: string
+          created_at: string
+          id: string
+          is_active: boolean
+          module_id: string
+          session_date: string | null
+          session_title: string
+          updated_at: string
+        }
+        Insert: {
+          bypass_password: string
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          module_id: string
+          session_date?: string | null
+          session_title: string
+          updated_at?: string
+        }
+        Update: {
+          bypass_password?: string
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          module_id?: string
+          session_date?: string | null
+          session_title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "training_sessions_module_id_fkey"
+            columns: ["module_id"]
+            isOneToOne: false
+            referencedRelation: "modules"
+            referencedColumns: ["module_id"]
+          },
+        ]
       }
       user_roles: {
         Row: {

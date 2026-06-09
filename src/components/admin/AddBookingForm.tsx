@@ -11,7 +11,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { toast } from "@/hooks/use-toast";
-import { Trash2, Calendar } from "lucide-react";
+import { Trash2, Calendar, Pencil } from "lucide-react";
 
 type Tool = "teams" | "forms" | "canva" | "edpuzzle" | "copilot" | "inclusion" | "immersive";
 type Level = "explorer" | "practitioner" | "leader";
@@ -47,6 +47,7 @@ const AddBookingForm = () => {
   const [url, setUrl] = useState("");
   const [busy, setBusy] = useState(false);
   const [bookings, setBookings] = useState<Booking[]>([]);
+  const [editingId, setEditingId] = useState<string | null>(null);
 
   const load = async () => {
     const { data, error } = await supabase
@@ -59,6 +60,10 @@ const AddBookingForm = () => {
   useEffect(() => {
     load();
   }, []);
+
+  const reset = () => {
+    setName(""); setTool(""); setLevel(""); setUrl(""); setEditingId(null);
+  };
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -75,20 +80,28 @@ const AddBookingForm = () => {
     setBusy(true);
     const { data: sess } = await supabase.auth.getSession();
     const email = sess.session?.user?.email ?? null;
-    const { error } = await supabase
-      .from("training_bookings" as any)
-      .insert({ name, tool, level, booking_url: url, created_by: email });
+    const { error } = editingId
+      ? await supabase.from("training_bookings" as any)
+          .update({ name, tool, level, booking_url: url })
+          .eq("id", editingId)
+      : await supabase.from("training_bookings" as any)
+          .insert({ name, tool, level, booking_url: url, created_by: email });
     setBusy(false);
     if (error) {
-      toast({ title: "Could not add booking", description: error.message, variant: "destructive" });
+      toast({ title: editingId ? "Could not update booking" : "Could not add booking", description: error.message, variant: "destructive" });
       return;
     }
-    toast({ title: "Training added", description: "Staff at this level will now see it on their Bookings page." });
-    setName("");
-    setTool("");
-    setLevel("");
-    setUrl("");
+    toast({ title: editingId ? "Booking updated" : "Training added" });
+    reset();
     load();
+  };
+
+  const startEdit = (b: Booking) => {
+    setEditingId(b.id);
+    setName(b.name);
+    setTool(b.tool);
+    setLevel(b.level);
+    setUrl(b.booking_url);
   };
 
   const remove = async (id: string) => {
@@ -98,6 +111,7 @@ const AddBookingForm = () => {
       toast({ title: "Could not remove", description: error.message, variant: "destructive" });
       return;
     }
+    if (editingId === id) reset();
     load();
   };
 
@@ -158,10 +172,13 @@ const AddBookingForm = () => {
           />
         </div>
 
-        <div className="md:col-span-2">
+        <div className="md:col-span-2 flex gap-2">
           <Button type="submit" disabled={busy} className="bg-[#1F3864] hover:bg-[#1F3864]/90">
-            {busy ? "Submitting…" : "Submit training"}
+            {busy ? "Saving…" : editingId ? "Save changes" : "Submit training"}
           </Button>
+          {editingId && (
+            <Button type="button" variant="outline" onClick={reset}>Cancel</Button>
+          )}
         </div>
       </form>
 
@@ -173,15 +190,23 @@ const AddBookingForm = () => {
           <ul className="divide-y divide-slate-200 border border-slate-200 rounded-lg">
             {bookings.map((b) => (
               <li key={b.id} className="flex items-center justify-between gap-3 p-3">
-                <div className="min-w-0">
+                <div className="min-w-0 flex-1">
                   <p className="font-medium truncate">{b.name}</p>
                   <p className="text-xs text-slate-500 capitalize">
                     {TOOL_OPTIONS.find((t) => t.value === b.tool)?.label ?? b.tool} · {b.level}
                   </p>
+                  <a href={b.booking_url} target="_blank" rel="noopener noreferrer" className="text-xs text-blue-700 hover:underline truncate block max-w-full">
+                    {b.booking_url}
+                  </a>
                 </div>
-                <Button variant="ghost" size="icon" onClick={() => remove(b.id)} aria-label="Remove">
-                  <Trash2 className="w-4 h-4 text-red-600" />
-                </Button>
+                <div className="flex items-center gap-1 flex-shrink-0">
+                  <Button variant="ghost" size="icon" onClick={() => startEdit(b)} aria-label="Edit">
+                    <Pencil className="w-4 h-4" />
+                  </Button>
+                  <Button variant="ghost" size="icon" onClick={() => remove(b.id)} aria-label="Remove">
+                    <Trash2 className="w-4 h-4 text-red-600" />
+                  </Button>
+                </div>
               </li>
             ))}
           </ul>

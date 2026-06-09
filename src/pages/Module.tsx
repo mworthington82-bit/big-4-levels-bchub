@@ -2,7 +2,14 @@ import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import { IconArrowLeft, IconArrowRight, IconClock } from "@tabler/icons-react";
+import {
+  IconArrowLeft,
+  IconArrowRight,
+  IconCheck,
+  IconClock,
+  IconLock,
+  IconLoader2,
+} from "@tabler/icons-react";
 import AppShell from "@/components/AppShell";
 import PageError from "@/components/PageError";
 import { usePageTitle } from "@/lib/usePageTitle";
@@ -76,6 +83,12 @@ const Module = () => {
   const [reflectText, setReflectText] = useState("");
   const [warning, setWarning] = useState<string | null>(null);
   const [email, setEmail] = useState<string | null>(null);
+  const [hasActiveSession, setHasActiveSession] = useState(false);
+  const [bypassOpen, setBypassOpen] = useState(false);
+  const [bypassPwd, setBypassPwd] = useState("");
+  const [bypassBusy, setBypassBusy] = useState(false);
+  const [bypassError, setBypassError] = useState<string | null>(null);
+  const [bypassSuccess, setBypassSuccess] = useState(false);
 
   usePageTitle(module?.module_title);
 
@@ -127,10 +140,63 @@ const Module = () => {
   }, [moduleId]);
 
   useEffect(() => {
+    if (!moduleId) return;
+    let cancelled = false;
+    (async () => {
+      const { data } = await supabase
+        .from("training_sessions" as any)
+        .select("id")
+        .eq("module_id", moduleId)
+        .eq("is_active", true)
+        .limit(1);
+      if (!cancelled) setHasActiveSession(((data as any[]) ?? []).length > 0);
+    })();
+    return () => { cancelled = true; };
+  }, [moduleId]);
+
+  useEffect(() => {
     if (!warning) return;
     const t = setTimeout(() => setWarning(null), 2500);
     return () => clearTimeout(t);
   }, [warning]);
+
+  const submitBypass = async () => {
+    if (!moduleId || !email) return;
+    if (!bypassPwd.trim()) return;
+    setBypassBusy(true);
+    setBypassError(null);
+    try {
+      const { data, error } = await supabase.functions.invoke("validate-session-password", {
+        body: { module_id: moduleId, password: bypassPwd, staff_email: email },
+      });
+      if (error || !data?.success) {
+        setBypassError(
+          "That password is not correct. Please check with your trainer or contact m.worthington@bradfordcollege.ac.uk",
+        );
+        setBypassPwd("");
+        setBypassBusy(false);
+        return;
+      }
+      setBypassSuccess(true);
+      setBypassBusy(false);
+      // mark steps 1-4 as visited, step 5 unlocked
+      setVisited(new Set([1, 2, 3, 4, 5]));
+      try {
+        const { runProgressionCheckByEmail } = await import("@/lib/progression");
+        await runProgressionCheckByEmail(email);
+      } catch (e) {
+        console.error("progression check failed", e);
+      }
+      setTimeout(() => setCurrentStep(5), 1500);
+    } catch (e) {
+      setBypassError(
+        "That password is not correct. Please check with your trainer or contact m.worthington@bradfordcollege.ac.uk",
+      );
+      setBypassPwd("");
+      setBypassBusy(false);
+    }
+  };
+
 
   const step = useMemo(
     () => steps.find((s) => s.step_number === currentStep) ?? null,
@@ -174,9 +240,16 @@ const Module = () => {
     return <NotFoundCard />;
   }
 
+  const maxUnlocked = useMemo(() => {
+    const m = Math.max(...Array.from(visited));
+    return Math.min(5, m + 1);
+  }, [visited]);
+
+  const isStepUnlocked = (n: number) => n <= maxUnlocked;
+
   const goToStep = (n: number) => {
-    if (n === 5 && !visited.has(4)) {
-      setWarning("Complete the previous steps first");
+    if (!isStepUnlocked(n)) {
+      setWarning("Complete the previous step first");
       return;
     }
     setVisited((v) => new Set(v).add(n));
@@ -187,7 +260,11 @@ const Module = () => {
     if (currentStep > 1) goToStep(currentStep - 1);
   };
   const handleNext = () => {
-    if (currentStep < 5) goToStep(currentStep + 1);
+    if (currentStep < 5) {
+      // mark current as visited so next unlocks
+      setVisited((v) => new Set(v).add(currentStep).add(currentStep + 1));
+      setCurrentStep(currentStep + 1);
+    }
   };
 
   const writeCompletion = async () => {
@@ -265,15 +342,29 @@ const Module = () => {
               {STEP_LABELS.map((label, i) => {
                 const n = i + 1;
                 const isActive = currentStep === n;
-                const isVisited = visited.has(n) && !isActive;
+                const unlocked = isStepUnlocked(n);
+                const isComplete = visited.has(n) && !isActive;
                 let cls =
                   "shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold transition-colors ";
                 if (isActive) cls += "bg-[#1F3864] text-white";
-                else if (isVisited) cls += "bg-[#E6F1FB] text-[#185FA5] hover:bg-[#D7E8F8]";
+                else if (!unlocked) cls += "bg-[#E5E9F0] text-[#A0A8B5] cursor-not-allowed";
+                else if (isComplete) cls += "bg-[#E6F1FB] text-[#185FA5] hover:bg-[#D7E8F8]";
                 else cls += "bg-[#E5E9F0] text-[#5F6B7D] hover:bg-[#D7DCE6]";
                 return (
-                  <button key={n} onClick={() => goToStep(n)} className={cls}>
-                    <span className="opacity-70">{n}</span>
+                  <button
+                    key={n}
+                    onClick={() => goToStep(n)}
+                    disabled={!unlocked}
+                    aria-disabled={!unlocked}
+                    className={cls}
+                  >
+                    {!unlocked ? (
+                      <IconLock size={12} stroke={2} />
+                    ) : isComplete ? (
+                      <IconCheck size={12} stroke={3} />
+                    ) : (
+                      <span className="opacity-70">{n}</span>
+                    )}
                     <span>{label}</span>
                   </button>
                 );
@@ -338,26 +429,92 @@ const Module = () => {
 
           {/* Footer nav (hide on assess so quiz controls own flow) */}
           {step && step.step_type !== "assess" && (
-            <div className="mt-6 flex items-center justify-between">
-              {currentStep > 1 ? (
+            <>
+              <div className="mt-6 flex items-center justify-between">
+                {currentStep > 1 ? (
+                  <button
+                    onClick={handlePrev}
+                    className="inline-flex items-center gap-1.5 text-[#185FA5] font-semibold px-5 py-2.5 rounded-full hover:bg-white"
+                  >
+                    <IconArrowLeft size={16} stroke={2} />
+                    Previous
+                  </button>
+                ) : (
+                  <span />
+                )}
                 <button
-                  onClick={handlePrev}
-                  className="inline-flex items-center gap-1.5 text-[#185FA5] font-semibold px-5 py-2.5 rounded-full hover:bg-white"
+                  onClick={handleNext}
+                  className="inline-flex items-center gap-1.5 bg-[#185FA5] hover:bg-[#13497F] text-white font-semibold px-6 py-2.5 rounded-full"
                 >
-                  <IconArrowLeft size={16} stroke={2} />
-                  Previous
+                  {currentStep === 4 ? "Start quiz" : "Next"}
+                  <IconArrowRight size={16} stroke={2} />
                 </button>
-              ) : (
-                <span />
+              </div>
+
+              {currentStep === 2 && hasActiveSession && (
+                <div className="mt-6">
+                  <div className="flex items-center gap-3 my-4">
+                    <div className="flex-1 h-px bg-[#D0D7E2]" />
+                    <span className="text-xs uppercase tracking-wide text-[#5F6B7D]">or</span>
+                    <div className="flex-1 h-px bg-[#D0D7E2]" />
+                  </div>
+
+                  {!bypassOpen ? (
+                    <button
+                      onClick={() => setBypassOpen(true)}
+                      className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 bg-white border-2 border-[#1F3864] text-[#1F3864] font-semibold px-5 py-2.5 rounded-full hover:bg-[#F4F6FB]"
+                    >
+                      I completed in-person training
+                    </button>
+                  ) : (
+                    <div className="bg-white rounded-xl border border-[#D0D7E2] p-5 space-y-3 max-w-md">
+                      <label htmlFor="bypass-pwd" className="block text-sm font-semibold text-[#1F3864]">
+                        Enter your session password
+                      </label>
+                      <input
+                        id="bypass-pwd"
+                        type="text"
+                        autoComplete="off"
+                        value={bypassPwd}
+                        onChange={(e) => setBypassPwd(e.target.value)}
+                        placeholder="Password given at your session"
+                        disabled={bypassBusy || bypassSuccess}
+                        className="w-full rounded-lg border-2 border-[#D0D7E2] focus:border-[#185FA5] focus:outline-none p-2.5 text-[#1F3864] text-sm"
+                      />
+                      <div className="flex items-center gap-2">
+                        <button
+                          onClick={submitBypass}
+                          disabled={bypassBusy || bypassSuccess || !bypassPwd.trim()}
+                          className="inline-flex items-center justify-center gap-1.5 bg-[#1F3864] hover:bg-[#162B4D] text-white font-semibold px-5 py-2.5 rounded-full disabled:opacity-50"
+                        >
+                          {bypassBusy && <IconLoader2 size={14} className="animate-spin" />}
+                          {bypassBusy ? "Validating…" : "Confirm attendance"}
+                        </button>
+                        {!bypassSuccess && (
+                          <button
+                            onClick={() => { setBypassOpen(false); setBypassPwd(""); setBypassError(null); }}
+                            className="text-sm text-[#5F6B7D] hover:underline px-2"
+                            disabled={bypassBusy}
+                          >
+                            Cancel
+                          </button>
+                        )}
+                      </div>
+                      {bypassError && (
+                        <p className="text-sm text-red-700 bg-red-50 border border-red-200 rounded-lg p-3">
+                          {bypassError}
+                        </p>
+                      )}
+                      {bypassSuccess && (
+                        <p className="text-sm text-green-800 bg-green-50 border border-green-200 rounded-lg p-3">
+                          Attendance confirmed — well done for completing your in-person session.
+                        </p>
+                      )}
+                    </div>
+                  )}
+                </div>
               )}
-              <button
-                onClick={handleNext}
-                className="inline-flex items-center gap-1.5 bg-[#185FA5] hover:bg-[#13497F] text-white font-semibold px-6 py-2.5 rounded-full"
-              >
-                {currentStep === 4 ? "Start quiz" : "Next"}
-                <IconArrowRight size={16} stroke={2} />
-              </button>
-            </div>
+            </>
           )}
         </div>
       </div>

@@ -9,6 +9,7 @@ import StaffJourneySearch from "@/components/admin/StaffJourneySearch";
 import PendingEvidencePanel from "@/components/admin/PendingEvidencePanel";
 import AddBookingForm from "@/components/admin/AddBookingForm";
 import MarkSessionsComplete from "@/components/admin/MarkSessionsComplete";
+import TrainingSessions from "@/components/admin/TrainingSessions";
 import { usePageTitle } from "@/lib/usePageTitle";
 import {
   HEADER_MISMATCH_MESSAGE,
@@ -154,7 +155,9 @@ const Admin = () => {
         <StaffJourneySearch />
         <PendingEvidencePanel />
         <AddBookingForm />
+        <TrainingSessions />
         <MarkSessionsComplete />
+
       </div>
     </AppShell>
   );

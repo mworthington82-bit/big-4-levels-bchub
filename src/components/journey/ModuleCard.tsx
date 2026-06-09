@@ -115,6 +115,11 @@ const ModuleCard = ({ card }: Props) => {
           {status.label}
         </span>
       </div>
+      {card.status === "completed" && card.completedVia === "in_person" && (
+        <div className="px-4 pt-2 -mb-1 bg-white">
+          <span className="text-[11px] italic text-muted-foreground">Completed in person</span>
+        </div>
+      )}
 
       {/* Body */}
       <div className="p-5 flex-1 flex flex-col gap-3 bg-white">
