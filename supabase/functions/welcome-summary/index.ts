@@ -48,7 +48,7 @@ Deno.serve(async (req) => {
     // Immersive Room Practitioner is mandatory for ALL staff to reach Leader level
     let immersiveContext = "";
     if (level === "Explorer") {
-      immersiveContext = " Also remind them that once they progress to Practitioner, every member of staff must complete an Immersive Room session as part of that level.";
+      immersiveContext = " Do not mention the Immersive Room at all for this learner.";
     } else if (level === "Practitioner") {
       if (immersiveDone) {
         immersiveContext = " They have already completed their Immersive Room Practitioner session — acknowledge this warmly.";
