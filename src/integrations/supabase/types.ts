@@ -1007,6 +1007,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      admin_mark_module_complete: {
+        Args: { _emails: string[]; _module_id: string }
+        Returns: Json
+      }
       admin_upsert_staff: {
         Args: { payload: Json }
         Returns: {
