@@ -43,6 +43,7 @@ export const normaliseLevel = (raw: string | null | undefined): LevelKey => {
 export const buildExplorerCards = (
   profile: StaffProfile,
   completedIds: string[],
+  viaMap?: Map<string, "quiz" | "in_person">,
 ): ModuleCardSpec[] => {
   const completed = new Set(completedIds);
   return EXPLORER_TOOLS.map((tool) => {
@@ -52,13 +53,21 @@ export const buildExplorerCards = (
     let status: ModuleStatus = "todo";
     if (completed.has(id)) status = "completed";
     else if (evidenced) status = "evidenced";
-    return { id, toolKey: tool, name: TOOL_LABEL[tool], description: DESCRIPTIONS[tool], status };
+    return {
+      id,
+      toolKey: tool,
+      name: TOOL_LABEL[tool],
+      description: DESCRIPTIONS[tool],
+      status,
+      completedVia: viaMap?.get(id),
+    };
   });
 };
 
 export const buildPractitionerCards = (
   profile: StaffProfile,
   completedIds: string[],
+  viaMap?: Map<string, "quiz" | "in_person">,
 ): ModuleCardSpec[] => {
   const completed = new Set(completedIds);
   const cards: ModuleCardSpec[] = PRACTITIONER_TOOLS.map((tool) => {
@@ -68,7 +77,14 @@ export const buildPractitionerCards = (
     let status: ModuleStatus = "todo";
     if (completed.has(id)) status = "completed";
     else if (evidenced) status = "evidenced";
-    return { id, toolKey: tool, name: TOOL_LABEL[tool], description: DESCRIPTIONS[tool], status };
+    return {
+      id,
+      toolKey: tool,
+      name: TOOL_LABEL[tool],
+      description: DESCRIPTIONS[tool],
+      status,
+      completedVia: viaMap?.get(id),
+    };
   });
   const immersiveId = "immersive_practitioner";
   cards.push({
@@ -77,6 +93,7 @@ export const buildPractitionerCards = (
     name: TOOL_LABEL.immersive,
     description: DESCRIPTIONS.immersive,
     status: completed.has(immersiveId) ? "completed" : "todo",
+    completedVia: viaMap?.get(immersiveId),
   });
   return cards;
 };
@@ -86,11 +103,12 @@ export const buildModuleCards = (
   profile: StaffProfile,
   completedIds: string[],
   level?: LevelKey,
+  viaMap?: Map<string, "quiz" | "in_person">,
 ): ModuleCardSpec[] => {
   const lvl = level ?? normaliseLevel(profile.assigned_level);
   if (lvl === "Leader") return [];
-  if (lvl === "Practitioner") return buildPractitionerCards(profile, completedIds);
-  return buildExplorerCards(profile, completedIds);
+  if (lvl === "Practitioner") return buildPractitionerCards(profile, completedIds, viaMap);
+  return buildExplorerCards(profile, completedIds, viaMap);
 };
 
 /** Has the user started any Practitioner module on the platform? */
