@@ -11,6 +11,7 @@ const ALLOWED_EMAILS = new Set<string>([
   "m.worthington@bradfordcollege.ac.uk",
   "test.leader@bradfordcollege.ac.uk",
   "test.explorer@bradfordcollege.ac.uk",
+  "j.worth@bradfordcollege.ac.uk",
 ]);
 
 // Kept as no-ops so older imports do not break the build.
