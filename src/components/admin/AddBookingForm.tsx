@@ -10,8 +10,19 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Switch } from "@/components/ui/switch";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { toast } from "@/hooks/use-toast";
-import { Trash2, Calendar, Pencil } from "lucide-react";
+import { Trash2, Calendar, Pencil, Upload } from "lucide-react";
 
 type Tool = "teams" | "forms" | "canva" | "edpuzzle" | "copilot" | "inclusion" | "immersive";
 type Level = "explorer" | "practitioner" | "leader";
@@ -23,6 +34,7 @@ interface Booking {
   level: Level;
   booking_url: string;
   created_at: string;
+  is_full: boolean;
 }
 
 const TOOL_OPTIONS: { value: Tool; label: string }[] = [
@@ -40,6 +52,47 @@ const LEVEL_OPTIONS: { value: Level; label: string }[] = [
   { value: "leader", label: "Leader" },
 ];
 
+// Parse a CSV with header row. Returns array of row objects.
+const parseAttendanceCsv = (text: string): Record<string, string>[] => {
+  const lines = text.replace(/\r\n/g, "\n").split("\n").filter((l) => l.trim() !== "");
+  if (lines.length < 2) return [];
+  const splitRow = (line: string): string[] => {
+    const out: string[] = [];
+    let cur = "";
+    let inQ = false;
+    for (let i = 0; i < line.length; i++) {
+      const c = line[i];
+      if (inQ) {
+        if (c === '"' && line[i + 1] === '"') { cur += '"'; i++; }
+        else if (c === '"') inQ = false;
+        else cur += c;
+      } else {
+        if (c === '"') inQ = true;
+        else if (c === ",") { out.push(cur); cur = ""; }
+        else cur += c;
+      }
+    }
+    out.push(cur);
+    return out.map((s) => s.trim());
+  };
+  const headers = splitRow(lines[0]).map((h) => h.toLowerCase());
+  return lines.slice(1).map((line) => {
+    const cells = splitRow(line);
+    const row: Record<string, string> = {};
+    headers.forEach((h, i) => { row[h] = cells[i] ?? ""; });
+    return row;
+  });
+};
+
+const findKey = (row: Record<string, string>, candidates: string[]): string => {
+  const keys = Object.keys(row);
+  for (const cand of candidates) {
+    const k = keys.find((x) => x === cand || x.includes(cand));
+    if (k) return row[k] ?? "";
+  }
+  return "";
+};
+
 const AddBookingForm = () => {
   const [name, setName] = useState("");
   const [tool, setTool] = useState<Tool | "">("");
@@ -49,6 +102,12 @@ const AddBookingForm = () => {
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [editingId, setEditingId] = useState<string | null>(null);
 
+  // Attendance upload state
+  const [pending, setPending] = useState<{
+    booking: Booking;
+    rows: { email: string; name: string; reflection: string }[];
+  } | null>(null);
+
   const load = async () => {
     const { data, error } = await supabase
       .from("training_bookings" as any)
@@ -57,9 +116,7 @@ const AddBookingForm = () => {
     if (!error && data) setBookings(data as any);
   };
 
-  useEffect(() => {
-    load();
-  }, []);
+  useEffect(() => { load(); }, []);
 
   const reset = () => {
     setName(""); setTool(""); setLevel(""); setUrl(""); setEditingId(null);
@@ -71,9 +128,7 @@ const AddBookingForm = () => {
       toast({ title: "Missing fields", description: "Please fill all fields.", variant: "destructive" });
       return;
     }
-    try {
-      new URL(url);
-    } catch {
+    try { new URL(url); } catch {
       toast({ title: "Invalid URL", description: "Please enter a valid link.", variant: "destructive" });
       return;
     }
@@ -98,10 +153,7 @@ const AddBookingForm = () => {
 
   const startEdit = (b: Booking) => {
     setEditingId(b.id);
-    setName(b.name);
-    setTool(b.tool);
-    setLevel(b.level);
-    setUrl(b.booking_url);
+    setName(b.name); setTool(b.tool); setLevel(b.level); setUrl(b.booking_url);
   };
 
   const remove = async (id: string) => {
@@ -115,70 +167,106 @@ const AddBookingForm = () => {
     load();
   };
 
+  const toggleFull = async (b: Booking, next: boolean) => {
+    const { error } = await supabase.from("training_bookings" as any)
+      .update({ is_full: next }).eq("id", b.id);
+    if (error) {
+      toast({ title: "Could not update", description: error.message, variant: "destructive" });
+      return;
+    }
+    toast({ title: next ? "Marked as full" : "Marked as available" });
+    load();
+  };
+
+  const onAttendanceFile = async (b: Booking, file: File) => {
+    try {
+      const text = await file.text();
+      const raw = parseAttendanceCsv(text);
+      const rows = raw
+        .map((r) => ({
+          email: findKey(r, ["email", "e-mail"]).toLowerCase().trim(),
+          name: findKey(r, ["name", "full name", "attendee"]).trim(),
+          reflection: findKey(r, ["reflection", "comments", "notes", "feedback"]).trim(),
+        }))
+        .filter((r) => r.email && /.+@.+\..+/.test(r.email));
+      if (rows.length === 0) {
+        toast({ title: "No valid attendees", description: "Could not find any email addresses in that CSV.", variant: "destructive" });
+        return;
+      }
+      setPending({ booking: b, rows });
+    } catch (err: any) {
+      toast({ title: "Could not read CSV", description: String(err?.message ?? err), variant: "destructive" });
+    }
+  };
+
+  const confirmAttendance = async () => {
+    if (!pending) return;
+    const { booking, rows } = pending;
+    const moduleId = `prequiz_${booking.tool}_${booking.level}`;
+    setBusy(true);
+    const inserts = rows.map((r) => ({
+      staff_email: r.email,
+      module_id: moduleId,
+      quiz_passed: true,
+      completed_at: new Date().toISOString(),
+    }));
+    const { error } = await supabase
+      .from("module_completions")
+      .upsert(inserts as any, { onConflict: "staff_email,module_id" });
+    setBusy(false);
+    setPending(null);
+    if (error) {
+      toast({ title: "Could not record attendance", description: error.message, variant: "destructive" });
+      return;
+    }
+    toast({ title: "Attendance recorded", description: `${rows.length} attendee${rows.length === 1 ? "" : "s"} marked as having completed the pre-quiz activity for ${booking.name}.` });
+  };
+
   return (
     <section className="bg-white border border-slate-200 rounded-2xl p-6">
       <header className="mb-4 flex items-center gap-2">
         <Calendar className="w-5 h-5 text-[#1F3864]" />
-        <h2 className="text-xl font-semibold text-[#1F3864]">Add training booking</h2>
+        <h2 className="text-xl font-semibold text-[#1F3864]">Training bookings</h2>
       </header>
       <p className="text-sm text-slate-600 mb-4">
         Posts a session to the Bookings page for staff currently at the chosen level who have not
-        yet evidenced that tool at that level.
+        yet evidenced that tool at that level. Mark a session as full to disable the booking link,
+        or upload an attendance CSV after the session to auto-complete the pre-quiz activity for
+        everyone who attended.
       </p>
 
       <form onSubmit={submit} className="grid gap-4 md:grid-cols-2">
         <div className="md:col-span-2">
           <Label htmlFor="b-name">Session name</Label>
-          <Input
-            id="b-name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            placeholder="e.g. Canva for Accessible FE Resources"
-          />
+          <Input id="b-name" value={name} onChange={(e) => setName(e.target.value)} placeholder="e.g. Explorer — MS Teams — 09:00–09:45 — Room 1F19" />
         </div>
-
         <div>
           <Label>Tool / course</Label>
           <Select value={tool} onValueChange={(v) => setTool(v as Tool)}>
             <SelectTrigger><SelectValue placeholder="Choose a tool" /></SelectTrigger>
             <SelectContent>
-              {TOOL_OPTIONS.map((o) => (
-                <SelectItem key={o.value} value={o.value}>{o.label}</SelectItem>
-              ))}
+              {TOOL_OPTIONS.map((o) => <SelectItem key={o.value} value={o.value}>{o.label}</SelectItem>)}
             </SelectContent>
           </Select>
         </div>
-
         <div>
           <Label>Level</Label>
           <Select value={level} onValueChange={(v) => setLevel(v as Level)}>
             <SelectTrigger><SelectValue placeholder="Choose a level" /></SelectTrigger>
             <SelectContent>
-              {LEVEL_OPTIONS.map((o) => (
-                <SelectItem key={o.value} value={o.value}>{o.label}</SelectItem>
-              ))}
+              {LEVEL_OPTIONS.map((o) => <SelectItem key={o.value} value={o.value}>{o.label}</SelectItem>)}
             </SelectContent>
           </Select>
         </div>
-
         <div className="md:col-span-2">
           <Label htmlFor="b-url">Booking link</Label>
-          <Input
-            id="b-url"
-            type="url"
-            value={url}
-            onChange={(e) => setUrl(e.target.value)}
-            placeholder="https://outlook.office365.com/owa/calendar/..."
-          />
+          <Input id="b-url" type="url" value={url} onChange={(e) => setUrl(e.target.value)} placeholder="https://outlook.office365.com/owa/calendar/..." />
         </div>
-
         <div className="md:col-span-2 flex gap-2">
           <Button type="submit" disabled={busy} className="bg-[#1F3864] hover:bg-[#1F3864]/90">
             {busy ? "Saving…" : editingId ? "Save changes" : "Submit training"}
           </Button>
-          {editingId && (
-            <Button type="button" variant="outline" onClick={reset}>Cancel</Button>
-          )}
+          {editingId && <Button type="button" variant="outline" onClick={reset}>Cancel</Button>}
         </div>
       </form>
 
@@ -189,17 +277,41 @@ const AddBookingForm = () => {
         ) : (
           <ul className="divide-y divide-slate-200 border border-slate-200 rounded-lg">
             {bookings.map((b) => (
-              <li key={b.id} className="flex items-center justify-between gap-3 p-3">
+              <li key={b.id} className="flex flex-col gap-2 p-3 sm:flex-row sm:items-center sm:justify-between">
                 <div className="min-w-0 flex-1">
                   <p className="font-medium truncate">{b.name}</p>
                   <p className="text-xs text-slate-500 capitalize">
                     {TOOL_OPTIONS.find((t) => t.value === b.tool)?.label ?? b.tool} · {b.level}
+                    {b.is_full && <span className="ml-2 text-red-600 font-semibold">FULL</span>}
                   </p>
                   <a href={b.booking_url} target="_blank" rel="noopener noreferrer" className="text-xs text-blue-700 hover:underline truncate block max-w-full">
                     {b.booking_url}
                   </a>
                 </div>
-                <div className="flex items-center gap-1 flex-shrink-0">
+                <div className="flex items-center gap-3 flex-shrink-0">
+                  <div className="flex items-center gap-2">
+                    <Switch
+                      id={`full-${b.id}`}
+                      checked={b.is_full}
+                      onCheckedChange={(v) => toggleFull(b, v)}
+                    />
+                    <Label htmlFor={`full-${b.id}`} className="text-xs cursor-pointer">Full</Label>
+                  </div>
+                  <Button variant="outline" size="sm" asChild>
+                    <label className="cursor-pointer">
+                      <Upload className="w-4 h-4 mr-1" /> Attendance
+                      <input
+                        type="file"
+                        accept=".csv,text/csv"
+                        className="hidden"
+                        onChange={(e) => {
+                          const f = e.target.files?.[0];
+                          if (f) onAttendanceFile(b, f);
+                          e.target.value = "";
+                        }}
+                      />
+                    </label>
+                  </Button>
                   <Button variant="ghost" size="icon" onClick={() => startEdit(b)} aria-label="Edit">
                     <Pencil className="w-4 h-4" />
                   </Button>
@@ -212,6 +324,42 @@ const AddBookingForm = () => {
           </ul>
         )}
       </div>
+
+      <AlertDialog open={!!pending} onOpenChange={(open) => !open && setPending(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Confirm attendance upload</AlertDialogTitle>
+            <AlertDialogDescription asChild>
+              <div className="space-y-3">
+                <p>
+                  This will mark the <strong>pre-quiz required activity</strong> as complete for
+                  {" "}<strong>{pending?.rows.length ?? 0} attendee{(pending?.rows.length ?? 0) === 1 ? "" : "s"}</strong>{" "}
+                  of <strong>{pending?.booking.name}</strong>. Learners will still need to pass
+                  the quiz themselves to be evidenced.
+                </p>
+                {pending && (
+                  <div className="max-h-48 overflow-y-auto border border-slate-200 rounded-md p-2 text-xs">
+                    {pending.rows.map((r, i) => (
+                      <div key={i} className="py-0.5 border-b border-slate-100 last:border-0">
+                        <span className="font-medium">{r.name || "(no name)"}</span> · <span className="text-slate-600">{r.email}</span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+                <p className="text-xs text-slate-500">
+                  Reflections in the CSV are not stored — only attendance is recorded.
+                </p>
+              </div>
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={confirmAttendance} disabled={busy}>
+              {busy ? "Recording…" : "Yes, mark as attended"}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </section>
   );
 };

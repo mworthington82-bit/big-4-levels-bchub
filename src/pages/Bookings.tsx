@@ -15,6 +15,7 @@ interface Booking {
   tool: Tool;
   level: Level;
   booking_url: string;
+  is_full?: boolean;
 }
 
 const TOOL_LABEL: Record<Tool, string> = {
@@ -143,27 +144,42 @@ const Bookings = () => {
             {visible.map((s) => (
               <Card key={s.id} className="border-border flex flex-col">
                 <CardHeader>
-                  <div className="flex items-center gap-2 mb-2">
+                  <div className="flex items-center gap-2 mb-2 flex-wrap">
                     <Badge className={toolColor[s.tool]}>{TOOL_LABEL[s.tool]}</Badge>
                     <Badge variant="outline" className="capitalize">{s.level}</Badge>
+                    {s.is_full && (
+                      <Badge variant="destructive">Session full</Badge>
+                    )}
                   </div>
                   <CardTitle className="font-serif text-xl leading-snug">{s.name}</CardTitle>
                   <CardDescription className="text-base">
-                    Book your place via the link below.
+                    {s.is_full
+                      ? "This session is fully booked. Please look out for another date."
+                      : "Book your place via the link below."}
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="flex-1 flex flex-col">
-                  <Button asChild className="mt-auto bg-accent hover:bg-accent/90 text-accent-foreground">
-                    <a
-                      href={s.booking_url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      aria-label={`Book ${s.name} (opens in a new tab)`}
+                  {s.is_full ? (
+                    <Button
+                      disabled
+                      className="mt-auto bg-muted text-muted-foreground cursor-not-allowed"
+                      aria-label={`${s.name} is fully booked`}
                     >
-                      Book this session
-                      <ExternalLink className="w-4 h-4 ml-2" aria-hidden />
-                    </a>
-                  </Button>
+                      Fully booked
+                    </Button>
+                  ) : (
+                    <Button asChild className="mt-auto bg-accent hover:bg-accent/90 text-accent-foreground">
+                      <a
+                        href={s.booking_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label={`Book ${s.name} (opens in a new tab)`}
+                      >
+                        Book this session
+                        <ExternalLink className="w-4 h-4 ml-2" aria-hidden />
+                      </a>
+                    </Button>
+                  )}
                 </CardContent>
               </Card>
             ))}

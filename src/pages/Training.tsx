@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { supabase } from "@/integrations/supabase/client";
 import LearningSummary from "@/components/LearningSummary";
 import ModuleHeroBanner from "@/components/ModuleHeroBanner";
 import { useNavigate, useSearchParams } from "react-router-dom";
@@ -107,6 +108,27 @@ const Training = () => {
   }, []);
 
   const [activityConfirmed, setActivityConfirmed] = useState(false);
+
+  // If admin recorded the learner's attendance for this tool+level session,
+  // auto-confirm the pre-quiz required activity so they don't have to tick it.
+  useEffect(() => {
+    if (!selectedTool || !selectedLevel) return;
+    let cancelled = false;
+    (async () => {
+      const { data: sess } = await supabase.auth.getSession();
+      const email = sess.session?.user?.email?.toLowerCase();
+      if (!email) return;
+      const moduleId = `prequiz_${selectedTool}_${selectedLevel}`;
+      const { data } = await supabase
+        .from("module_completions")
+        .select("module_id")
+        .ilike("staff_email", email)
+        .eq("module_id", moduleId)
+        .maybeSingle();
+      if (!cancelled && data) setActivityConfirmed(true);
+    })();
+    return () => { cancelled = true; };
+  }, [selectedTool, selectedLevel]);
 
   const tools = [{
     id: 'teams' as Tool,
