@@ -223,14 +223,22 @@ const Landing = () => {
 
               {/* Primary action — Microsoft SSO only. Hidden once signed in. */}
               {!email && (
-                <div className="flex flex-col items-center gap-3 mt-10 animate-fade-in" style={{ animationDelay: '300ms' }}>
+                <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mt-10 animate-fade-in" style={{ animationDelay: '300ms' }}>
                   <button
                     onClick={handleSignIn}
                     disabled={signingIn}
-                    className="inline-flex items-center justify-center min-h-11 px-8 py-4 rounded-xl bg-[#F5A623] text-[#1F3864] font-bold text-base hover:bg-[#F5A623]/90 transition-colors disabled:opacity-60 shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white w-full sm:w-[320px]"
+                    className="inline-flex items-center justify-center min-h-11 px-8 py-4 rounded-xl bg-[#F5A623] text-[#1F3864] font-bold text-base hover:bg-[#F5A623]/90 transition-colors disabled:opacity-60 shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white w-full sm:w-[280px]"
                   >
                     {signingIn ? "Redirecting…" : "Sign in with Microsoft"}
                   </button>
+                  <a
+                    href="https://bradfordcollege-handsmisconducttraining.my.canva.site/final-24-03the-big-4-tools"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center justify-center min-h-11 px-8 py-4 rounded-xl bg-transparent text-white font-bold text-base border-2 border-white/40 hover:bg-white/10 hover:border-white/60 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white w-full sm:w-[280px]"
+                  >
+                    Take the Self-Assessment
+                  </a>
                 </div>
               )}
 
