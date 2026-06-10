@@ -191,7 +191,8 @@ const Bookings = () => {
                 </CardContent>
               </Card>
             ))}
-          </section>
+            </section>
+          </>
         )}
 
         <aside
