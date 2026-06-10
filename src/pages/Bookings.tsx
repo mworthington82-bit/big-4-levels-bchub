@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ArrowLeft, ExternalLink, ShieldCheck } from "lucide-react";
+import { ArrowLeft, ExternalLink, Laptop, ShieldCheck } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 
 type Tool = "teams" | "forms" | "canva" | "edpuzzle" | "copilot" | "inclusion" | "immersive";
@@ -140,7 +140,15 @@ const Bookings = () => {
             No training sessions available for you right now. Check back soon.
           </div>
         ) : (
-          <section aria-label="Upcoming training sessions" className="grid gap-5 md:grid-cols-2">
+          <>
+            <div className="mb-6 p-4 rounded-lg border border-accent/30 bg-accent/10 flex items-start gap-3">
+              <Laptop className="w-5 h-5 text-accent mt-0.5 shrink-0" aria-hidden />
+              <p className="text-sm text-foreground leading-relaxed">
+                <span className="font-semibold">Important: </span>
+                All training sessions are practical and hands-on. Please ensure you bring a laptop and charger with you.
+              </p>
+            </div>
+            <section aria-label="Upcoming training sessions" className="grid gap-5 md:grid-cols-2">
             {visible.map((s) => (
               <Card key={s.id} className="border-border flex flex-col">
                 <CardHeader>
@@ -183,7 +191,8 @@ const Bookings = () => {
                 </CardContent>
               </Card>
             ))}
-          </section>
+            </section>
+          </>
         )}
 
         <aside
