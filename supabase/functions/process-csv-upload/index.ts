@@ -61,10 +61,14 @@ Deno.serve(async (req) => {
     const CHUNK = 200;
     for (let i = 0; i < rows.length; i += CHUNK) {
       const slice = rows.slice(i, i + CHUNK);
+      console.log(`[csv-upload] upserting chunk start=${i} size=${slice.length} total=${rows.length}`);
       const { data, error } = await userClient.rpc("admin_upsert_staff", {
         payload: slice,
       });
-      if (error) throw error;
+      if (error) {
+        console.error("[csv-upload] rpc error", JSON.stringify(error));
+        throw error;
+      }
       const r = Array.isArray(data) ? data[0] : data;
       added += Number(r?.added ?? 0);
       updated += Number(r?.updated ?? 0);
@@ -74,16 +78,18 @@ Deno.serve(async (req) => {
       w.detail ? `${w.type} — ${w.name} (${w.detail})` : `${w.type} — ${w.name}`
     );
 
-    await admin.from("csv_upload_log").insert({
+    const { error: logErr } = await admin.from("csv_upload_log").insert({
       records_processed: totalProcessed,
       records_added: added,
       records_updated: updated,
       warnings: warningStrings,
       uploaded_by: email,
     });
+    if (logErr) console.error("[csv-upload] log insert error", JSON.stringify(logErr));
 
     return json({ added, updated });
   } catch (e) {
+    console.error("[csv-upload] fatal", String(e?.message ?? e), e?.stack ?? "");
     return json({ error: String(e?.message ?? e) }, 500);
   }
 });
