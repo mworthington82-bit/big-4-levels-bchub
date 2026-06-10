@@ -972,6 +972,7 @@ export type Database = {
           created_at: string
           created_by: string | null
           id: string
+          is_full: boolean
           level: string
           name: string
           tool: string
@@ -981,6 +982,7 @@ export type Database = {
           created_at?: string
           created_by?: string | null
           id?: string
+          is_full?: boolean
           level: string
           name: string
           tool: string
@@ -990,6 +992,7 @@ export type Database = {
           created_at?: string
           created_by?: string | null
           id?: string
+          is_full?: boolean
           level?: string
           name?: string
           tool?: string

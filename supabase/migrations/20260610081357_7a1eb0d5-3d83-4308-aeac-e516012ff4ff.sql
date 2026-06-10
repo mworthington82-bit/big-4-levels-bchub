@@ -1,0 +1,1 @@
+ALTER TABLE public.training_bookings ADD COLUMN IF NOT EXISTS is_full boolean NOT NULL DEFAULT false;
