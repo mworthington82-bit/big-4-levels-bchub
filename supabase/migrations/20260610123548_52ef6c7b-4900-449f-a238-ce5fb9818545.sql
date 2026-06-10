@@ -1,0 +1,1 @@
+GRANT EXECUTE ON FUNCTION public.admin_upsert_staff(jsonb) TO authenticated;
