@@ -372,7 +372,7 @@ const AddBookingForm = () => {
                   </div>
                 )}
                 <p className="text-xs text-slate-500">
-                  Reflections in the CSV are not stored — only attendance is recorded.
+                  Any reflections in the CSV will be saved to the Reflection Wall on this admin page.
                 </p>
               </div>
             </AlertDialogDescription>
