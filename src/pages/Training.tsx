@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { supabase } from "@/integrations/supabase/client";
 import LearningSummary from "@/components/LearningSummary";
 import ModuleHeroBanner from "@/components/ModuleHeroBanner";
 import { useNavigate, useSearchParams } from "react-router-dom";
