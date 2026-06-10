@@ -213,13 +213,38 @@ const AddBookingForm = () => {
     const { error } = await supabase
       .from("module_completions")
       .upsert(inserts as any, { onConflict: "staff_email,module_id" });
+    let reflectionError: any = null;
+    const reflectionRows = rows.filter((r) => r.reflection);
+    if (reflectionRows.length > 0) {
+      const { error: rErr } = await supabase
+        .from("session_reflections" as any)
+        .insert(
+          reflectionRows.map((r) => ({
+            booking_id: booking.id,
+            booking_name: booking.name,
+            tool: booking.tool,
+            level: booking.level,
+            staff_email: r.email,
+            staff_name: r.name || null,
+            reflection: r.reflection,
+          }))
+        );
+      reflectionError = rErr;
+    }
     setBusy(false);
     setPending(null);
     if (error) {
       toast({ title: "Could not record attendance", description: error.message, variant: "destructive" });
       return;
     }
-    toast({ title: "Attendance recorded", description: `${rows.length} attendee${rows.length === 1 ? "" : "s"} marked as having completed the pre-quiz activity for ${booking.name}.` });
+    if (reflectionError) {
+      toast({ title: "Attendance saved, reflections failed", description: reflectionError.message, variant: "destructive" });
+      return;
+    }
+    toast({
+      title: "Attendance recorded",
+      description: `${rows.length} attendee${rows.length === 1 ? "" : "s"} marked complete${reflectionRows.length > 0 ? ` · ${reflectionRows.length} reflection${reflectionRows.length === 1 ? "" : "s"} saved` : ""}.`,
+    });
   };
 
   return (
@@ -347,7 +372,7 @@ const AddBookingForm = () => {
                   </div>
                 )}
                 <p className="text-xs text-slate-500">
-                  Reflections in the CSV are not stored — only attendance is recorded.
+                  Any reflections in the CSV will be saved to the Reflection Wall on this admin page.
                 </p>
               </div>
             </AlertDialogDescription>

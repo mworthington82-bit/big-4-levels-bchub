@@ -8,6 +8,7 @@ import DatabaseSummary from "@/components/admin/DatabaseSummary";
 import StaffJourneySearch from "@/components/admin/StaffJourneySearch";
 import PendingEvidencePanel from "@/components/admin/PendingEvidencePanel";
 import AddBookingForm from "@/components/admin/AddBookingForm";
+import ReflectionsPanel from "@/components/admin/ReflectionsPanel";
 import MarkSessionsComplete from "@/components/admin/MarkSessionsComplete";
 import TrainingSessions from "@/components/admin/TrainingSessions";
 import { usePageTitle } from "@/lib/usePageTitle";
@@ -155,6 +156,7 @@ const Admin = () => {
         <StaffJourneySearch />
         <PendingEvidencePanel />
         <AddBookingForm />
+        <ReflectionsPanel />
         <TrainingSessions />
         <MarkSessionsComplete />
 
