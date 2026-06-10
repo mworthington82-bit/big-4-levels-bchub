@@ -15,6 +15,7 @@ interface Booking {
   tool: Tool;
   level: Level;
   booking_url: string;
+  is_full?: boolean;
 }
 
 const TOOL_LABEL: Record<Tool, string> = {
