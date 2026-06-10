@@ -66,8 +66,12 @@ const LevelConfirmationDialog = ({
         </DialogHeader>
 
         <div className="py-4">
-          <p className="text-center text-muted-foreground mb-6">
+          <p className="text-center text-muted-foreground mb-2">
             Please confirm how you reached this level:
+          </p>
+
+          <p className="text-center text-xs text-muted-foreground/70 italic mb-6 px-4">
+            This level may be different than the one you received in your initial assessment due to full college review.
           </p>
 
           <div className="space-y-3">
