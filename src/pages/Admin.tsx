@@ -156,6 +156,7 @@ const Admin = () => {
         <StaffJourneySearch />
         <PendingEvidencePanel />
         <AddBookingForm />
+        <ReflectionsPanel />
         <TrainingSessions />
         <MarkSessionsComplete />
 
