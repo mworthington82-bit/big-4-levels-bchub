@@ -858,6 +858,50 @@ export type Database = {
         }
         Relationships: []
       }
+      session_reflections: {
+        Row: {
+          booking_id: string | null
+          booking_name: string
+          created_at: string
+          id: string
+          level: string
+          reflection: string
+          staff_email: string
+          staff_name: string | null
+          tool: string
+        }
+        Insert: {
+          booking_id?: string | null
+          booking_name: string
+          created_at?: string
+          id?: string
+          level: string
+          reflection: string
+          staff_email: string
+          staff_name?: string | null
+          tool: string
+        }
+        Update: {
+          booking_id?: string | null
+          booking_name?: string
+          created_at?: string
+          id?: string
+          level?: string
+          reflection?: string
+          staff_email?: string
+          staff_name?: string | null
+          tool?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "session_reflections_booking_id_fkey"
+            columns: ["booking_id"]
+            isOneToOne: false
+            referencedRelation: "training_bookings"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       staff_profiles: {
         Row: {
           assigned_level: string | null
