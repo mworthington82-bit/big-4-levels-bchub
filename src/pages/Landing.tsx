@@ -46,53 +46,17 @@ const toolLevelInfo: Record<string, { explorer: string; practitioner: string; le
   },
 };
 
-const QA_TEST_EMAILS = new Set(Array.from({ length: 8 }, (_, index) => `test${index + 1}@big4.com`));
-
 const isAllowedLoginEmail = (emailAddress: string) =>
-  emailAddress.endsWith("@bradfordcollege.ac.uk") || QA_TEST_EMAILS.has(emailAddress);
+  emailAddress.endsWith("@bradfordcollege.ac.uk");
 
 const Landing = () => {
   const navigate = useNavigate();
 
   const { toast } = useToast();
-  const { profile, loading: profileLoading, email, refresh } = useStaffProfile();
+  const { profile, loading: profileLoading, email } = useStaffProfile();
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [signingIn, setSigningIn] = useState(false);
-  const [testEmail, setTestEmail] = useState("");
-  const [testPassword, setTestPassword] = useState("");
-  const [testBusy, setTestBusy] = useState(false);
-  const [seeding, setSeeding] = useState(false);
 
-  const handleTestLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setTestBusy(true);
-    const { error } = await supabase.auth.signInWithPassword({
-      email: testEmail.trim().toLowerCase(),
-      password: testPassword,
-    });
-    setTestBusy(false);
-    if (error) {
-      toast({ title: "Login failed", description: error.message, variant: "destructive" });
-      return;
-    }
-    refresh();
-    // Stay on landing — post-login housekeeping runs here automatically.
-  };
-
-  const handleSeedTestUsers = async () => {
-    setSeeding(true);
-    try {
-      const { data, error } = await supabase.functions.invoke("seed-test-users");
-      if (error) throw error;
-      toast({ title: "Test users ready", description: "8 accounts created/updated. Password: Psycho1610" });
-      console.log("seed-test-users result", data);
-    } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : String(err);
-      toast({ title: "Seed failed", description: message, variant: "destructive" });
-    } finally {
-      setSeeding(false);
-    }
-  };
 
   const handleSignIn = async () => {
     setSigningIn(true);
@@ -149,6 +113,27 @@ const Landing = () => {
       cancelled = true;
     };
   }, [email, navigate, toast]);
+
+  // Gate: if signed-in user has no matching staff_profiles row (not uploaded via CSV),
+  // sign them out — they're not on our system.
+  useEffect(() => {
+    if (!email || profileLoading) return;
+    if (profile) return;
+    let cancelled = false;
+    (async () => {
+      await supabase.auth.signOut();
+      if (cancelled) return;
+      toast({
+        title: "Account not found",
+        description:
+          "Your email isn't on our staff list yet. Please contact the Digital Learning team to be added before signing in.",
+        variant: "destructive",
+      });
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [email, profile, profileLoading, toast]);
 
   const handleAlreadyAssessed = () => {
     if (profileLoading) return;
@@ -242,49 +227,6 @@ const Landing = () => {
                 </div>
               )}
 
-              {/* Test login panel — for QA only, hidden when signed in */}
-              {!email && (
-                <details className="mt-8 mx-auto max-w-md text-left bg-white/5 border border-white/15 rounded-xl backdrop-blur-sm">
-                  <summary className="cursor-pointer px-4 py-3 text-sm font-semibold text-white/80 hover:text-white">
-                    Test login (QA)
-                  </summary>
-                  <form onSubmit={handleTestLogin} className="px-4 pb-4 space-y-2">
-                    <input
-                      type="email"
-                      required
-                      value={testEmail}
-                      onChange={(e) => setTestEmail(e.target.value)}
-                      placeholder="test1@big4.com"
-                      className="w-full rounded-md bg-white/10 border border-white/20 px-3 py-2 text-white placeholder-white/50 text-sm focus:outline-none focus:ring-2 focus:ring-[#F5A623]"
-                    />
-                    <input
-                      type="password"
-                      required
-                      value={testPassword}
-                      onChange={(e) => setTestPassword(e.target.value)}
-                      placeholder="Password"
-                      className="w-full rounded-md bg-white/10 border border-white/20 px-3 py-2 text-white placeholder-white/50 text-sm focus:outline-none focus:ring-2 focus:ring-[#F5A623]"
-                    />
-                    <div className="flex gap-2">
-                      <button
-                        type="submit"
-                        disabled={testBusy}
-                        className="flex-1 inline-flex items-center justify-center min-h-11 px-4 py-2 rounded-md bg-[#F5A623] text-[#1F3864] font-bold text-sm hover:bg-[#F5A623]/90 disabled:opacity-60"
-                      >
-                        {testBusy ? "Signing in…" : "Sign in"}
-                      </button>
-                      <button
-                        type="button"
-                        onClick={handleSeedTestUsers}
-                        disabled={seeding}
-                        className="inline-flex items-center justify-center min-h-11 px-4 py-2 rounded-md bg-white/10 text-white text-sm border border-white/20 hover:bg-white/20 disabled:opacity-60"
-                      >
-                        {seeding ? "Seeding…" : "Seed 8 users"}
-                      </button>
-                    </div>
-                  </form>
-                </details>
-              )}
 
             </div>
           </div>
