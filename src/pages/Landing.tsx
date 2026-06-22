@@ -53,7 +53,7 @@ const Landing = () => {
   const navigate = useNavigate();
 
   const { toast } = useToast();
-  const { profile, loading: profileLoading, email, refresh } = useStaffProfile();
+  const { profile, loading: profileLoading, email } = useStaffProfile();
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [signingIn, setSigningIn] = useState(false);
 
