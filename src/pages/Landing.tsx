@@ -124,9 +124,9 @@ const Landing = () => {
       await supabase.auth.signOut();
       if (cancelled) return;
       toast({
-        title: "Account not found",
+        title: "We can't find your self-assessment",
         description:
-          "Your email isn't on our staff list yet. Please contact the Digital Learning team to be added before signing in.",
+          "It looks like you haven't completed the Big 4 self-assessment yet. Please complete it using the 'Take the Self-Assessment' button, and then sign in again once your results have been processed.",
         variant: "destructive",
       });
     })();
