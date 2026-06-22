@@ -56,41 +56,7 @@ const Landing = () => {
   const { profile, loading: profileLoading, email, refresh } = useStaffProfile();
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [signingIn, setSigningIn] = useState(false);
-  const [testEmail, setTestEmail] = useState("");
-  const [testPassword, setTestPassword] = useState("");
-  const [testBusy, setTestBusy] = useState(false);
-  const [seeding, setSeeding] = useState(false);
 
-  const handleTestLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setTestBusy(true);
-    const { error } = await supabase.auth.signInWithPassword({
-      email: testEmail.trim().toLowerCase(),
-      password: testPassword,
-    });
-    setTestBusy(false);
-    if (error) {
-      toast({ title: "Login failed", description: error.message, variant: "destructive" });
-      return;
-    }
-    refresh();
-    // Stay on landing — post-login housekeeping runs here automatically.
-  };
-
-  const handleSeedTestUsers = async () => {
-    setSeeding(true);
-    try {
-      const { data, error } = await supabase.functions.invoke("seed-test-users");
-      if (error) throw error;
-      toast({ title: "Test users ready", description: "8 accounts created/updated. Password: Psycho1610" });
-      console.log("seed-test-users result", data);
-    } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : String(err);
-      toast({ title: "Seed failed", description: message, variant: "destructive" });
-    } finally {
-      setSeeding(false);
-    }
-  };
 
   const handleSignIn = async () => {
     setSigningIn(true);
