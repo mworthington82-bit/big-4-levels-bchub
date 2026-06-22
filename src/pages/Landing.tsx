@@ -114,6 +114,27 @@ const Landing = () => {
     };
   }, [email, navigate, toast]);
 
+  // Gate: if signed-in user has no matching staff_profiles row (not uploaded via CSV),
+  // sign them out — they're not on our system.
+  useEffect(() => {
+    if (!email || profileLoading) return;
+    if (profile) return;
+    let cancelled = false;
+    (async () => {
+      await supabase.auth.signOut();
+      if (cancelled) return;
+      toast({
+        title: "Account not found",
+        description:
+          "Your email isn't on our staff list yet. Please contact the Digital Learning team to be added before signing in.",
+        variant: "destructive",
+      });
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [email, profile, profileLoading, toast]);
+
   const handleAlreadyAssessed = () => {
     if (profileLoading) return;
     if (!profile || !profile.assigned_level) {
