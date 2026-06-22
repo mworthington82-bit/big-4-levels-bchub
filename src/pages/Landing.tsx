@@ -46,10 +46,8 @@ const toolLevelInfo: Record<string, { explorer: string; practitioner: string; le
   },
 };
 
-const QA_TEST_EMAILS = new Set(Array.from({ length: 8 }, (_, index) => `test${index + 1}@big4.com`));
-
 const isAllowedLoginEmail = (emailAddress: string) =>
-  emailAddress.endsWith("@bradfordcollege.ac.uk") || QA_TEST_EMAILS.has(emailAddress);
+  emailAddress.endsWith("@bradfordcollege.ac.uk");
 
 const Landing = () => {
   const navigate = useNavigate();
