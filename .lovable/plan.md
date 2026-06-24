@@ -1,39 +1,25 @@
-## CPD Bookings Upload + Management Dashboard
+## Per-session bookings upload
 
-Add a second upload zone to the admin page for booking CSVs, persist them, and surface a management overview (total bookings, unique people, by-department graph) with a Download PNG button.
+Add a **Bookings** upload button next to **Attendance** on each row in the "Current bookings" list. Each Excel/CSV gets tagged with that session automatically — no session column needed in the file.
 
-### CSV format expected
-Columns (header row, flexible casing): `name`, `email`, `department`, optional `session_title`, optional `session_date`. Email is the match key. Department comes from the CSV (no fuzzy name matching needed).
+### UI changes (`src/components/admin/AddBookingForm.tsx`)
+- Next to the existing **Attendance** button on each booking row, add a **Bookings** button (Upload icon) that opens a hidden file picker accepting `.csv, .xlsx, .xls`.
+- After upload, show a small count chip on the row: e.g. **"24 booked"** (live count from `cpd_bookings` matched on `session_title = booking.name`).
+- Reuse the parser from `BookingsUploadZone` (xlsx + papaparse) — extract `email`, `name`, `department` from the file; ignore any session column.
+- On upload, upsert rows into `cpd_bookings` with `session_title = booking.name` and `session_date = booking_date` (null for now), using `onConflict: 'email,session_title'` so re-uploads merge cleanly.
+- In-file duplicates (same email twice) are collapsed before insert to avoid the unique-constraint error you hit before.
+- Toast shows: rows added, rows updated, duplicates merged.
 
-### Database
-New table `cpd_bookings`:
-- `email` (lower-cased, indexed) — match key to `staff_profiles`
-- `name`, `department` (from CSV)
-- `session_title`, `session_date` (nullable)
-- `uploaded_at`, `uploaded_by_email`
-- Unique on `(email, session_title)` so re-uploading the same CSV doesn't double-count
-- RLS: admin-only read/write (via `is_admin()`); `GRANT` to `authenticated` + `service_role`
-- Standard `id`, `created_at`, `updated_at` columns
+### Counts panel
+- On `AddBookingForm` load, run a single grouped query against `cpd_bookings` and map `session_title → count`, then render the chip per row.
+- Refetch counts after each successful upload.
 
-### Admin page changes
-In `src/pages/Admin.tsx`, add a new section "CPD Bookings" containing two new components:
+### Admin page (`src/pages/Admin.tsx`)
+- Keep `BookingsDashboard` (department chart, total bookings, PNG export) — it now aggregates everything uploaded per session.
+- **Remove** the standalone `BookingsUploadZone` section (now redundant — uploads happen per session). The file stays in the repo in case you want it back.
 
-1. **`BookingsUploadZone`** (`src/components/admin/BookingsUploadZone.tsx`)
-   - Reuses the same UploadZone pattern as the staff CSV.
-   - Parses CSV client-side with the existing csv helpers, validates required columns, lower-cases emails, then inserts/upserts via Supabase into `cpd_bookings`.
-   - Shows per-upload summary: added / updated / skipped (invalid email) / total rows.
+### No database changes
+- `cpd_bookings` already has `session_title`, `email`, `name`, `department`, plus the unique constraint on `(email, session_title)`. Nothing to migrate.
 
-2. **`BookingsDashboard`** (`src/components/admin/BookingsDashboard.tsx`)
-   - Queries `cpd_bookings` joined logically with `staff_profiles` (by email) to enrich with `assigned_level` and confirm `department` (CSV value wins, staff_profiles dept used as fallback).
-   - Top stats (cards): Total bookings, Unique people booked, % of staff booked (unique people / total staff_profiles), Bookings in last 7 days.
-   - **Bar graph: Bookings per department** using `recharts` (already in project). Sorted descending. Ink bars, Gold highlight on top department.
-   - Table: Department → unique people booked → total bookings → % of dept staff booked.
-   - "Download PNG" button (Gold) uses `html-to-image` to capture the dashboard node into `cpd-bookings-YYYY-MM-DD.png` with a branded Ink/Gold header.
-
-### Dependencies
-- `bun add html-to-image` (also reused by the Database Summary PNG export already planned).
-
-### Out of scope
-- No edits to existing `training_bookings` table (that's for the in-app booking buttons).
-- No changes to self-assessment data; we only read `staff_profiles.assigned_level` / `department` to enrich the view.
-- Admin-only — sits behind existing `RequireAdmin` route.
+### Result
+- Click **Bookings** on, say, "Explorer — MS Teams — 14:00–14:45 — Room 1F19", upload that session's Excel, and the row shows the booked count. The management dashboard's per-department chart updates automatically across all sessions.
