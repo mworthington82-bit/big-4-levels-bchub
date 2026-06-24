@@ -1281,6 +1281,7 @@ export type Database = {
       }
     }
     Functions: {
+      admin_insert_new_staff: { Args: { payload: Json }; Returns: Json }
       admin_list_training_sessions: {
         Args: never
         Returns: {
