@@ -199,8 +199,31 @@ const AppShell = ({ children }: { children: React.ReactNode }) => {
           <a href="/privacy" className="hover:text-foreground underline-offset-4 hover:underline font-medium">Privacy Notice</a>
         </div>
       </footer>
+
+      <AlertDialog open={showWarning}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Still there?</AlertDialogTitle>
+            <AlertDialogDescription>
+              You've been inactive for a while. For your security you'll be signed out
+              in <span className="font-semibold text-foreground">{formatCountdown(secondsLeft)}</span>.
+              Choose <span className="font-semibold">Stay signed in</span> to keep working.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogAction
+              onClick={stayActive}
+              className="min-h-[44px] text-base"
+              autoFocus
+            >
+              Stay signed in
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };
+
 
 export default AppShell;

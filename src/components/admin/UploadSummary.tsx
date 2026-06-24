@@ -6,7 +6,10 @@ interface Props {
   removalStats: RemovalStats;
   warnings: Warning[];
   added: number;
-  updated: number;
+  skippedExisting: number;
+  skippedInvalid: number;
+  skippedExistingEmails?: string[];
+  skippedInvalidEmails?: string[];
 }
 
 const RULE_LABELS: Record<keyof RemovalStats, string> = {
@@ -23,10 +26,12 @@ const UploadSummary = ({
   removalStats,
   warnings,
   added,
-  updated,
+  skippedExisting,
+  skippedInvalid,
+  skippedExistingEmails = [],
+  skippedInvalidEmails = [],
 }: Props) => {
   const removedTotal = Object.values(removalStats).reduce((a, b) => a + b, 0);
-  const written = added + updated;
 
   return (
     <div className="space-y-4">
@@ -34,7 +39,9 @@ const UploadSummary = ({
         <div className="flex items-start gap-3 bg-green-50 border border-green-200 text-green-900 rounded-lg p-4">
           <CheckCircle2 className="w-5 h-5 mt-0.5 text-green-600" />
           <div className="font-semibold">
-            Upload complete. {written} staff records updated.
+            Upload complete. {added} new staff added.
+            {skippedExisting > 0 && ` ${skippedExisting} already on system (left unchanged).`}
+            {skippedInvalid > 0 && ` ${skippedInvalid} rejected (invalid email).`}
           </div>
         </div>
       ) : (
@@ -47,11 +54,18 @@ const UploadSummary = ({
         </div>
       )}
 
-      <div className="bg-white rounded-xl border border-slate-200 p-6 grid sm:grid-cols-4 gap-4">
+      <div className="bg-white rounded-xl border border-slate-200 p-6 grid sm:grid-cols-2 lg:grid-cols-5 gap-4">
         <Stat label="Total in CSV" value={totalInCsv} />
         <Stat label="Removed by cleaning" value={removedTotal} />
-        <Stat label="Added" value={added} />
-        <Stat label="Updated" value={updated} />
+        <Stat label="New staff added" value={added} highlight />
+        <Stat label="Already on system" value={skippedExisting} />
+        <Stat label="Invalid email skipped" value={skippedInvalid} />
+      </div>
+
+      <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 text-sm text-blue-900">
+        <strong>Note:</strong> CSV uploads only add brand-new staff. Existing records
+        — their levels, scores, evidence flags and progress — are never overwritten.
+        Only emails ending in <code>@bradfordcollege.ac.uk</code> are accepted.
       </div>
 
       <div className="bg-white rounded-xl border border-slate-200 p-6">
@@ -67,6 +81,32 @@ const UploadSummary = ({
           ))}
         </ul>
       </div>
+
+      {skippedInvalidEmails.length > 0 && (
+        <details className="bg-white rounded-xl border border-red-200 p-6">
+          <summary className="font-semibold text-red-700 cursor-pointer">
+            Invalid emails skipped ({skippedInvalidEmails.length}) — not @bradfordcollege.ac.uk
+          </summary>
+          <ul className="text-sm space-y-1 mt-3 max-h-64 overflow-auto font-mono text-slate-700">
+            {skippedInvalidEmails.map((e, i) => (
+              <li key={i}>{e || "(empty)"}</li>
+            ))}
+          </ul>
+        </details>
+      )}
+
+      {skippedExistingEmails.length > 0 && (
+        <details className="bg-white rounded-xl border border-slate-200 p-6">
+          <summary className="font-semibold text-slate-700 cursor-pointer">
+            Already on system, left unchanged ({skippedExistingEmails.length})
+          </summary>
+          <ul className="text-sm space-y-1 mt-3 max-h-64 overflow-auto font-mono text-slate-600">
+            {skippedExistingEmails.map((e, i) => (
+              <li key={i}>{e}</li>
+            ))}
+          </ul>
+        </details>
+      )}
 
       {warnings.length > 0 && (
         <div className="bg-white rounded-xl border border-slate-200 p-6">
@@ -90,10 +130,10 @@ const UploadSummary = ({
   );
 };
 
-const Stat = ({ label, value }: { label: string; value: number }) => (
+const Stat = ({ label, value, highlight }: { label: string; value: number; highlight?: boolean }) => (
   <div>
     <div className="text-xs uppercase tracking-wide text-slate-500">{label}</div>
-    <div className="text-2xl font-bold text-[#1F3864]">{value}</div>
+    <div className={`text-2xl font-bold ${highlight ? "text-green-700" : "text-[#1F3864]"}`}>{value}</div>
   </div>
 );
 
