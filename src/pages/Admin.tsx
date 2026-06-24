@@ -175,10 +175,9 @@ const Admin = () => {
               CPD bookings
             </h2>
             <p className="text-slate-600 text-sm mt-1">
-              Upload a CSV of bookings to see total engagement and a per-department breakdown. Email is the match key against staff profiles.
+              Use the <strong>Bookings</strong> button next to each training session below to upload that session's booking list (CSV or Excel). The dashboard aggregates engagement and shows a per-department breakdown.
             </p>
           </header>
-          <BookingsUploadZone onUploaded={() => setBookingsRefreshKey((k) => k + 1)} />
           <BookingsDashboard refreshKey={bookingsRefreshKey} />
         </section>
 
