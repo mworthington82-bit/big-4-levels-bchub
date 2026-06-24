@@ -234,7 +234,7 @@ const BookingsUploadZone = ({ onUploaded }: Props) => {
           Browse files
           <input
             type="file"
-            accept=".csv,text/csv"
+            accept=".csv,text/csv,.xlsx,.xls,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
             className="hidden"
             disabled={busy}
             onChange={(e) => {
