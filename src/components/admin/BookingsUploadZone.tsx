@@ -197,9 +197,14 @@ const BookingsUploadZone = ({ onUploaded }: Props) => {
           CPD bookings · Upload
         </h2>
         <p className="text-sm text-slate-600 mt-1">
-          Upload a CSV export of CPD bookings. Required column:{" "}
-          <code className="text-xs">email</code>. Optional:{" "}
+          Upload a CSV or Excel (.xlsx / .xls) export of CPD bookings.
+          Required column: <code className="text-xs">email</code>. Optional:{" "}
           <code className="text-xs">name</code>,{" "}
+          <code className="text-xs">department</code>,{" "}
+          <code className="text-xs">session_title</code>,{" "}
+          <code className="text-xs">session_date</code>.
+        </p>
+
           <code className="text-xs">department</code>,{" "}
           <code className="text-xs">session_title</code>,{" "}
           <code className="text-xs">session_date</code>.
