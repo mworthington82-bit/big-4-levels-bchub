@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import Papa from "papaparse";
+import * as XLSX from "xlsx";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -22,7 +24,50 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { toast } from "@/hooks/use-toast";
-import { Trash2, Calendar, Pencil, Upload } from "lucide-react";
+import { Trash2, Calendar, Pencil, Upload, Users } from "lucide-react";
+
+// ---- Bookings (CPD roster) parsing helpers ----
+const pickKey = (row: Record<string, string>, candidates: string[]): string => {
+  for (const c of candidates) {
+    const key = Object.keys(row).find((k) => k.toLowerCase().trim() === c);
+    if (key && row[key] != null && String(row[key]).trim() !== "") {
+      return String(row[key]).trim();
+    }
+  }
+  return "";
+};
+
+const parseBookingsCsv = (file: File): Promise<Record<string, string>[]> =>
+  new Promise((resolve, reject) => {
+    Papa.parse<Record<string, string>>(file, {
+      header: true,
+      skipEmptyLines: true,
+      transformHeader: (h) => h.trim().toLowerCase(),
+      complete: (res) => resolve(res.data),
+      error: (err) => reject(err),
+    });
+  });
+
+const parseBookingsExcel = async (file: File): Promise<Record<string, string>[]> => {
+  const buf = await file.arrayBuffer();
+  const wb = XLSX.read(buf, { type: "array" });
+  const ws = wb.Sheets[wb.SheetNames[0]];
+  if (!ws) return [];
+  const rows = XLSX.utils.sheet_to_json<Record<string, unknown>>(ws, { defval: "", raw: false });
+  return rows.map((r) => {
+    const out: Record<string, string> = {};
+    for (const k of Object.keys(r)) {
+      out[k.trim().toLowerCase()] = r[k] == null ? "" : String(r[k]);
+    }
+    return out;
+  });
+};
+
+const parseBookingsFile = (file: File) => {
+  const name = file.name.toLowerCase();
+  if (name.endsWith(".xlsx") || name.endsWith(".xls")) return parseBookingsExcel(file);
+  return parseBookingsCsv(file);
+};
 
 type Tool = "teams" | "forms" | "canva" | "edpuzzle" | "copilot" | "inclusion" | "immersive";
 type Level = "explorer" | "practitioner" | "leader";
