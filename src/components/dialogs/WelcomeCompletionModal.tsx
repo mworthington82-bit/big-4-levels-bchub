@@ -14,7 +14,7 @@ interface Props {
 }
 
 const FALLBACK =
-  "Welcome to The Big 4: Level Up. Your learning pathway will be ready when the platform launches fully on 29th June — we look forward to seeing your progress.";
+  "Welcome to The Big 4: Level Up. Your learning pathway is ready, with your Big 4 level, training content, resources and reflection activities available now.";
 
 const TOOLS = ["teams", "forms", "canva", "edpuzzle", "copilot"] as const;
 
@@ -113,9 +113,9 @@ const WelcomeCompletionModal = ({ profile }: Props) => {
   if (!open) return null;
   if (isDemo) return null;
 
-  const handleBook = () => {
+  const handleStartJourney = () => {
     setOpen(false);
-    navigate("/bookings");
+    navigate("/new/journey");
   };
 
   return (
@@ -130,8 +130,14 @@ const WelcomeCompletionModal = ({ profile }: Props) => {
         className="relative bg-white shadow-2xl flex flex-col w-[92%] sm:w-full overflow-hidden"
         style={{ maxWidth: 820, borderRadius: 20, maxHeight: "92vh" }}
       >
-        {/* Modal is intentionally non-dismissible — exit only via "Book my sessions" CTA */}
-
+        <button
+          type="button"
+          onClick={() => setOpen(false)}
+          className="absolute right-4 top-4 z-10 inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/95 text-[#1F3864] shadow-sm hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F5A623]"
+          aria-label="Close welcome message"
+        >
+          ×
+        </button>
 
         {/* Gold header bar */}
         <div style={{ height: 10, background: "#F5A623" }} />
@@ -201,17 +207,15 @@ const WelcomeCompletionModal = ({ profile }: Props) => {
             }}
           >
             <p>
-              On the week commencing <strong>29th of June</strong>, the full Big 4 platform will be live for you
-              to <strong>move up through the levels</strong> and <strong>receive badges</strong> as you progress.
+              The full Big 4 learning platform is open for you to <strong>move up through the levels</strong>
+              and <strong>receive badges</strong> as you progress.
             </p>
             <p style={{ marginTop: 14 }}>
-              To help you progress to the next level faster, we are offering{" "}
-              <strong>face-to-face training on all apps across all levels</strong>, where you can ask questions
-              and speak directly to experts about each tool.
+              Your learning journey, resources, reflections and the Activity Planner are available now.
+              Face-to-face sessions are still available if you want extra support with a tool.
             </p>
             <p style={{ marginTop: 14 }}>
-              To book sessions, <strong>click the button below</strong> to see ones bespoke to your own learning
-              journey.
+              Click below to enter your learning journey.
             </p>
             <p style={{ marginTop: 14 }}>
               For any additional support, please contact{" "}
@@ -229,7 +233,7 @@ const WelcomeCompletionModal = ({ profile }: Props) => {
         {/* CTA button — sticky bottom */}
         <div style={{ padding: "20px 40px", background: "#fff", borderTop: "1px solid #eee" }}>
           <button
-            onClick={handleBook}
+            onClick={handleStartJourney}
             className="w-full font-bold"
             style={{
               background: "#F5A623",
@@ -240,7 +244,7 @@ const WelcomeCompletionModal = ({ profile }: Props) => {
               minHeight: 52,
             }}
           >
-            Book my sessions →
+            Start my learning journey →
           </button>
         </div>
 
