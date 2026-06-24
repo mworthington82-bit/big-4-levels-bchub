@@ -205,10 +205,6 @@ const BookingsUploadZone = ({ onUploaded }: Props) => {
           <code className="text-xs">session_date</code>.
         </p>
 
-          <code className="text-xs">department</code>,{" "}
-          <code className="text-xs">session_title</code>,{" "}
-          <code className="text-xs">session_date</code>.
-        </p>
       </div>
 
       <div
