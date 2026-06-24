@@ -427,7 +427,13 @@ const AddBookingForm = () => {
                     {b.booking_url}
                   </a>
                 </div>
-                <div className="flex items-center gap-3 flex-shrink-0">
+                <div className="flex items-center gap-3 flex-shrink-0 flex-wrap">
+                  {bookingCounts[b.name] > 0 && (
+                    <span className="inline-flex items-center gap-1 rounded-full bg-[#1F3864]/10 text-[#1F3864] text-xs font-semibold px-2 py-1">
+                      <Users className="w-3 h-3" />
+                      {bookingCounts[b.name]} booked
+                    </span>
+                  )}
                   <div className="flex items-center gap-2">
                     <Switch
                       id={`full-${b.id}`}
@@ -436,6 +442,22 @@ const AddBookingForm = () => {
                     />
                     <Label htmlFor={`full-${b.id}`} className="text-xs cursor-pointer">Full</Label>
                   </div>
+                  <Button variant="outline" size="sm" asChild disabled={uploadingFor === b.id}>
+                    <label className="cursor-pointer">
+                      <Users className="w-4 h-4 mr-1" />
+                      {uploadingFor === b.id ? "Uploading…" : "Bookings"}
+                      <input
+                        type="file"
+                        accept=".csv,.xlsx,.xls,text/csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel"
+                        className="hidden"
+                        onChange={(e) => {
+                          const f = e.target.files?.[0];
+                          if (f) onBookingsFile(b, f);
+                          e.target.value = "";
+                        }}
+                      />
+                    </label>
+                  </Button>
                   <Button variant="outline" size="sm" asChild>
                     <label className="cursor-pointer">
                       <Upload className="w-4 h-4 mr-1" /> Attendance
