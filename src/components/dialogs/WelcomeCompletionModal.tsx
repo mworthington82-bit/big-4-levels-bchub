@@ -28,6 +28,7 @@ type LevelKey = keyof typeof LEVEL_META;
 
 const WelcomeCompletionModal = ({ profile }: Props) => {
   const navigate = useNavigate();
+  const isDemo = useIsDemoUser();
   const [open, setOpen] = useState(true);
   const [aiText, setAiText] = useState<string | null>(null);
   const [loadingAi, setLoadingAi] = useState(true);
