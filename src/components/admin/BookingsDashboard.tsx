@@ -43,6 +43,8 @@ const BookingsDashboard = ({ refreshKey }: { refreshKey: number }) => {
   const [staff, setStaff] = useState<StaffRow[]>([]);
   const exportRef = useRef<HTMLDivElement>(null);
   const [exporting, setExporting] = useState(false);
+  const [chartMetric, setChartMetric] = useState<"totalBookings" | "uniquePeople">("totalBookings");
+
 
   useEffect(() => {
     (async () => {
@@ -194,13 +196,39 @@ const BookingsDashboard = ({ refreshKey }: { refreshKey: number }) => {
 
           {/* Bar chart */}
           <div>
-            <h3 className="text-sm font-semibold text-[#1C1C2E] mb-3">
-              Bookings per department
-            </h3>
+            <div className="flex items-center justify-between mb-3 gap-3 flex-wrap">
+              <h3 className="text-sm font-semibold text-[#1C1C2E]">
+                {chartMetric === "totalBookings"
+                  ? "Bookings per department (volume)"
+                  : "Unique staff engaged per department (reach)"}
+              </h3>
+              <div className="inline-flex rounded-lg border border-slate-200 overflow-hidden text-xs">
+                <button
+                  onClick={() => setChartMetric("totalBookings")}
+                  className={`px-3 py-1.5 font-medium ${
+                    chartMetric === "totalBookings"
+                      ? "bg-[#1C1C2E] text-white"
+                      : "bg-white text-slate-600 hover:bg-slate-50"
+                  }`}
+                >
+                  Total bookings
+                </button>
+                <button
+                  onClick={() => setChartMetric("uniquePeople")}
+                  className={`px-3 py-1.5 font-medium ${
+                    chartMetric === "uniquePeople"
+                      ? "bg-[#1C1C2E] text-white"
+                      : "bg-white text-slate-600 hover:bg-slate-50"
+                  }`}
+                >
+                  Unique staff
+                </button>
+              </div>
+            </div>
             <div style={{ width: "100%", height: Math.max(280, stats.deptStats.length * 36) }}>
               <ResponsiveContainer>
                 <BarChart
-                  data={stats.deptStats}
+                  data={[...stats.deptStats].sort((a, b) => (b[chartMetric] as number) - (a[chartMetric] as number))}
                   layout="vertical"
                   margin={{ left: 10, right: 30, top: 10, bottom: 10 }}
                 >
@@ -222,11 +250,13 @@ const BookingsDashboard = ({ refreshKey }: { refreshKey: number }) => {
                       fontSize: 12,
                     }}
                     formatter={(v: number, _n, p: any) => [
-                      `${v} bookings`,
+                      chartMetric === "totalBookings"
+                        ? `${v} bookings`
+                        : `${v} unique staff`,
                       p?.payload?.department,
                     ]}
                   />
-                  <Bar dataKey="totalBookings" radius={[0, 6, 6, 0]}>
+                  <Bar dataKey={chartMetric} radius={[0, 6, 6, 0]}>
                     {stats.deptStats.map((d) => (
                       <Cell
                         key={d.department}
@@ -238,6 +268,7 @@ const BookingsDashboard = ({ refreshKey }: { refreshKey: number }) => {
               </ResponsiveContainer>
             </div>
           </div>
+
 
           {/* Table */}
           <div>
