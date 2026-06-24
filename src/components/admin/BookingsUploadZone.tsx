@@ -46,6 +46,31 @@ const parseCsv = (file: File): Promise<Record<string, string>[]> =>
     });
   });
 
+const parseExcel = async (file: File): Promise<Record<string, string>[]> => {
+  const buf = await file.arrayBuffer();
+  const wb = XLSX.read(buf, { type: "array" });
+  const ws = wb.Sheets[wb.SheetNames[0]];
+  if (!ws) return [];
+  const rows = XLSX.utils.sheet_to_json<Record<string, unknown>>(ws, {
+    defval: "",
+    raw: false,
+  });
+  return rows.map((r) => {
+    const out: Record<string, string> = {};
+    for (const k of Object.keys(r)) {
+      out[k.trim().toLowerCase()] = r[k] == null ? "" : String(r[k]);
+    }
+    return out;
+  });
+};
+
+const parseFile = (file: File) => {
+  const name = file.name.toLowerCase();
+  if (name.endsWith(".xlsx") || name.endsWith(".xls")) return parseExcel(file);
+  return parseCsv(file);
+};
+
+
 const BookingsUploadZone = ({ onUploaded }: Props) => {
   const [dragOver, setDragOver] = useState(false);
   const [busy, setBusy] = useState(false);
