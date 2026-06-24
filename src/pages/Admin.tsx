@@ -43,8 +43,12 @@ interface Result {
   removalStats: RemovalStats;
   warnings: Warning[];
   added: number;
-  updated: number;
+  skippedExisting: number;
+  skippedInvalid: number;
+  skippedExistingEmails: string[];
+  skippedInvalidEmails: string[];
 }
+
 
 const Admin = () => {
   usePageTitle("Admin");
@@ -105,9 +109,13 @@ const Admin = () => {
         removalStats,
         warnings,
         added: Number((data as any)?.added ?? 0),
-        updated: Number((data as any)?.updated ?? 0),
+        skippedExisting: Number((data as any)?.skippedExisting ?? 0),
+        skippedInvalid: Number((data as any)?.skippedInvalid ?? 0),
+        skippedExistingEmails: ((data as any)?.skippedExistingEmails ?? []) as string[],
+        skippedInvalidEmails: ((data as any)?.skippedInvalidEmails ?? []) as string[],
       });
       setRefreshKey((k) => k + 1);
+
     } catch (e: any) {
       setError(e?.message ?? "Upload failed");
     } finally {
@@ -147,9 +155,13 @@ const Admin = () => {
             removalStats={result.removalStats}
             warnings={result.warnings}
             added={result.added}
-            updated={result.updated}
+            skippedExisting={result.skippedExisting}
+            skippedInvalid={result.skippedInvalid}
+            skippedExistingEmails={result.skippedExistingEmails}
+            skippedInvalidEmails={result.skippedInvalidEmails}
           />
         )}
+
 
         <UploadHistory refreshKey={refreshKey} />
         <DatabaseSummary refreshKey={refreshKey} />
