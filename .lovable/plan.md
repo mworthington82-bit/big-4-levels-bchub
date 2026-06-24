@@ -1,35 +1,30 @@
-## Why you're stuck on Bookings
+# Re-enable the Activity Planner for demo
 
-When you sign in:
+## Why it's currently broken
+`src/components/ActivityPlanner.tsx` was deliberately replaced with a "coming soon" placeholder during a data-protection review. The old AI-powered version (which sends the activity description, subject, learner notes, etc. to Lovable AI / Gemini through the `plan-activity` edge function) is still in git history, and the `plan-activity` edge function itself is still deployed.
 
-1. You land on `/` (Landing).
-2. Because your profile exists, `WelcomeCompletionModal` opens immediately and is **non-dismissible** — its only exit is the "Book my sessions" button, which navigates to `/bookings`.
-3. Once on `/bookings`, the in-page nav does have "My Journey / Resources / Book Training / Best Practice", but the modal has effectively funnelled you straight into bookings every login.
+So nothing is actually broken — the UI is just stubbed out.
 
-No platform routes are actually closed — there's no maintenance gate, no `GatedRoute` blocking them. The problem is just that the post-sign-in flow on Landing traps you in the bookings funnel. No level benchmarks need to change.
+## What I'll change
+1. **`src/components/ActivityPlanner.tsx`** — replace the 34-line placeholder with the full 502-line implementation from commit `63cf66a` (the last working version, just before the DPIA stub was committed). This restores:
+   - Activity / subject / learners input form
+   - "Suggest ideas" button (calls `generate-activity-ideas`)
+   - "Plan with Big 4" button (calls `plan-activity`)
+   - Full plan display: lead stage, Bloom's, primary/secondary tool, setup steps, Ofsted alignment, inclusion checklist
+   - "Download as Word" button (uses existing `downloadPlanAsWord` helper)
+2. No other files change. The two edge functions, the Word-export helper, and the Resources/Planner page wiring already exist and stay as-is.
 
-## Fix (frontend only, scoped to demo users)
+## What stays the same
+- Benchmarks, levels, scoring, learner journeys — untouched.
+- Bookings, admin, demo access — untouched.
+- The `WelcomeCompletionModal` demo bypass we just added — untouched.
+- No DB migration, no new secret, no new edge function.
 
-Two small changes in `src/`, no DB, no logic changes for normal staff:
+## Demo caveat (please read)
+The restored planner sends free-text inputs (including any learner-related text you type) to Lovable AI → Google Gemini. This was the exact reason it was paused for DPIA review. For the demo:
+- Use illustrative examples only (no real learner names, no identifying detail).
+- After the demo we can decide whether to leave it on, switch to a "demo-only" mocked plan, or re-stub it.
 
-**1. `src/components/dialogs/WelcomeCompletionModal.tsx`**
-At the top of the component, if `useIsDemoUser()` returns true, return `null`. Demo accounts (you, plus the existing demo list) won't get trapped by the non-dismissible modal.
-
-**2. `src/pages/Landing.tsx`**
-In the hero CTA block, when the user is signed in **and** is a demo user, show two buttons in place of the hidden Microsoft sign-in row:
-- "Go to My Journey" → `navigate("/new/journey")`
-- "Browse Bookings" → `navigate("/bookings")`
-
-This gives you (and the other demo accounts) a visible way into the full learner experience straight from the landing page, while leaving the normal staff flow exactly as it is today.
-
-## What this does not change
-
-- Benchmarks / scoring / level thresholds — untouched.
-- `WelcomeCompletionModal` behaviour for normal staff — unchanged (still appears, still non-dismissible, still routes to `/bookings`).
-- Bookings page visibility rules — unchanged (the Practitioner-visibility change you asked to hold remains on hold).
-- Admin and `is_admin()` — untouched.
-- No database migration.
-
-## Result for you
-
-After approving and refreshing once: signing in lands you on Landing with no blocking modal, and you have a one-click path into "My Journey" plus the full top nav (Resources, Bookings, Best Practice) on every learner page.
+## Technical details
+- Source of restore: `git show 63cf66a:src/components/ActivityPlanner.tsx`
+- Verify after restore: run the dev server, open Resources (or `/planner`), click "Plan with Big 4", confirm a plan renders and the Word download works. If the call returns 402/429 from the gateway, that's a credits/rate-limit issue, not a code regression.
