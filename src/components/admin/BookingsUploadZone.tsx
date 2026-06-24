@@ -1,7 +1,9 @@
 import { useCallback, useState } from "react";
 import Papa from "papaparse";
+import * as XLSX from "xlsx";
 import { UploadCloud, AlertTriangle, CheckCircle2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+
 
 interface Props {
   onUploaded: () => void;
