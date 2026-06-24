@@ -55,6 +55,7 @@ const Landing = () => {
 
   const { toast } = useToast();
   const { profile, loading: profileLoading, email } = useStaffProfile();
+  const isDemo = useIsDemoUser();
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [signingIn, setSigningIn] = useState(false);
 
