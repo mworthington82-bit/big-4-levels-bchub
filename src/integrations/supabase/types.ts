@@ -1307,6 +1307,10 @@ export type Database = {
         }[]
       }
       apply_data_retention: { Args: never; Returns: undefined }
+      create_evidence_notification: {
+        Args: { _evidence_id: string; _message: string; _type: string }
+        Returns: string
+      }
       is_admin: { Args: never; Returns: boolean }
       is_leader: { Args: never; Returns: boolean }
     }
