@@ -5,6 +5,8 @@ import ProcessingStatus, { Step } from "@/components/admin/ProcessingStatus";
 import UploadSummary from "@/components/admin/UploadSummary";
 import UploadHistory from "@/components/admin/UploadHistory";
 import DatabaseSummary from "@/components/admin/DatabaseSummary";
+import BookingsUploadZone from "@/components/admin/BookingsUploadZone";
+import BookingsDashboard from "@/components/admin/BookingsDashboard";
 import StaffJourneySearch from "@/components/admin/StaffJourneySearch";
 import PendingEvidencePanel from "@/components/admin/PendingEvidencePanel";
 import AddBookingForm from "@/components/admin/AddBookingForm";
