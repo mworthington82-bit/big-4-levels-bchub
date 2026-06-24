@@ -83,7 +83,7 @@ const BookingsUploadZone = ({ onUploaded }: Props) => {
       setError(null);
       setSummary(null);
       try {
-        const raw = await parseCsv(file);
+        const raw = await parseFile(file);
         const skippedEmails: string[] = [];
         const rows: Row[] = [];
         let skippedInvalid = 0;
