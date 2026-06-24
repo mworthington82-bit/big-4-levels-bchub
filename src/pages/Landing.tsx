@@ -13,6 +13,7 @@ import LeadStrip from "@/components/LeadStrip";
 import SignOutButton from "@/components/SignOutButton";
 import OnboardingModal from "@/components/journey/OnboardingModal";
 import { useStaffProfile } from "@/hooks/useStaffProfile";
+import { useIsDemoUser } from "@/lib/demoAccess";
 
 import bradfordLogo from "@/assets/bradford-college-logo.png";
 import teamsLogo from "@/assets/teams-logo.png";
@@ -54,6 +55,7 @@ const Landing = () => {
 
   const { toast } = useToast();
   const { profile, loading: profileLoading, email } = useStaffProfile();
+  const isDemo = useIsDemoUser();
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [signingIn, setSigningIn] = useState(false);
 
@@ -224,6 +226,23 @@ const Landing = () => {
                   >
                     Take the Self-Assessment
                   </a>
+                </div>
+              )}
+
+              {email && isDemo && (
+                <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mt-10 animate-fade-in" style={{ animationDelay: '300ms' }}>
+                  <button
+                    onClick={() => navigate("/new/journey")}
+                    className="inline-flex items-center justify-center min-h-11 px-8 py-4 rounded-xl bg-[#F5A623] text-[#1F3864] font-bold text-base hover:bg-[#F5A623]/90 transition-colors shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white w-full sm:w-[280px]"
+                  >
+                    Go to My Journey
+                  </button>
+                  <button
+                    onClick={() => navigate("/bookings")}
+                    className="inline-flex items-center justify-center min-h-11 px-8 py-4 rounded-xl bg-transparent text-white font-bold text-base border-2 border-white/40 hover:bg-white/10 hover:border-white/60 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white w-full sm:w-[280px]"
+                  >
+                    Browse Bookings
+                  </button>
                 </div>
               )}
 

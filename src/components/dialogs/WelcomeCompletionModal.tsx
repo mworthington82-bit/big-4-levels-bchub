@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
+import { useIsDemoUser } from "@/lib/demoAccess";
 
 import type { StaffProfile } from "@/hooks/useStaffProfile";
 import { deriveEffectiveLevel } from "@/lib/progression";
@@ -27,6 +28,7 @@ type LevelKey = keyof typeof LEVEL_META;
 
 const WelcomeCompletionModal = ({ profile }: Props) => {
   const navigate = useNavigate();
+  const isDemo = useIsDemoUser();
   const [open, setOpen] = useState(true);
   const [aiText, setAiText] = useState<string | null>(null);
   const [loadingAi, setLoadingAi] = useState(true);
@@ -109,6 +111,7 @@ const WelcomeCompletionModal = ({ profile }: Props) => {
 
 
   if (!open) return null;
+  if (isDemo) return null;
 
   const handleBook = () => {
     setOpen(false);
