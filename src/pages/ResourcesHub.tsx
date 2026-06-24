@@ -5,6 +5,7 @@ import PageError from "@/components/PageError";
 import { usePageTitle } from "@/lib/usePageTitle";
 import { supabase } from "@/integrations/supabase/client";
 import FromTheClassroom from "@/components/resources/FromTheClassroom";
+import Big4ActivityPlanner from "@/components/ActivityPlanner";
 import {
   IconBookmark,
   IconBookmarkFilled,
@@ -379,15 +380,7 @@ const Resources = () => {
             </div>
           </header>
 
-          {/* Activity Planner — always visible */}
-          {/* Activity Planner disabled pending DPIA review — placeholder only */}
-          <div
-            className="relative bg-white rounded-2xl shadow-sm border border-[#D0D7E2] p-8 text-center"
-            style={{ borderLeft: "4px solid #F5A623" }}
-          >
-            <h2 className="font-bold text-[#1F3864] text-lg md:text-xl mb-2">Activity Planner</h2>
-            <p className="text-sm text-[#5F6B7D] max-w-md mx-auto">This feature is coming soon.</p>
-          </div>
+          <Big4ActivityPlanner />
 
           {tab === "ideas" ? (
             <>
