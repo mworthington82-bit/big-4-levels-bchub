@@ -225,8 +225,11 @@ const BookingsUploadZone = ({ onUploaded }: Props) => {
       >
         <UploadCloud className="w-9 h-9 mx-auto mb-2 text-[#1C1C2E]" />
         <p className="text-slate-700 mb-3 text-sm">
-          {busy ? "Uploading..." : "Drag and drop your bookings .csv here"}
+          {busy
+            ? "Uploading..."
+            : "Drag and drop your bookings .csv or .xlsx here"}
         </p>
+
         <label className="inline-flex items-center px-4 py-2 rounded-lg bg-[#F5A623] text-[#1C1C2E] font-semibold cursor-pointer hover:brightness-95">
           Browse files
           <input
