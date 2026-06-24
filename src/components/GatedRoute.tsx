@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
+import { useIsDemoUser } from "@/lib/demoAccess";
 
 interface GatedRouteProps {
   children: React.ReactNode;
@@ -16,6 +17,7 @@ const ADMIN_ACCESS_KEY = "admin_access_unlocked";
 const GatedRoute = ({ children }: GatedRouteProps) => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const isDemo = useIsDemoUser();
   const [unlocked, setUnlocked] = useState(() => {
     return sessionStorage.getItem(DEV_BYPASS_KEY) === "true" || sessionStorage.getItem(ADMIN_ACCESS_KEY) === "true";
   });
@@ -44,7 +46,7 @@ const GatedRoute = ({ children }: GatedRouteProps) => {
     }
   };
 
-  if (unlocked) {
+  if (unlocked || isDemo) {
     return <>{children}</>;
   }
 
