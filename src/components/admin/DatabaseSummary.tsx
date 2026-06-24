@@ -1,6 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { Download } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { EXPECTED_DEPARTMENTS } from "@/lib/csv/types";
+import { downloadNodeAsPng } from "@/lib/exportPng";
 
 type Level = "Explorer" | "Practitioner" | "Leader";
 
@@ -31,6 +33,20 @@ const normaliseLevel = (raw: string | null | undefined): Level => {
 
 const DatabaseSummary = ({ refreshKey }: { refreshKey: number }) => {
   const [s, setS] = useState<Summary | null>(null);
+  const exportRef = useRef<HTMLDivElement>(null);
+  const [exporting, setExporting] = useState(false);
+
+  const handleDownload = async () => {
+    if (!exportRef.current) return;
+    setExporting(true);
+    try {
+      const date = new Date().toISOString().slice(0, 10);
+      await downloadNodeAsPng(exportRef.current, `database-summary-${date}.png`);
+    } finally {
+      setExporting(false);
+    }
+  };
+
 
   useEffect(() => {
     (async () => {
@@ -94,15 +110,38 @@ const DatabaseSummary = ({ refreshKey }: { refreshKey: number }) => {
   };
 
   return (
-    <div className="bg-white rounded-xl border border-slate-200 p-6">
-      <div className="flex items-baseline justify-between mb-4">
-        <h2 className="text-lg font-semibold text-[#1F3864]">Live database</h2>
-        <div className="text-xs text-slate-500">
-          {s.lastUpload
-            ? `Last upload: ${new Date(s.lastUpload).toLocaleString("en-GB")}`
-            : "No uploads yet"}
-        </div>
+    <div className="space-y-3">
+      <div className="flex items-center justify-end">
+        <button
+          onClick={handleDownload}
+          disabled={exporting}
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[#F5A623] text-[#1C1C2E] font-semibold hover:brightness-95 disabled:opacity-60"
+        >
+          <Download className="w-4 h-4" />
+          {exporting ? "Preparing..." : "Download PNG"}
+        </button>
       </div>
+      <div
+        ref={exportRef}
+        className="bg-white rounded-xl border border-slate-200 overflow-hidden"
+      >
+        <div className="bg-[#1C1C2E] text-white px-6 py-5 relative">
+          <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-[#F5A623]" />
+          <h2
+            className="text-xl font-semibold"
+            style={{ fontFamily: "Fraunces, serif" }}
+          >
+            Database summary
+          </h2>
+          <p className="text-xs text-white/70 mt-1">
+            Bradford Big 4 ·{" "}
+            {s.lastUpload
+              ? `Last upload: ${new Date(s.lastUpload).toLocaleString("en-GB")}`
+              : "No uploads yet"}
+          </p>
+        </div>
+        <div className="p-6">
+
 
       <div className="mb-6">
         <div className="text-xs uppercase tracking-wide text-slate-500">Total staff</div>
@@ -189,6 +228,8 @@ const DatabaseSummary = ({ refreshKey }: { refreshKey: number }) => {
             </li>
           ))}
         </ul>
+      </div>
+        </div>
       </div>
     </div>
   );

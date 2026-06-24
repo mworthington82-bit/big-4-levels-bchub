@@ -121,6 +121,45 @@ export type Database = {
           },
         ]
       }
+      cpd_bookings: {
+        Row: {
+          created_at: string
+          department: string | null
+          email: string
+          id: string
+          name: string | null
+          session_date: string | null
+          session_title: string | null
+          updated_at: string
+          uploaded_at: string
+          uploaded_by_email: string | null
+        }
+        Insert: {
+          created_at?: string
+          department?: string | null
+          email: string
+          id?: string
+          name?: string | null
+          session_date?: string | null
+          session_title?: string | null
+          updated_at?: string
+          uploaded_at?: string
+          uploaded_by_email?: string | null
+        }
+        Update: {
+          created_at?: string
+          department?: string | null
+          email?: string
+          id?: string
+          name?: string | null
+          session_date?: string | null
+          session_title?: string | null
+          updated_at?: string
+          uploaded_at?: string
+          uploaded_by_email?: string | null
+        }
+        Relationships: []
+      }
       csv_upload_log: {
         Row: {
           id: string

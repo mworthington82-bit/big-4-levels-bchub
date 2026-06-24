@@ -5,6 +5,8 @@ import ProcessingStatus, { Step } from "@/components/admin/ProcessingStatus";
 import UploadSummary from "@/components/admin/UploadSummary";
 import UploadHistory from "@/components/admin/UploadHistory";
 import DatabaseSummary from "@/components/admin/DatabaseSummary";
+import BookingsUploadZone from "@/components/admin/BookingsUploadZone";
+import BookingsDashboard from "@/components/admin/BookingsDashboard";
 import StaffJourneySearch from "@/components/admin/StaffJourneySearch";
 import PendingEvidencePanel from "@/components/admin/PendingEvidencePanel";
 import AddBookingForm from "@/components/admin/AddBookingForm";
@@ -57,6 +59,7 @@ const Admin = () => {
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<Result | null>(null);
   const [refreshKey, setRefreshKey] = useState(0);
+  const [bookingsRefreshKey, setBookingsRefreshKey] = useState(0);
   const [busy, setBusy] = useState(false);
 
   const handleFile = async (f: File) => {
@@ -165,6 +168,20 @@ const Admin = () => {
 
         <UploadHistory refreshKey={refreshKey} />
         <DatabaseSummary refreshKey={refreshKey} />
+
+        <section className="space-y-4">
+          <header>
+            <h2 className="text-2xl font-bold text-[#1C1C2E]" style={{ fontFamily: "Fraunces, serif" }}>
+              CPD bookings
+            </h2>
+            <p className="text-slate-600 text-sm mt-1">
+              Upload a CSV of bookings to see total engagement and a per-department breakdown. Email is the match key against staff profiles.
+            </p>
+          </header>
+          <BookingsUploadZone onUploaded={() => setBookingsRefreshKey((k) => k + 1)} />
+          <BookingsDashboard refreshKey={bookingsRefreshKey} />
+        </section>
+
         <StaffJourneySearch />
         <PendingEvidencePanel />
         <AddBookingForm />
