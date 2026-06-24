@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import Papa from "papaparse";
+import * as XLSX from "xlsx";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -22,7 +24,50 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { toast } from "@/hooks/use-toast";
-import { Trash2, Calendar, Pencil, Upload } from "lucide-react";
+import { Trash2, Calendar, Pencil, Upload, Users } from "lucide-react";
+
+// ---- Bookings (CPD roster) parsing helpers ----
+const pickKey = (row: Record<string, string>, candidates: string[]): string => {
+  for (const c of candidates) {
+    const key = Object.keys(row).find((k) => k.toLowerCase().trim() === c);
+    if (key && row[key] != null && String(row[key]).trim() !== "") {
+      return String(row[key]).trim();
+    }
+  }
+  return "";
+};
+
+const parseBookingsCsv = (file: File): Promise<Record<string, string>[]> =>
+  new Promise((resolve, reject) => {
+    Papa.parse<Record<string, string>>(file, {
+      header: true,
+      skipEmptyLines: true,
+      transformHeader: (h) => h.trim().toLowerCase(),
+      complete: (res) => resolve(res.data),
+      error: (err) => reject(err),
+    });
+  });
+
+const parseBookingsExcel = async (file: File): Promise<Record<string, string>[]> => {
+  const buf = await file.arrayBuffer();
+  const wb = XLSX.read(buf, { type: "array" });
+  const ws = wb.Sheets[wb.SheetNames[0]];
+  if (!ws) return [];
+  const rows = XLSX.utils.sheet_to_json<Record<string, unknown>>(ws, { defval: "", raw: false });
+  return rows.map((r) => {
+    const out: Record<string, string> = {};
+    for (const k of Object.keys(r)) {
+      out[k.trim().toLowerCase()] = r[k] == null ? "" : String(r[k]);
+    }
+    return out;
+  });
+};
+
+const parseBookingsFile = (file: File) => {
+  const name = file.name.toLowerCase();
+  if (name.endsWith(".xlsx") || name.endsWith(".xls")) return parseBookingsExcel(file);
+  return parseBookingsCsv(file);
+};
 
 type Tool = "teams" | "forms" | "canva" | "edpuzzle" | "copilot" | "inclusion" | "immersive";
 type Level = "explorer" | "practitioner" | "leader";
@@ -108,6 +153,10 @@ const AddBookingForm = () => {
     rows: { email: string; name: string; reflection: string }[];
   } | null>(null);
 
+  // Bookings count chip state (cpd_bookings grouped by session_title)
+  const [bookingCounts, setBookingCounts] = useState<Record<string, number>>({});
+  const [uploadingFor, setUploadingFor] = useState<string | null>(null);
+
   const load = async () => {
     const { data, error } = await supabase
       .from("training_bookings" as any)
@@ -116,7 +165,72 @@ const AddBookingForm = () => {
     if (!error && data) setBookings(data as any);
   };
 
-  useEffect(() => { load(); }, []);
+  const loadCounts = async () => {
+    const { data, error } = await supabase
+      .from("cpd_bookings")
+      .select("session_title");
+    if (error || !data) return;
+    const counts: Record<string, number> = {};
+    for (const r of data as { session_title: string | null }[]) {
+      const key = (r.session_title ?? "").trim();
+      if (!key) continue;
+      counts[key] = (counts[key] ?? 0) + 1;
+    }
+    setBookingCounts(counts);
+  };
+
+  useEffect(() => { load(); loadCounts(); }, []);
+
+  const onBookingsFile = async (b: Booking, file: File) => {
+    setUploadingFor(b.id);
+    try {
+      const raw = await parseBookingsFile(file);
+      // Build clean rows, collapse in-file duplicates by email (keep last)
+      const map = new Map<string, { email: string; name: string | null; department: string | null }>();
+      let invalid = 0;
+      for (const r of raw) {
+        const email = pickKey(r, ["email", "e-mail", "email address"]).toLowerCase();
+        if (!email || !/.+@.+\..+/.test(email)) { invalid++; continue; }
+        const nm = pickKey(r, ["name", "full name", "attendee", "display name"]) || null;
+        const dept = pickKey(r, ["department", "dept", "team", "faculty", "area"]) || null;
+        map.set(email, { email, name: nm, department: dept });
+      }
+      const rows = Array.from(map.values());
+      if (rows.length === 0) {
+        toast({ title: "No valid bookings", description: "Could not find any email addresses in that file.", variant: "destructive" });
+        return;
+      }
+      const sessionTitle = b.name;
+      const sessionDate = b.created_at ?? null;
+      const payload = rows.map((r) => ({
+        email: r.email,
+        name: r.name,
+        department: r.department,
+        session_title: sessionTitle,
+        session_date: sessionDate,
+        uploaded_at: new Date().toISOString(),
+      }));
+      const { error } = await supabase
+        .from("cpd_bookings")
+        .upsert(payload as any, { onConflict: "email,session_title" });
+      if (error) {
+        toast({ title: "Upload failed", description: error.message, variant: "destructive" });
+        return;
+      }
+      const dupesMerged = raw.length - rows.length - invalid;
+      toast({
+        title: "Bookings uploaded",
+        description: `${rows.length} booking${rows.length === 1 ? "" : "s"} saved for "${sessionTitle}"${dupesMerged > 0 ? ` · ${dupesMerged} in-file duplicate${dupesMerged === 1 ? "" : "s"} merged` : ""}${invalid > 0 ? ` · ${invalid} row${invalid === 1 ? "" : "s"} skipped (no email)` : ""}.`,
+      });
+      await loadCounts();
+      window.dispatchEvent(new Event("cpd-bookings-updated"));
+    } catch (err: any) {
+      toast({ title: "Could not read file", description: String(err?.message ?? err), variant: "destructive" });
+    } finally {
+      setUploadingFor(null);
+    }
+  };
+
 
   const reset = () => {
     setName(""); setTool(""); setLevel(""); setUrl(""); setEditingId(null);
@@ -313,7 +427,13 @@ const AddBookingForm = () => {
                     {b.booking_url}
                   </a>
                 </div>
-                <div className="flex items-center gap-3 flex-shrink-0">
+                <div className="flex items-center gap-3 flex-shrink-0 flex-wrap">
+                  {bookingCounts[b.name] > 0 && (
+                    <span className="inline-flex items-center gap-1 rounded-full bg-[#1F3864]/10 text-[#1F3864] text-xs font-semibold px-2 py-1">
+                      <Users className="w-3 h-3" />
+                      {bookingCounts[b.name]} booked
+                    </span>
+                  )}
                   <div className="flex items-center gap-2">
                     <Switch
                       id={`full-${b.id}`}
@@ -322,6 +442,22 @@ const AddBookingForm = () => {
                     />
                     <Label htmlFor={`full-${b.id}`} className="text-xs cursor-pointer">Full</Label>
                   </div>
+                  <Button variant="outline" size="sm" asChild disabled={uploadingFor === b.id}>
+                    <label className="cursor-pointer">
+                      <Users className="w-4 h-4 mr-1" />
+                      {uploadingFor === b.id ? "Uploading…" : "Bookings"}
+                      <input
+                        type="file"
+                        accept=".csv,.xlsx,.xls,text/csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel"
+                        className="hidden"
+                        onChange={(e) => {
+                          const f = e.target.files?.[0];
+                          if (f) onBookingsFile(b, f);
+                          e.target.value = "";
+                        }}
+                      />
+                    </label>
+                  </Button>
                   <Button variant="outline" size="sm" asChild>
                     <label className="cursor-pointer">
                       <Upload className="w-4 h-4 mr-1" /> Attendance
