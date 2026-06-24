@@ -43,6 +43,8 @@ const BookingsDashboard = ({ refreshKey }: { refreshKey: number }) => {
   const [staff, setStaff] = useState<StaffRow[]>([]);
   const exportRef = useRef<HTMLDivElement>(null);
   const [exporting, setExporting] = useState(false);
+  const [chartMetric, setChartMetric] = useState<"totalBookings" | "uniquePeople">("totalBookings");
+
 
   useEffect(() => {
     (async () => {
