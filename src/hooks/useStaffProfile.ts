@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { isDemoEmail } from "@/lib/demoAccess";
 
 export interface StaffProfile {
   email: string;
@@ -102,8 +103,25 @@ export const useStaffProfile = () => {
           setState({ profile: null, email, loading: false, notFound: true, error: false, completedModuleIds, completions });
           return;
         }
+
+        let profile = (data as unknown as StaffProfile) ?? null;
+
+        // Demo accounts: silently flip both unlock flags so the full platform is visible.
+        // Never touches scores, evidence flags, or non-demo users.
+        if (profile && isDemoEmail(email) && (!profile.practitioner_unlocked || !profile.leader_unlocked)) {
+          try {
+            await supabase
+              .from("staff_profiles")
+              .update({ practitioner_unlocked: true, leader_unlocked: true })
+              .ilike("email", email);
+            profile = { ...profile, practitioner_unlocked: true, leader_unlocked: true };
+          } catch {
+            // Non-fatal — UI gating below still falls back to demo bypass.
+          }
+        }
+
         setState({
-          profile: (data as unknown as StaffProfile) ?? null,
+          profile,
           email,
           loading: false,
           notFound: !data,
