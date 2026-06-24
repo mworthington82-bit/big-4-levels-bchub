@@ -104,35 +104,47 @@ const BookingsUploadZone = ({ onUploaded }: Props) => {
           uploaded_at: new Date().toISOString(),
         }));
 
-        // Get existing keys to count inserts vs updates
+        // Manual upsert: count existing matches, delete them, then bulk insert.
+        // Uses (email, session_title) as the natural key, treating null session
+        // as a distinct key value.
+        const emails = Array.from(new Set(rows.map((r) => r.email)));
         const { data: existing } = await supabase
           .from("cpd_bookings")
-          .select("email,session_title");
+          .select("email,session_title")
+          .in("email", emails);
         const existingSet = new Set(
           (existing ?? []).map(
-            (e: any) => `${(e.email ?? "").toLowerCase()}|${e.session_title ?? ""}`,
+            (e: any) =>
+              `${(e.email ?? "").toLowerCase()}|${e.session_title ?? ""}`,
           ),
         );
 
-        const { error: upsertErr } = await supabase
-          .from("cpd_bookings")
-          .upsert(payload, { onConflict: "email,session_title" } as any);
-
-        if (upsertErr) {
-          // Fall back to manual upsert if the unique constraint name differs
-          const { error: insertErr } = await supabase
-            .from("cpd_bookings")
-            .upsert(payload);
-          if (insertErr) throw insertErr;
-        }
-
         let inserted = 0;
         let updated = 0;
+        const toDelete: { email: string; session_title: string | null }[] = [];
         for (const r of rows) {
           const key = `${r.email}|${r.session_title ?? ""}`;
-          if (existingSet.has(key)) updated++;
-          else inserted++;
+          if (existingSet.has(key)) {
+            updated++;
+            toDelete.push({ email: r.email, session_title: r.session_title });
+          } else {
+            inserted++;
+          }
         }
+
+        // Delete matching existing rows in batches
+        for (const d of toDelete) {
+          let q = supabase.from("cpd_bookings").delete().eq("email", d.email);
+          q = d.session_title === null
+            ? q.is("session_title", null)
+            : q.eq("session_title", d.session_title);
+          await q;
+        }
+
+        const { error: insertErr } = await supabase
+          .from("cpd_bookings")
+          .insert(payload);
+        if (insertErr) throw insertErr;
 
         setSummary({
           totalRows: rows.length,
