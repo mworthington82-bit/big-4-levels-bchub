@@ -111,6 +111,7 @@ const WelcomeCompletionModal = ({ profile }: Props) => {
 
 
   if (!open) return null;
+  if (isDemo) return null;
 
   const handleBook = () => {
     setOpen(false);
