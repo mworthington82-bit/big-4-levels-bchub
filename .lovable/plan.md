@@ -1,32 +1,35 @@
-## Goal
+## Why you're stuck on Bookings
 
-Give `m.worthington@bradfordcollege.ac.uk` the same full read access to the learner platform that the other demo accounts have, so you can demonstrate the whole site end-to-end. Admin rights are unchanged — you keep `/admin`, and no new admin powers are granted.
+When you sign in:
 
-## Change
+1. You land on `/` (Landing).
+2. Because your profile exists, `WelcomeCompletionModal` opens immediately and is **non-dismissible** — its only exit is the "Book my sessions" button, which navigates to `/bookings`.
+3. Once on `/bookings`, the in-page nav does have "My Journey / Resources / Book Training / Best Practice", but the modal has effectively funnelled you straight into bookings every login.
 
-Add one entry to `src/lib/demoAccess.ts` in the `DEMO_EMAILS` array:
+No platform routes are actually closed — there's no maintenance gate, no `GatedRoute` blocking them. The problem is just that the post-sign-in flow on Landing traps you in the bookings funnel. No level benchmarks need to change.
 
-```
-"m.worthington@bradfordcollege.ac.uk",
-```
+## Fix (frontend only, scoped to demo users)
 
-That single line is the entire code change.
+Two small changes in `src/`, no DB, no logic changes for normal staff:
 
-## What this unlocks for you (as a learner)
+**1. `src/components/dialogs/WelcomeCompletionModal.tsx`**
+At the top of the component, if `useIsDemoUser()` returns true, return `null`. Demo accounts (you, plus the existing demo list) won't get trapped by the non-dismissible modal.
 
-Because `isDemoEmail` already drives these behaviours, adding your email automatically:
+**2. `src/pages/Landing.tsx`**
+In the hero CTA block, when the user is signed in **and** is a demo user, show two buttons in place of the hidden Microsoft sign-in row:
+- "Go to My Journey" → `navigate("/new/journey")`
+- "Browse Bookings" → `navigate("/bookings")`
 
-- Bypasses the "Coming Soon" gate in `GatedRoute` without the admin password prompt.
-- Auto-sets `practitioner_unlocked` and `leader_unlocked` to true in `useStaffProfile`, so the Journey, Practitioner modules, and Leader Hub are all visible.
-- Skips the prerequisite self-assessment / checklist dialogs.
-- Lets the Bookings page show you all session types relevant to a Practitioner/Leader learner (the same view other demo users get today).
+This gives you (and the other demo accounts) a visible way into the full learner experience straight from the landing page, while leaving the normal staff flow exactly as it is today.
 
-## What stays the same
+## What this does not change
 
-- Admin access still comes only from the server-side `is_admin()` RPC — that list isn't touched.
-- No database changes, no RLS changes, no migration.
-- No changes to other users' experience.
+- Benchmarks / scoring / level thresholds — untouched.
+- `WelcomeCompletionModal` behaviour for normal staff — unchanged (still appears, still non-dismissible, still routes to `/bookings`).
+- Bookings page visibility rules — unchanged (the Practitioner-visibility change you asked to hold remains on hold).
+- Admin and `is_admin()` — untouched.
+- No database migration.
 
-## Out of scope
+## Result for you
 
-- The Bookings visibility rule for real Practitioner-assessed staff (you asked to hold that — not included here).
+After approving and refreshing once: signing in lands you on Landing with no blocking modal, and you have a one-click path into "My Journey" plus the full top nav (Resources, Bookings, Best Practice) on every learner page.
