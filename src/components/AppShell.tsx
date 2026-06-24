@@ -8,6 +8,15 @@ import { deriveEffectiveLevel } from "@/lib/progression";
 import { useIdleLogout } from "@/hooks/useIdleLogout";
 import { getInitials } from "@/pages/Profile";
 import bradfordLogo from "@/assets/bradford-college-logo.png";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 const navLinkClass = ({ isActive }: { isActive: boolean }) =>
   `px-3 min-h-[44px] inline-flex items-center rounded-full text-sm font-semibold transition-colors shrink-0 whitespace-nowrap ${
@@ -21,11 +30,22 @@ const NAV_ITEMS = [
   { to: "/best-practice", label: "Best Practice" },
 ];
 
+const formatCountdown = (s: number) => {
+  const m = Math.floor(s / 60);
+  const r = s % 60;
+  return `${m}:${r.toString().padStart(2, "0")}`;
+};
+
 const AppShell = ({ children }: { children: React.ReactNode }) => {
   const navigate = useNavigate();
   const { profile, completedModuleIds } = useStaffProfile();
   const [mobileOpen, setMobileOpen] = useState(false);
-  useIdleLogout(60 * 60 * 1000);
+  // 2 hours idle, with a 5-minute warning dialog before sign-out.
+  const { showWarning, secondsLeft, stayActive } = useIdleLogout(
+    2 * 60 * 60 * 1000,
+    5 * 60 * 1000,
+  );
+
 
   let pillLabel = "";
   let showPill = false;

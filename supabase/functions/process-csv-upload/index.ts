@@ -55,23 +55,29 @@ Deno.serve(async (req) => {
 
     const admin = createClient(SUPABASE_URL, SERVICE);
 
-    // Batch in chunks to keep payloads reasonable
+    // Additive-only: insert brand-new staff, never overwrite existing rows.
     let added = 0;
-    let updated = 0;
+    let skippedExisting = 0;
+    let skippedInvalid = 0;
+    const skippedExistingEmails: string[] = [];
+    const skippedInvalidEmails: string[] = [];
     const CHUNK = 200;
     for (let i = 0; i < rows.length; i += CHUNK) {
       const slice = rows.slice(i, i + CHUNK);
-      console.log(`[csv-upload] upserting chunk start=${i} size=${slice.length} total=${rows.length}`);
-      const { data, error } = await userClient.rpc("admin_upsert_staff", {
+      console.log(`[csv-upload] inserting chunk start=${i} size=${slice.length} total=${rows.length}`);
+      const { data, error } = await userClient.rpc("admin_insert_new_staff", {
         payload: slice,
       });
       if (error) {
         console.error("[csv-upload] rpc error", JSON.stringify(error));
         throw error;
       }
-      const r = Array.isArray(data) ? data[0] : data;
-      added += Number(r?.added ?? 0);
-      updated += Number(r?.updated ?? 0);
+      const r = (data ?? {}) as any;
+      added += Number(r.added ?? 0);
+      skippedExisting += Number(r.skipped_existing ?? 0);
+      skippedInvalid += Number(r.skipped_invalid ?? 0);
+      if (Array.isArray(r.skipped_existing_emails)) skippedExistingEmails.push(...r.skipped_existing_emails);
+      if (Array.isArray(r.skipped_invalid_emails)) skippedInvalidEmails.push(...r.skipped_invalid_emails);
     }
 
     const warningStrings = warnings.map((w: any) =>
@@ -81,13 +87,21 @@ Deno.serve(async (req) => {
     const { error: logErr } = await admin.from("csv_upload_log").insert({
       records_processed: totalProcessed,
       records_added: added,
-      records_updated: updated,
+      records_updated: 0,
       warnings: warningStrings,
       uploaded_by: email,
     });
     if (logErr) console.error("[csv-upload] log insert error", JSON.stringify(logErr));
 
-    return json({ added, updated });
+    return json({
+      added,
+      updated: 0,
+      skippedExisting,
+      skippedInvalid,
+      skippedExistingEmails,
+      skippedInvalidEmails,
+    });
+
   } catch (e) {
     console.error("[csv-upload] fatal", String(e?.message ?? e), e?.stack ?? "");
     return json({ error: String(e?.message ?? e) }, 500);
