@@ -1,43 +1,39 @@
-## What I found
+## CPD Bookings Upload + Management Dashboard
 
-**Today's newly added staff (6) — currently NO full access:**
-- r.yamin3@bradfordcollege.ac.uk (Rizwan Yamin)
-- m.jinar@bradfordcollege.ac.uk (Micah Jinar)
-- j.greenwood4@bradfordcollege.ac.uk (Jordan Greenwood)
-- m.parkin@bradfordcollege.ac.uk (Mathew Parkin)
-- a.kaviel@bradfordcollege.ac.uk (Amera Kaviel)
-- d.wardman@bradfordcollege.ac.uk (Daniel Wardman)
+Add a second upload zone to the admin page for booking CSVs, persist them, and surface a management overview (total bookings, unique people, by-department graph) with a Download PNG button.
 
-They land on the gated "Coming Soon" wall because they're not on the demo allowlist (`src/lib/demoAccess.ts`).
+### CSV format expected
+Columns (header row, flexible casing): `name`, `email`, `department`, optional `session_title`, optional `session_date`. Email is the match key. Department comes from the CSV (no fuzzy name matching needed).
 
-**Current Leaders (`leader_unlocked = true`) — we agreed there should be none:**
-- t.younis@bradfordcollege.ac.uk
-- j.adamson@bradfordcollege.ac.uk
-- m.worthington@bradfordcollege.ac.uk (admin)
-- test2@big4.com (seed/test row)
+### Database
+New table `cpd_bookings`:
+- `email` (lower-cased, indexed) — match key to `staff_profiles`
+- `name`, `department` (from CSV)
+- `session_title`, `session_date` (nullable)
+- `uploaded_at`, `uploaded_by_email`
+- Unique on `(email, session_title)` so re-uploading the same CSV doesn't double-count
+- RLS: admin-only read/write (via `is_admin()`); `GRANT` to `authenticated` + `service_role`
+- Standard `id`, `created_at`, `updated_at` columns
 
-The two real-staff leaders (Younis, Adamson) are flagged because they're on the demo allowlist, and the demo bypass auto-unlocks Practitioner + Leader. Worthington is admin. `test2` is leftover test data.
+### Admin page changes
+In `src/pages/Admin.tsx`, add a new section "CPD Bookings" containing two new components:
 
-## Plan
+1. **`BookingsUploadZone`** (`src/components/admin/BookingsUploadZone.tsx`)
+   - Reuses the same UploadZone pattern as the staff CSV.
+   - Parses CSV client-side with the existing csv helpers, validates required columns, lower-cases emails, then inserts/upserts via Supabase into `cpd_bookings`.
+   - Shows per-upload summary: added / updated / skipped (invalid email) / total rows.
 
-1. **Add today's 6 emails to `DEMO_EMAILS`** in `src/lib/demoAccess.ts` — same full read-only platform bypass you have (GatedRoute unlocked, journey content visible, no admin rights).
+2. **`BookingsDashboard`** (`src/components/admin/BookingsDashboard.tsx`)
+   - Queries `cpd_bookings` joined logically with `staff_profiles` (by email) to enrich with `assigned_level` and confirm `department` (CSV value wins, staff_profiles dept used as fallback).
+   - Top stats (cards): Total bookings, Unique people booked, % of staff booked (unique people / total staff_profiles), Bookings in last 7 days.
+   - **Bar graph: Bookings per department** using `recharts` (already in project). Sorted descending. Ink bars, Gold highlight on top department.
+   - Table: Department → unique people booked → total bookings → % of dept staff booked.
+   - "Download PNG" button (Gold) uses `html-to-image` to capture the dashboard node into `cpd-bookings-YYYY-MM-DD.png` with a branded Ink/Gold header.
 
-2. **Clear `leader_unlocked` for non-admin accounts** via a one-off SQL update:
-   ```sql
-   UPDATE staff_profiles
-   SET leader_unlocked = false, practitioner_unlocked = false
-   WHERE email IN (
-     't.younis@bradfordcollege.ac.uk',
-     'j.adamson@bradfordcollege.ac.uk',
-     'test2@big4.com'
-   );
-   ```
-   Admin (Worthington) is left alone — admin status is server-side and unrelated to `leader_unlocked`.
+### Dependencies
+- `bun add html-to-image` (also reused by the Database Summary PNG export already planned).
 
-   Note: because Younis and Adamson are still on the demo allowlist, the client-side demo bypass will re-show them Leader content when they sign in (that's the whole point of demo access). If you want them to NOT see Leader as a demo user either, say so and I'll either (a) remove them from the demo list, or (b) change the demo bypass so it unlocks the platform but stops at Practitioner. Today's 6 new emails will behave the same way as the current demo users — full preview access including Leader.
-
-## Files / changes
-- edit `src/lib/demoAccess.ts` — append 6 emails to `DEMO_EMAILS`
-- run one SQL `UPDATE` on `staff_profiles`
-
-No schema, RLS, or auth changes.
+### Out of scope
+- No edits to existing `training_bookings` table (that's for the in-app booking buttons).
+- No changes to self-assessment data; we only read `staff_profiles.assigned_level` / `department` to enrich the view.
+- Admin-only — sits behind existing `RequireAdmin` route.
