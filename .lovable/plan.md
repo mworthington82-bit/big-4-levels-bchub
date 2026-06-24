@@ -1,30 +1,43 @@
-# Re-enable the Activity Planner for demo
+## What I found
 
-## Why it's currently broken
-`src/components/ActivityPlanner.tsx` was deliberately replaced with a "coming soon" placeholder during a data-protection review. The old AI-powered version (which sends the activity description, subject, learner notes, etc. to Lovable AI / Gemini through the `plan-activity` edge function) is still in git history, and the `plan-activity` edge function itself is still deployed.
+**Today's newly added staff (6) — currently NO full access:**
+- r.yamin3@bradfordcollege.ac.uk (Rizwan Yamin)
+- m.jinar@bradfordcollege.ac.uk (Micah Jinar)
+- j.greenwood4@bradfordcollege.ac.uk (Jordan Greenwood)
+- m.parkin@bradfordcollege.ac.uk (Mathew Parkin)
+- a.kaviel@bradfordcollege.ac.uk (Amera Kaviel)
+- d.wardman@bradfordcollege.ac.uk (Daniel Wardman)
 
-So nothing is actually broken — the UI is just stubbed out.
+They land on the gated "Coming Soon" wall because they're not on the demo allowlist (`src/lib/demoAccess.ts`).
 
-## What I'll change
-1. **`src/components/ActivityPlanner.tsx`** — replace the 34-line placeholder with the full 502-line implementation from commit `63cf66a` (the last working version, just before the DPIA stub was committed). This restores:
-   - Activity / subject / learners input form
-   - "Suggest ideas" button (calls `generate-activity-ideas`)
-   - "Plan with Big 4" button (calls `plan-activity`)
-   - Full plan display: lead stage, Bloom's, primary/secondary tool, setup steps, Ofsted alignment, inclusion checklist
-   - "Download as Word" button (uses existing `downloadPlanAsWord` helper)
-2. No other files change. The two edge functions, the Word-export helper, and the Resources/Planner page wiring already exist and stay as-is.
+**Current Leaders (`leader_unlocked = true`) — we agreed there should be none:**
+- t.younis@bradfordcollege.ac.uk
+- j.adamson@bradfordcollege.ac.uk
+- m.worthington@bradfordcollege.ac.uk (admin)
+- test2@big4.com (seed/test row)
 
-## What stays the same
-- Benchmarks, levels, scoring, learner journeys — untouched.
-- Bookings, admin, demo access — untouched.
-- The `WelcomeCompletionModal` demo bypass we just added — untouched.
-- No DB migration, no new secret, no new edge function.
+The two real-staff leaders (Younis, Adamson) are flagged because they're on the demo allowlist, and the demo bypass auto-unlocks Practitioner + Leader. Worthington is admin. `test2` is leftover test data.
 
-## Demo caveat (please read)
-The restored planner sends free-text inputs (including any learner-related text you type) to Lovable AI → Google Gemini. This was the exact reason it was paused for DPIA review. For the demo:
-- Use illustrative examples only (no real learner names, no identifying detail).
-- After the demo we can decide whether to leave it on, switch to a "demo-only" mocked plan, or re-stub it.
+## Plan
 
-## Technical details
-- Source of restore: `git show 63cf66a:src/components/ActivityPlanner.tsx`
-- Verify after restore: run the dev server, open Resources (or `/planner`), click "Plan with Big 4", confirm a plan renders and the Word download works. If the call returns 402/429 from the gateway, that's a credits/rate-limit issue, not a code regression.
+1. **Add today's 6 emails to `DEMO_EMAILS`** in `src/lib/demoAccess.ts` — same full read-only platform bypass you have (GatedRoute unlocked, journey content visible, no admin rights).
+
+2. **Clear `leader_unlocked` for non-admin accounts** via a one-off SQL update:
+   ```sql
+   UPDATE staff_profiles
+   SET leader_unlocked = false, practitioner_unlocked = false
+   WHERE email IN (
+     't.younis@bradfordcollege.ac.uk',
+     'j.adamson@bradfordcollege.ac.uk',
+     'test2@big4.com'
+   );
+   ```
+   Admin (Worthington) is left alone — admin status is server-side and unrelated to `leader_unlocked`.
+
+   Note: because Younis and Adamson are still on the demo allowlist, the client-side demo bypass will re-show them Leader content when they sign in (that's the whole point of demo access). If you want them to NOT see Leader as a demo user either, say so and I'll either (a) remove them from the demo list, or (b) change the demo bypass so it unlocks the platform but stops at Practitioner. Today's 6 new emails will behave the same way as the current demo users — full preview access including Leader.
+
+## Files / changes
+- edit `src/lib/demoAccess.ts` — append 6 emails to `DEMO_EMAILS`
+- run one SQL `UPDATE` on `staff_profiles`
+
+No schema, RLS, or auth changes.

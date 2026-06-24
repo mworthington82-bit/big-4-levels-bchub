@@ -18,6 +18,12 @@ export const DEMO_EMAILS: readonly string[] = [
   "j.adamson@bradfordcollege.ac.uk",
   "d.rauf2@bradfordcollege.ac.uk",
   "m.worthington@bradfordcollege.ac.uk",
+  "r.yamin3@bradfordcollege.ac.uk",
+  "m.jinar@bradfordcollege.ac.uk",
+  "j.greenwood4@bradfordcollege.ac.uk",
+  "m.parkin@bradfordcollege.ac.uk",
+  "a.kaviel@bradfordcollege.ac.uk",
+  "d.wardman@bradfordcollege.ac.uk",
 ];
 
 export const isDemoEmail = (email?: string | null): boolean => {
