@@ -1,7 +1,9 @@
 import { useCallback, useState } from "react";
 import Papa from "papaparse";
+import * as XLSX from "xlsx";
 import { UploadCloud, AlertTriangle, CheckCircle2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+
 
 interface Props {
   onUploaded: () => void;
@@ -44,6 +46,31 @@ const parseCsv = (file: File): Promise<Record<string, string>[]> =>
     });
   });
 
+const parseExcel = async (file: File): Promise<Record<string, string>[]> => {
+  const buf = await file.arrayBuffer();
+  const wb = XLSX.read(buf, { type: "array" });
+  const ws = wb.Sheets[wb.SheetNames[0]];
+  if (!ws) return [];
+  const rows = XLSX.utils.sheet_to_json<Record<string, unknown>>(ws, {
+    defval: "",
+    raw: false,
+  });
+  return rows.map((r) => {
+    const out: Record<string, string> = {};
+    for (const k of Object.keys(r)) {
+      out[k.trim().toLowerCase()] = r[k] == null ? "" : String(r[k]);
+    }
+    return out;
+  });
+};
+
+const parseFile = (file: File) => {
+  const name = file.name.toLowerCase();
+  if (name.endsWith(".xlsx") || name.endsWith(".xls")) return parseExcel(file);
+  return parseCsv(file);
+};
+
+
 const BookingsUploadZone = ({ onUploaded }: Props) => {
   const [dragOver, setDragOver] = useState(false);
   const [busy, setBusy] = useState(false);
@@ -56,7 +83,7 @@ const BookingsUploadZone = ({ onUploaded }: Props) => {
       setError(null);
       setSummary(null);
       try {
-        const raw = await parseCsv(file);
+        const raw = await parseFile(file);
         const skippedEmails: string[] = [];
         const rows: Row[] = [];
         let skippedInvalid = 0;
@@ -170,13 +197,14 @@ const BookingsUploadZone = ({ onUploaded }: Props) => {
           CPD bookings · Upload
         </h2>
         <p className="text-sm text-slate-600 mt-1">
-          Upload a CSV export of CPD bookings. Required column:{" "}
-          <code className="text-xs">email</code>. Optional:{" "}
+          Upload a CSV or Excel (.xlsx / .xls) export of CPD bookings.
+          Required column: <code className="text-xs">email</code>. Optional:{" "}
           <code className="text-xs">name</code>,{" "}
           <code className="text-xs">department</code>,{" "}
           <code className="text-xs">session_title</code>,{" "}
           <code className="text-xs">session_date</code>.
         </p>
+
       </div>
 
       <div
@@ -197,13 +225,16 @@ const BookingsUploadZone = ({ onUploaded }: Props) => {
       >
         <UploadCloud className="w-9 h-9 mx-auto mb-2 text-[#1C1C2E]" />
         <p className="text-slate-700 mb-3 text-sm">
-          {busy ? "Uploading..." : "Drag and drop your bookings .csv here"}
+          {busy
+            ? "Uploading..."
+            : "Drag and drop your bookings .csv or .xlsx here"}
         </p>
+
         <label className="inline-flex items-center px-4 py-2 rounded-lg bg-[#F5A623] text-[#1C1C2E] font-semibold cursor-pointer hover:brightness-95">
           Browse files
           <input
             type="file"
-            accept=".csv,text/csv"
+            accept=".csv,text/csv,.xlsx,.xls,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
             className="hidden"
             disabled={busy}
             onChange={(e) => {
