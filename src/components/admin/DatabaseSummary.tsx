@@ -1,6 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { Download } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { EXPECTED_DEPARTMENTS } from "@/lib/csv/types";
+import { downloadNodeAsPng } from "@/lib/exportPng";
 
 type Level = "Explorer" | "Practitioner" | "Leader";
 
@@ -31,6 +33,20 @@ const normaliseLevel = (raw: string | null | undefined): Level => {
 
 const DatabaseSummary = ({ refreshKey }: { refreshKey: number }) => {
   const [s, setS] = useState<Summary | null>(null);
+  const exportRef = useRef<HTMLDivElement>(null);
+  const [exporting, setExporting] = useState(false);
+
+  const handleDownload = async () => {
+    if (!exportRef.current) return;
+    setExporting(true);
+    try {
+      const date = new Date().toISOString().slice(0, 10);
+      await downloadNodeAsPng(exportRef.current, `database-summary-${date}.png`);
+    } finally {
+      setExporting(false);
+    }
+  };
+
 
   useEffect(() => {
     (async () => {
