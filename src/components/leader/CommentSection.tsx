@@ -111,17 +111,14 @@ const CommentSection = ({ evidenceId, evidenceOwnerId, evidenceTitle }: CommentS
 
       if (commentError) throw commentError;
 
-      // Create notification for evidence owner (if not commenting on own post)
+      // Create notification for evidence owner via SECURITY DEFINER RPC
+      // (server-side validates caller, looks up owner, and uses the caller's profile name)
       if (user.id !== evidenceOwnerId) {
-        const { error: notifError } = await supabase
-          .from('notifications')
-          .insert({
-            user_id: evidenceOwnerId,
-            type: 'comment',
-            message: `${userProfile.full_name} commented on your evidence: "${evidenceTitle}"`,
-            evidence_id: evidenceId,
-            from_user_name: userProfile.full_name
-          });
+        const { error: notifError } = await supabase.rpc('create_evidence_notification', {
+          _evidence_id: evidenceId,
+          _type: 'comment',
+          _message: `${userProfile.full_name} commented on your evidence: "${evidenceTitle}"`,
+        });
 
         if (notifError) {
           console.error('Error creating notification:', notifError);
