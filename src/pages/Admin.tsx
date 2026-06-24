@@ -62,6 +62,12 @@ const Admin = () => {
   const [bookingsRefreshKey, setBookingsRefreshKey] = useState(0);
   const [busy, setBusy] = useState(false);
 
+  useEffect(() => {
+    const onUpdate = () => setBookingsRefreshKey((k) => k + 1);
+    window.addEventListener("cpd-bookings-updated", onUpdate);
+    return () => window.removeEventListener("cpd-bookings-updated", onUpdate);
+  }, []);
+
   const handleFile = async (f: File) => {
     setFile(f);
     setError(null);
