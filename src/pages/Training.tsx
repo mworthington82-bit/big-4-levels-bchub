@@ -32,6 +32,7 @@ import FlippableCard from "@/components/FlippableCard";
 import RequiredActivityDialog from "@/components/dialogs/RequiredActivityDialog";
 import CheatSheetButton from "@/components/CheatSheetButton";
 import LeadCallout from "@/components/LeadCallout";
+import { useIsDemoUser } from "@/lib/demoAccess";
 import bradfordLogo from "@/assets/bradford-college-logo.jpg";
 import heroBanner from "@/assets/hero-banner.jpg";
 import teamsIllustration from "@/assets/teams-illustration.jpg";
@@ -53,6 +54,7 @@ type Stage = 'level-entry' | 'home' | 'tool-select' | 'level-select' | 'intro' |
 const Training = () => {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
+  const isDemoUser = useIsDemoUser();
   const [stage, setStage] = useState<Stage>('level-entry');
   const [showLevelConfirmation, setShowLevelConfirmation] = useState(false);
   const [showPrerequisiteChecklist, setShowPrerequisiteChecklist] = useState(false);
@@ -241,10 +243,15 @@ const Training = () => {
   const handleLevelConfirm = (reason: 'completed' | 'assessed') => {
     if (pendingLevel) {
       setShowLevelConfirmation(false);
-      // Explorer goes straight through; Practitioner & Leader need prerequisite checklist
-      if (pendingLevel === 'explorer') {
+      // Demo accounts skip prerequisite checklist entirely
+      const skipPrereq = isDemoUser || pendingLevel === 'explorer';
+      if (skipPrereq) {
         setSelectedLevel(pendingLevel);
-        setStage('tool-select');
+        if (pendingLevel === 'leader') {
+          setStage('leader-hub');
+        } else {
+          setStage('tool-select');
+        }
         setPendingLevel(null);
       } else {
         setShowPrerequisiteChecklist(true);
