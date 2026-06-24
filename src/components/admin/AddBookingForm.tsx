@@ -153,6 +153,10 @@ const AddBookingForm = () => {
     rows: { email: string; name: string; reflection: string }[];
   } | null>(null);
 
+  // Bookings count chip state (cpd_bookings grouped by session_title)
+  const [bookingCounts, setBookingCounts] = useState<Record<string, number>>({});
+  const [uploadingFor, setUploadingFor] = useState<string | null>(null);
+
   const load = async () => {
     const { data, error } = await supabase
       .from("training_bookings" as any)
@@ -161,7 +165,72 @@ const AddBookingForm = () => {
     if (!error && data) setBookings(data as any);
   };
 
-  useEffect(() => { load(); }, []);
+  const loadCounts = async () => {
+    const { data, error } = await supabase
+      .from("cpd_bookings")
+      .select("session_title");
+    if (error || !data) return;
+    const counts: Record<string, number> = {};
+    for (const r of data as { session_title: string | null }[]) {
+      const key = (r.session_title ?? "").trim();
+      if (!key) continue;
+      counts[key] = (counts[key] ?? 0) + 1;
+    }
+    setBookingCounts(counts);
+  };
+
+  useEffect(() => { load(); loadCounts(); }, []);
+
+  const onBookingsFile = async (b: Booking, file: File) => {
+    setUploadingFor(b.id);
+    try {
+      const raw = await parseBookingsFile(file);
+      // Build clean rows, collapse in-file duplicates by email (keep last)
+      const map = new Map<string, { email: string; name: string | null; department: string | null }>();
+      let invalid = 0;
+      for (const r of raw) {
+        const email = pickKey(r, ["email", "e-mail", "email address"]).toLowerCase();
+        if (!email || !/.+@.+\..+/.test(email)) { invalid++; continue; }
+        const nm = pickKey(r, ["name", "full name", "attendee", "display name"]) || null;
+        const dept = pickKey(r, ["department", "dept", "team", "faculty", "area"]) || null;
+        map.set(email, { email, name: nm, department: dept });
+      }
+      const rows = Array.from(map.values());
+      if (rows.length === 0) {
+        toast({ title: "No valid bookings", description: "Could not find any email addresses in that file.", variant: "destructive" });
+        return;
+      }
+      const sessionTitle = b.name;
+      const sessionDate = b.created_at ?? null;
+      const payload = rows.map((r) => ({
+        email: r.email,
+        name: r.name,
+        department: r.department,
+        session_title: sessionTitle,
+        session_date: sessionDate,
+        uploaded_at: new Date().toISOString(),
+      }));
+      const { error } = await supabase
+        .from("cpd_bookings")
+        .upsert(payload as any, { onConflict: "email,session_title" });
+      if (error) {
+        toast({ title: "Upload failed", description: error.message, variant: "destructive" });
+        return;
+      }
+      const dupesMerged = raw.length - rows.length - invalid;
+      toast({
+        title: "Bookings uploaded",
+        description: `${rows.length} booking${rows.length === 1 ? "" : "s"} saved for "${sessionTitle}"${dupesMerged > 0 ? ` · ${dupesMerged} in-file duplicate${dupesMerged === 1 ? "" : "s"} merged` : ""}${invalid > 0 ? ` · ${invalid} row${invalid === 1 ? "" : "s"} skipped (no email)` : ""}.`,
+      });
+      await loadCounts();
+      window.dispatchEvent(new Event("cpd-bookings-updated"));
+    } catch (err: any) {
+      toast({ title: "Could not read file", description: String(err?.message ?? err), variant: "destructive" });
+    } finally {
+      setUploadingFor(null);
+    }
+  };
+
 
   const reset = () => {
     setName(""); setTool(""); setLevel(""); setUrl(""); setEditingId(null);
