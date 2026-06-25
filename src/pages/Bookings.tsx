@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { ArrowLeft, ExternalLink, Laptop, ShieldCheck } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import BookingsRoadmap from "@/components/BookingsRoadmap";
 
 type Tool = "teams" | "forms" | "canva" | "edpuzzle" | "copilot" | "inclusion" | "immersive";
 type Level = "explorer" | "practitioner" | "leader";
@@ -132,6 +133,14 @@ const Bookings = () => {
             Sessions matched to your current level and the tools you have not yet evidenced.
           </p>
         </header>
+
+        {!loading && (
+          <BookingsRoadmap
+            profile={profile}
+            immersiveDone={immersiveDone}
+            currentLevel={currentLevel}
+          />
+        )}
 
         {loading ? (
           <p className="text-muted-foreground">Loading sessions…</p>
