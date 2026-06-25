@@ -49,10 +49,10 @@ const RequireAuth = ({ children }: RequireAuthProps) => {
   }
   if (status === "out") return <Navigate to="/" replace />;
 
-  // Pre-launch gate: non-allowlisted users can only see /not-yet
+  // Pre-launch gate: non-allowlisted users can only see /bookings
   if (MAINTENANCE_MODE && !isAllowedDuringMaintenance(email)) {
-    if (location.pathname !== "/not-yet") {
-      return <Navigate to="/not-yet" replace />;
+    if (location.pathname !== "/bookings") {
+      return <Navigate to="/bookings" replace />;
     }
   }
 

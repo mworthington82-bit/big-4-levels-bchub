@@ -5,14 +5,20 @@
 // NOTE: The previous client-side admin bypass password ("1610") has been
 // removed. Admin access is now validated server-side via the user's
 // authenticated session (see RequireAdmin / public.is_admin()).
-export const MAINTENANCE_MODE = false;
+export const MAINTENANCE_MODE = true;
 
-const ALLOWED_EMAILS = new Set<string>([
+import { DEMO_EMAILS } from "@/lib/demoAccess";
+
+const ADMIN_EMAILS = [
   "m.worthington@bradfordcollege.ac.uk",
-  "test.leader@bradfordcollege.ac.uk",
-  "test.explorer@bradfordcollege.ac.uk",
+  "c.mitton@bradfordcollege.ac.uk",
+  "p.richardson@bradfordcollege.ac.uk",
   "j.worth@bradfordcollege.ac.uk",
-]);
+];
+
+const ALLOWED_EMAILS = new Set<string>(
+  [...DEMO_EMAILS, ...ADMIN_EMAILS].map((e) => e.toLowerCase())
+);
 
 // Kept as no-ops so older imports do not break the build.
 export const hasMaintenanceBypass = (): boolean => false;
