@@ -14,6 +14,7 @@ import SignOutButton from "@/components/SignOutButton";
 import OnboardingModal from "@/components/journey/OnboardingModal";
 import { useStaffProfile } from "@/hooks/useStaffProfile";
 import { useIsDemoUser } from "@/lib/demoAccess";
+import { MAINTENANCE_MODE, isAllowedDuringMaintenance } from "@/lib/maintenanceMode";
 
 import bradfordLogo from "@/assets/bradford-college-logo.png";
 import teamsLogo from "@/assets/teams-logo.png";
