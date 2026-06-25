@@ -232,7 +232,6 @@ const Landing = () => {
 
               {email && profile && (() => {
                 const lower = (email || "").toLowerCase();
-                const { MAINTENANCE_MODE, isAllowedDuringMaintenance } = require("@/lib/maintenanceMode");
                 const fullAccess = !MAINTENANCE_MODE || isAllowedDuringMaintenance(lower);
                 return (
                   <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mt-10 animate-fade-in" style={{ animationDelay: '300ms' }}>
