@@ -229,22 +229,38 @@ const Landing = () => {
                 </div>
               )}
 
-              {email && profile && (
-                <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mt-10 animate-fade-in" style={{ animationDelay: '300ms' }}>
-                  <button
-                    onClick={() => navigate("/new/journey")}
-                    className="inline-flex items-center justify-center min-h-11 px-8 py-4 rounded-xl bg-[#F5A623] text-[#1F3864] font-bold text-base hover:bg-[#F5A623]/90 transition-colors shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white w-full sm:w-[280px]"
-                  >
-                    Go to My Journey
-                  </button>
-                  <button
-                    onClick={() => navigate("/planner")}
-                    className="inline-flex items-center justify-center min-h-11 px-8 py-4 rounded-xl bg-transparent text-white font-bold text-base border-2 border-white/40 hover:bg-white/10 hover:border-white/60 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white w-full sm:w-[280px]"
-                  >
-                    Open Activity Planner
-                  </button>
-                </div>
-              )}
+              {email && profile && (() => {
+                const lower = (email || "").toLowerCase();
+                const { MAINTENANCE_MODE, isAllowedDuringMaintenance } = require("@/lib/maintenanceMode");
+                const fullAccess = !MAINTENANCE_MODE || isAllowedDuringMaintenance(lower);
+                return (
+                  <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mt-10 animate-fade-in" style={{ animationDelay: '300ms' }}>
+                    {fullAccess ? (
+                      <>
+                        <button
+                          onClick={() => navigate("/new/journey")}
+                          className="inline-flex items-center justify-center min-h-11 px-8 py-4 rounded-xl bg-[#F5A623] text-[#1F3864] font-bold text-base hover:bg-[#F5A623]/90 transition-colors shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white w-full sm:w-[280px]"
+                        >
+                          Go to My Journey
+                        </button>
+                        <button
+                          onClick={() => navigate("/planner")}
+                          className="inline-flex items-center justify-center min-h-11 px-8 py-4 rounded-xl bg-transparent text-white font-bold text-base border-2 border-white/40 hover:bg-white/10 hover:border-white/60 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white w-full sm:w-[280px]"
+                        >
+                          Open Activity Planner
+                        </button>
+                      </>
+                    ) : (
+                      <button
+                        onClick={() => navigate("/bookings")}
+                        className="inline-flex items-center justify-center min-h-11 px-8 py-4 rounded-xl bg-[#F5A623] text-[#1F3864] font-bold text-base hover:bg-[#F5A623]/90 transition-colors shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white w-full sm:w-[280px]"
+                      >
+                        Go to my bookings
+                      </button>
+                    )}
+                  </div>
+                );
+              })()}
 
 
             </div>
