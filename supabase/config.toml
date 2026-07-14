@@ -4,7 +4,8 @@ project_id = "mmceerlprjhxhngqzsxf"
 verify_jwt = false
 
 [functions.seed-test-users]
-verify_jwt = false
+verify_jwt = true
+
 
 [functions.welcome-summary]
 verify_jwt = false
