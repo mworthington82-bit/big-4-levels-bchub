@@ -20,6 +20,7 @@ import { deriveEffectiveLevel, runProgressionCheck } from "@/lib/progression";
 import ModuleCard from "@/components/journey/ModuleCard";
 import LeaderTaskCard from "@/components/journey/LeaderTaskCard";
 import LeaderAchievementStrip from "@/components/journey/LeaderAchievementStrip";
+import RecentAttendanceBanner from "@/components/journey/RecentAttendanceBanner";
 import { IconWand, IconCalendarEvent, IconBulb, IconArrowRight } from "@tabler/icons-react";
 import emblemExplorer from "@/assets/emblem-explorer.svg";
 import emblemPractitioner from "@/assets/emblem-practitioner.svg";
