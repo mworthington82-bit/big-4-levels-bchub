@@ -1350,6 +1350,14 @@ export type Database = {
         Args: { _evidence_id: string; _message: string; _type: string }
         Returns: string
       }
+      get_active_mentor_count: { Args: never; Returns: number }
+      get_evidence_like_counts: {
+        Args: never
+        Returns: {
+          like_count: number
+          post_id: string
+        }[]
+      }
       is_admin: { Args: never; Returns: boolean }
       is_leader: { Args: never; Returns: boolean }
     }
