@@ -20,6 +20,7 @@ import { deriveEffectiveLevel, runProgressionCheck } from "@/lib/progression";
 import ModuleCard from "@/components/journey/ModuleCard";
 import LeaderTaskCard from "@/components/journey/LeaderTaskCard";
 import LeaderAchievementStrip from "@/components/journey/LeaderAchievementStrip";
+import RecentAttendanceBanner from "@/components/journey/RecentAttendanceBanner";
 import { IconWand, IconCalendarEvent, IconBulb, IconArrowRight } from "@tabler/icons-react";
 import emblemExplorer from "@/assets/emblem-explorer.svg";
 import emblemPractitioner from "@/assets/emblem-practitioner.svg";
@@ -176,6 +177,13 @@ const Journey = () => {
   return (
     <AppShell>
       <div className="min-h-full bg-[#F4F6FB]">
+        {email && (
+          <RecentAttendanceBanner
+            email={email}
+            profile={profile}
+            completedModuleIds={completedModuleIds}
+          />
+        )}
         {/* Zone 1 — Light greeting card matching /resources */}
         <section className="container mx-auto px-4 pt-8 md:pt-10 max-w-6xl">
           <div className="bg-white rounded-2xl border border-border shadow-sm p-6 md:p-8">
@@ -263,7 +271,7 @@ const Journey = () => {
 
         <div className="container mx-auto px-4 py-8 md:py-10 max-w-6xl space-y-8">
           {/* Zone 2 — Pathway */}
-          <section className="space-y-4">
+          <section id="pathway" className="space-y-4 scroll-mt-24">
             <h2 className="font-display font-bold text-[#1F3864] text-lg md:text-xl">
               {effective === "Leader" ? "Your journey" : "Your pathway"}
             </h2>

@@ -1,75 +1,40 @@
-## Goal
+## Add a "Well done — you recently attended…" banner to My Journey
 
-Add one "Upload attendance" button in Admin that ingests either of your two file shapes, marks the right modules complete for each person, keeps the sessions accessible for revisiting, and stores any reflections that came with the file.
+When a staff member logs in and opens **My Journey**, show a warm recognition banner at the top if they have any recent in-person attendance (from the bulk attendance upload or per-session attendance). The banner celebrates what they just completed and nudges them toward what's left to level up.
 
-## Two file shapes handled
+### Where it appears
+- Top of `src/pages/Journey.tsx`, above the existing `MilestoneBanner` / hero.
+- Only renders when there is at least one `module_completions` row for the logged-in user with `completed_via = 'in_person'` created in the last **14 days** (configurable constant).
+- Dismissible: an "X" closes it for that session (localStorage key per user + latest completion id, so a fresh attendance re-triggers it).
 
-**Format A — "Big 4 Register" grid** (from your screenshot)
-Columns: `Name`, `Email Address`, `MS Forms Level`, `MS Teams Level`, `Edpuzzle Level`, `Copilot Level`, `Canva Level`. Each cell holds `Explorer` / `Practitioner` (or blank).
+### What it says
+Three short parts, all built from data we already have:
 
-Parsed as: for each non-empty tool cell → completion for `{tool}_{level}` for that email.
+1. **Recognition line** — "Well done, {first name} — you recently attended {session name(s)}."
+   - Session names come from mapping the recent `module_id`s to their friendly labels (reuse the tool/level labels in `src/lib/journey.ts`, e.g. `edpuzzle_explorer` → "Edpuzzle Explorer"). Up to 2 named, then "+N more".
+2. **Momentum line** — one encouraging sentence, e.g. "Keep the moment going."
+3. **Next step line** — computed from the current profile:
+   - If Explorer and not all 5 evidenced: "To level up to Practitioner, you still need {formatList of remaining Explorer tools}."
+   - If Practitioner and Immersive Room not done: "To reach Leader, complete {remaining tools} and the Immersive Room session."
+   - If all evidenced at their level: "You've completed everything at {level} — your next level is unlocking now."
+   - If Leader: quiet thank-you line, no "still need" text.
 
-**Format B — MS Forms reflection export** (`Big_4_Day_Reflection_*.xlsx`)
-Columns include: `Email`, `Name`, `What session have you just completed?` (e.g. `"MS Forms Practitioner"`), plus three reflection questions ("What does this tool let you do...", "At which stage of LEAD...", "What would be different...").
+A single CTA button ("Continue my journey") scrolls to the modules section (existing anchor).
 
-Parsed as: one completion per row, module derived from the session-name text (`ms forms` + `practitioner` → `forms_practitioner`). The three reflection answers are stored in `session_reflections` (uses existing `focus` / `learned` / `use` fields).
+### Reflection nudge (Format A uploads)
+If a recent in-person completion has **no matching `session_reflections` row** for that staff email and session, add a subtle secondary line:
+> "Add a quick reflection on what you'll use from this session →" linking to the existing Reflections panel entry point.
 
-Auto-detection by header names — no manual mapping unless detection fails, in which case a small fallback mapping UI appears.
+This complements the earlier plan for a one-time modal — the banner is the softer, always-visible nudge.
 
-## Progression rule (confirming)
+### Technical notes
+- New component `src/components/journey/RecentAttendanceBanner.tsx`.
+- Data fetch: extend the existing completions query in `Journey.tsx` (or a small hook) to also return `completed_at` and `completed_via`; filter client-side for `in_person` in the last 14 days.
+- Session label map: reuse `toolLabel` + level suffix from `src/lib/journey.ts`; add a tiny `moduleIdToSessionName(id)` helper.
+- Styling: Ink/Gold theme, Fraunces heading, DM Sans body, gold left border, matches existing `MilestoneBanner` visual weight but distinct (softer cream background).
+- No schema changes, no edge function changes.
 
-Per-tool and per-level. Marking `edpuzzle_explorer` for someone never resets or affects their other tools. Sessions stay open to revisit after completion.
-
-## 1. New Admin component: `BulkAttendanceUpload`
-
-Location: `src/components/admin/BulkAttendanceUpload.tsx`, mounted in `src/pages/Admin.tsx` above `TrainingSessions`.
-
-Flow:
-1. Drop `.xlsx` / `.xls` / `.csv`. Parsed client-side with SheetJS.
-2. Auto-detect format (register grid vs Forms export). Show which format was recognised.
-3. **Preview screen** (dry-run via the edge function):
-   - Rows resolved to `{ email, module_id, reflection? }`.
-   - Unmatched sessions and unknown emails (not in `staff_profiles`) flagged in red — admin can skip or fix.
-   - Progression preview: list of learners who will unlock Practitioner or Leader after this import.
-4. **Confirm** → same payload sent with `dryRun: false`.
-5. The existing per-session Attendance buttons on `TrainingSessions` stay for one-offs.
-
-Sessions remain accessible after completion — no route/gate hides them.
-
-## 2. New edge function: `bulk-attendance-upload`
-
-Admin-only (same `is_admin()` pattern as `process-csv-upload`).
-
-Input: `{ rows: [{ email, name?, module_id, attended_at?, reflection?: { focus, learned, use } }], dryRun: boolean }`.
-
-Per row:
-- Normalise email, skip and report if not in `staff_profiles`.
-- Upsert `module_completions` with `completed_via = 'in_person'`, `quiz_passed = true`.
-- Set the matching `*_evidenced` flag on `staff_profiles`.
-- If `reflection` present, insert into `session_reflections` (skip if already exists for that email+module).
-- Port `runProgressionCheck` logic server-side to flip `explorer_complete` / `practitioner_unlocked` / `practitioner_complete` / `leader_unlocked`.
-
-`dryRun: true` returns the same summary without writing.
-
-Returns: `{ marked, skippedUnknownEmail, reflectionsSaved, unlockedPractitioner, unlockedLeader, details }`.
-
-## 3. Face-to-face reflection prompt (only when reflection missing)
-
-Format B already contains the reflection, so no prompt is needed for those rows.
-
-For Format A rows (register only, no reflection text): on next login the learner sees a one-time modal:
-> "You attended the {Module} face-to-face session. Share one thing you learned and one thing you'll use in your teaching."
-
-Textarea → `session_reflections`. Dismissible; re-shown until submitted or skipped 3 times. Feeds the existing Admin `ReflectionsPanel`.
-
-## 4. Supporting changes
-
-- Add `xlsx` (SheetJS) dependency.
-- Extract progression rules into a shared spec used by both the client dry-run and the edge function.
-- No schema changes — `module_completions.completed_via`, `session_reflections`, and `staff_profiles.*_evidenced` all already exist.
-
-## Out of scope (say the word to add)
-
-- Auto-creating `staff_profiles` rows for unknown emails.
-- Removing the existing per-session Attendance buttons.
-- Emailing learners for the reflection instead of the in-app modal.
+### Out of scope
+- Emailing the learner.
+- Changing the existing MilestoneBanner logic.
+- Any admin-side changes.
