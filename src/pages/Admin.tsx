@@ -13,6 +13,7 @@ import AddBookingForm from "@/components/admin/AddBookingForm";
 import ReflectionsPanel from "@/components/admin/ReflectionsPanel";
 import MarkSessionsComplete from "@/components/admin/MarkSessionsComplete";
 import TrainingSessions from "@/components/admin/TrainingSessions";
+import BulkAttendanceUpload from "@/components/admin/BulkAttendanceUpload";
 import { usePageTitle } from "@/lib/usePageTitle";
 import {
   HEADER_MISMATCH_MESSAGE,
@@ -191,6 +192,7 @@ const Admin = () => {
         <PendingEvidencePanel />
         <AddBookingForm />
         <ReflectionsPanel />
+        <BulkAttendanceUpload />
         <TrainingSessions />
         <MarkSessionsComplete />
 
