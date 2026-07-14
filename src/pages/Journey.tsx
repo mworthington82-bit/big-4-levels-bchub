@@ -271,7 +271,7 @@ const Journey = () => {
 
         <div className="container mx-auto px-4 py-8 md:py-10 max-w-6xl space-y-8">
           {/* Zone 2 — Pathway */}
-          <section className="space-y-4">
+          <section id="pathway" className="space-y-4 scroll-mt-24">
             <h2 className="font-display font-bold text-[#1F3864] text-lg md:text-xl">
               {effective === "Leader" ? "Your journey" : "Your pathway"}
             </h2>
