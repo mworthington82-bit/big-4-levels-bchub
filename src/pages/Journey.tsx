@@ -177,6 +177,13 @@ const Journey = () => {
   return (
     <AppShell>
       <div className="min-h-full bg-[#F4F6FB]">
+        {email && (
+          <RecentAttendanceBanner
+            email={email}
+            profile={profile}
+            completedModuleIds={completedModuleIds}
+          />
+        )}
         {/* Zone 1 — Light greeting card matching /resources */}
         <section className="container mx-auto px-4 pt-8 md:pt-10 max-w-6xl">
           <div className="bg-white rounded-2xl border border-border shadow-sm p-6 md:p-8">
