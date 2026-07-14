@@ -1360,6 +1360,7 @@ export type Database = {
       }
       is_admin: { Args: never; Returns: boolean }
       is_leader: { Args: never; Returns: boolean }
+      recalc_progression: { Args: never; Returns: Json }
     }
     Enums: {
       evidence_type: "video_link" | "file_upload" | "case_study"
