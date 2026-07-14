@@ -106,19 +106,10 @@ export const useStaffProfile = () => {
 
         let profile = (data as unknown as StaffProfile) ?? null;
 
-        // Demo accounts: silently flip both unlock flags so the full platform is visible.
-        // Never touches scores, evidence flags, or non-demo users.
-        if (profile && isDemoEmail(email) && (!profile.practitioner_unlocked || !profile.leader_unlocked)) {
-          try {
-            await supabase
-              .from("staff_profiles")
-              .update({ practitioner_unlocked: true, leader_unlocked: true })
-              .ilike("email", email);
-            profile = { ...profile, practitioner_unlocked: true, leader_unlocked: true };
-          } catch {
-            // Non-fatal — UI gating below still falls back to demo bypass.
-          }
-        }
+        // Demo accounts: UI-only bypass. Unlock flags are privileged columns —
+        // the DB trigger blocks non-admin writes, so we no longer attempt to
+        // update them here. The Journey UI already falls back to a demo check.
+
 
         setState({
           profile,
