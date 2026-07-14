@@ -558,15 +558,17 @@ const EvidenceGalleryTab = ({ email }: { email: string | null }) => {
       const all = (p as EvidencePost[]) ?? [];
       setPosts(all);
 
-      const { data: l } = await supabase.from("evidence_likes").select("post_id, staff_email");
+      const [{ data: countsData }, { data: mineData }] = await Promise.all([
+        supabase.rpc("get_evidence_like_counts"),
+        email
+          ? supabase.from("evidence_likes").select("post_id").ilike("staff_email", email)
+          : Promise.resolve({ data: [] as { post_id: string }[] }),
+      ]);
       const counts: Record<string, number> = {};
-      const mine = new Set<string>();
-      (l ?? []).forEach((row: any) => {
-        counts[row.post_id] = (counts[row.post_id] ?? 0) + 1;
-        if (email && (row.staff_email as string).toLowerCase() === email.toLowerCase()) {
-          mine.add(row.post_id);
-        }
+      (countsData ?? []).forEach((row: any) => {
+        counts[row.post_id] = Number(row.like_count);
       });
+      const mine = new Set<string>((mineData ?? []).map((r: any) => r.post_id as string));
       setLikes(counts);
       setMyLikes(mine);
       setLoading(false);

@@ -10,18 +10,15 @@ const LeaderPreviewCards = () => {
 
   useEffect(() => {
     (async () => {
-      const [{ count: p }, { count: m }] = await Promise.all([
+      const [{ count: p }, { data: m }] = await Promise.all([
         supabase
           .from("evidence_posts")
           .select("id", { count: "exact", head: true })
           .eq("is_published", true),
-        supabase
-          .from("mentor_signups")
-          .select("id", { count: "exact", head: true })
-          .eq("is_active", true),
+        supabase.rpc("get_active_mentor_count"),
       ]);
       setPostCount(p ?? 0);
-      setMentorCount(m ?? 0);
+      setMentorCount(typeof m === "number" ? m : Number(m ?? 0));
     })();
   }, []);
 
