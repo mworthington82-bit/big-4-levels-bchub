@@ -5,6 +5,18 @@ import { normaliseLevel, type LevelKey } from "@/lib/journey";
 const EXPLORER_TOOLS = ["teams", "forms", "canva", "edpuzzle", "copilot"] as const;
 const PRACTITIONER_TOOLS = ["teams", "forms", "canva", "edpuzzle", "copilot"] as const;
 
+export const deriveEffectiveLevel = (profile: StaffProfile): LevelKey => {
+  if (profile.leader_unlocked) return "Leader";
+  if (profile.practitioner_unlocked) return "Practitioner";
+  return normaliseLevel(profile.assigned_level);
+};
+
+// Suppress unused warnings for constants retained for potential future use.
+void EXPLORER_TOOLS;
+void PRACTITIONER_TOOLS;
+
+
+
 /**
  * Recomputes progression flags server-side. The DB function validates the caller's
  * identity via JWT and reads module_completions / evidence flags directly — the
