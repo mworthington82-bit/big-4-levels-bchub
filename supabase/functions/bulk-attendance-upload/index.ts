@@ -157,15 +157,19 @@ Deno.serve(async (req) => {
     let reflectionsSaved = 0;
 
     if (!dryRun && knownRows.length > 0) {
-      // Upsert module_completions
+      // Upsert module_completions.
+      // Attendance is NOT module completion — quiz_passed stays false so the
+      // learner must still take the end-of-module test. Exception: the
+      // Immersive Room has no test, so attendance IS completion.
       const upsertMap = new Map<string, any>();
       for (const r of knownRows) {
         const key = `${r.email}::${r.module_id}`;
+        const isImmersive = r.module_id === "immersive_practitioner";
         upsertMap.set(key, {
           staff_email: r.email,
           module_id: r.module_id,
           completed_at: r.attended_at ?? new Date().toISOString(),
-          quiz_passed: true,
+          quiz_passed: isImmersive,
           completed_via: "in_person",
         });
       }
@@ -176,22 +180,18 @@ Deno.serve(async (req) => {
       if (mcErr) throw mcErr;
       marked = count ?? knownRows.length;
 
-      // Flip *_evidenced flags per email based on final state
+      // Only the immersive session should trigger progression recompute here,
+      // because it's the only module counted as complete by attendance alone.
+      // For other modules the *_evidenced flags and unlock flags stay as they
+      // were — they will flip when the learner passes the quiz.
       for (const [email, rs] of rowsByEmail) {
+        const hasImmersive = rs.some((r) => r.module_id === "immersive_practitioner");
+        if (!hasImmersive) continue;
         const p = profileByEmail.get(email);
         const completed = new Set(completedByEmail.get(email) ?? []);
-        for (const r of rs) completed.add(r.module_id);
+        completed.add("immersive_practitioner");
+        const prog = computeProgression(p, completed);
         const patch: Record<string, any> = {};
-        for (const r of rs) {
-          const meta = MODULE_LABEL[r.module_id];
-          if (!meta || meta.tool === "immersive") continue;
-          const flag = `${meta.tool}_${meta.level}_evidenced`;
-          if (!p[flag]) patch[flag] = true;
-        }
-        const nextProfile = { ...p, ...patch };
-        const prog = computeProgression(nextProfile, completed);
-        if (!p.explorer_complete && prog.explorer_complete) patch.explorer_complete = true;
-        if (!p.practitioner_unlocked && prog.practitioner_unlocked) patch.practitioner_unlocked = true;
         if (!p.practitioner_complete && prog.practitioner_complete) patch.practitioner_complete = true;
         if (!p.leader_unlocked && prog.leader_unlocked) patch.leader_unlocked = true;
         if (Object.keys(patch).length > 0) {
@@ -201,6 +201,13 @@ Deno.serve(async (req) => {
             .update(patch)
             .ilike("email", email);
           if (upErr) console.error("[bulk] profile update error", upErr, email);
+          // Log progression events for the dashboard
+          const events: any[] = [];
+          if (patch.practitioner_complete) events.push({ staff_email: email, department: p.department, event: "practitioner_complete" });
+          if (patch.leader_unlocked) events.push({ staff_email: email, department: p.department, event: "leader_unlocked" });
+          if (events.length > 0) {
+            await admin.from("progression_events").upsert(events, { onConflict: "staff_email,event" });
+          }
         }
       }
 
