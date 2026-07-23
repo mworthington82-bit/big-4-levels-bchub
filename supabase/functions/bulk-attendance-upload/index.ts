@@ -158,13 +158,18 @@ Deno.serve(async (req) => {
 
     if (!dryRun && knownRows.length > 0) {
       // Upsert module_completions
-      const upserts = knownRows.map((r) => ({
-        staff_email: r.email,
-        module_id: r.module_id,
-        completed_at: r.attended_at ?? new Date().toISOString(),
-        quiz_passed: true,
-        completed_via: "in_person",
-      }));
+      const upsertMap = new Map<string, any>();
+      for (const r of knownRows) {
+        const key = `${r.email}::${r.module_id}`;
+        upsertMap.set(key, {
+          staff_email: r.email,
+          module_id: r.module_id,
+          completed_at: r.attended_at ?? new Date().toISOString(),
+          quiz_passed: true,
+          completed_via: "in_person",
+        });
+      }
+      const upserts = Array.from(upsertMap.values());
       const { error: mcErr, count } = await admin
         .from("module_completions")
         .upsert(upserts, { onConflict: "staff_email,module_id", count: "exact" });
