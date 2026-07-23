@@ -19,13 +19,14 @@ interface DryRunResult {
 const BulkAttendanceUpload = () => {
   const [file, setFile] = useState<File | null>(null);
   const [parsing, setParsing] = useState(false);
-  const [format, setFormat] = useState<"register" | "forms" | "unknown" | null>(null);
+  const [format, setFormat] = useState<BulkFormat | null>(null);
   const [parsedRows, setParsedRows] = useState<ParsedRow[]>([]);
   const [unmatched, setUnmatched] = useState<{ row: number; reason: string }[]>([]);
   const [dryRun, setDryRun] = useState<DryRunResult | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [done, setDone] = useState<DryRunResult | null>(null);
+  const [assignedModule, setAssignedModule] = useState<ModuleId | "">("");
 
   const reset = () => {
     setFile(null);
