@@ -67,7 +67,15 @@ const Admin = () => {
   useEffect(() => {
     const onUpdate = () => setBookingsRefreshKey((k) => k + 1);
     window.addEventListener("cpd-bookings-updated", onUpdate);
-    return () => window.removeEventListener("cpd-bookings-updated", onUpdate);
+    const onAttendance = () => {
+      setRefreshKey((k) => k + 1);
+      setBookingsRefreshKey((k) => k + 1);
+    };
+    window.addEventListener("attendance-updated", onAttendance);
+    return () => {
+      window.removeEventListener("cpd-bookings-updated", onUpdate);
+      window.removeEventListener("attendance-updated", onAttendance);
+    };
   }, []);
 
   const handleFile = async (f: File) => {
@@ -189,7 +197,7 @@ const Admin = () => {
           <BookingsDashboard refreshKey={bookingsRefreshKey} />
         </section>
 
-        <ProgressionInsights />
+        <ProgressionInsights refreshKey={refreshKey} />
 
 
         <StaffJourneySearch />
