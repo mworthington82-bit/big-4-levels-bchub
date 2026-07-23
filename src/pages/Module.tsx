@@ -538,6 +538,40 @@ const Module = () => {
             </>
           )}
         </div>
+
+        {attendedDialogOpen && (
+          <div
+            className="fixed inset-0 z-50 flex items-center justify-center bg-[#1C1C2E]/60 px-4"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="attended-dialog-title"
+          >
+            <div className="bg-white rounded-2xl max-w-md w-full p-6 md:p-8 shadow-xl">
+              <h3
+                id="attended-dialog-title"
+                className="text-xl md:text-2xl font-bold text-[#1F3864] mb-3"
+                style={{ fontFamily: "Fraunces, serif" }}
+              >
+                You attended the face-to-face session
+              </h3>
+              <p className="text-[#1F3864] mb-2">
+                Well done for attending. Your attendance is recorded.
+              </p>
+              <p className="text-[#1F3864] mb-6">
+                To complete this module and move up a level, please still take
+                the short end-of-module test at the end of this pathway.
+              </p>
+              <div className="flex justify-end">
+                <button
+                  onClick={() => setAttendedDialogOpen(false)}
+                  className="inline-flex items-center gap-1.5 bg-[#1F3864] hover:bg-[#162B4D] text-white font-semibold px-5 py-2.5 rounded-full"
+                >
+                  Got it
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </AppShell>
   );
