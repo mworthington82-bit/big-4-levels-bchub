@@ -124,6 +124,7 @@ const BulkAttendanceUpload = () => {
       return;
     }
     setDone(data as DryRunResult);
+    window.dispatchEvent(new CustomEvent("attendance-updated"));
     toast({ title: "Attendance uploaded", description: `${(data as any).marked} module completions saved.` });
   };
 

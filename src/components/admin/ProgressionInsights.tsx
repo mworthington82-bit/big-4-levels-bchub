@@ -58,7 +58,7 @@ const rangeStart = (r: Range): Date | null => {
   return null;
 };
 
-const ProgressionInsights = () => {
+const ProgressionInsights = ({ refreshKey = 0 }: { refreshKey?: number } = {}) => {
   const [range, setRange] = useState<Range>("month");
   const [staff, setStaff] = useState<StaffRow[]>([]);
   const [completions, setCompletions] = useState<CompletionRow[]>([]);
@@ -91,7 +91,7 @@ const ProgressionInsights = () => {
       setBookings((b as BookingRow[]) ?? []);
       setLoading(false);
     })();
-  }, []);
+  }, [refreshKey]);
 
   const stats = useMemo(() => {
     const start = rangeStart(range);
