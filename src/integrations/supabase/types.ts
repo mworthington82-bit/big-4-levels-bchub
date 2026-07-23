@@ -772,6 +772,30 @@ export type Database = {
         }
         Relationships: []
       }
+      progression_events: {
+        Row: {
+          department: string | null
+          event: string
+          id: string
+          occurred_at: string
+          staff_email: string
+        }
+        Insert: {
+          department?: string | null
+          event: string
+          id?: string
+          occurred_at?: string
+          staff_email: string
+        }
+        Update: {
+          department?: string | null
+          event?: string
+          id?: string
+          occurred_at?: string
+          staff_email?: string
+        }
+        Relationships: []
+      }
       quiz_questions: {
         Row: {
           correct_option: string

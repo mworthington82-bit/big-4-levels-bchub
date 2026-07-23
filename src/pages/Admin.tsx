@@ -7,6 +7,7 @@ import UploadHistory from "@/components/admin/UploadHistory";
 import DatabaseSummary from "@/components/admin/DatabaseSummary";
 
 import BookingsDashboard from "@/components/admin/BookingsDashboard";
+import ProgressionInsights from "@/components/admin/ProgressionInsights";
 import StaffJourneySearch from "@/components/admin/StaffJourneySearch";
 import PendingEvidencePanel from "@/components/admin/PendingEvidencePanel";
 import AddBookingForm from "@/components/admin/AddBookingForm";
@@ -187,6 +188,9 @@ const Admin = () => {
           </header>
           <BookingsDashboard refreshKey={bookingsRefreshKey} />
         </section>
+
+        <ProgressionInsights />
+
 
         <StaffJourneySearch />
         <PendingEvidencePanel />

@@ -89,6 +89,7 @@ const Module = () => {
   const [bypassBusy, setBypassBusy] = useState(false);
   const [bypassError, setBypassError] = useState<string | null>(null);
   const [bypassSuccess, setBypassSuccess] = useState(false);
+  const [attendedDialogOpen, setAttendedDialogOpen] = useState(false);
 
   usePageTitle(module?.module_title);
 
@@ -127,6 +128,26 @@ const Module = () => {
         setSteps((stepRows as StepRow[]) ?? []);
         setQuestions((qRows as QuizQuestion[]) ?? []);
         setLoading(false);
+
+        // Attendance-only check: if this learner attended F2F but hasn't
+        // passed the quiz yet, remind them the test is still required.
+        // Immersive Room has no test, so skip.
+        if (userEmail && moduleId && moduleId !== "immersive_practitioner") {
+          const { data: mc } = await supabase
+            .from("module_completions")
+            .select("quiz_passed,completed_via")
+            .ilike("staff_email", userEmail)
+            .eq("module_id", moduleId)
+            .maybeSingle();
+          const row = mc as any;
+          if (row && row.quiz_passed === false && row.completed_via === "in_person") {
+            const seenKey = `attended-reminder-${moduleId}-${userEmail}`;
+            if (!sessionStorage.getItem(seenKey)) {
+              setAttendedDialogOpen(true);
+              sessionStorage.setItem(seenKey, "1");
+            }
+          }
+        }
       } catch {
         if (!cancelled) {
           setErrored(true);
@@ -517,6 +538,40 @@ const Module = () => {
             </>
           )}
         </div>
+
+        {attendedDialogOpen && (
+          <div
+            className="fixed inset-0 z-50 flex items-center justify-center bg-[#1C1C2E]/60 px-4"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="attended-dialog-title"
+          >
+            <div className="bg-white rounded-2xl max-w-md w-full p-6 md:p-8 shadow-xl">
+              <h3
+                id="attended-dialog-title"
+                className="text-xl md:text-2xl font-bold text-[#1F3864] mb-3"
+                style={{ fontFamily: "Fraunces, serif" }}
+              >
+                You attended the face-to-face session
+              </h3>
+              <p className="text-[#1F3864] mb-2">
+                Well done for attending. Your attendance is recorded.
+              </p>
+              <p className="text-[#1F3864] mb-6">
+                To complete this module and move up a level, please still take
+                the short end-of-module test at the end of this pathway.
+              </p>
+              <div className="flex justify-end">
+                <button
+                  onClick={() => setAttendedDialogOpen(false)}
+                  className="inline-flex items-center gap-1.5 bg-[#1F3864] hover:bg-[#162B4D] text-white font-semibold px-5 py-2.5 rounded-full"
+                >
+                  Got it
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </AppShell>
   );
