@@ -36,6 +36,7 @@ const BulkAttendanceUpload = () => {
     setDryRun(null);
     setDone(null);
     setError(null);
+    setAssignedModule("");
   };
 
   const handleFile = async (f: File) => {
@@ -47,11 +48,19 @@ const BulkAttendanceUpload = () => {
       setFormat(result.format);
       setParsedRows(result.rows);
       setUnmatched(result.unmatched);
-      if (result.rows.length > 0) {
+      if (result.format === "forms-single-session") {
+        // Wait for admin to pick a module before dry-run
+      } else if (result.rows.length > 0) {
         await runDryRun(result.rows);
+      } else if (result.format === "unknown") {
+        setError(
+          "This file's columns weren't recognised. Expected either a Big 4 Register grid (tool columns per staff row), an MS Forms 'Big 4 Day Reflection' export with a 'What session have you just completed' column, or a per-session Forms export with Email + Completion time columns."
+        );
       }
     } catch (e: any) {
-      setError(e?.message ?? "Could not read file");
+      const msg = e?.message ?? "Could not read file";
+      setError(msg);
+      toast({ title: "Could not read file", description: msg, variant: "destructive" });
     } finally {
       setParsing(false);
     }
@@ -72,14 +81,27 @@ const BulkAttendanceUpload = () => {
       body: payload,
     });
     if (fnErr) {
-      setError(fnErr.message ?? "Preview failed");
+      const msg = fnErr.message ?? "Preview failed";
+      setError(msg);
+      toast({ title: "Preview failed", description: msg, variant: "destructive" });
       return;
     }
     setDryRun(data as DryRunResult);
   };
 
+  const applyAssignedModule = async () => {
+    if (!assignedModule) return;
+    const stamped = parsedRows.map((r) => ({ ...r, module_id: assignedModule as ModuleId }));
+    setParsedRows(stamped);
+    await runDryRun(stamped);
+  };
+
   const commit = async () => {
     if (!parsedRows.length) return;
+    if (parsedRows.some((r) => !r.module_id)) {
+      setError("Pick which session this file is for before confirming.");
+      return;
+    }
     setSubmitting(true);
     setError(null);
     const { data, error: fnErr } = await supabase.functions.invoke("bulk-attendance-upload", {
@@ -96,7 +118,9 @@ const BulkAttendanceUpload = () => {
     });
     setSubmitting(false);
     if (fnErr) {
-      setError(fnErr.message ?? "Upload failed");
+      const msg = fnErr.message ?? "Upload failed";
+      setError(msg);
+      toast({ title: "Upload failed", description: msg, variant: "destructive" });
       return;
     }
     setDone(data as DryRunResult);
@@ -105,7 +129,10 @@ const BulkAttendanceUpload = () => {
 
   const grouped = useMemo(() => {
     const byModule = new Map<string, number>();
-    for (const r of parsedRows) byModule.set(r.module_id, (byModule.get(r.module_id) ?? 0) + 1);
+    for (const r of parsedRows) {
+      const key = r.module_id ?? "__unassigned__";
+      byModule.set(key, (byModule.get(key) ?? 0) + 1);
+    }
     return Array.from(byModule.entries()).sort();
   }, [parsedRows]);
 
