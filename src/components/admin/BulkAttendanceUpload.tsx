@@ -180,11 +180,46 @@ const BulkAttendanceUpload = () => {
                   ? "Detected: Big 4 Register grid"
                   : format === "forms"
                     ? "Detected: MS Forms Reflection export"
-                    : "Format not recognised"}
+                    : format === "forms-single-session"
+                      ? `Detected: per-session Forms export · ${parsedRows.length} row${parsedRows.length === 1 ? "" : "s"}`
+                      : "Format not recognised"}
             </div>
           </div>
-          <Button variant="outline" size="sm" onClick={reset} disabled={submitting}>
-            Choose a different file
+          <div className="flex gap-2">
+            <Button variant="outline" size="sm" onClick={() => file && handleFile(file)} disabled={submitting || parsing}>
+              Re-read file
+            </Button>
+            <Button variant="outline" size="sm" onClick={reset} disabled={submitting}>
+              Choose a different file
+            </Button>
+          </div>
+        </div>
+      )}
+
+      {format === "forms-single-session" && !dryRun && !done && (
+        <div className="bg-white border border-slate-200 rounded-lg p-4 space-y-3">
+          <label className="block text-sm font-semibold text-[#1F3864]">
+            Which session is this file for?
+          </label>
+          <p className="text-xs text-slate-600">
+            This export doesn't say which session it belongs to. Pick the matching session and every attendee in the file will be marked complete for it.
+          </p>
+          <select
+            className="w-full border border-slate-300 rounded-md px-3 py-2 text-sm bg-white"
+            value={assignedModule}
+            onChange={(e) => setAssignedModule(e.target.value as ModuleId | "")}
+          >
+            <option value="">Select a session…</option>
+            {(Object.keys(MODULE_LABEL) as ModuleId[]).map((m) => (
+              <option key={m} value={m}>{MODULE_LABEL[m]}</option>
+            ))}
+          </select>
+          <Button
+            onClick={applyAssignedModule}
+            disabled={!assignedModule || parsedRows.length === 0}
+            className="bg-[#1F3864] hover:bg-[#1F3864]/90"
+          >
+            Preview ({parsedRows.length} row{parsedRows.length === 1 ? "" : "s"})
           </Button>
         </div>
       )}
