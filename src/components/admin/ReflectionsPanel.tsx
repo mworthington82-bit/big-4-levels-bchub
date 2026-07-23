@@ -86,46 +86,54 @@ const ReflectionsPanel = () => {
   };
 
   return (
-    <section className="bg-white border border-slate-200 rounded-2xl p-6">
-      <header className="mb-4 flex items-center justify-between gap-2">
+    <details className="bg-white border border-slate-200 rounded-2xl group">
+      <summary className="cursor-pointer list-none p-6 flex items-center justify-between gap-2">
         <div className="flex items-center gap-2">
           <MessageSquareQuote className="w-5 h-5 text-[#1F3864]" />
-          <h2 className="text-xl font-semibold text-[#1F3864]">Reflection wall</h2>
+          <h2 className="text-xl font-semibold text-[#1F3864]">
+            Reflection wall{" "}
+            <span className="text-slate-400 font-normal text-base">({rows.length})</span>
+          </h2>
         </div>
-        <Button variant="ghost" size="sm" onClick={load} disabled={loading}>
-          <RefreshCw className={`w-4 h-4 mr-1 ${loading ? "animate-spin" : ""}`} />
-          Refresh
-        </Button>
-      </header>
-      <p className="text-sm text-slate-600 mb-4">
-        Reflections collected via post-session attendance CSV uploads. Grouped by tool and level.
-      </p>
+        <svg className="w-5 h-5 text-slate-400 transition-transform group-open:rotate-180" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.06l3.71-3.83a.75.75 0 111.08 1.04l-4.25 4.39a.75.75 0 01-1.08 0L5.21 8.27a.75.75 0 01.02-1.06z" clipRule="evenodd" /></svg>
+      </summary>
+      <div className="px-6 pb-6">
+        <div className="flex items-center justify-between mb-4">
+          <p className="text-sm text-slate-600">
+            Reflections collected via post-session attendance CSV uploads. Grouped by tool and level.
+          </p>
+          <Button variant="ghost" size="sm" onClick={load} disabled={loading}>
+            <RefreshCw className={`w-4 h-4 mr-1 ${loading ? "animate-spin" : ""}`} />
+            Refresh
+          </Button>
+        </div>
 
-      {loading ? (
-        <p className="text-sm text-slate-500">Loading reflections…</p>
-      ) : rows.length === 0 ? (
-        <p className="text-sm text-slate-500">
-          No reflections yet. Upload an attendance CSV from the bookings list above to populate this wall.
-        </p>
-      ) : (
-        <Tabs value={activeTab} onValueChange={setActiveTab}>
-          <TabsList className="flex flex-wrap h-auto justify-start">
-            <TabsTrigger value="all">All ({rows.length})</TabsTrigger>
+        {loading ? (
+          <p className="text-sm text-slate-500">Loading reflections…</p>
+        ) : rows.length === 0 ? (
+          <p className="text-sm text-slate-500">
+            No reflections yet. Upload an attendance CSV from the bookings list above to populate this wall.
+          </p>
+        ) : (
+          <Tabs value={activeTab} onValueChange={setActiveTab}>
+            <TabsList className="flex flex-wrap h-auto justify-start">
+              <TabsTrigger value="all">All ({rows.length})</TabsTrigger>
+              {groups.map((g) => (
+                <TabsTrigger key={g.key} value={g.key}>
+                  {g.label} ({g.items.length})
+                </TabsTrigger>
+              ))}
+            </TabsList>
+            <TabsContent value="all">{renderList(rows)}</TabsContent>
             {groups.map((g) => (
-              <TabsTrigger key={g.key} value={g.key}>
-                {g.label} ({g.items.length})
-              </TabsTrigger>
+              <TabsContent key={g.key} value={g.key}>
+                {renderList(g.items)}
+              </TabsContent>
             ))}
-          </TabsList>
-          <TabsContent value="all">{renderList(rows)}</TabsContent>
-          {groups.map((g) => (
-            <TabsContent key={g.key} value={g.key}>
-              {renderList(g.items)}
-            </TabsContent>
-          ))}
-        </Tabs>
-      )}
-    </section>
+          </Tabs>
+        )}
+      </div>
+    </details>
   );
 };
 

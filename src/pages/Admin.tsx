@@ -15,6 +15,7 @@ import ReflectionsPanel from "@/components/admin/ReflectionsPanel";
 import MarkSessionsComplete from "@/components/admin/MarkSessionsComplete";
 import TrainingSessions from "@/components/admin/TrainingSessions";
 import BulkAttendanceUpload from "@/components/admin/BulkAttendanceUpload";
+import AttendanceUploadHistory from "@/components/admin/AttendanceUploadHistory";
 import { usePageTitle } from "@/lib/usePageTitle";
 import {
   HEADER_MISMATCH_MESSAGE,
@@ -205,6 +206,7 @@ const Admin = () => {
         <AddBookingForm />
         <ReflectionsPanel />
         <BulkAttendanceUpload />
+        <AttendanceUploadHistory refreshKey={refreshKey + bookingsRefreshKey} />
         <TrainingSessions />
         <MarkSessionsComplete />
 
