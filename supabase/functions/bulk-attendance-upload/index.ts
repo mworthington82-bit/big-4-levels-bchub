@@ -180,20 +180,39 @@ Deno.serve(async (req) => {
       if (mcErr) throw mcErr;
       marked = count ?? knownRows.length;
 
-      // Only the immersive session should trigger progression recompute here,
-      // because it's the only module counted as complete by attendance alone.
-      // For other modules the *_evidenced flags and unlock flags stay as they
-      // were — they will flip when the learner passes the quiz.
+      // Face-to-face attendance sets the tool's *_evidenced flag (that's what
+      // "attended in person" means). It does NOT set quiz_passed except for
+      // the Immersive Room, which has no quiz. Progression flags then follow
+      // from the same computeProgression() the preview uses.
       for (const [email, rs] of rowsByEmail) {
-        const hasImmersive = rs.some((r) => r.module_id === "immersive_practitioner");
-        if (!hasImmersive) continue;
         const p = profileByEmail.get(email);
         const completed = new Set(completedByEmail.get(email) ?? []);
-        completed.add("immersive_practitioner");
-        const prog = computeProgression(p, completed);
+        const profileWork: any = { ...p };
+        for (const r of rs) {
+          completed.add(r.module_id);
+          const meta = MODULE_LABEL[r.module_id];
+          if (meta && meta.tool !== "immersive") {
+            const flag = `${meta.tool}_${meta.level}_evidenced`;
+            profileWork[flag] = true;
+          }
+        }
+        const prog = computeProgression(profileWork, completed);
         const patch: Record<string, any> = {};
+
+        // Mirror simulated *_evidenced flags into the patch when they changed.
+        for (const t of EXPLORER_TOOLS) {
+          const f = `${t}_explorer_evidenced`;
+          if (!p[f] && profileWork[f]) patch[f] = true;
+        }
+        for (const t of PRACTITIONER_TOOLS) {
+          const f = `${t}_practitioner_evidenced`;
+          if (!p[f] && profileWork[f]) patch[f] = true;
+        }
+        if (!p.explorer_complete && prog.explorer_complete) patch.explorer_complete = true;
+        if (!p.practitioner_unlocked && prog.practitioner_unlocked) patch.practitioner_unlocked = true;
         if (!p.practitioner_complete && prog.practitioner_complete) patch.practitioner_complete = true;
         if (!p.leader_unlocked && prog.leader_unlocked) patch.leader_unlocked = true;
+
         if (Object.keys(patch).length > 0) {
           patch.updated_at = new Date().toISOString();
           const { error: upErr } = await admin
@@ -201,12 +220,18 @@ Deno.serve(async (req) => {
             .update(patch)
             .ilike("email", email);
           if (upErr) console.error("[bulk] profile update error", upErr, email);
-          // Log progression events for the dashboard
+
+          // Log progression transitions for the dashboard.
           const events: any[] = [];
+          if (patch.explorer_complete) events.push({ staff_email: email, department: p.department, event: "explorer_complete" });
+          if (patch.practitioner_unlocked) events.push({ staff_email: email, department: p.department, event: "practitioner_unlocked" });
           if (patch.practitioner_complete) events.push({ staff_email: email, department: p.department, event: "practitioner_complete" });
           if (patch.leader_unlocked) events.push({ staff_email: email, department: p.department, event: "leader_unlocked" });
           if (events.length > 0) {
-            await admin.from("progression_events").upsert(events, { onConflict: "staff_email,event" });
+            const { error: evErr } = await admin
+              .from("progression_events")
+              .upsert(events, { onConflict: "staff_email,event" });
+            if (evErr) console.error("[bulk] progression_events upsert error", evErr, email);
           }
         }
       }
