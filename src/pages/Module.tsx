@@ -89,6 +89,7 @@ const Module = () => {
   const [bypassBusy, setBypassBusy] = useState(false);
   const [bypassError, setBypassError] = useState<string | null>(null);
   const [bypassSuccess, setBypassSuccess] = useState(false);
+  const [attendedDialogOpen, setAttendedDialogOpen] = useState(false);
 
   usePageTitle(module?.module_title);
 
