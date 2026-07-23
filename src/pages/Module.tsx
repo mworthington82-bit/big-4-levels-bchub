@@ -128,6 +128,26 @@ const Module = () => {
         setSteps((stepRows as StepRow[]) ?? []);
         setQuestions((qRows as QuizQuestion[]) ?? []);
         setLoading(false);
+
+        // Attendance-only check: if this learner attended F2F but hasn't
+        // passed the quiz yet, remind them the test is still required.
+        // Immersive Room has no test, so skip.
+        if (userEmail && moduleId && moduleId !== "immersive_practitioner") {
+          const { data: mc } = await supabase
+            .from("module_completions")
+            .select("quiz_passed,completed_via")
+            .ilike("staff_email", userEmail)
+            .eq("module_id", moduleId)
+            .maybeSingle();
+          const row = mc as any;
+          if (row && row.quiz_passed === false && row.completed_via === "in_person") {
+            const seenKey = `attended-reminder-${moduleId}-${userEmail}`;
+            if (!sessionStorage.getItem(seenKey)) {
+              setAttendedDialogOpen(true);
+              sessionStorage.setItem(seenKey, "1");
+            }
+          }
+        }
       } catch {
         if (!cancelled) {
           setErrored(true);
