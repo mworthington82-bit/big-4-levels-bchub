@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { IconCheck, IconX, IconArrowRight, IconArrowLeft } from "@tabler/icons-react";
+import { supabase } from "@/integrations/supabase/client";
 
 export interface QuizQuestion {
   id: string;
@@ -9,8 +10,6 @@ export interface QuizQuestion {
   option_b: string;
   option_c: string;
   option_d: string;
-  correct_option: "a" | "b" | "c" | "d";
-  explanation: string | null;
 }
 
 interface Props {
