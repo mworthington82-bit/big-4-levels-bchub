@@ -189,6 +189,9 @@ const Admin = () => {
           <BookingsDashboard refreshKey={bookingsRefreshKey} />
         </section>
 
+        <ProgressionInsights />
+
+
         <StaffJourneySearch />
         <PendingEvidencePanel />
         <AddBookingForm />
