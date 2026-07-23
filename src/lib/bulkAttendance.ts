@@ -22,15 +22,17 @@ export const MODULE_LABEL: Record<ModuleId, string> = {
 export interface ParsedRow {
   email: string;
   name?: string;
-  module_id: ModuleId;
+  module_id: ModuleId | null;
   reflection?: string;
   attended_at?: string;
   sourceRow: number;
   sourceLabel?: string;
 }
 
+export type BulkFormat = "register" | "forms" | "forms-single-session" | "unknown";
+
 export interface ParseResult {
-  format: "register" | "forms" | "unknown";
+  format: BulkFormat;
   rows: ParsedRow[];
   unmatched: { row: number; reason: string; raw?: any }[];
 }
@@ -94,10 +96,58 @@ export async function parseWorkbook(file: File): Promise<ParseResult> {
 
   // Format detection: Forms export contains "what session have you just completed"
   const isForms = keys.some((k) => /what session have you just completed/i.test(k));
-
   if (isForms) return parseFormsExport(json);
+
+  // Per-session Forms export: has Email + Completion time but no "which session" column
+  const hasEmail = keys.some((k) => /^email$/i.test(k) || /email address/i.test(k));
+  const hasCompletion = keys.some((k) => /completion time/i.test(k));
+  if (hasEmail && hasCompletion) return parseFormsSingleSession(json);
+
   // Otherwise assume register-grid format (columns for each tool)
   return parseRegisterGrid(json);
+}
+
+function parseFormsSingleSession(json: Record<string, any>[]): ParseResult {
+  const rows: ParsedRow[] = [];
+  const unmatched: ParseResult["unmatched"] = [];
+  const first = json[0];
+  const emailKey = findKey(first, [/^email$/i, /email address/i]);
+  const nameKey = findKey(first, [/full name/i, /^name$/i]);
+  const completionKey = findKey(first, [/completion time/i]);
+
+  const META = new Set(
+    [emailKey, nameKey, completionKey, findKey(first, [/^id$/i]), findKey(first, [/start time/i]), findKey(first, [/last modified time/i]), findKey(first, [/^department/i])].filter(Boolean) as string[]
+  );
+
+  if (!emailKey) {
+    return { format: "unknown", rows: [], unmatched: [{ row: 0, reason: "No email column detected" }] };
+  }
+
+  const reflectionKeys = Object.keys(first).filter((k) => !META.has(k));
+
+  json.forEach((r, idx) => {
+    const email = normEmail(r[emailKey]);
+    if (!email) return;
+    const name = nameKey ? String(r[nameKey] ?? "").trim() : undefined;
+    const parts = reflectionKeys
+      .map((k) => {
+        const v = String(r[k] ?? "").trim();
+        return v ? `${k}\n${v}` : null;
+      })
+      .filter(Boolean) as string[];
+    const reflection = parts.length > 0 ? parts.join("\n\n") : undefined;
+    const attended_at = completionKey && r[completionKey] ? excelDateToISO(r[completionKey]) : undefined;
+    rows.push({
+      email,
+      name,
+      module_id: null,
+      reflection,
+      attended_at,
+      sourceRow: idx + 2,
+    });
+  });
+
+  return { format: "forms-single-session", rows, unmatched };
 }
 
 function parseRegisterGrid(json: Record<string, any>[]): ParseResult {

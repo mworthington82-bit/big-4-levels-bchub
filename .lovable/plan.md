@@ -1,40 +1,39 @@
-## Add a "Well done — you recently attended…" banner to My Journey
+## Problem
 
-When a staff member logs in and opens **My Journey**, show a warm recognition banner at the top if they have any recent in-person attendance (from the bulk attendance upload or per-session attendance). The banner celebrates what they just completed and nudges them toward what's left to level up.
+Your file's headers are `ID | Start time | Completion time | Email | Name | Last modified time | Full name | Department | …reflection questions…`.
 
-### Where it appears
-- Top of `src/pages/Journey.tsx`, above the existing `MilestoneBanner` / hero.
-- Only renders when there is at least one `module_completions` row for the logged-in user with `completed_via = 'in_person'` created in the last **14 days** (configurable constant).
-- Dismissible: an "X" closes it for that session (localStorage key per user + latest completion id, so a fresh attendance re-triggers it).
+The bulk uploader currently recognises only two shapes:
+1. **Register grid** — one row per staff member with tool columns marked Explorer/Practitioner.
+2. **MS Forms "Big 4 Day Reflection"** — must contain a column literally called *"What session have you just completed"*.
 
-### What it says
-Three short parts, all built from data we already have:
+Your export has no "which session" column because the Form itself is the session — one file = one session. The parser returns `format: unknown`, 0 rows, no dry-run runs, so no Confirm button appears. From the outside that looks like "nothing happens".
 
-1. **Recognition line** — "Well done, {first name} — you recently attended {session name(s)}."
-   - Session names come from mapping the recent `module_id`s to their friendly labels (reuse the tool/level labels in `src/lib/journey.ts`, e.g. `edpuzzle_explorer` → "Edpuzzle Explorer"). Up to 2 named, then "+N more".
-2. **Momentum line** — one encouraging sentence, e.g. "Keep the moment going."
-3. **Next step line** — computed from the current profile:
-   - If Explorer and not all 5 evidenced: "To level up to Practitioner, you still need {formatList of remaining Explorer tools}."
-   - If Practitioner and Immersive Room not done: "To reach Leader, complete {remaining tools} and the Immersive Room session."
-   - If all evidenced at their level: "You've completed everything at {level} — your next level is unlocking now."
-   - If Leader: quiet thank-you line, no "still need" text.
+## Fix
 
-A single CTA button ("Continue my journey") scrolls to the modules section (existing anchor).
+Add a third supported shape: **per-session Forms export**, where the admin tells the app which session the file belongs to.
 
-### Reflection nudge (Format A uploads)
-If a recent in-person completion has **no matching `session_reflections` row** for that staff email and session, add a subtle secondary line:
-> "Add a quick reflection on what you'll use from this session →" linking to the existing Reflections panel entry point.
+### 1. Parser (`src/lib/bulkAttendance.ts`)
 
-This complements the earlier plan for a one-time modal — the banner is the softer, always-visible nudge.
+- Add a detector: if headers include `Email` (or `Email address`) and `Completion time` but do NOT include "what session have you just completed", classify as `format: "forms-single-session"`.
+- Return the parsed row bodies (email, name from Name/Full name, completion timestamp, and a reflection built by concatenating every non-metadata column that has a value) without a `module_id` yet — the UI supplies it.
 
-### Technical notes
-- New component `src/components/journey/RecentAttendanceBanner.tsx`.
-- Data fetch: extend the existing completions query in `Journey.tsx` (or a small hook) to also return `completed_at` and `completed_via`; filter client-side for `in_person` in the last 14 days.
-- Session label map: reuse `toolLabel` + level suffix from `src/lib/journey.ts`; add a tiny `moduleIdToSessionName(id)` helper.
-- Styling: Ink/Gold theme, Fraunces heading, DM Sans body, gold left border, matches existing `MilestoneBanner` visual weight but distinct (softer cream background).
-- No schema changes, no edge function changes.
+### 2. UI (`src/components/admin/BulkAttendanceUpload.tsx`)
 
-### Out of scope
-- Emailing the learner.
-- Changing the existing MilestoneBanner logic.
-- Any admin-side changes.
+- When `format === "forms-single-session"`, before running the dry-run, show a required dropdown: **"Which session is this file for?"** listing all 11 modules from `MODULE_LABEL` (Explorer + Practitioner tools + Immersive Room). No auto-guess — always ask.
+- Once selected, stamp `module_id` onto every parsed row and run the existing dry-run + Confirm flow unchanged. The rest of the pipeline (progression updates, reflection saving, Practitioner/Leader unlocks) already handles this shape.
+- Also surface any dry-run / edge-function error more prominently (toast + red banner) so a silent failure can't look like "nothing happened" again.
+
+### 3. Small UX polish (same component)
+
+- When `format === "unknown"`, show a clear explanation of what was expected and a link to change file — instead of just the greyed line "Format not recognised".
+- Add a manual **"Re-read file"** button next to "Choose a different file" so if parsing ever stalls, the admin has an explicit retry.
+
+### 4. No backend changes
+
+The `bulk-attendance-upload` edge function already accepts `{ email, module_id, attended_at, reflection }` rows and does the completion + progression work. Nothing on the server needs to change.
+
+## Out of scope
+
+- No changes to the Register grid or original Forms Reflection parsers.
+- No changes to per-session "Attendance" or "Bookings" buttons on the training list.
+- No changes to level thresholds or evidencing rules.

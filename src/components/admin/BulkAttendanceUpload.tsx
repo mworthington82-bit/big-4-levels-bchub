@@ -3,7 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/hooks/use-toast";
 import { AlertCircle, CheckCircle2, FileSpreadsheet, Upload } from "lucide-react";
-import { MODULE_LABEL, parseWorkbook, type ParsedRow } from "@/lib/bulkAttendance";
+import { MODULE_LABEL, parseWorkbook, type BulkFormat, type ModuleId, type ParsedRow } from "@/lib/bulkAttendance";
 
 interface DryRunResult {
   marked: number;
@@ -19,13 +19,14 @@ interface DryRunResult {
 const BulkAttendanceUpload = () => {
   const [file, setFile] = useState<File | null>(null);
   const [parsing, setParsing] = useState(false);
-  const [format, setFormat] = useState<"register" | "forms" | "unknown" | null>(null);
+  const [format, setFormat] = useState<BulkFormat | null>(null);
   const [parsedRows, setParsedRows] = useState<ParsedRow[]>([]);
   const [unmatched, setUnmatched] = useState<{ row: number; reason: string }[]>([]);
   const [dryRun, setDryRun] = useState<DryRunResult | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [done, setDone] = useState<DryRunResult | null>(null);
+  const [assignedModule, setAssignedModule] = useState<ModuleId | "">("");
 
   const reset = () => {
     setFile(null);
@@ -35,6 +36,7 @@ const BulkAttendanceUpload = () => {
     setDryRun(null);
     setDone(null);
     setError(null);
+    setAssignedModule("");
   };
 
   const handleFile = async (f: File) => {
@@ -46,11 +48,19 @@ const BulkAttendanceUpload = () => {
       setFormat(result.format);
       setParsedRows(result.rows);
       setUnmatched(result.unmatched);
-      if (result.rows.length > 0) {
+      if (result.format === "forms-single-session") {
+        // Wait for admin to pick a module before dry-run
+      } else if (result.rows.length > 0) {
         await runDryRun(result.rows);
+      } else if (result.format === "unknown") {
+        setError(
+          "This file's columns weren't recognised. Expected either a Big 4 Register grid (tool columns per staff row), an MS Forms 'Big 4 Day Reflection' export with a 'What session have you just completed' column, or a per-session Forms export with Email + Completion time columns."
+        );
       }
     } catch (e: any) {
-      setError(e?.message ?? "Could not read file");
+      const msg = e?.message ?? "Could not read file";
+      setError(msg);
+      toast({ title: "Could not read file", description: msg, variant: "destructive" });
     } finally {
       setParsing(false);
     }
@@ -71,14 +81,27 @@ const BulkAttendanceUpload = () => {
       body: payload,
     });
     if (fnErr) {
-      setError(fnErr.message ?? "Preview failed");
+      const msg = fnErr.message ?? "Preview failed";
+      setError(msg);
+      toast({ title: "Preview failed", description: msg, variant: "destructive" });
       return;
     }
     setDryRun(data as DryRunResult);
   };
 
+  const applyAssignedModule = async () => {
+    if (!assignedModule) return;
+    const stamped = parsedRows.map((r) => ({ ...r, module_id: assignedModule as ModuleId }));
+    setParsedRows(stamped);
+    await runDryRun(stamped);
+  };
+
   const commit = async () => {
     if (!parsedRows.length) return;
+    if (parsedRows.some((r) => !r.module_id)) {
+      setError("Pick which session this file is for before confirming.");
+      return;
+    }
     setSubmitting(true);
     setError(null);
     const { data, error: fnErr } = await supabase.functions.invoke("bulk-attendance-upload", {
@@ -95,7 +118,9 @@ const BulkAttendanceUpload = () => {
     });
     setSubmitting(false);
     if (fnErr) {
-      setError(fnErr.message ?? "Upload failed");
+      const msg = fnErr.message ?? "Upload failed";
+      setError(msg);
+      toast({ title: "Upload failed", description: msg, variant: "destructive" });
       return;
     }
     setDone(data as DryRunResult);
@@ -104,7 +129,10 @@ const BulkAttendanceUpload = () => {
 
   const grouped = useMemo(() => {
     const byModule = new Map<string, number>();
-    for (const r of parsedRows) byModule.set(r.module_id, (byModule.get(r.module_id) ?? 0) + 1);
+    for (const r of parsedRows) {
+      const key = r.module_id ?? "__unassigned__";
+      byModule.set(key, (byModule.get(key) ?? 0) + 1);
+    }
     return Array.from(byModule.entries()).sort();
   }, [parsedRows]);
 
@@ -152,11 +180,46 @@ const BulkAttendanceUpload = () => {
                   ? "Detected: Big 4 Register grid"
                   : format === "forms"
                     ? "Detected: MS Forms Reflection export"
-                    : "Format not recognised"}
+                    : format === "forms-single-session"
+                      ? `Detected: per-session Forms export · ${parsedRows.length} row${parsedRows.length === 1 ? "" : "s"}`
+                      : "Format not recognised"}
             </div>
           </div>
-          <Button variant="outline" size="sm" onClick={reset} disabled={submitting}>
-            Choose a different file
+          <div className="flex gap-2">
+            <Button variant="outline" size="sm" onClick={() => file && handleFile(file)} disabled={submitting || parsing}>
+              Re-read file
+            </Button>
+            <Button variant="outline" size="sm" onClick={reset} disabled={submitting}>
+              Choose a different file
+            </Button>
+          </div>
+        </div>
+      )}
+
+      {format === "forms-single-session" && !dryRun && !done && (
+        <div className="bg-white border border-slate-200 rounded-lg p-4 space-y-3">
+          <label className="block text-sm font-semibold text-[#1F3864]">
+            Which session is this file for?
+          </label>
+          <p className="text-xs text-slate-600">
+            This export doesn't say which session it belongs to. Pick the matching session and every attendee in the file will be marked complete for it.
+          </p>
+          <select
+            className="w-full border border-slate-300 rounded-md px-3 py-2 text-sm bg-white"
+            value={assignedModule}
+            onChange={(e) => setAssignedModule(e.target.value as ModuleId | "")}
+          >
+            <option value="">Select a session…</option>
+            {(Object.keys(MODULE_LABEL) as ModuleId[]).map((m) => (
+              <option key={m} value={m}>{MODULE_LABEL[m]}</option>
+            ))}
+          </select>
+          <Button
+            onClick={applyAssignedModule}
+            disabled={!assignedModule || parsedRows.length === 0}
+            className="bg-[#1F3864] hover:bg-[#1F3864]/90"
+          >
+            Preview ({parsedRows.length} row{parsedRows.length === 1 ? "" : "s"})
           </Button>
         </div>
       )}
