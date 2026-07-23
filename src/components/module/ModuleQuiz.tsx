@@ -129,7 +129,7 @@ const ModuleQuiz = ({ questions, onComplete, onBackToPathway }: Props) => {
       <div className="space-y-3 mb-6">
         {options.map((opt, i) => {
           const isSel = selected === opt.key;
-          const isRight = opt.key === q.correct_option;
+          const isRight = correctOption !== null && opt.key === correctOption;
           let cls =
             "w-full text-left px-5 py-4 rounded-xl border-2 transition-colors flex items-start gap-3";
           if (!revealed) {
