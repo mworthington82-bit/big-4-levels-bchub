@@ -3,7 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/hooks/use-toast";
 import { AlertCircle, CheckCircle2, FileSpreadsheet, Upload } from "lucide-react";
-import { MODULE_LABEL, parseWorkbook, type ParsedRow } from "@/lib/bulkAttendance";
+import { MODULE_LABEL, parseWorkbook, type BulkFormat, type ModuleId, type ParsedRow } from "@/lib/bulkAttendance";
 
 interface DryRunResult {
   marked: number;
