@@ -1,46 +1,42 @@
-## What's happening
+## What's on record since 29 June
 
-I checked Sangeeta Bhattacharya in the database (the person the preview said would unlock Practitioner and Leader from the Immersive attendance file). Her stored flags are still:
+Attendance was written into `module_completions` with `completed_via = 'in_person'`. Grouping by day:
 
-- `assigned_level = Practitioner`
-- `practitioner_unlocked = false`
-- `practitioner_complete = false`
-- `leader_unlocked = false`
+- **29 June 2026** — 5 rows (Immersive Room)
+- **14 July 2026** — 134 rows across Teams / Forms / Canva / Edpuzzle / Copilot (Explorer + Practitioner)
+- Plus earlier training in June (12–28 June) totalling ~39 more in-person rows
 
-So the preview is correct, but the actual write step in the `bulk-attendance-upload` edge function isn't flipping the flags for this kind of row. Two separate bugs are stacking:
+Total in-person attendance rows on record: **178**, covering:
 
-### Bug 1 — the write path uses different logic than the preview
+| Module | Rows |
+|---|---|
+| canva_explorer | 59 |
+| copilot_explorer | 32 |
+| teams_explorer | 19 |
+| forms_practitioner | 15 |
+| edpuzzle_explorer | 3 |
+| forms_explorer | 1 |
+| immersive_practitioner | 5 |
+| canva_practitioner | 2 |
+| copilot_practitioner | 1 |
+| edpuzzle_practitioner | 2 |
 
-The preview simulates progression on `profileWork` (a copy of the profile with `*_evidenced` flags set from the attendance rows). The write path re-runs `computeProgression` on the raw stored `profile` without those simulated flags. For staff whose CSV starting level is Practitioner (but who have never had Explorer evidenced in the platform), `practitioner_unlocked` stays `false`, which cascades so `practitioner_complete` stays `false` too — and no patch is written. That's why the preview promises an unlock but the database doesn't move.
+The attendance data itself is stored. The problem is that **Progression Insights** reads from the `progression_events` table, and that table was only introduced part-way through — so most of these older attendances never logged an "unlocked" event, which is why the dashboard shows so few level-ups.
 
-The write path also only patches `practitioner_complete` and `leader_unlocked`, never `practitioner_unlocked` and never the `*_evidenced` flags — so even when it does fire, the profile ends up in an inconsistent state.
+## The fix — one-off backfill
 
-### Bug 2 — the admin dashboards don't refresh after attendance upload
+Write a server-side backfill (SQL run through the migration tool, no schema change) that:
 
-`DatabaseSummary` and `ProgressionInsights` only re-fetch when `refreshKey` bumps, which only happens on CSV upload. After a successful attendance upload nothing tells them to reload, so the numbers on screen stay the same even when the DB has changed.
+1. For every staff profile, replays progression based on **all** their existing `module_completions` rows plus their current `*_evidenced` flags — exactly the same logic the edge function uses today.
+2. Flips any missing `*_evidenced` / `explorer_complete` / `practitioner_unlocked` / `practitioner_complete` / `leader_unlocked` flags on `staff_profiles`.
+3. Inserts the matching rows into `progression_events` with `occurred_at` set to the date of the attendance that triggered the unlock (so "This month" / "Last 30 days" reflect reality), using `ON CONFLICT (staff_email, event) DO NOTHING` — duplicates are ignored safely.
 
-## Fix
+Nothing else changes: no schema edits, no UI edits, no edge-function edits. After the backfill, the Progression Insights panel will pick up the correct numbers on next load.
 
-1. **Edge function `supabase/functions/bulk-attendance-upload/index.ts`** — replace the immersive-only write block with a per-email block that:
-   - Rebuilds the same `profileWork` used in the preview (apply `*_evidenced = true` for every attendance row that maps to a tool+level).
-   - Runs `computeProgression(profileWork, completed)` (completed includes every attended module, not just immersive).
-   - Patches the profile with any of `teams/forms/canva/edpuzzle/copilot _explorer/_practitioner _evidenced`, `explorer_complete`, `practitioner_unlocked`, `practitioner_complete`, `leader_unlocked` that changed, plus `updated_at`.
-   - Continues to log `progression_events` for `explorer_complete`, `practitioner_unlocked`, `practitioner_complete`, `leader_unlocked` transitions (currently only the last two are logged).
-   - Keeps the current quiz-still-required semantics: `module_completions.quiz_passed` stays `false` for everything except `immersive_practitioner`. The `*_evidenced` flag is what represents "attended in person", separate from the quiz.
+## Ongoing duplicate safety
 
-2. **`src/components/admin/BulkAttendanceUpload.tsx`** — after a successful confirm, dispatch a `window` event (e.g. `attendance-updated`) so admin panels can refresh.
+Re-uploading the same attendance file will keep being safe: `module_completions` upserts on `(staff_email, module_id)` and `progression_events` has a unique `(staff_email, event)` index, so duplicates are silently ignored.
 
-3. **`src/pages/Admin.tsx`** — listen for `attendance-updated` and bump `refreshKey` (feeds `DatabaseSummary`, `UploadHistory`) and a new key passed into `ProgressionInsights` so both re-fetch.
+## Confirmation before I run
 
-4. **`src/components/admin/ProgressionInsights.tsx`** — accept an optional `refreshKey` prop and re-run its query when it changes (today it only fetches on range change).
-
-## Verification
-
-After the fix I will:
-- Re-run the same immersive attendance file in a dry-run and confirm the preview matches the write.
-- Query `staff_profiles` for Sangeeta and confirm `practitioner_unlocked`, `practitioner_complete`, `leader_unlocked` are all `true`, and `updated_at` moved.
-- Confirm the Database summary and Progression insights panels update without a page refresh.
-
-## Out of scope
-
-- No UI wording changes, no changes to the "quiz still required" popup on the learner side, no changes to the CSV upload flow.
+I'll only touch progression flags and log events. I will **not** change assigned levels, emails, or anything a person set themselves. OK to proceed?
