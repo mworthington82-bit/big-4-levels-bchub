@@ -22,15 +22,17 @@ export const MODULE_LABEL: Record<ModuleId, string> = {
 export interface ParsedRow {
   email: string;
   name?: string;
-  module_id: ModuleId;
+  module_id: ModuleId | null;
   reflection?: string;
   attended_at?: string;
   sourceRow: number;
   sourceLabel?: string;
 }
 
+export type BulkFormat = "register" | "forms" | "forms-single-session" | "unknown";
+
 export interface ParseResult {
-  format: "register" | "forms" | "unknown";
+  format: BulkFormat;
   rows: ParsedRow[];
   unmatched: { row: number; reason: string; raw?: any }[];
 }
