@@ -24,6 +24,9 @@ const ModuleQuiz = ({ questions, onComplete, onBackToPathway }: Props) => {
   const [index, setIndex] = useState(0);
   const [selected, setSelected] = useState<string | null>(null);
   const [revealed, setRevealed] = useState(false);
+  const [correctOption, setCorrectOption] = useState<string | null>(null);
+  const [explanation, setExplanation] = useState<string | null>(null);
+  const [checking, setChecking] = useState(false);
   const [done, setDone] = useState(false);
   const [completionWritten, setCompletionWritten] = useState(false);
 
@@ -79,11 +82,26 @@ const ModuleQuiz = ({ questions, onComplete, onBackToPathway }: Props) => {
     { key: "c", text: q.option_c },
     { key: "d", text: q.option_d },
   ];
-  const isCorrect = revealed && selected === q.correct_option;
+  const isCorrect = revealed && selected === correctOption;
 
-  const handleChoose = (key: string) => {
-    if (revealed) return;
+  const handleChoose = async (key: string) => {
+    if (revealed || checking) return;
     setSelected(key);
+    setChecking(true);
+    const { data, error } = await supabase.rpc("check_quiz_answer", {
+      _question_id: q.id,
+      _choice: key,
+    });
+    setChecking(false);
+    const row = Array.isArray(data) ? data[0] : (data as any);
+    if (error || !row) {
+      // Fall back gracefully — treat as revealed without server confirmation
+      setCorrectOption(null);
+      setExplanation(null);
+    } else {
+      setCorrectOption(row.correct_option ?? null);
+      setExplanation(row.explanation ?? null);
+    }
     setRevealed(true);
   };
 
@@ -95,6 +113,8 @@ const ModuleQuiz = ({ questions, onComplete, onBackToPathway }: Props) => {
     setIndex((i) => i + 1);
     setSelected(null);
     setRevealed(false);
+    setCorrectOption(null);
+    setExplanation(null);
   };
 
   return (
