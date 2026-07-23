@@ -111,7 +111,7 @@ const Module = () => {
             .order("step_number", { ascending: true }),
           supabase
             .from("quiz_questions")
-            .select("*")
+            .select("id,module_id,question_order,question_text,option_a,option_b,option_c,option_d")
             .eq("module_id", moduleId)
             .order("question_order", { ascending: true }),
         ]);
