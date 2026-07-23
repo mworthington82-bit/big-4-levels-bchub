@@ -174,8 +174,8 @@ const ModuleQuiz = ({ questions, onComplete, onBackToPathway }: Props) => {
           <p className={`font-bold mb-2 ${isCorrect ? "text-[#5A7D2A]" : "text-[#92501C]"}`}>
             {isCorrect ? "Correct" : "Have another think"}
           </p>
-          {q.explanation && (
-            <p className="text-[#1F3864] text-sm leading-relaxed">{q.explanation}</p>
+          {explanation && (
+            <p className="text-[#1F3864] text-sm leading-relaxed">{explanation}</p>
           )}
         </div>
       )}
