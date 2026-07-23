@@ -1346,6 +1346,14 @@ export type Database = {
         }[]
       }
       apply_data_retention: { Args: never; Returns: undefined }
+      check_quiz_answer: {
+        Args: { _choice: string; _question_id: string }
+        Returns: {
+          correct: boolean
+          correct_option: string
+          explanation: string
+        }[]
+      }
       create_evidence_notification: {
         Args: { _evidence_id: string; _message: string; _type: string }
         Returns: string

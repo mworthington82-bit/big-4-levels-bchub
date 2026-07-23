@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { IconCheck, IconX, IconArrowRight, IconArrowLeft } from "@tabler/icons-react";
+import { supabase } from "@/integrations/supabase/client";
 
 export interface QuizQuestion {
   id: string;
@@ -9,8 +10,6 @@ export interface QuizQuestion {
   option_b: string;
   option_c: string;
   option_d: string;
-  correct_option: "a" | "b" | "c" | "d";
-  explanation: string | null;
 }
 
 interface Props {
@@ -25,6 +24,9 @@ const ModuleQuiz = ({ questions, onComplete, onBackToPathway }: Props) => {
   const [index, setIndex] = useState(0);
   const [selected, setSelected] = useState<string | null>(null);
   const [revealed, setRevealed] = useState(false);
+  const [correctOption, setCorrectOption] = useState<string | null>(null);
+  const [explanation, setExplanation] = useState<string | null>(null);
+  const [checking, setChecking] = useState(false);
   const [done, setDone] = useState(false);
   const [completionWritten, setCompletionWritten] = useState(false);
 
@@ -80,11 +82,26 @@ const ModuleQuiz = ({ questions, onComplete, onBackToPathway }: Props) => {
     { key: "c", text: q.option_c },
     { key: "d", text: q.option_d },
   ];
-  const isCorrect = revealed && selected === q.correct_option;
+  const isCorrect = revealed && selected === correctOption;
 
-  const handleChoose = (key: string) => {
-    if (revealed) return;
+  const handleChoose = async (key: string) => {
+    if (revealed || checking) return;
     setSelected(key);
+    setChecking(true);
+    const { data, error } = await supabase.rpc("check_quiz_answer", {
+      _question_id: q.id,
+      _choice: key,
+    });
+    setChecking(false);
+    const row = Array.isArray(data) ? data[0] : (data as any);
+    if (error || !row) {
+      // Fall back gracefully — treat as revealed without server confirmation
+      setCorrectOption(null);
+      setExplanation(null);
+    } else {
+      setCorrectOption(row.correct_option ?? null);
+      setExplanation(row.explanation ?? null);
+    }
     setRevealed(true);
   };
 
@@ -96,6 +113,8 @@ const ModuleQuiz = ({ questions, onComplete, onBackToPathway }: Props) => {
     setIndex((i) => i + 1);
     setSelected(null);
     setRevealed(false);
+    setCorrectOption(null);
+    setExplanation(null);
   };
 
   return (
@@ -110,7 +129,7 @@ const ModuleQuiz = ({ questions, onComplete, onBackToPathway }: Props) => {
       <div className="space-y-3 mb-6">
         {options.map((opt, i) => {
           const isSel = selected === opt.key;
-          const isRight = opt.key === q.correct_option;
+          const isRight = correctOption !== null && opt.key === correctOption;
           let cls =
             "w-full text-left px-5 py-4 rounded-xl border-2 transition-colors flex items-start gap-3";
           if (!revealed) {
@@ -155,8 +174,8 @@ const ModuleQuiz = ({ questions, onComplete, onBackToPathway }: Props) => {
           <p className={`font-bold mb-2 ${isCorrect ? "text-[#5A7D2A]" : "text-[#92501C]"}`}>
             {isCorrect ? "Correct" : "Have another think"}
           </p>
-          {q.explanation && (
-            <p className="text-[#1F3864] text-sm leading-relaxed">{q.explanation}</p>
+          {explanation && (
+            <p className="text-[#1F3864] text-sm leading-relaxed">{explanation}</p>
           )}
         </div>
       )}
