@@ -110,11 +110,12 @@ export const buildModuleCards = (
   completedIds: string[],
   level?: LevelKey,
   viaMap?: Map<string, "quiz" | "in_person">,
+  attendedPendingIds?: string[],
 ): ModuleCardSpec[] => {
   const lvl = level ?? normaliseLevel(profile.assigned_level);
   if (lvl === "Leader") return [];
-  if (lvl === "Practitioner") return buildPractitionerCards(profile, completedIds, viaMap);
-  return buildExplorerCards(profile, completedIds, viaMap);
+  if (lvl === "Practitioner") return buildPractitionerCards(profile, completedIds, viaMap, attendedPendingIds);
+  return buildExplorerCards(profile, completedIds, viaMap, attendedPendingIds);
 };
 
 /** Has the user started any Practitioner module on the platform? */
