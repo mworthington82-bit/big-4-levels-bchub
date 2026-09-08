@@ -1,6 +1,6 @@
 import type { StaffProfile } from "@/hooks/useStaffProfile";
 
-export type ModuleStatus = "todo" | "evidenced" | "completed";
+export type ModuleStatus = "todo" | "evidenced" | "completed" | "attended_pending";
 export type LevelKey = "Explorer" | "Practitioner" | "Leader";
 
 export interface ModuleCardSpec {
@@ -44,14 +44,17 @@ export const buildExplorerCards = (
   profile: StaffProfile,
   completedIds: string[],
   viaMap?: Map<string, "quiz" | "in_person">,
+  attendedPendingIds?: string[],
 ): ModuleCardSpec[] => {
   const completed = new Set(completedIds);
+  const attended = new Set(attendedPendingIds ?? []);
   return EXPLORER_TOOLS.map((tool) => {
     const id = `${tool}_explorer`;
     const flagKey = `${tool}_explorer_evidenced` as keyof StaffProfile;
     const evidenced = profile[flagKey] === true;
     let status: ModuleStatus = "todo";
     if (completed.has(id)) status = "completed";
+    else if (attended.has(id)) status = "attended_pending";
     else if (evidenced) status = "evidenced";
     return {
       id,
@@ -68,14 +71,17 @@ export const buildPractitionerCards = (
   profile: StaffProfile,
   completedIds: string[],
   viaMap?: Map<string, "quiz" | "in_person">,
+  attendedPendingIds?: string[],
 ): ModuleCardSpec[] => {
   const completed = new Set(completedIds);
+  const attended = new Set(attendedPendingIds ?? []);
   const cards: ModuleCardSpec[] = PRACTITIONER_TOOLS.map((tool) => {
     const id = `${tool}_practitioner`;
     const flagKey = `${tool}_practitioner_evidenced` as keyof StaffProfile;
     const evidenced = profile[flagKey] === true;
     let status: ModuleStatus = "todo";
     if (completed.has(id)) status = "completed";
+    else if (attended.has(id)) status = "attended_pending";
     else if (evidenced) status = "evidenced";
     return {
       id,
@@ -104,11 +110,12 @@ export const buildModuleCards = (
   completedIds: string[],
   level?: LevelKey,
   viaMap?: Map<string, "quiz" | "in_person">,
+  attendedPendingIds?: string[],
 ): ModuleCardSpec[] => {
   const lvl = level ?? normaliseLevel(profile.assigned_level);
   if (lvl === "Leader") return [];
-  if (lvl === "Practitioner") return buildPractitionerCards(profile, completedIds, viaMap);
-  return buildExplorerCards(profile, completedIds, viaMap);
+  if (lvl === "Practitioner") return buildPractitionerCards(profile, completedIds, viaMap, attendedPendingIds);
+  return buildExplorerCards(profile, completedIds, viaMap, attendedPendingIds);
 };
 
 /** Has the user started any Practitioner module on the platform? */
@@ -121,7 +128,11 @@ export const hasAnyPractitionerCompletion = (completedIds: string[]) => {
 };
 
 export const countCompleteOrEvidenced = (cards: ModuleCardSpec[]) =>
-  cards.filter((c) => c.status !== "todo").length;
+  cards.filter((c) => c.status === "completed" || c.status === "evidenced").length;
+
+/** Deep link to a module's knowledge check (step 5). */
+export const knowledgeCheckPath = (moduleId: string) =>
+  `/new/module/${moduleId}?step=assess`;
 
 export const totalForLevel = (level: LevelKey) =>
   level === "Practitioner" ? 6 : level === "Explorer" ? 5 : 0;

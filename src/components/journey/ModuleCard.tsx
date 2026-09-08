@@ -1,6 +1,7 @@
 import { IconBuildingArch, IconCheck } from "@tabler/icons-react";
 import { useNavigate } from "react-router-dom";
 import type { ModuleCardSpec } from "@/lib/journey";
+import { knowledgeCheckPath } from "@/lib/journey";
 import teamsLogo from "@/assets/teams-logo.png";
 import formsLogo from "@/assets/forms-logo.jpg";
 import canvaLogo from "@/assets/canva-logo.jpg";
@@ -45,6 +46,7 @@ const STATUS_BADGE: Record<string, { cls: string; label: string; tick: boolean }
   todo: { cls: "bg-white/20 text-white border border-white/30", label: "To do", tick: false },
   evidenced: { cls: "bg-[#F5A623] text-[#1F3864]", label: "Evidenced", tick: true },
   completed: { cls: "bg-[#1A6B3A] text-white", label: "Completed", tick: true },
+  attended_pending: { cls: "bg-[#FFF1D6] text-[#8B5A00] border border-[#F5A623]", label: "Knowledge check due", tick: false },
 };
 
 const LEVEL_PILL: Record<string, string> = {
@@ -56,6 +58,7 @@ const LEVEL_PILL: Record<string, string> = {
 const DESC_OVERRIDE: Record<string, string> = {
   evidenced: "Evidenced from your self-assessment",
   completed: "Completed on the platform",
+  attended_pending: "Training attended — knowledge check to complete",
 };
 
 const TRAINING_TOOL: Record<string, string> = {
@@ -67,6 +70,7 @@ const TRAINING_TOOL: Record<string, string> = {
 };
 
 const destinationFor = (card: ModuleCardSpec): string => {
+  if (card.status === "attended_pending") return knowledgeCheckPath(card.id);
   if (card.toolKey === "immersive") return `/new/module/${card.id}`;
   const tool = TRAINING_TOOL[card.toolKey];
   const level = card.id.endsWith("_practitioner") ? "practitioner" : "explorer";
@@ -88,13 +92,20 @@ const ModuleCard = ({ card }: Props) => {
   const description =
     card.status === "todo" ? card.description : DESC_OVERRIDE[card.status];
   const isImmersiveTodo = card.toolKey === "immersive" && card.status === "todo";
-  const ctaLabel = card.status === "todo" ? "Start module" : "Revisit anytime";
+  const isAttendedPending = card.status === "attended_pending";
+  const ctaLabel = isAttendedPending
+    ? "Take the knowledge check"
+    : card.status === "todo"
+    ? "Start module"
+    : "Revisit anytime";
 
   return (
     <button
       type="button"
       onClick={() => navigate(destinationFor(card))}
-      className="text-left rounded-2xl overflow-hidden bg-white border border-border shadow-sm hover:shadow-md transition-shadow focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F5A623] flex flex-col"
+      className={`text-left rounded-2xl overflow-hidden bg-white border shadow-sm hover:shadow-md transition-shadow focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F5A623] flex flex-col ${
+        isAttendedPending ? "border-2 border-[#F5A623]" : "border-border"
+      }`}
     >
       {/* Coloured tool header */}
       <div className={`${headerBg} px-4 py-3 flex items-center justify-between gap-3`}>
@@ -122,7 +133,7 @@ const ModuleCard = ({ card }: Props) => {
       )}
 
       {/* Body */}
-      <div className="p-5 flex-1 flex flex-col gap-3 bg-white">
+      <div className={`p-5 flex-1 flex flex-col gap-3 ${isAttendedPending ? "bg-[#FFF9EF]" : "bg-white"}`}>
         <div className="flex-1">
           <h3 className="font-display font-bold text-[15px] text-[#1F3864] leading-tight">
             {card.name}
@@ -143,7 +154,7 @@ const ModuleCard = ({ card }: Props) => {
             )}
             {level.charAt(0).toUpperCase() + level.slice(1)}
           </span>
-          <span className="inline-flex items-center px-3.5 py-2 rounded-lg bg-[#1F3864] text-white text-xs font-semibold">
+          <span className={`inline-flex items-center px-3.5 py-2 rounded-lg text-white text-xs font-semibold ${isAttendedPending ? "bg-[#B37400]" : "bg-[#1F3864]"}`}>
             {ctaLabel}
           </span>
         </div>

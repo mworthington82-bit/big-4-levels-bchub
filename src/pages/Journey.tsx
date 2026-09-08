@@ -21,6 +21,7 @@ import ModuleCard from "@/components/journey/ModuleCard";
 import LeaderTaskCard from "@/components/journey/LeaderTaskCard";
 import LeaderAchievementStrip from "@/components/journey/LeaderAchievementStrip";
 import RecentAttendanceBanner from "@/components/journey/RecentAttendanceBanner";
+import LevelUpPanel from "@/components/journey/LevelUpPanel";
 import { IconWand, IconCalendarEvent, IconBulb, IconArrowRight } from "@tabler/icons-react";
 import emblemExplorer from "@/assets/emblem-explorer.svg";
 import emblemPractitioner from "@/assets/emblem-practitioner.svg";
@@ -129,7 +130,7 @@ const JourneySkeleton = () => (
 const Journey = () => {
   usePageTitle("My Journey");
   const navigate = useNavigate();
-  const { profile, email, loading, notFound, error, completedModuleIds, completions, refresh } = useStaffProfile();
+  const { profile, email, loading, notFound, error, completedModuleIds, completions, attendedPendingIds, refresh } = useStaffProfile();
   const [showOnboarding, setShowOnboarding] = useState(false);
   const progressionRan = useRef(false);
 
@@ -159,7 +160,7 @@ const Journey = () => {
   const effective = deriveEffectiveLevel(profile);
   const styles = LEVEL_STYLES[effective];
   const viaMap = new Map(completions.map((c) => [c.moduleId, c.via]));
-  const cards = buildModuleCards(profile, completedModuleIds, effective, viaMap);
+  const cards = buildModuleCards(profile, completedModuleIds, effective, viaMap, attendedPendingIds);
   const total = totalForLevel(effective);
   const progressCount = countCompleteOrEvidenced(cards);
   const progressPct = total ? Math.round((progressCount / total) * 100) : 0;
@@ -270,6 +271,8 @@ const Journey = () => {
 
 
         <div className="container mx-auto px-4 py-8 md:py-10 max-w-6xl space-y-8">
+          {effective !== "Leader" && <LevelUpPanel cards={cards} level={effective} />}
+
           {/* Zone 2 — Pathway */}
           <section id="pathway" className="space-y-4 scroll-mt-24">
             <h2 className="font-display font-bold text-[#1F3864] text-lg md:text-xl">
