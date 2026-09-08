@@ -94,7 +94,8 @@ const BulkAttendanceUpload = () => {
 
   const applyAssignedModule = async () => {
     if (!assignedModule) return;
-    const stamped = parsedRows.map((r) => ({ ...r, module_id: assignedModule as ModuleId }));
+    setError(null);
+    const stamped = parsedRows.map((r) => ({ ...r, module_id: r.module_id ?? (assignedModule as ModuleId) }));
     setParsedRows(stamped);
     await runDryRun(stamped);
   };
