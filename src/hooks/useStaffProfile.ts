@@ -128,10 +128,11 @@ export const useStaffProfile = () => {
           error: false,
           completedModuleIds,
           completions,
+          attendedPendingIds,
         });
       } catch {
         if (!cancelled)
-          setState({ profile: null, email: null, loading: false, notFound: false, error: true, completedModuleIds: [], completions: [] });
+          setState({ profile: null, email: null, loading: false, notFound: false, error: true, completedModuleIds: [], completions: [], attendedPendingIds: [] });
       }
     })();
     return () => {
