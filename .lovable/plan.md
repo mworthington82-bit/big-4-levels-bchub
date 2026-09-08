@@ -1,42 +1,41 @@
-## What's on record since 29 June
+# Simpler attendance upload: pick the module, upload a list of emails
 
-Attendance was written into `module_completions` with `completed_via = 'in_person'`. Grouping by day:
+## What I found
 
-- **29 June 2026** — 5 rows (Immersive Room)
-- **14 July 2026** — 134 rows across Teams / Forms / Canva / Edpuzzle / Copilot (Explorer + Practitioner)
-- Plus earlier training in June (12–28 June) totalling ~39 more in-person rows
+**1. Where it lives**
+- The "Upload attendance (all sessions)" box is `src/components/admin/BulkAttendanceUpload.tsx`.
+- The "Session attendance upload history" dropdown below it is `src/components/admin/AttendanceUploadHistory.tsx`.
+- Both are placed on the admin page (`src/pages/Admin.tsx`).
 
-Total in-person attendance rows on record: **178**, covering:
+**2. What processes the file**
+- The spreadsheet is read in the browser by `src/lib/bulkAttendance.ts`, then sent to the backend function `bulk-attendance-upload` (`supabase/functions/bulk-attendance-upload/index.ts`), which does all the saving.
+- Today the reader accepts three shapes:
+  - Register grid: an email column plus one "…level" column per tool, with Explorer/Practitioner written in the cells.
+  - MS Forms reflection export: Email + "What session have you just completed" + reflection question columns + Completion time.
+  - Per-session Forms export: Email + Completion time (plus optional Full name); the admin then picks the session from a dropdown that already exists for this case only.
 
-| Module | Rows |
-|---|---|
-| canva_explorer | 59 |
-| copilot_explorer | 32 |
-| teams_explorer | 19 |
-| forms_practitioner | 15 |
-| edpuzzle_explorer | 3 |
-| forms_explorer | 1 |
-| immersive_practitioner | 5 |
-| canva_practitioner | 2 |
-| copilot_practitioner | 1 |
-| edpuzzle_practitioner | 2 |
+**3. How rows are matched**
+- Matching is by **email only** (lower-cased and trimmed). Name is only used for display and for stamping reflections.
+- Emails not present in the staff list are already skipped and listed back to the admin as "row(s) skipped — email not in staff list"; they never fail the upload.
+- The module is decided from the session column text, from the tool/level grid columns, or from the admin's dropdown pick.
 
-The attendance data itself is stored. The problem is that **Progression Insights** reads from the `progression_events` table, and that table was only introduced part-way through — so most of these older attendances never logged an "unlocked" event, which is why the dashboard shows so few level-ups.
+**One correction to your brief:** the current logic deliberately writes `quiz_passed = false` for in-person attendance (`completed_via = 'in_person'`), so people still have to sit the end-of-module test — the only exception is the Immersive Room, which has no test and is written as `quiz_passed = true`. The new simple upload will keep exactly that behaviour rather than marking everything as passed.
 
-## The fix — one-off backfill
+## The change
 
-Write a server-side backfill (SQL run through the migration tool, no schema change) that:
+Front end only — one file, `BulkAttendanceUpload.tsx`.
 
-1. For every staff profile, replays progression based on **all** their existing `module_completions` rows plus their current `*_evidenced` flags — exactly the same logic the edge function uses today.
-2. Flips any missing `*_evidenced` / `explorer_complete` / `practitioner_unlocked` / `practitioner_complete` / `leader_unlocked` flags on `staff_profiles`.
-3. Inserts the matching rows into `progression_events` with `occurred_at` set to the date of the attendance that triggered the unlock (so "This month" / "Last 30 days" reflect reality), using `ON CONFLICT (staff_email, event) DO NOTHING` — duplicates are ignored safely.
+- Move the module dropdown to the **top** of the panel, always visible, listing all eleven modules.
+- Once a module is chosen, show the upload box with wording: "Only one column of email addresses is needed."
+- After the file is read:
+  - If it only has an email column (the simple new case), stamp every row with the chosen module and preview as usual.
+  - If the file is a register grid or a full Forms export, keep honouring the session information inside the file exactly as today, so nothing that currently works stops working.
+- Widen the reader in `src/lib/bulkAttendance.ts` with an "email-only" format: any sheet with a column headed Email / email / Email address and no recognised session information. Rows keep no timestamp, no name, no reflection.
+- Report back, as now: how many completions were saved, who progresses a level, and an explicit list of emails not found in the staff list.
+- No backend change. The function already accepts a plain list of `{ email, module_id }`, so completions are written to the same table with the same fields, and progression runs through the same code path.
 
-Nothing else changes: no schema edits, no UI edits, no edge-function edits. After the backfill, the Progression Insights panel will pick up the correct numbers on next load.
+## Not affected
 
-## Ongoing duplicate safety
-
-Re-uploading the same attendance file will keep being safe: `module_completions` upserts on `(staff_email, module_id)` and `progression_events` has a unique `(staff_email, event)` index, so duplicates are silently ignored.
-
-## Confirmation before I run
-
-I'll only touch progression flags and log events. I will **not** change assigned levels, emails, or anything a person set themselves. OK to proceed?
+- The self-assessment CSV upload is a separate panel and a separate backend function — untouched.
+- Progression rules, level unlocking and the events used by the insights dashboard are all computed inside the existing backend function, which is not being changed.
+- Duplicate uploads stay safe: completions are keyed on person + module, so re-uploading the same list changes nothing.
