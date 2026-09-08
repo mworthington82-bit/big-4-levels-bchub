@@ -45,6 +45,7 @@ const STATUS_BADGE: Record<string, { cls: string; label: string; tick: boolean }
   todo: { cls: "bg-white/20 text-white border border-white/30", label: "To do", tick: false },
   evidenced: { cls: "bg-[#F5A623] text-[#1F3864]", label: "Evidenced", tick: true },
   completed: { cls: "bg-[#1A6B3A] text-white", label: "Completed", tick: true },
+  attended_pending: { cls: "bg-[#FFF1D6] text-[#8B5A00] border border-[#F5A623]", label: "Knowledge check due", tick: false },
 };
 
 const LEVEL_PILL: Record<string, string> = {
