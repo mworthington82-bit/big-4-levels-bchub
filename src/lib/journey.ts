@@ -1,6 +1,6 @@
 import type { StaffProfile } from "@/hooks/useStaffProfile";
 
-export type ModuleStatus = "todo" | "evidenced" | "completed";
+export type ModuleStatus = "todo" | "evidenced" | "completed" | "attended_pending";
 export type LevelKey = "Explorer" | "Practitioner" | "Leader";
 
 export interface ModuleCardSpec {
@@ -44,14 +44,17 @@ export const buildExplorerCards = (
   profile: StaffProfile,
   completedIds: string[],
   viaMap?: Map<string, "quiz" | "in_person">,
+  attendedPendingIds?: string[],
 ): ModuleCardSpec[] => {
   const completed = new Set(completedIds);
+  const attended = new Set(attendedPendingIds ?? []);
   return EXPLORER_TOOLS.map((tool) => {
     const id = `${tool}_explorer`;
     const flagKey = `${tool}_explorer_evidenced` as keyof StaffProfile;
     const evidenced = profile[flagKey] === true;
     let status: ModuleStatus = "todo";
     if (completed.has(id)) status = "completed";
+    else if (attended.has(id)) status = "attended_pending";
     else if (evidenced) status = "evidenced";
     return {
       id,
