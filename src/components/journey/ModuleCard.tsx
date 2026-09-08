@@ -92,13 +92,20 @@ const ModuleCard = ({ card }: Props) => {
   const description =
     card.status === "todo" ? card.description : DESC_OVERRIDE[card.status];
   const isImmersiveTodo = card.toolKey === "immersive" && card.status === "todo";
-  const ctaLabel = card.status === "todo" ? "Start module" : "Revisit anytime";
+  const isAttendedPending = card.status === "attended_pending";
+  const ctaLabel = isAttendedPending
+    ? "Take the knowledge check"
+    : card.status === "todo"
+    ? "Start module"
+    : "Revisit anytime";
 
   return (
     <button
       type="button"
       onClick={() => navigate(destinationFor(card))}
-      className="text-left rounded-2xl overflow-hidden bg-white border border-border shadow-sm hover:shadow-md transition-shadow focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F5A623] flex flex-col"
+      className={`text-left rounded-2xl overflow-hidden bg-white border shadow-sm hover:shadow-md transition-shadow focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F5A623] flex flex-col ${
+        isAttendedPending ? "border-2 border-[#F5A623]" : "border-border"
+      }`}
     >
       {/* Coloured tool header */}
       <div className={`${headerBg} px-4 py-3 flex items-center justify-between gap-3`}>
