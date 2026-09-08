@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import {
@@ -73,6 +73,8 @@ const NotFoundCard = () => {
 const Module = () => {
   const { moduleId } = useParams<{ moduleId: string }>();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const wantsAssess = (searchParams.get("step") ?? "") === "assess" || searchParams.get("step") === "5";
   const [loading, setLoading] = useState(true);
   const [errored, setErrored] = useState(false);
   const [module, setModule] = useState<ModuleRow | null>(null);
@@ -141,6 +143,11 @@ const Module = () => {
             .maybeSingle();
           const row = mc as any;
           if (row && row.quiz_passed === false && row.completed_via === "in_person") {
+            // Attended in person: allow deep-linking straight to the knowledge check.
+            if (wantsAssess) {
+              setVisited(new Set([1, 2, 3, 4, 5]));
+              setCurrentStep(5);
+            }
             const seenKey = `attended-reminder-${moduleId}-${userEmail}`;
             if (!sessionStorage.getItem(seenKey)) {
               setAttendedDialogOpen(true);
@@ -158,7 +165,7 @@ const Module = () => {
     return () => {
       cancelled = true;
     };
-  }, [moduleId]);
+  }, [moduleId, wantsAssess]);
 
   useEffect(() => {
     if (!moduleId) return;
