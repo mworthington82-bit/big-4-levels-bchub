@@ -1,6 +1,7 @@
 import { IconBuildingArch, IconCheck } from "@tabler/icons-react";
 import { useNavigate } from "react-router-dom";
 import type { ModuleCardSpec } from "@/lib/journey";
+import { knowledgeCheckPath } from "@/lib/journey";
 import teamsLogo from "@/assets/teams-logo.png";
 import formsLogo from "@/assets/forms-logo.jpg";
 import canvaLogo from "@/assets/canva-logo.jpg";
@@ -69,6 +70,7 @@ const TRAINING_TOOL: Record<string, string> = {
 };
 
 const destinationFor = (card: ModuleCardSpec): string => {
+  if (card.status === "attended_pending") return knowledgeCheckPath(card.id);
   if (card.toolKey === "immersive") return `/new/module/${card.id}`;
   const tool = TRAINING_TOOL[card.toolKey];
   const level = card.id.endsWith("_practitioner") ? "practitioner" : "explorer";
