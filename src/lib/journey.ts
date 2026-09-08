@@ -71,14 +71,17 @@ export const buildPractitionerCards = (
   profile: StaffProfile,
   completedIds: string[],
   viaMap?: Map<string, "quiz" | "in_person">,
+  attendedPendingIds?: string[],
 ): ModuleCardSpec[] => {
   const completed = new Set(completedIds);
+  const attended = new Set(attendedPendingIds ?? []);
   const cards: ModuleCardSpec[] = PRACTITIONER_TOOLS.map((tool) => {
     const id = `${tool}_practitioner`;
     const flagKey = `${tool}_practitioner_evidenced` as keyof StaffProfile;
     const evidenced = profile[flagKey] === true;
     let status: ModuleStatus = "todo";
     if (completed.has(id)) status = "completed";
+    else if (attended.has(id)) status = "attended_pending";
     else if (evidenced) status = "evidenced";
     return {
       id,
