@@ -103,8 +103,39 @@ export async function parseWorkbook(file: File): Promise<ParseResult> {
   const hasCompletion = keys.some((k) => /completion time/i.test(k));
   if (hasEmail && hasCompletion) return parseFormsSingleSession(json);
 
-  // Otherwise assume register-grid format (columns for each tool)
+  // Register grid: tool "level" columns per staff row
+  const hasToolLevelColumns = Object.keys(first).some((k) => detectTool(k) && /level/i.test(k));
+  if (hasToolLevelColumns) return parseRegisterGrid(json);
+
+  // Simplest case: a single column of email addresses
+  const anyEmail = findKey(first, [/e-?mail/i]);
+  if (anyEmail) return parseEmailOnly(json, anyEmail, findKey(first, [/full name/i, /^name$/i]));
+
   return parseRegisterGrid(json);
+}
+
+function parseEmailOnly(
+  json: Record<string, any>[],
+  emailKey: string,
+  nameKey?: string,
+): ParseResult {
+  const rows: ParsedRow[] = [];
+  const unmatched: ParseResult["unmatched"] = [];
+  json.forEach((r, idx) => {
+    const email = normEmail(r[emailKey]);
+    if (!email) return;
+    if (!/@/.test(email)) {
+      unmatched.push({ row: idx + 2, reason: `Not an email address: "${email}"` });
+      return;
+    }
+    rows.push({
+      email,
+      name: nameKey ? String(r[nameKey] ?? "").trim() || undefined : undefined,
+      module_id: null,
+      sourceRow: idx + 2,
+    });
+  });
+  return { format: "email-only", rows, unmatched };
 }
 
 function parseFormsSingleSession(json: Record<string, any>[]): ParseResult {
