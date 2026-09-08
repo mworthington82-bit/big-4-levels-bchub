@@ -147,14 +147,43 @@ const BulkAttendanceUpload = () => {
       <header className="flex items-center gap-2">
         <FileSpreadsheet className="w-5 h-5 text-[#1F3864]" />
         <div>
-          <h2 className="text-xl font-semibold text-[#1F3864]">Upload attendance (all sessions)</h2>
+          <h2 className="text-xl font-semibold text-[#1F3864]">Upload attendance</h2>
           <p className="text-sm text-slate-600">
-            One file, many sessions. Supports the Big 4 Register grid and the MS Forms
-            "Big 4 Day Reflection" export. Sessions stay accessible after being marked
-            complete — this only records that people attended.
+            Pick the module, then upload a spreadsheet with a single column headed
+            "Email". Register grids and the MS Forms reflection export still work and
+            keep their own session information. Sessions stay accessible after being
+            marked complete — this only records that people attended.
           </p>
         </div>
       </header>
+
+      {!done && (
+        <div className="bg-slate-50 border border-slate-200 rounded-lg p-4 space-y-2">
+          <label className="block text-sm font-semibold text-[#1F3864]">
+            1. Which module is this attendance for?
+          </label>
+          <select
+            className="w-full border border-slate-300 rounded-md px-3 py-2 text-sm bg-white"
+            value={assignedModule}
+            onChange={(e) => setAssignedModule(e.target.value as ModuleId | "")}
+            disabled={submitting}
+          >
+            <option value="">Select a module…</option>
+            {(Object.keys(MODULE_LABEL) as ModuleId[]).map((m) => (
+              <option key={m} value={m}>{MODULE_LABEL[m]}</option>
+            ))}
+          </select>
+          <p className="text-xs text-slate-600">
+            Used for files that don't say which session they belong to. Files that do
+            (register grids, the full Forms export) keep their own sessions.
+          </p>
+          {file && !dryRun && !parsing && parsedRows.some((r) => !r.module_id) && assignedModule && (
+            <Button size="sm" onClick={applyAssignedModule} className="bg-[#1F3864] hover:bg-[#1F3864]/90">
+              Preview ({parsedRows.length} row{parsedRows.length === 1 ? "" : "s"})
+            </Button>
+          )}
+        </div>
+      )}
 
       {!file && (
         <label className="block border-2 border-dashed border-slate-300 rounded-xl p-8 text-center cursor-pointer hover:border-[#1F3864] transition">
