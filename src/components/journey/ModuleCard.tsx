@@ -154,7 +154,7 @@ const ModuleCard = ({ card }: Props) => {
             )}
             {level.charAt(0).toUpperCase() + level.slice(1)}
           </span>
-          <span className="inline-flex items-center px-3.5 py-2 rounded-lg bg-[#1F3864] text-white text-xs font-semibold">
+          <span className={`inline-flex items-center px-3.5 py-2 rounded-lg text-white text-xs font-semibold ${isAttendedPending ? "bg-[#B37400]" : "bg-[#1F3864]"}`}>
             {ctaLabel}
           </span>
         </div>
