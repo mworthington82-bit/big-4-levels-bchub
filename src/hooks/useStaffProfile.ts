@@ -37,6 +37,8 @@ interface State {
   error: boolean;
   completedModuleIds: string[];
   completions: CompletionInfo[];
+  /** Modules attended in person where the knowledge check is still outstanding. */
+  attendedPendingIds: string[];
 }
 
 const PROFILE_COLUMNS = [
@@ -58,6 +60,7 @@ export const useStaffProfile = () => {
     error: false,
     completedModuleIds: [],
     completions: [],
+    attendedPendingIds: [],
   });
   const [reloadKey, setReloadKey] = useState(0);
 
