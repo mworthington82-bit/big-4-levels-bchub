@@ -36,7 +36,6 @@ const BulkAttendanceUpload = () => {
     setDryRun(null);
     setDone(null);
     setError(null);
-    setAssignedModule("");
   };
 
   const handleFile = async (f: File) => {
@@ -46,15 +45,19 @@ const BulkAttendanceUpload = () => {
     try {
       const result = await parseWorkbook(f);
       setFormat(result.format);
-      setParsedRows(result.rows);
       setUnmatched(result.unmatched);
-      if (result.format === "forms-single-session") {
-        // Wait for admin to pick a module before dry-run
-      } else if (result.rows.length > 0) {
-        await runDryRun(result.rows);
+      const needsModule = result.rows.some((r) => !r.module_id);
+      const stamped = needsModule && assignedModule
+        ? result.rows.map((r) => ({ ...r, module_id: r.module_id ?? (assignedModule as ModuleId) }))
+        : result.rows;
+      setParsedRows(stamped);
+      if (needsModule && !assignedModule) {
+        setError("Choose the module at the top of this panel, then re-read the file.");
+      } else if (stamped.length > 0) {
+        await runDryRun(stamped);
       } else if (result.format === "unknown") {
         setError(
-          "This file's columns weren't recognised. Expected either a Big 4 Register grid (tool columns per staff row), an MS Forms 'Big 4 Day Reflection' export with a 'What session have you just completed' column, or a per-session Forms export with Email + Completion time columns."
+          "This file's columns weren't recognised. The simplest file to upload is a single column headed \"Email\" with one address per row."
         );
       }
     } catch (e: any) {
@@ -91,7 +94,8 @@ const BulkAttendanceUpload = () => {
 
   const applyAssignedModule = async () => {
     if (!assignedModule) return;
-    const stamped = parsedRows.map((r) => ({ ...r, module_id: assignedModule as ModuleId }));
+    setError(null);
+    const stamped = parsedRows.map((r) => ({ ...r, module_id: r.module_id ?? (assignedModule as ModuleId) }));
     setParsedRows(stamped);
     await runDryRun(stamped);
   };
@@ -144,20 +148,49 @@ const BulkAttendanceUpload = () => {
       <header className="flex items-center gap-2">
         <FileSpreadsheet className="w-5 h-5 text-[#1F3864]" />
         <div>
-          <h2 className="text-xl font-semibold text-[#1F3864]">Upload attendance (all sessions)</h2>
+          <h2 className="text-xl font-semibold text-[#1F3864]">Upload attendance</h2>
           <p className="text-sm text-slate-600">
-            One file, many sessions. Supports the Big 4 Register grid and the MS Forms
-            "Big 4 Day Reflection" export. Sessions stay accessible after being marked
-            complete — this only records that people attended.
+            Pick the module, then upload a spreadsheet with a single column headed
+            "Email". Register grids and the MS Forms reflection export still work and
+            keep their own session information. Sessions stay accessible after being
+            marked complete — this only records that people attended.
           </p>
         </div>
       </header>
 
+      {!done && (
+        <div className="bg-slate-50 border border-slate-200 rounded-lg p-4 space-y-2">
+          <label className="block text-sm font-semibold text-[#1F3864]">
+            1. Which module is this attendance for?
+          </label>
+          <select
+            className="w-full border border-slate-300 rounded-md px-3 py-2 text-sm bg-white"
+            value={assignedModule}
+            onChange={(e) => setAssignedModule(e.target.value as ModuleId | "")}
+            disabled={submitting}
+          >
+            <option value="">Select a module…</option>
+            {(Object.keys(MODULE_LABEL) as ModuleId[]).map((m) => (
+              <option key={m} value={m}>{MODULE_LABEL[m]}</option>
+            ))}
+          </select>
+          <p className="text-xs text-slate-600">
+            Used for files that don't say which session they belong to. Files that do
+            (register grids, the full Forms export) keep their own sessions.
+          </p>
+          {file && !dryRun && !parsing && parsedRows.some((r) => !r.module_id) && assignedModule && (
+            <Button size="sm" onClick={applyAssignedModule} className="bg-[#1F3864] hover:bg-[#1F3864]/90">
+              Preview ({parsedRows.length} row{parsedRows.length === 1 ? "" : "s"})
+            </Button>
+          )}
+        </div>
+      )}
+
       {!file && (
         <label className="block border-2 border-dashed border-slate-300 rounded-xl p-8 text-center cursor-pointer hover:border-[#1F3864] transition">
           <Upload className="w-8 h-8 mx-auto text-slate-400 mb-2" />
-          <div className="font-medium text-[#1F3864]">Drop a spreadsheet or click to browse</div>
-          <div className="text-xs text-slate-500 mt-1">.xlsx, .xls, .csv</div>
+          <div className="font-medium text-[#1F3864]">2. Drop a spreadsheet or click to browse</div>
+          <div className="text-xs text-slate-500 mt-1">.xlsx, .xls, .csv · one column headed "Email" is enough</div>
           <input
             type="file"
             accept=".xlsx,.xls,.csv"
@@ -183,7 +216,9 @@ const BulkAttendanceUpload = () => {
                     ? "Detected: MS Forms Reflection export"
                     : format === "forms-single-session"
                       ? `Detected: per-session Forms export · ${parsedRows.length} row${parsedRows.length === 1 ? "" : "s"}`
-                      : "Format not recognised"}
+                      : format === "email-only"
+                        ? `Detected: email list · ${parsedRows.length} email${parsedRows.length === 1 ? "" : "s"}`
+                        : "Format not recognised"}
             </div>
           </div>
           <div className="flex gap-2">
@@ -197,33 +232,6 @@ const BulkAttendanceUpload = () => {
         </div>
       )}
 
-      {format === "forms-single-session" && !dryRun && !done && (
-        <div className="bg-white border border-slate-200 rounded-lg p-4 space-y-3">
-          <label className="block text-sm font-semibold text-[#1F3864]">
-            Which session is this file for?
-          </label>
-          <p className="text-xs text-slate-600">
-            This export doesn't say which session it belongs to. Pick the matching session and every attendee in the file will be marked complete for it.
-          </p>
-          <select
-            className="w-full border border-slate-300 rounded-md px-3 py-2 text-sm bg-white"
-            value={assignedModule}
-            onChange={(e) => setAssignedModule(e.target.value as ModuleId | "")}
-          >
-            <option value="">Select a session…</option>
-            {(Object.keys(MODULE_LABEL) as ModuleId[]).map((m) => (
-              <option key={m} value={m}>{MODULE_LABEL[m]}</option>
-            ))}
-          </select>
-          <Button
-            onClick={applyAssignedModule}
-            disabled={!assignedModule || parsedRows.length === 0}
-            className="bg-[#1F3864] hover:bg-[#1F3864]/90"
-          >
-            Preview ({parsedRows.length} row{parsedRows.length === 1 ? "" : "s"})
-          </Button>
-        </div>
-      )}
 
       {error && (
         <div className="flex items-start gap-2 bg-red-50 border border-red-200 text-red-900 rounded-lg p-3 text-sm">
