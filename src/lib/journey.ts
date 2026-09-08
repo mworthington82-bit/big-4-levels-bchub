@@ -128,7 +128,11 @@ export const hasAnyPractitionerCompletion = (completedIds: string[]) => {
 };
 
 export const countCompleteOrEvidenced = (cards: ModuleCardSpec[]) =>
-  cards.filter((c) => c.status !== "todo").length;
+  cards.filter((c) => c.status === "completed" || c.status === "evidenced").length;
+
+/** Deep link to a module's knowledge check (step 5). */
+export const knowledgeCheckPath = (moduleId: string) =>
+  `/new/module/${moduleId}?step=assess`;
 
 export const totalForLevel = (level: LevelKey) =>
   level === "Practitioner" ? 6 : level === "Explorer" ? 5 : 0;
