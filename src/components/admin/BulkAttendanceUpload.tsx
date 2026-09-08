@@ -36,7 +36,6 @@ const BulkAttendanceUpload = () => {
     setDryRun(null);
     setDone(null);
     setError(null);
-    setAssignedModule("");
   };
 
   const handleFile = async (f: File) => {
@@ -46,15 +45,19 @@ const BulkAttendanceUpload = () => {
     try {
       const result = await parseWorkbook(f);
       setFormat(result.format);
-      setParsedRows(result.rows);
       setUnmatched(result.unmatched);
-      if (result.format === "forms-single-session") {
-        // Wait for admin to pick a module before dry-run
-      } else if (result.rows.length > 0) {
-        await runDryRun(result.rows);
+      const needsModule = result.rows.some((r) => !r.module_id);
+      const stamped = needsModule && assignedModule
+        ? result.rows.map((r) => ({ ...r, module_id: r.module_id ?? (assignedModule as ModuleId) }))
+        : result.rows;
+      setParsedRows(stamped);
+      if (needsModule && !assignedModule) {
+        setError("Choose the module at the top of this panel, then re-read the file.");
+      } else if (stamped.length > 0) {
+        await runDryRun(stamped);
       } else if (result.format === "unknown") {
         setError(
-          "This file's columns weren't recognised. Expected either a Big 4 Register grid (tool columns per staff row), an MS Forms 'Big 4 Day Reflection' export with a 'What session have you just completed' column, or a per-session Forms export with Email + Completion time columns."
+          "This file's columns weren't recognised. The simplest file to upload is a single column headed \"Email\" with one address per row."
         );
       }
     } catch (e: any) {
