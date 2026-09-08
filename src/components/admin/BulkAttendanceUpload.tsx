@@ -216,7 +216,9 @@ const BulkAttendanceUpload = () => {
                     ? "Detected: MS Forms Reflection export"
                     : format === "forms-single-session"
                       ? `Detected: per-session Forms export · ${parsedRows.length} row${parsedRows.length === 1 ? "" : "s"}`
-                      : "Format not recognised"}
+                      : format === "email-only"
+                        ? `Detected: email list · ${parsedRows.length} email${parsedRows.length === 1 ? "" : "s"}`
+                        : "Format not recognised"}
             </div>
           </div>
           <div className="flex gap-2">
