@@ -232,33 +232,6 @@ const BulkAttendanceUpload = () => {
         </div>
       )}
 
-      {format === "forms-single-session" && !dryRun && !done && (
-        <div className="bg-white border border-slate-200 rounded-lg p-4 space-y-3">
-          <label className="block text-sm font-semibold text-[#1F3864]">
-            Which session is this file for?
-          </label>
-          <p className="text-xs text-slate-600">
-            This export doesn't say which session it belongs to. Pick the matching session and every attendee in the file will be marked complete for it.
-          </p>
-          <select
-            className="w-full border border-slate-300 rounded-md px-3 py-2 text-sm bg-white"
-            value={assignedModule}
-            onChange={(e) => setAssignedModule(e.target.value as ModuleId | "")}
-          >
-            <option value="">Select a session…</option>
-            {(Object.keys(MODULE_LABEL) as ModuleId[]).map((m) => (
-              <option key={m} value={m}>{MODULE_LABEL[m]}</option>
-            ))}
-          </select>
-          <Button
-            onClick={applyAssignedModule}
-            disabled={!assignedModule || parsedRows.length === 0}
-            className="bg-[#1F3864] hover:bg-[#1F3864]/90"
-          >
-            Preview ({parsedRows.length} row{parsedRows.length === 1 ? "" : "s"})
-          </Button>
-        </div>
-      )}
 
       {error && (
         <div className="flex items-start gap-2 bg-red-50 border border-red-200 text-red-900 rounded-lg p-3 text-sm">
