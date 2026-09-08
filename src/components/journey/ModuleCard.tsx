@@ -133,7 +133,7 @@ const ModuleCard = ({ card }: Props) => {
       )}
 
       {/* Body */}
-      <div className="p-5 flex-1 flex flex-col gap-3 bg-white">
+      <div className={`p-5 flex-1 flex flex-col gap-3 ${isAttendedPending ? "bg-[#FFF9EF]" : "bg-white"}`}>
         <div className="flex-1">
           <h3 className="font-display font-bold text-[15px] text-[#1F3864] leading-tight">
             {card.name}
