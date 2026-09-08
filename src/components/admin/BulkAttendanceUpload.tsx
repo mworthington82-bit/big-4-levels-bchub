@@ -189,8 +189,8 @@ const BulkAttendanceUpload = () => {
       {!file && (
         <label className="block border-2 border-dashed border-slate-300 rounded-xl p-8 text-center cursor-pointer hover:border-[#1F3864] transition">
           <Upload className="w-8 h-8 mx-auto text-slate-400 mb-2" />
-          <div className="font-medium text-[#1F3864]">Drop a spreadsheet or click to browse</div>
-          <div className="text-xs text-slate-500 mt-1">.xlsx, .xls, .csv</div>
+          <div className="font-medium text-[#1F3864]">2. Drop a spreadsheet or click to browse</div>
+          <div className="text-xs text-slate-500 mt-1">.xlsx, .xls, .csv · one column headed "Email" is enough</div>
           <input
             type="file"
             accept=".xlsx,.xls,.csv"
