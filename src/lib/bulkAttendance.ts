@@ -29,7 +29,7 @@ export interface ParsedRow {
   sourceLabel?: string;
 }
 
-export type BulkFormat = "register" | "forms" | "forms-single-session" | "unknown";
+export type BulkFormat = "register" | "forms" | "forms-single-session" | "email-only" | "unknown";
 
 export interface ParseResult {
   format: BulkFormat;
