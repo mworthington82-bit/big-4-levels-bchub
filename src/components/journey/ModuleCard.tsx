@@ -57,6 +57,7 @@ const LEVEL_PILL: Record<string, string> = {
 const DESC_OVERRIDE: Record<string, string> = {
   evidenced: "Evidenced from your self-assessment",
   completed: "Completed on the platform",
+  attended_pending: "Training attended — knowledge check to complete",
 };
 
 const TRAINING_TOOL: Record<string, string> = {
