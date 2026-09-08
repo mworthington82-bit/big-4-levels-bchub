@@ -15,6 +15,17 @@ import PageError from "@/components/PageError";
 import { usePageTitle } from "@/lib/usePageTitle";
 import { supabase } from "@/integrations/supabase/client";
 import ModuleQuiz, { QuizQuestion } from "@/components/module/ModuleQuiz";
+import EmbeddedQuiz, { quizEmbedUrls } from "@/components/EmbeddedQuiz";
+
+/** Canva Code knowledge checks are keyed tool-level (e.g. "canva-explorer"). */
+const embedKeyFor = (moduleId?: string) => (moduleId ?? "").replace("_", "-");
+const BRAND_COLOUR: Record<string, string> = {
+  teams: "#5B5FC7",
+  forms: "#5B5FC7",
+  canva: "#7D2AE8",
+  edpuzzle: "#1DA1F2",
+  copilot: "#0078D4",
+};
 
 interface ModuleRow {
   module_id: string;
@@ -414,11 +425,23 @@ const Module = () => {
                 </h2>
 
                 {step.step_type === "assess" ? (
-                  <ModuleQuiz
-                    questions={questions}
-                    onComplete={writeCompletion}
-                    onBackToPathway={() => navigate("/journey")}
-                  />
+                  questions.length === 0 && quizEmbedUrls[embedKeyFor(moduleId)] ? (
+                    <EmbeddedQuiz
+                      tool={embedKeyFor(moduleId).split("-")[0]}
+                      level={embedKeyFor(moduleId).split("-")[1]}
+                      brandColor={BRAND_COLOUR[embedKeyFor(moduleId).split("-")[0]] ?? "#1F3864"}
+                      onComplete={() => {
+                        writeCompletion();
+                        navigate("/journey");
+                      }}
+                    />
+                  ) : (
+                    <ModuleQuiz
+                      questions={questions}
+                      onComplete={writeCompletion}
+                      onBackToPathway={() => navigate("/journey")}
+                    />
+                  )
                 ) : (
                   <>
                     <div className="prose prose-slate max-w-none prose-headings:text-[#1F3864] prose-headings:font-bold prose-strong:text-[#1F3864] prose-a:text-[#185FA5] prose-li:text-[#1F3864] prose-p:text-[#1F3864]">
