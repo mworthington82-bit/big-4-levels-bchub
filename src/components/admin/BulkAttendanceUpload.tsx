@@ -22,6 +22,7 @@ const BulkAttendanceUpload = () => {
   const [format, setFormat] = useState<BulkFormat | null>(null);
   const [parsedRows, setParsedRows] = useState<ParsedRow[]>([]);
   const [unmatched, setUnmatched] = useState<{ row: number; reason: string }[]>([]);
+  const [externalExcluded, setExternalExcluded] = useState<string[]>([]);
   const [dryRun, setDryRun] = useState<DryRunResult | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -33,6 +34,7 @@ const BulkAttendanceUpload = () => {
     setFormat(null);
     setParsedRows([]);
     setUnmatched([]);
+    setExternalExcluded([]);
     setDryRun(null);
     setDone(null);
     setError(null);
@@ -46,6 +48,7 @@ const BulkAttendanceUpload = () => {
       const result = await parseWorkbook(f);
       setFormat(result.format);
       setUnmatched(result.unmatched);
+      setExternalExcluded(result.externalExcluded ?? []);
       const needsModule = result.rows.some((r) => !r.module_id);
       const stamped = needsModule && assignedModule
         ? result.rows.map((r) => ({ ...r, module_id: r.module_id ?? (assignedModule as ModuleId) }))
@@ -151,8 +154,9 @@ const BulkAttendanceUpload = () => {
           <h2 className="text-xl font-semibold text-[#1F3864]">Upload attendance</h2>
           <p className="text-sm text-slate-600">
             Pick the module, then upload a spreadsheet with a single column headed
-            "Email". Register grids and the MS Forms reflection export still work and
-            keep their own session information. Sessions stay accessible after being
+            "Email". Raw Microsoft Teams attendance reports (.csv downloaded straight
+            from the meeting) are accepted as they are. Register grids and the MS Forms
+            reflection export still work and keep their own session information. Sessions stay accessible after being
             marked complete — this only records that people attended.
           </p>
         </div>
@@ -190,7 +194,7 @@ const BulkAttendanceUpload = () => {
         <label className="block border-2 border-dashed border-slate-300 rounded-xl p-8 text-center cursor-pointer hover:border-[#1F3864] transition">
           <Upload className="w-8 h-8 mx-auto text-slate-400 mb-2" />
           <div className="font-medium text-[#1F3864]">2. Drop a spreadsheet or click to browse</div>
-          <div className="text-xs text-slate-500 mt-1">.xlsx, .xls, .csv · one column headed "Email" is enough</div>
+          <div className="text-xs text-slate-500 mt-1">.xlsx, .xls, .csv · one column headed "Email" is enough, or a raw Teams attendance report</div>
           <input
             type="file"
             accept=".xlsx,.xls,.csv"
@@ -216,6 +220,8 @@ const BulkAttendanceUpload = () => {
                     ? "Detected: MS Forms Reflection export"
                     : format === "forms-single-session"
                       ? `Detected: per-session Forms export · ${parsedRows.length} row${parsedRows.length === 1 ? "" : "s"}`
+                      : format === "teams-report"
+                        ? `Detected: Microsoft Teams attendance report · ${parsedRows.length} participant${parsedRows.length === 1 ? "" : "s"}`
                       : format === "email-only"
                         ? `Detected: email list · ${parsedRows.length} email${parsedRows.length === 1 ? "" : "s"}`
                         : "Format not recognised"}
@@ -291,6 +297,19 @@ const BulkAttendanceUpload = () => {
                   <li key={i}>
                     {r.email} · {r.module_id}
                   </li>
+                ))}
+              </ul>
+            </details>
+          )}
+
+          {externalExcluded.length > 0 && (
+            <details className="bg-slate-50 border border-slate-200 rounded-lg p-4 text-sm">
+              <summary className="cursor-pointer font-semibold text-[#1F3864]">
+                {externalExcluded.length} external guest{externalExcluded.length === 1 ? "" : "s"} excluded (not a Bradford College address)
+              </summary>
+              <ul className="mt-2 font-mono text-xs text-slate-700 space-y-0.5">
+                {externalExcluded.map((e, i) => (
+                  <li key={i}>{e}</li>
                 ))}
               </ul>
             </details>
