@@ -101,6 +101,57 @@ const AlmostThere = ({ refreshKey = 0 }: { refreshKey?: number } = {}) => {
 
   const toggle = (k: string) => setOpen((o) => ({ ...o, [k]: !o[k] }));
 
+  const generatedDate = new Date().toLocaleDateString("en-GB", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
+
+  const handleDownloadPng = async () => {
+    if (!exportRef.current) return;
+    setExporting(true);
+    // Wait a tick so lists render fully expanded before capturing.
+    await new Promise((r) => setTimeout(r, 50));
+    try {
+      const date = new Date().toISOString().slice(0, 10);
+      await downloadNodeAsPng(exportRef.current, `almost-there-${date}.png`);
+    } finally {
+      setExporting(false);
+    }
+  };
+
+  const csvEscape = (v: string | null) => {
+    const s = v ?? "";
+    return /[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
+  };
+
+  const handleDownloadCsv = () => {
+    const groups: [string, Row[]][] = [
+      ["Explorer — one module from Practitioner", explorerOne],
+      ["Practitioner — one module from Leader", practitionerOne],
+      ["Needs only Immersive Room", immersiveOnly],
+    ];
+    const lines = ["Group,Name,Email,Department,Missing module"];
+    for (const [group, rows] of groups) {
+      for (const r of rows) {
+        lines.push(
+          [group, r.name ?? "", r.email, r.department ?? "", r.missing]
+            .map(csvEscape)
+            .join(","),
+        );
+      }
+    }
+    const blob = new Blob(["\uFEFF" + lines.join("\r\n")], {
+      type: "text/csv;charset=utf-8;",
+    });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `almost-there-${new Date().toISOString().slice(0, 10)}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
   const copyEmails = async () => {
     try {
       await navigator.clipboard.writeText(immersiveOnly.map((r) => r.email).join("; "));
