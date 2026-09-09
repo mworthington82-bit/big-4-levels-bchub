@@ -1,9 +1,10 @@
-import { useEffect, useMemo, useState } from "react";
-import { ChevronDown, Copy, Check } from "lucide-react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { ChevronDown, Copy, Check, Download, FileSpreadsheet } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import type { StaffProfile } from "@/hooks/useStaffProfile";
 import { deriveEffectiveLevel } from "@/lib/progression";
 import { buildExplorerCards, buildPractitionerCards } from "@/lib/journey";
+import { downloadNodeAsPng } from "@/lib/exportPng";
 
 const INK = "#1C1C2E";
 
@@ -29,6 +30,8 @@ const AlmostThere = ({ refreshKey = 0 }: { refreshKey?: number } = {}) => {
   const [loading, setLoading] = useState(true);
   const [open, setOpen] = useState<Record<string, boolean>>({});
   const [copied, setCopied] = useState(false);
+  const [exporting, setExporting] = useState(false);
+  const exportRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     (async () => {
@@ -98,6 +101,57 @@ const AlmostThere = ({ refreshKey = 0 }: { refreshKey?: number } = {}) => {
 
   const toggle = (k: string) => setOpen((o) => ({ ...o, [k]: !o[k] }));
 
+  const generatedDate = new Date().toLocaleDateString("en-GB", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
+
+  const handleDownloadPng = async () => {
+    if (!exportRef.current) return;
+    setExporting(true);
+    // Wait a tick so lists render fully expanded before capturing.
+    await new Promise((r) => setTimeout(r, 50));
+    try {
+      const date = new Date().toISOString().slice(0, 10);
+      await downloadNodeAsPng(exportRef.current, `almost-there-${date}.png`);
+    } finally {
+      setExporting(false);
+    }
+  };
+
+  const csvEscape = (v: string | null) => {
+    const s = v ?? "";
+    return /[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
+  };
+
+  const handleDownloadCsv = () => {
+    const groups: [string, Row[]][] = [
+      ["Explorer — one module from Practitioner", explorerOne],
+      ["Practitioner — one module from Leader", practitionerOne],
+      ["Needs only Immersive Room", immersiveOnly],
+    ];
+    const lines = ["Group,Name,Email,Department,Missing module"];
+    for (const [group, rows] of groups) {
+      for (const r of rows) {
+        lines.push(
+          [group, r.name ?? "", r.email, r.department ?? "", r.missing]
+            .map(csvEscape)
+            .join(","),
+        );
+      }
+    }
+    const blob = new Blob(["\uFEFF" + lines.join("\r\n")], {
+      type: "text/csv;charset=utf-8;",
+    });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `almost-there-${new Date().toISOString().slice(0, 10)}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
   const copyEmails = async () => {
     try {
       await navigator.clipboard.writeText(immersiveOnly.map((r) => r.email).join("; "));
@@ -145,7 +199,7 @@ const AlmostThere = ({ refreshKey = 0 }: { refreshKey?: number } = {}) => {
             {open[id] ? "Hide list" : `Show list (${rows.length})`}
             <ChevronDown className={`w-4 h-4 transition-transform ${open[id] ? "rotate-180" : ""}`} />
           </button>
-          {open[id] && (
+          {(open[id] || exporting) && (
             <>
               {showEmail && (
                 <button
@@ -156,7 +210,11 @@ const AlmostThere = ({ refreshKey = 0 }: { refreshKey?: number } = {}) => {
                   {copied ? "Copied" : "Copy all emails"}
                 </button>
               )}
-              <ul className="mt-3 max-h-72 overflow-auto divide-y divide-slate-200 text-sm">
+              <ul
+                className={`mt-3 divide-y divide-slate-200 text-sm ${
+                  exporting ? "" : "max-h-72 overflow-auto"
+                }`}
+              >
                 {rows.map((r) => (
                   <li key={r.email} className="py-2">
                     <div className="font-medium" style={{ color: INK }}>
@@ -178,17 +236,48 @@ const AlmostThere = ({ refreshKey = 0 }: { refreshKey?: number } = {}) => {
 
   return (
     <section className="space-y-4">
-      <header>
-        <h2 className="text-2xl font-bold" style={{ color: INK, fontFamily: "Fraunces, serif" }}>
-          Almost there
-        </h2>
-        <p className="text-slate-600 text-sm mt-1">
-          Staff who are one module away from their next level. A module counts as done when it is
-          completed on the platform or auto-evidenced from the self-assessment; training attended in
-          person still counts as outstanding until the knowledge check is passed.
-        </p>
+      <header className="flex items-end justify-between gap-3 flex-wrap">
+        <div>
+          <h2 className="text-2xl font-bold" style={{ color: INK, fontFamily: "Fraunces, serif" }}>
+            Almost there
+          </h2>
+          <p className="text-slate-600 text-sm mt-1">
+            Staff who are one module away from their next level. A module counts as done when it is
+            completed on the platform or auto-evidenced from the self-assessment; training attended
+            in person still counts as outstanding until the knowledge check is passed.
+          </p>
+        </div>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={handleDownloadCsv}
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-[#1C1C2E] text-[#1C1C2E] font-semibold bg-white hover:bg-slate-50"
+          >
+            <FileSpreadsheet className="w-4 h-4" />
+            Download CSV
+          </button>
+          <button
+            onClick={handleDownloadPng}
+            disabled={exporting}
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[#F5A623] text-[#1C1C2E] font-semibold hover:brightness-95 disabled:opacity-60"
+          >
+            <Download className="w-4 h-4" />
+            {exporting ? "Preparing…" : "Download PNG"}
+          </button>
+        </div>
       </header>
-      <div className="grid gap-4 md:grid-cols-3">
+
+      <div ref={exportRef} className="bg-white rounded-xl border border-slate-200 overflow-hidden">
+        <div className="bg-[#1C1C2E] text-white px-6 py-5 relative">
+          <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-[#F5A623]" />
+          <h3 className="text-xl font-semibold" style={{ fontFamily: "Fraunces, serif" }}>
+            Almost there
+          </h3>
+          <p className="text-xs text-white/70 mt-1">
+            Bradford Big 4 · Generated {generatedDate}
+          </p>
+        </div>
+        <div className="p-6">
+          <div className="grid gap-4 md:grid-cols-3">
         <Card
           id="explorer"
           title="Explorers one module from Practitioner"
@@ -209,6 +298,8 @@ const AlmostThere = ({ refreshKey = 0 }: { refreshKey?: number } = {}) => {
           highlight
           showEmail
         />
+          </div>
+        </div>
       </div>
     </section>
   );
