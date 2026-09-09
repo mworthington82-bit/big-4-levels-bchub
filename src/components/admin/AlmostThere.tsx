@@ -298,6 +298,8 @@ const AlmostThere = ({ refreshKey = 0 }: { refreshKey?: number } = {}) => {
           highlight
           showEmail
         />
+          </div>
+        </div>
       </div>
     </section>
   );
