@@ -29,12 +29,13 @@ export interface ParsedRow {
   sourceLabel?: string;
 }
 
-export type BulkFormat = "register" | "forms" | "forms-single-session" | "email-only" | "unknown";
+export type BulkFormat = "register" | "forms" | "forms-single-session" | "email-only" | "teams-report" | "unknown";
 
 export interface ParseResult {
   format: BulkFormat;
   rows: ParsedRow[];
   unmatched: { row: number; reason: string; raw?: any }[];
+  externalExcluded?: string[];
 }
 
 const TOOL_KEYWORDS: Array<{ key: keyof typeof TOOL_MODULE; patterns: RegExp[] }> = [
