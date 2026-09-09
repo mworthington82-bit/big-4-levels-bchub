@@ -1,9 +1,10 @@
-import { useEffect, useMemo, useState } from "react";
-import { ChevronDown, Copy, Check } from "lucide-react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { ChevronDown, Copy, Check, Download, FileSpreadsheet } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import type { StaffProfile } from "@/hooks/useStaffProfile";
 import { deriveEffectiveLevel } from "@/lib/progression";
 import { buildExplorerCards, buildPractitionerCards } from "@/lib/journey";
+import { downloadNodeAsPng } from "@/lib/exportPng";
 
 const INK = "#1C1C2E";
 
@@ -29,6 +30,8 @@ const AlmostThere = ({ refreshKey = 0 }: { refreshKey?: number } = {}) => {
   const [loading, setLoading] = useState(true);
   const [open, setOpen] = useState<Record<string, boolean>>({});
   const [copied, setCopied] = useState(false);
+  const [exporting, setExporting] = useState(false);
+  const exportRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     (async () => {
