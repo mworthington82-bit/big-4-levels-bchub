@@ -199,7 +199,7 @@ const AlmostThere = ({ refreshKey = 0 }: { refreshKey?: number } = {}) => {
             {open[id] ? "Hide list" : `Show list (${rows.length})`}
             <ChevronDown className={`w-4 h-4 transition-transform ${open[id] ? "rotate-180" : ""}`} />
           </button>
-          {open[id] && (
+          {(open[id] || exporting) && (
             <>
               {showEmail && (
                 <button
@@ -210,7 +210,11 @@ const AlmostThere = ({ refreshKey = 0 }: { refreshKey?: number } = {}) => {
                   {copied ? "Copied" : "Copy all emails"}
                 </button>
               )}
-              <ul className="mt-3 max-h-72 overflow-auto divide-y divide-slate-200 text-sm">
+              <ul
+                className={`mt-3 divide-y divide-slate-200 text-sm ${
+                  exporting ? "" : "max-h-72 overflow-auto"
+                }`}
+              >
                 {rows.map((r) => (
                   <li key={r.email} className="py-2">
                     <div className="font-medium" style={{ color: INK }}>
