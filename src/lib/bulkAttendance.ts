@@ -29,12 +29,13 @@ export interface ParsedRow {
   sourceLabel?: string;
 }
 
-export type BulkFormat = "register" | "forms" | "forms-single-session" | "email-only" | "unknown";
+export type BulkFormat = "register" | "forms" | "forms-single-session" | "email-only" | "teams-report" | "unknown";
 
 export interface ParseResult {
   format: BulkFormat;
   rows: ParsedRow[];
   unmatched: { row: number; reason: string; raw?: any }[];
+  externalExcluded?: string[];
 }
 
 const TOOL_KEYWORDS: Array<{ key: keyof typeof TOOL_MODULE; patterns: RegExp[] }> = [
@@ -84,8 +85,80 @@ const findKey = (row: Record<string, any>, matchers: RegExp[]): string | undefin
   return undefined;
 };
 
+const STAFF_DOMAIN = "@bradfordcollege.ac.uk";
+
+function decodeTextFile(buf: ArrayBuffer): string {
+  const bytes = new Uint8Array(buf);
+  if (bytes.length >= 2 && bytes[0] === 0xff && bytes[1] === 0xfe) {
+    return new TextDecoder("utf-16le").decode(bytes.subarray(2));
+  }
+  if (bytes.length >= 2 && bytes[0] === 0xfe && bytes[1] === 0xff) {
+    return new TextDecoder("utf-16be").decode(bytes.subarray(2));
+  }
+  return new TextDecoder("utf-8").decode(bytes).replace(/^\uFEFF/, "");
+}
+
+const splitDelimited = (line: string, delim: string) =>
+  line.split(delim).map((c) => c.replace(/^"|"$/g, "").trim());
+
+/** Microsoft Teams attendance report: UTF-16 TSV with stacked sections. */
+export function parseTeamsReport(text: string): ParseResult | null {
+  const lines = text.replace(/\r/g, "").split("\n");
+  const headerIdx = lines.findIndex((l) => {
+    const t = l.trim();
+    return /^"?name\b/i.test(t) && /\bemail\b/i.test(t);
+  });
+  if (headerIdx === -1) return null;
+
+  const headerLine = lines[headerIdx];
+  const delim = headerLine.includes("\t") ? "\t" : ",";
+  const headers = splitDelimited(headerLine, delim);
+  const emailCol = headers.findIndex((h) => /^email$/i.test(h));
+  const nameCol = headers.findIndex((h) => /^name$/i.test(h));
+  if (emailCol === -1) return null;
+
+  const rows: ParsedRow[] = [];
+  const unmatched: ParseResult["unmatched"] = [];
+  const externalExcluded: string[] = [];
+  const seen = new Set<string>();
+
+  for (let i = headerIdx + 1; i < lines.length; i++) {
+    const raw = lines[i];
+    if (!raw || raw.trim() === "") break; // section ends at first blank line
+    const cells = splitDelimited(raw, delim);
+    const email = normEmail(cells[emailCol]);
+    if (!email || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) continue;
+    if (!email.endsWith(STAFF_DOMAIN)) {
+      if (!externalExcluded.includes(email)) externalExcluded.push(email);
+      continue;
+    }
+    if (seen.has(email)) continue;
+    seen.add(email);
+    rows.push({
+      email,
+      name: nameCol >= 0 ? cells[nameCol] || undefined : undefined,
+      module_id: null,
+      sourceRow: i + 1,
+    });
+  }
+
+  return { format: "teams-report", rows, unmatched, externalExcluded };
+}
+
 export async function parseWorkbook(file: File): Promise<ParseResult> {
   const buf = await file.arrayBuffer();
+
+  // Raw Microsoft Teams attendance reports are UTF-16 TSV files with a .csv extension.
+  if (/\.(csv|tsv|txt)$/i.test(file.name)) {
+    try {
+      const text = decodeTextFile(buf);
+      const teams = parseTeamsReport(text);
+      if (teams && teams.rows.length > 0) return teams;
+    } catch {
+      /* fall through to the spreadsheet reader */
+    }
+  }
+
   const wb = XLSX.read(buf, { type: "array" });
   const sheet = wb.Sheets[wb.SheetNames[0]];
   const json: Record<string, any>[] = XLSX.utils.sheet_to_json(sheet, { defval: "" });
