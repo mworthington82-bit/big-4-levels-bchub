@@ -200,6 +200,8 @@ const Admin = () => {
 
         <ProgressionInsights refreshKey={refreshKey} />
 
+        <AlmostThere refreshKey={refreshKey} />
+
 
         <StaffJourneySearch />
         <PendingEvidencePanel />
