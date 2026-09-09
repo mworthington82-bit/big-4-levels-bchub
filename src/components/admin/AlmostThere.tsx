@@ -236,17 +236,48 @@ const AlmostThere = ({ refreshKey = 0 }: { refreshKey?: number } = {}) => {
 
   return (
     <section className="space-y-4">
-      <header>
-        <h2 className="text-2xl font-bold" style={{ color: INK, fontFamily: "Fraunces, serif" }}>
-          Almost there
-        </h2>
-        <p className="text-slate-600 text-sm mt-1">
-          Staff who are one module away from their next level. A module counts as done when it is
-          completed on the platform or auto-evidenced from the self-assessment; training attended in
-          person still counts as outstanding until the knowledge check is passed.
-        </p>
+      <header className="flex items-end justify-between gap-3 flex-wrap">
+        <div>
+          <h2 className="text-2xl font-bold" style={{ color: INK, fontFamily: "Fraunces, serif" }}>
+            Almost there
+          </h2>
+          <p className="text-slate-600 text-sm mt-1">
+            Staff who are one module away from their next level. A module counts as done when it is
+            completed on the platform or auto-evidenced from the self-assessment; training attended
+            in person still counts as outstanding until the knowledge check is passed.
+          </p>
+        </div>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={handleDownloadCsv}
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-[#1C1C2E] text-[#1C1C2E] font-semibold bg-white hover:bg-slate-50"
+          >
+            <FileSpreadsheet className="w-4 h-4" />
+            Download CSV
+          </button>
+          <button
+            onClick={handleDownloadPng}
+            disabled={exporting}
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[#F5A623] text-[#1C1C2E] font-semibold hover:brightness-95 disabled:opacity-60"
+          >
+            <Download className="w-4 h-4" />
+            {exporting ? "Preparing…" : "Download PNG"}
+          </button>
+        </div>
       </header>
-      <div className="grid gap-4 md:grid-cols-3">
+
+      <div ref={exportRef} className="bg-white rounded-xl border border-slate-200 overflow-hidden">
+        <div className="bg-[#1C1C2E] text-white px-6 py-5 relative">
+          <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-[#F5A623]" />
+          <h3 className="text-xl font-semibold" style={{ fontFamily: "Fraunces, serif" }}>
+            Almost there
+          </h3>
+          <p className="text-xs text-white/70 mt-1">
+            Bradford Big 4 · Generated {generatedDate}
+          </p>
+        </div>
+        <div className="p-6">
+          <div className="grid gap-4 md:grid-cols-3">
         <Card
           id="explorer"
           title="Explorers one module from Practitioner"
