@@ -13,6 +13,7 @@ const ADMIN_EMAILS = new Set([
   "c.mitton@bradfordcollege.ac.uk",
   "p.richardson@bradfordcollege.ac.uk",
   "j.worth@bradfordcollege.ac.uk",
+  "s.oconnell@bradfordcollege.ac.uk",
 ]);
 
 Deno.serve(async (req) => {
