@@ -14,6 +14,7 @@ const ADMIN_EMAILS = [
   "c.mitton@bradfordcollege.ac.uk",
   "p.richardson@bradfordcollege.ac.uk",
   "j.worth@bradfordcollege.ac.uk",
+  "s.oconnell@bradfordcollege.ac.uk",
 ];
 
 const ALLOWED_EMAILS = new Set<string>(
