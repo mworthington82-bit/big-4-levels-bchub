@@ -56,6 +56,7 @@ const Bookings = () => {
   const [profile, setProfile] = useState<any | null>(null);
   const [immersiveDone, setImmersiveDone] = useState(false);
   const [loading, setLoading] = useState(true);
+  const immersive = useImmersiveRequest();
 
   useEffect(() => {
     window.scrollTo(0, 0);
