@@ -6,6 +6,8 @@ import { Badge } from "@/components/ui/badge";
 import { ArrowLeft, ExternalLink, Laptop, ShieldCheck } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import BookingsRoadmap from "@/components/BookingsRoadmap";
+import ImmersiveRequestButton from "@/components/ImmersiveRequestButton";
+import { useImmersiveRequest } from "@/hooks/useImmersiveRequest";
 
 type Tool = "teams" | "forms" | "canva" | "edpuzzle" | "copilot" | "inclusion" | "immersive";
 type Level = "explorer" | "practitioner" | "leader";
@@ -17,6 +19,7 @@ interface Booking {
   level: Level;
   booking_url: string;
   is_full?: boolean;
+  is_visible?: boolean;
 }
 
 const TOOL_LABEL: Record<Tool, string> = {
