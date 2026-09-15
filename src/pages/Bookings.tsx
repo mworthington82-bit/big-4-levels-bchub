@@ -146,13 +146,37 @@ const Bookings = () => {
           />
         )}
 
+        {immersiveEligible && (
+          <section
+            aria-label="Immersive Room training request"
+            className="mb-8 p-6 rounded-xl border border-accent/40 bg-accent/10"
+          >
+            <Badge className={toolColor.immersive}>Immersive Room</Badge>
+            <h2 className="font-serif text-2xl font-bold text-foreground mt-3 mb-2">
+              Practitioner Level — Immersive Room training
+            </h2>
+            <p className="text-muted-foreground mb-4 max-w-2xl">
+              The Immersive Room is a required part of Practitioner level and is delivered in
+              person. Register your interest and we will contact you as soon as the next dates are
+              confirmed.
+            </p>
+            <ImmersiveRequestButton
+              requested={immersive.requested}
+              submitting={immersive.submitting}
+              onRequest={immersive.submit}
+            />
+          </section>
+        )}
+
         {loading ? (
           <p className="text-muted-foreground">Loading sessions…</p>
         ) : visible.length === 0 ? (
           <div className="p-6 rounded-lg border border-border bg-muted/40 text-muted-foreground">
-            No training sessions available for you right now. Check back soon.
+            There are no training sessions scheduled at the moment. More training sessions will be
+            scheduled soon — please check back shortly.
           </div>
         ) : (
+
           <>
             <div className="mb-6 p-4 rounded-lg border border-accent/30 bg-accent/10 flex items-start gap-3">
               <Laptop className="w-5 h-5 text-accent mt-0.5 shrink-0" aria-hidden />
