@@ -435,6 +435,7 @@ const AddBookingForm = () => {
                   <p className="text-xs text-slate-500 capitalize">
                     {TOOL_OPTIONS.find((t) => t.value === b.tool)?.label ?? b.tool} · {b.level}
                     {b.is_full && <span className="ml-2 text-red-600 font-semibold">FULL</span>}
+                    {b.is_visible === false && <span className="ml-2 text-slate-500 font-semibold">HIDDEN</span>}
                   </p>
                   <a href={b.booking_url} target="_blank" rel="noopener noreferrer" className="text-xs text-blue-700 hover:underline truncate block max-w-full">
                     {b.booking_url}
@@ -449,12 +450,21 @@ const AddBookingForm = () => {
                   )}
                   <div className="flex items-center gap-2">
                     <Switch
+                      id={`visible-${b.id}`}
+                      checked={b.is_visible !== false}
+                      onCheckedChange={(v) => toggleVisible(b, v)}
+                    />
+                    <Label htmlFor={`visible-${b.id}`} className="text-xs cursor-pointer">Show</Label>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Switch
                       id={`full-${b.id}`}
                       checked={b.is_full}
                       onCheckedChange={(v) => toggleFull(b, v)}
                     />
                     <Label htmlFor={`full-${b.id}`} className="text-xs cursor-pointer">Full</Label>
                   </div>
+
                   <Button variant="outline" size="sm" asChild disabled={uploadingFor === b.id}>
                     <label className="cursor-pointer">
                       <Users className="w-4 h-4 mr-1" />
