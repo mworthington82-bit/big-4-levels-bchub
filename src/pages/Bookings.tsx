@@ -6,6 +6,8 @@ import { Badge } from "@/components/ui/badge";
 import { ArrowLeft, ExternalLink, Laptop, ShieldCheck } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import BookingsRoadmap from "@/components/BookingsRoadmap";
+import ImmersiveRequestButton from "@/components/ImmersiveRequestButton";
+import { useImmersiveRequest } from "@/hooks/useImmersiveRequest";
 
 type Tool = "teams" | "forms" | "canva" | "edpuzzle" | "copilot" | "inclusion" | "immersive";
 type Level = "explorer" | "practitioner" | "leader";
@@ -17,6 +19,7 @@ interface Booking {
   level: Level;
   booking_url: string;
   is_full?: boolean;
+  is_visible?: boolean;
 }
 
 const TOOL_LABEL: Record<Tool, string> = {
@@ -53,6 +56,7 @@ const Bookings = () => {
   const [profile, setProfile] = useState<any | null>(null);
   const [immersiveDone, setImmersiveDone] = useState(false);
   const [loading, setLoading] = useState(true);
+  const immersive = useImmersiveRequest();
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -92,29 +96,33 @@ const Bookings = () => {
     return "explorer";
   })();
 
+  const immersiveEligible = (() => {
+    if (!profile || immersiveDone) return false;
+    const assigned = (profile.assigned_level || "").toLowerCase();
+    return (
+      profile.practitioner_unlocked ||
+      profile.leader_unlocked ||
+      assigned === "practitioner" ||
+      assigned === "leader"
+    );
+  })();
+
   const visible = bookings.filter((b) => {
+    // Sessions with past dates are hidden by an admin until new dates are set.
+    if (b.is_visible === false) return false;
     // Inclusion: visible to everyone
     if (b.tool === "inclusion") return true;
     // Immersive Room is MANDATORY for every member of staff at Practitioner
     // level. Show it to anyone who has reached (or been assigned) Practitioner
     // or above, until they have completed the Immersive Room Practitioner module.
-    if (b.tool === "immersive") {
-      if (!profile) return false;
-      if (immersiveDone) return false;
-      const assigned = (profile.assigned_level || "").toLowerCase();
-      const atPractitionerOrAbove =
-        profile.practitioner_unlocked ||
-        profile.leader_unlocked ||
-        assigned === "practitioner" ||
-        assigned === "leader";
-      return atPractitionerOrAbove;
-    }
+    if (b.tool === "immersive") return immersiveEligible;
     if (!currentLevel) return false;
     if (b.level !== currentLevel) return false;
     const field = evidencedField(b.tool, b.level);
     if (!field) return true;
     return !profile?.[field];
   });
+
 
 
   return (
@@ -142,13 +150,37 @@ const Bookings = () => {
           />
         )}
 
+        {immersiveEligible && (
+          <section
+            aria-label="Immersive Room training request"
+            className="mb-8 p-6 rounded-xl border border-accent/40 bg-accent/10"
+          >
+            <Badge className={toolColor.immersive}>Immersive Room</Badge>
+            <h2 className="font-serif text-2xl font-bold text-foreground mt-3 mb-2">
+              Practitioner Level — Immersive Room training
+            </h2>
+            <p className="text-muted-foreground mb-4 max-w-2xl">
+              The Immersive Room is a required part of Practitioner level and is delivered in
+              person. Register your interest and we will contact you as soon as the next dates are
+              confirmed.
+            </p>
+            <ImmersiveRequestButton
+              requested={immersive.requested}
+              submitting={immersive.submitting}
+              onRequest={immersive.submit}
+            />
+          </section>
+        )}
+
         {loading ? (
           <p className="text-muted-foreground">Loading sessions…</p>
         ) : visible.length === 0 ? (
           <div className="p-6 rounded-lg border border-border bg-muted/40 text-muted-foreground">
-            No training sessions available for you right now. Check back soon.
+            There are no training sessions scheduled at the moment. More training sessions will be
+            scheduled soon — please check back shortly.
           </div>
         ) : (
+
           <>
             <div className="mb-6 p-4 rounded-lg border border-accent/30 bg-accent/10 flex items-start gap-3">
               <Laptop className="w-5 h-5 text-accent mt-0.5 shrink-0" aria-hidden />

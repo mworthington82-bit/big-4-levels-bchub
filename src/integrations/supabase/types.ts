@@ -309,6 +309,36 @@ export type Database = {
         }
         Relationships: []
       }
+      immersive_requests: {
+        Row: {
+          created_at: string
+          department: string | null
+          email: string
+          id: string
+          name: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          department?: string | null
+          email: string
+          id?: string
+          name?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          department?: string | null
+          email?: string
+          id?: string
+          name?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       immersive_sessions: {
         Row: {
           created_at: string
@@ -1080,6 +1110,7 @@ export type Database = {
           created_by: string | null
           id: string
           is_full: boolean
+          is_visible: boolean
           level: string
           name: string
           tool: string
@@ -1090,6 +1121,7 @@ export type Database = {
           created_by?: string | null
           id?: string
           is_full?: boolean
+          is_visible?: boolean
           level: string
           name: string
           tool: string
@@ -1100,6 +1132,7 @@ export type Database = {
           created_by?: string | null
           id?: string
           is_full?: boolean
+          is_visible?: boolean
           level?: string
           name?: string
           tool?: string
