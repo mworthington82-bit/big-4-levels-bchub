@@ -80,6 +80,7 @@ interface Booking {
   booking_url: string;
   created_at: string;
   is_full: boolean;
+  is_visible: boolean;
 }
 
 const TOOL_OPTIONS: { value: Tool; label: string }[] = [
@@ -291,6 +292,18 @@ const AddBookingForm = () => {
     toast({ title: next ? "Marked as full" : "Marked as available" });
     load();
   };
+
+  const toggleVisible = async (b: Booking, next: boolean) => {
+    const { error } = await supabase.from("training_bookings" as any)
+      .update({ is_visible: next }).eq("id", b.id);
+    if (error) {
+      toast({ title: "Could not update", description: error.message, variant: "destructive" });
+      return;
+    }
+    toast({ title: next ? "Session shown to staff" : "Session hidden from staff" });
+    load();
+  };
+
 
   const onAttendanceFile = async (b: Booking, file: File) => {
     try {
