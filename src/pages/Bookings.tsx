@@ -92,29 +92,33 @@ const Bookings = () => {
     return "explorer";
   })();
 
+  const immersiveEligible = (() => {
+    if (!profile || immersiveDone) return false;
+    const assigned = (profile.assigned_level || "").toLowerCase();
+    return (
+      profile.practitioner_unlocked ||
+      profile.leader_unlocked ||
+      assigned === "practitioner" ||
+      assigned === "leader"
+    );
+  })();
+
   const visible = bookings.filter((b) => {
+    // Sessions with past dates are hidden by an admin until new dates are set.
+    if (b.is_visible === false) return false;
     // Inclusion: visible to everyone
     if (b.tool === "inclusion") return true;
     // Immersive Room is MANDATORY for every member of staff at Practitioner
     // level. Show it to anyone who has reached (or been assigned) Practitioner
     // or above, until they have completed the Immersive Room Practitioner module.
-    if (b.tool === "immersive") {
-      if (!profile) return false;
-      if (immersiveDone) return false;
-      const assigned = (profile.assigned_level || "").toLowerCase();
-      const atPractitionerOrAbove =
-        profile.practitioner_unlocked ||
-        profile.leader_unlocked ||
-        assigned === "practitioner" ||
-        assigned === "leader";
-      return atPractitionerOrAbove;
-    }
+    if (b.tool === "immersive") return immersiveEligible;
     if (!currentLevel) return false;
     if (b.level !== currentLevel) return false;
     const field = evidencedField(b.tool, b.level);
     if (!field) return true;
     return !profile?.[field];
   });
+
 
 
   return (
