@@ -12,6 +12,7 @@ import AlmostThere from "@/components/admin/AlmostThere";
 import StaffJourneySearch from "@/components/admin/StaffJourneySearch";
 import PendingEvidencePanel from "@/components/admin/PendingEvidencePanel";
 import AddBookingForm from "@/components/admin/AddBookingForm";
+import ImmersiveRequests from "@/components/admin/ImmersiveRequests";
 import ReflectionsPanel from "@/components/admin/ReflectionsPanel";
 import MarkSessionsComplete from "@/components/admin/MarkSessionsComplete";
 import TrainingSessions from "@/components/admin/TrainingSessions";
@@ -207,6 +208,7 @@ const Admin = () => {
         <StaffJourneySearch />
         <PendingEvidencePanel />
         <AddBookingForm />
+        <ImmersiveRequests refreshKey={refreshKey} />
         <ReflectionsPanel />
         <BulkAttendanceUpload />
         <AttendanceUploadHistory refreshKey={refreshKey + bookingsRefreshKey} />
