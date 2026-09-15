@@ -17,6 +17,7 @@ import ReflectionsPanel from "@/components/admin/ReflectionsPanel";
 import MarkSessionsComplete from "@/components/admin/MarkSessionsComplete";
 import TrainingSessions from "@/components/admin/TrainingSessions";
 import BulkAttendanceUpload from "@/components/admin/BulkAttendanceUpload";
+import KnowledgeCheckUpload from "@/components/admin/KnowledgeCheckUpload";
 import AttendanceUploadHistory from "@/components/admin/AttendanceUploadHistory";
 import { usePageTitle } from "@/lib/usePageTitle";
 import {
@@ -211,6 +212,7 @@ const Admin = () => {
         <ImmersiveRequests refreshKey={refreshKey} />
         <ReflectionsPanel />
         <BulkAttendanceUpload />
+        <KnowledgeCheckUpload />
         <AttendanceUploadHistory refreshKey={refreshKey + bookingsRefreshKey} />
         <TrainingSessions />
         <MarkSessionsComplete />

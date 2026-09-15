@@ -1236,10 +1236,8 @@ const Training = () => {
                       </Button>
                 }
                     {selectedTool === 'copilot' && selectedLevel === 'practitioner' &&
-                <Button asChild className="flex-1 text-white" style={{ backgroundColor: currentBrandColor }}>
-                        <a href="https://learn.microsoft.com/en-us/collections/778ea8tj5ww7d2?&sharingId=96CA0696F41DC6E3" target="_blank" rel="noopener noreferrer">
-                          Access Copilot Training <ArrowRight className="ml-2 h-4 w-4" />
-                        </a>
+                <Button disabled className="flex-1">
+                        Coming soon
                       </Button>
                 }
                   </div>
