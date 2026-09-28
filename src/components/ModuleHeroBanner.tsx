@@ -59,7 +59,7 @@ const ModuleHeroBanner = ({ tool, level, brandColor, duration = '~15 min' }: Mod
           {/* Heading with gold keyword */}
           <h2 className="font-display text-3xl md:text-4xl font-bold text-white mb-4">
             {names.rest && <>{names.rest}</>}
-            <span style={{ color: '#F5A623' }}>{names.goldWord}</span>
+            <span style={{ color: 'hsl(var(--b4-flame))' }}>{names.goldWord}</span>
           </h2>
 
           {/* Info chips */}

@@ -35,8 +35,8 @@ interface DeptStat {
   pct: number;
 }
 
-const INK = "#1C1C2E";
-const GOLD = "#F5A623";
+const INK = "hsl(var(--b4-ink))";
+const GOLD = "hsl(var(--b4-flame))";
 
 const BookingsDashboard = ({ refreshKey }: { refreshKey: number }) => {
   const [bookings, setBookings] = useState<BookingRow[] | null>(null);
@@ -133,7 +133,7 @@ const BookingsDashboard = ({ refreshKey }: { refreshKey: number }) => {
   if (stats.totalBookings === 0) {
     return (
       <div className="bg-white rounded-xl border border-slate-200 p-6">
-        <h2 className="text-lg font-semibold text-[#1C1C2E] mb-2">
+        <h2 className="text-lg font-semibold text-b4-ink mb-2">
           CPD bookings · Overview
         </h2>
         <p className="text-sm text-slate-600">
@@ -151,7 +151,7 @@ const BookingsDashboard = ({ refreshKey }: { refreshKey: number }) => {
         <button
           onClick={handleDownload}
           disabled={exporting}
-          className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[#F5A623] text-[#1C1C2E] font-semibold hover:brightness-95 disabled:opacity-60"
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-b4-flame text-b4-on-flame font-semibold hover:brightness-95 disabled:opacity-60"
         >
           <Download className="w-4 h-4" />
           {exporting ? "Preparing..." : "Download PNG"}
@@ -163,8 +163,8 @@ const BookingsDashboard = ({ refreshKey }: { refreshKey: number }) => {
         className="bg-white rounded-xl border border-slate-200 overflow-hidden"
       >
         {/* Branded header */}
-        <div className="bg-[#1C1C2E] text-white px-6 py-5 relative">
-          <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-[#F5A623]" />
+        <div className="bg-b4-deep text-white px-6 py-5 relative">
+          <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-b4-flame" />
           <h2
             className="text-xl font-semibold"
             style={{ fontFamily: "Fraunces, serif" }}
@@ -197,7 +197,7 @@ const BookingsDashboard = ({ refreshKey }: { refreshKey: number }) => {
           {/* Bar chart */}
           <div>
             <div className="flex items-center justify-between mb-3 gap-3 flex-wrap">
-              <h3 className="text-sm font-semibold text-[#1C1C2E]">
+              <h3 className="text-sm font-semibold text-b4-ink">
                 {chartMetric === "totalBookings"
                   ? "Bookings per department (volume)"
                   : "Unique staff engaged per department (reach)"}
@@ -207,7 +207,7 @@ const BookingsDashboard = ({ refreshKey }: { refreshKey: number }) => {
                   onClick={() => setChartMetric("totalBookings")}
                   className={`px-3 py-1.5 font-medium ${
                     chartMetric === "totalBookings"
-                      ? "bg-[#1C1C2E] text-white"
+                      ? "bg-b4-deep text-white"
                       : "bg-white text-slate-600 hover:bg-slate-50"
                   }`}
                 >
@@ -217,7 +217,7 @@ const BookingsDashboard = ({ refreshKey }: { refreshKey: number }) => {
                   onClick={() => setChartMetric("uniquePeople")}
                   className={`px-3 py-1.5 font-medium ${
                     chartMetric === "uniquePeople"
-                      ? "bg-[#1C1C2E] text-white"
+                      ? "bg-b4-deep text-white"
                       : "bg-white text-slate-600 hover:bg-slate-50"
                   }`}
                 >
@@ -238,7 +238,7 @@ const BookingsDashboard = ({ refreshKey }: { refreshKey: number }) => {
                     type="category"
                     dataKey="department"
                     width={180}
-                    stroke="#1C1C2E"
+                    stroke="hsl(var(--b4-ink))"
                     fontSize={12}
                     interval={0}
                   />
@@ -272,7 +272,7 @@ const BookingsDashboard = ({ refreshKey }: { refreshKey: number }) => {
 
           {/* Table */}
           <div>
-            <h3 className="text-sm font-semibold text-[#1C1C2E] mb-2">
+            <h3 className="text-sm font-semibold text-b4-ink mb-2">
               Department breakdown
             </h3>
             <div className="border border-slate-200 rounded-lg overflow-hidden">
@@ -295,13 +295,13 @@ const BookingsDashboard = ({ refreshKey }: { refreshKey: number }) => {
                   {stats.deptStats.map((d) => (
                     <tr key={d.department} className="border-t border-slate-100">
                       <td className="px-3 py-2 text-slate-800">{d.department}</td>
-                      <td className="px-3 py-2 text-right font-mono text-[#1C1C2E]">
+                      <td className="px-3 py-2 text-right font-mono text-b4-ink">
                         {d.uniquePeople}
                         {d.deptStaff > 0 && (
                           <span className="text-slate-400"> / {d.deptStaff}</span>
                         )}
                       </td>
-                      <td className="px-3 py-2 text-right font-mono font-semibold text-[#1C1C2E]">
+                      <td className="px-3 py-2 text-right font-mono font-semibold text-b4-ink">
                         {d.totalBookings}
                       </td>
                       <td className="px-3 py-2 text-right text-slate-600">
@@ -330,7 +330,7 @@ const StatCard = ({
 }) => (
   <div className="rounded-lg border border-slate-200 p-3 bg-slate-50">
     <div className="text-xs uppercase tracking-wide text-slate-500">{label}</div>
-    <div className="text-2xl font-bold text-[#1C1C2E] mt-1">{value}</div>
+    <div className="text-2xl font-bold text-b4-ink mt-1">{value}</div>
     {hint && <div className="text-[11px] text-slate-500 mt-0.5">{hint}</div>}
   </div>
 );

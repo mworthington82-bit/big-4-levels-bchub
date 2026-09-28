@@ -193,7 +193,7 @@ const BookingsUploadZone = ({ onUploaded }: Props) => {
   return (
     <div className="bg-white rounded-xl border border-slate-200 p-6 space-y-4">
       <div>
-        <h2 className="text-lg font-semibold text-[#1C1C2E]">
+        <h2 className="text-lg font-semibold text-b4-ink">
           CPD bookings · Upload
         </h2>
         <p className="text-sm text-slate-600 mt-1">
@@ -220,17 +220,17 @@ const BookingsUploadZone = ({ onUploaded }: Props) => {
           if (f && !busy) handleFile(f);
         }}
         className={`rounded-xl border-2 border-dashed p-8 text-center transition-colors ${
-          dragOver ? "border-[#F5A623] bg-[#F5A623]/5" : "border-slate-300"
+          dragOver ? "border-b4-flame bg-b4-flame/5" : "border-slate-300"
         } ${busy ? "opacity-50 pointer-events-none" : ""}`}
       >
-        <UploadCloud className="w-9 h-9 mx-auto mb-2 text-[#1C1C2E]" />
+        <UploadCloud className="w-9 h-9 mx-auto mb-2 text-b4-ink" />
         <p className="text-slate-700 mb-3 text-sm">
           {busy
             ? "Uploading..."
             : "Drag and drop your bookings .csv or .xlsx here"}
         </p>
 
-        <label className="inline-flex items-center px-4 py-2 rounded-lg bg-[#F5A623] text-[#1C1C2E] font-semibold cursor-pointer hover:brightness-95">
+        <label className="inline-flex items-center px-4 py-2 rounded-lg bg-b4-flame text-b4-on-flame font-semibold cursor-pointer hover:brightness-95">
           Browse files
           <input
             type="file"

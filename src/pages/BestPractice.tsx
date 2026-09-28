@@ -23,13 +23,13 @@ const BestPractice = () => {
   usePageTitle("Best Practice");
   return (
     <AppShell>
-      <div className="min-h-full bg-[#F4F6FB]">
+      <div className="min-h-full bg-b4-wash">
         <div className="container mx-auto px-4 py-8 md:py-10 max-w-5xl space-y-8">
           <header className="bg-white rounded-2xl border border-border shadow-sm p-6 md:p-8">
-            <h1 className="font-display font-bold text-3xl md:text-4xl text-[#1F3864] mb-2">
+            <h1 className="font-display font-bold text-3xl md:text-4xl text-b4-strong mb-2">
               Best Practice
             </h1>
-            <p className="text-[#5F6B7D] text-base md:text-lg">
+            <p className="text-b4-muted text-base md:text-lg">
               Ideas and inspiration shared by our Big 4 Leaders — open to all staff.
             </p>
           </header>
@@ -49,7 +49,7 @@ const BestPractice = () => {
                     {t.name}
                   </div>
                   <div className="p-5 flex-1 flex flex-col gap-4">
-                    <p className="text-sm md:text-base text-[#1F3864]">
+                    <p className="text-sm md:text-base text-b4-strong">
                       Ideas and classroom examples for {t.name} shared by Bradford
                       College Leaders.
                     </p>
@@ -58,7 +58,7 @@ const BestPractice = () => {
                         href={url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="self-start inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-[#1F3864] text-white text-sm font-semibold hover:bg-[#162a4d] transition-colors"
+                        className="self-start inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-b4-deep text-white text-sm font-semibold hover:bg-[#162a4d] transition-colors"
                       >
                         Open Padlet
                         <IconExternalLink size={16} stroke={2} />

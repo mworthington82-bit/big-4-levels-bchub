@@ -117,7 +117,7 @@ const KnowledgeCheckUpload = () => {
   return (
     <section className="space-y-4">
       <header>
-        <h2 className="text-xl font-bold text-[#1F3864]">Knowledge check results</h2>
+        <h2 className="text-xl font-bold text-b4-strong">Knowledge check results</h2>
         <p className="text-sm text-slate-600">
           Choose the module, upload the results spreadsheet, tick who passed, then submit. Ticked
           staff have that module marked as fully completed.
@@ -145,7 +145,7 @@ const KnowledgeCheckUpload = () => {
             <label
               className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg font-semibold cursor-pointer ${
                 moduleId
-                  ? "bg-[#F5A623] text-[#1F3864] hover:brightness-95"
+                  ? "bg-b4-flame text-b4-on-flame hover:brightness-95"
                   : "bg-slate-200 text-slate-500 pointer-events-none"
               }`}
             >
@@ -210,7 +210,7 @@ const KnowledgeCheckUpload = () => {
           <>
             <div className="border border-slate-200 rounded-lg overflow-hidden">
               <table className="w-full text-sm">
-                <thead className="bg-[#F4F6FB] text-[#1F3864]">
+                <thead className="bg-b4-wash text-b4-strong">
                   <tr>
                     <th className="text-left px-3 py-2 w-10"></th>
                     <th className="text-left px-3 py-2">Name</th>

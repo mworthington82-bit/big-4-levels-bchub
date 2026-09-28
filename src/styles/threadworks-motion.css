@@ -1,0 +1,65 @@
+/* ThreadWorks family motion & softness (kit v4) — references/motion-and-softness.md
+   Import once, globally. Reads host colours through variables; never sets a palette.
+   Values are the hub's real ones (BradfordThreadWorks/app/src/styles/global.css). */
+:root {
+  --tw-ease-soft: cubic-bezier(0.22, 1, 0.36, 1); /* arrive / lift */
+  --tw-ease-loop: ease-in-out;                     /* repeat */
+  --tw-dur-quick: 150ms;
+  --tw-dur-lift: 220ms;
+  --tw-dur-settle: 350ms;
+  --tw-dur-slow: 700ms;
+  --tw-dur-thread: 2200ms;
+  --tw-dur-breathe: 1500ms;
+  --tw-show-delay: 300ms;
+
+  /* Shadow ladder — ink-tinted, one step at a time */
+  --tw-shadow-rest: 0 1px 2px rgba(42, 33, 24, 0.1), 0 4px 14px rgba(42, 33, 24, 0.08);
+  --tw-shadow-lift: 0 2px 4px rgba(42, 33, 24, 0.14), 0 12px 28px rgba(42, 33, 24, 0.18);
+  --tw-shadow-float: 0 20px 50px rgba(42, 33, 24, 0.22);
+  --tw-shadow-pulled: 0 14px 30px -20px rgba(42, 33, 24, 0.7);
+  --tw-shadow-object: drop-shadow(0 12px 14px rgba(42, 33, 24, 0.18));
+}
+
+/* Rise — the one entrance */
+@keyframes tw-rise {
+  from { opacity: 0; transform: translateY(6px) scale(0.98); }
+  to   { opacity: 1; transform: none; }
+}
+.tw-rise { animation: tw-rise var(--tw-dur-settle) var(--tw-ease-soft) both; }
+
+/* Stagger: ≤6 items, 40ms apart; the rest arrive together */
+.tw-stagger > * { animation: tw-rise var(--tw-dur-settle) var(--tw-ease-soft) both; }
+.tw-stagger > :nth-child(2) { animation-delay: 40ms; }
+.tw-stagger > :nth-child(3) { animation-delay: 80ms; }
+.tw-stagger > :nth-child(4) { animation-delay: 120ms; }
+.tw-stagger > :nth-child(5) { animation-delay: 160ms; }
+.tw-stagger > :nth-child(n + 6) { animation-delay: 200ms; }
+
+/* Lift — interactive cards/tiles (pair hover with focus-visible) */
+.tw-lift {
+  box-shadow: var(--tw-shadow-rest);
+  transition: transform var(--tw-dur-lift) var(--tw-ease-soft),
+              box-shadow var(--tw-dur-lift) var(--tw-ease-soft);
+}
+.tw-lift:hover, .tw-lift:focus-visible {
+  transform: translateY(-2px);
+  box-shadow: var(--tw-shadow-lift);
+}
+
+/* Breathe — skeleton blocks (replaces animate-pulse) */
+@keyframes tw-breathe-skeleton {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.55; }
+}
+.tw-skeleton { animation: tw-breathe-skeleton var(--tw-dur-breathe) var(--tw-ease-loop) infinite; }
+
+/* Objects — PNG/WebP from the tool's material library */
+.tw-object { filter: var(--tw-shadow-object); pointer-events: none; user-select: none; }
+
+/* Reduced-motion contract (Tier 1). Hosts with an in-app toggle add their own
+   selector here too, e.g. html[data-reduce-motion] … */
+@media (prefers-reduced-motion: reduce) {
+  .tw-rise, .tw-stagger > *, .tw-skeleton { animation: none !important; }
+  .tw-lift { transition: none !important; }
+  .tw-lift:hover, .tw-lift:focus-visible { transform: none; }
+}

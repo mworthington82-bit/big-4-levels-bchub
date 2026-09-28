@@ -107,20 +107,20 @@ const RecentAttendanceBanner = ({ email, profile, completedModuleIds }: Props) =
 
   return (
     <section className="container mx-auto px-4 pt-6 md:pt-8 max-w-6xl">
-      <div className="relative bg-[#FBF3E1] border border-[#F0DDA8] border-l-4 border-l-[#F5A623] rounded-2xl p-5 md:p-6 shadow-sm">
+      <div className="relative bg-[#FBF3E1] border border-[#F0DDA8] border-l-4 border-l-b4-flame rounded-2xl p-5 md:p-6 shadow-sm">
         <button
           onClick={handleDismiss}
           aria-label="Dismiss"
-          className="absolute top-3 right-3 text-[#8A6A1F] hover:text-[#1F3864] transition-colors"
+          className="absolute top-3 right-3 text-[#8A6A1F] hover:text-b4-strong transition-colors"
         >
           <IconX size={18} stroke={2} />
         </button>
         <div className="flex items-start gap-3 pr-6">
-          <div className="w-10 h-10 rounded-xl bg-[#F5A623]/15 flex items-center justify-center flex-shrink-0">
+          <div className="w-10 h-10 rounded-xl bg-b4-flame/15 flex items-center justify-center flex-shrink-0">
             <IconSparkles size={22} stroke={1.75} className="text-[#B77A00]" />
           </div>
           <div className="flex-1 min-w-0">
-            <h2 className="font-display font-bold text-[#1F3864] text-lg md:text-xl leading-snug">
+            <h2 className="font-display font-bold text-b4-strong text-lg md:text-xl leading-snug">
               Well done, {firstName(profile.name)} — you recently attended {sessionText}.
             </h2>
             <p className="mt-1.5 text-[#3A3A4A] text-sm md:text-base">
@@ -132,7 +132,7 @@ const RecentAttendanceBanner = ({ email, profile, completedModuleIds }: Props) =
                 e.preventDefault();
                 document.getElementById("pathway")?.scrollIntoView({ behavior: "smooth", block: "start" });
               }}
-              className="mt-3 inline-flex items-center gap-1.5 text-sm font-semibold text-[#1F3864] hover:underline"
+              className="mt-3 inline-flex items-center gap-1.5 text-sm font-semibold text-b4-strong hover:underline"
             >
               Continue my journey
               <IconArrowRight size={14} stroke={2.25} />

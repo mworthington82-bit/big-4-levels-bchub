@@ -43,17 +43,17 @@ const PendingEvidencePanel = () => {
 
   return (
     <section className="space-y-4">
-      <h2 className="text-xl font-bold text-[#1F3864]">Pending evidence posts</h2>
+      <h2 className="text-xl font-bold text-b4-strong">Pending evidence posts</h2>
       {loading ? (
-        <p className="text-sm text-[#5F6B7D]">Loading…</p>
+        <p className="text-sm text-b4-muted">Loading…</p>
       ) : posts.length === 0 ? (
-        <div className="bg-white rounded-xl border border-[#D0D7E2] p-6 text-center text-[#5F6B7D]">
+        <div className="bg-white rounded-xl border border-b4-line p-6 text-center text-b4-muted">
           No posts awaiting review.
         </div>
       ) : (
-        <div className="bg-white rounded-xl border border-[#D0D7E2] overflow-x-auto">
+        <div className="bg-white rounded-xl border border-b4-line overflow-x-auto">
           <table className="w-full text-sm">
-            <thead className="bg-[#F4F6FB] text-[#1F3864] text-left">
+            <thead className="bg-b4-wash text-b4-strong text-left">
               <tr>
                 <th className="px-4 py-2 font-semibold">Name</th>
                 <th className="px-4 py-2 font-semibold">Department</th>
@@ -65,7 +65,7 @@ const PendingEvidencePanel = () => {
             </thead>
             <tbody>
               {posts.map((p) => (
-                <tr key={p.id} className="border-t border-[#EEF1F6] text-[#1F3864]">
+                <tr key={p.id} className="border-t border-b4-wash-2 text-b4-strong">
                   <td className="px-4 py-3">{p.staff_name ?? "—"}</td>
                   <td className="px-4 py-3">{p.department ?? "—"}</td>
                   <td className="px-4 py-3">{p.tool}</td>

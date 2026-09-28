@@ -78,7 +78,7 @@ const BulkPanel = () => {
   return (
     <div className="bg-white rounded-xl border border-slate-200 p-6 space-y-4">
       <div>
-        <h3 className="text-base font-semibold text-[#1F3864]">
+        <h3 className="text-base font-semibold text-b4-strong">
           Option A — Bulk completion by session
         </h3>
         <p className="text-sm text-slate-500">
@@ -126,8 +126,8 @@ const BulkPanel = () => {
       )}
 
       {result && (
-        <div className="text-sm bg-[#F4F6FB] border border-slate-200 rounded-lg p-4 space-y-2">
-          <div className="font-semibold text-[#1F3864]">
+        <div className="text-sm bg-b4-wash border border-slate-200 rounded-lg p-4 space-y-2">
+          <div className="font-semibold text-b4-strong">
             {result.marked} staff marked complete. {result.notFound.length} emails not found in
             the system.
           </div>
@@ -219,7 +219,7 @@ const IndividualPanel = () => {
   return (
     <div className="bg-white rounded-xl border border-slate-200 p-6 space-y-4">
       <div>
-        <h3 className="text-base font-semibold text-[#1F3864]">
+        <h3 className="text-base font-semibold text-b4-strong">
           Option B — Individual staff completion
         </h3>
         <p className="text-sm text-slate-500">
@@ -251,11 +251,11 @@ const IndividualPanel = () => {
                     className="w-full flex items-center justify-between gap-3 px-4 py-3 text-left hover:bg-slate-50"
                   >
                     <div className="flex items-center gap-3 min-w-0">
-                      <div className="w-8 h-8 rounded-full bg-[#1F3864]/10 flex items-center justify-center flex-shrink-0">
-                        <UserIcon className="w-4 h-4 text-[#1F3864]" />
+                      <div className="w-8 h-8 rounded-full bg-b4-deep/10 flex items-center justify-center flex-shrink-0">
+                        <UserIcon className="w-4 h-4 text-b4-strong" />
                       </div>
                       <div className="min-w-0">
-                        <div className="font-medium text-[#1F3864] truncate">
+                        <div className="font-medium text-b4-strong truncate">
                           {r.name ?? "(no name)"}
                         </div>
                         <div className="text-xs text-slate-500 truncate">
@@ -279,13 +279,13 @@ const IndividualPanel = () => {
               setSelected(null);
               setCompletedIds([]);
             }}
-            className="text-sm text-[#1F3864] underline"
+            className="text-sm text-b4-strong underline"
           >
             ← Back to search
           </button>
 
-          <div className="bg-[#F4F6FB] rounded-lg p-4">
-            <div className="font-semibold text-[#1F3864]">
+          <div className="bg-b4-wash rounded-lg p-4">
+            <div className="font-semibold text-b4-strong">
               {selected.name ?? "(no name)"}
             </div>
             <div className="text-sm text-slate-600">
@@ -303,7 +303,7 @@ const IndividualPanel = () => {
                   className="flex items-center justify-between gap-3 border border-slate-200 rounded-lg px-4 py-3"
                 >
                   <div className="min-w-0">
-                    <div className="text-sm font-medium text-[#1F3864]">{m.label}</div>
+                    <div className="text-sm font-medium text-b4-strong">{m.label}</div>
                     {done && (
                       <div className="text-xs text-green-700 inline-flex items-center gap-1 mt-0.5">
                         <CheckCircle2 className="w-3 h-3" /> Complete
@@ -332,7 +332,7 @@ const MarkSessionsComplete = () => {
   return (
     <section className="space-y-4">
       <header>
-        <h2 className="text-xl font-bold text-[#1F3864]">
+        <h2 className="text-xl font-bold text-b4-strong">
           Mark sessions complete — Big 4 Day
         </h2>
         <p className="text-sm text-slate-600">

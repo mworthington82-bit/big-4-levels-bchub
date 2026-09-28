@@ -186,7 +186,7 @@ const Landing = () => {
 
       <main>
         {/* Dark Hero Section */}
-        <section className="relative bg-[#1C1C2E] overflow-hidden">
+        <section className="relative bg-b4-deep overflow-hidden">
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_hsl(39_90%_56%_/_0.15)_0%,_transparent_70%)]" />
           
           <div className="container mx-auto px-4 py-16 md:py-24 relative z-10">
@@ -196,7 +196,7 @@ const Landing = () => {
               </div>
 
               <h1 className="font-display text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6 animate-fade-in leading-tight">
-                The Big 4: <span className="text-[#F5A623]">Level Up</span>
+                The Big 4: <span className="text-b4-flame-text">Level Up</span>
               </h1>
 
               <StudentQuoteCarousel />
@@ -217,7 +217,7 @@ const Landing = () => {
                   <button
                     onClick={handleSignIn}
                     disabled={signingIn}
-                    className="inline-flex items-center justify-center min-h-11 px-8 py-4 rounded-xl bg-[#F5A623] text-[#1F3864] font-bold text-base hover:bg-[#F5A623]/90 transition-colors disabled:opacity-60 shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white w-full sm:w-[280px]"
+                    className="inline-flex items-center justify-center min-h-11 px-8 py-4 rounded-xl bg-b4-flame text-b4-on-flame font-bold text-base hover:bg-b4-flame/90 transition-colors disabled:opacity-60 shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white w-full sm:w-[280px]"
                   >
                     {signingIn ? "Redirecting…" : "Sign in with Microsoft"}
                   </button>
@@ -241,7 +241,7 @@ const Landing = () => {
                       <>
                         <button
                           onClick={() => navigate("/new/journey")}
-                          className="inline-flex items-center justify-center min-h-11 px-8 py-4 rounded-xl bg-[#F5A623] text-[#1F3864] font-bold text-base hover:bg-[#F5A623]/90 transition-colors shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white w-full sm:w-[280px]"
+                          className="inline-flex items-center justify-center min-h-11 px-8 py-4 rounded-xl bg-b4-flame text-b4-on-flame font-bold text-base hover:bg-b4-flame/90 transition-colors shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white w-full sm:w-[280px]"
                         >
                           Go to My Journey
                         </button>
@@ -255,7 +255,7 @@ const Landing = () => {
                     ) : (
                       <button
                         onClick={() => navigate("/bookings")}
-                        className="inline-flex items-center justify-center min-h-11 px-8 py-4 rounded-xl bg-[#F5A623] text-[#1F3864] font-bold text-base hover:bg-[#F5A623]/90 transition-colors shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white w-full sm:w-[280px]"
+                        className="inline-flex items-center justify-center min-h-11 px-8 py-4 rounded-xl bg-b4-flame text-b4-on-flame font-bold text-base hover:bg-b4-flame/90 transition-colors shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white w-full sm:w-[280px]"
                       >
                         Go to my bookings
                       </button>
@@ -280,7 +280,7 @@ const Landing = () => {
 
           {/* Warm Welcome Card */}
           <div className="max-w-4xl mx-auto mb-12 animate-fade-in">
-            <div className="bg-card rounded-3xl shadow-[var(--shadow-card)] border-l-4 border-l-[#F5A623] border border-border p-8 md:p-10 text-left">
+            <div className="bg-card rounded-3xl shadow-[var(--shadow-card)] border-l-4 border-l-b4-flame border border-border p-8 md:p-10 text-left">
               <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground mb-4">
                 What is The Big 4?
               </h2>
@@ -306,7 +306,7 @@ const Landing = () => {
                         <div className="flex items-start gap-2">
                           <img src={emblemExplorer} alt="Explorer" className="h-5 w-5 mt-0.5 flex-shrink-0" />
                           <div>
-                            <span className="text-xs font-semibold text-[#F5A623]">Explorer</span>
+                            <span className="text-xs font-semibold text-b4-flame-text">Explorer</span>
                             <p className="text-xs text-muted-foreground leading-relaxed">{toolLevelInfo[chip.key].explorer}</p>
                           </div>
                         </div>

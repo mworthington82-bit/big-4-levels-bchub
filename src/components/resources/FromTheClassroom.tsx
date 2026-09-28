@@ -37,30 +37,30 @@ const FromTheClassroom = () => {
   return (
     <section className="space-y-4">
       <header>
-        <h2 className="font-bold text-[#1F3864] text-lg md:text-xl">From the classroom</h2>
-        <p className="text-sm text-[#5F6B7D]">Examples shared by Bradford College Leaders</p>
+        <h2 className="font-bold text-b4-strong text-lg md:text-xl">From the classroom</h2>
+        <p className="text-sm text-b4-muted">Examples shared by Bradford College Leaders</p>
       </header>
       <div className="grid gap-4 grid-cols-1 md:grid-cols-3">
         {posts.map((p) => (
           <article
             key={p.id}
-            className="bg-white rounded-xl border border-[#D0D7E2] overflow-hidden flex flex-col"
+            className="bg-white rounded-xl border border-b4-line overflow-hidden flex flex-col"
           >
-            <div className="h-1" style={{ backgroundColor: TOOL_COLOUR[p.tool] ?? "#1F3864" }} />
+            <div className="h-1" style={{ backgroundColor: TOOL_COLOUR[p.tool] ?? "hsl(var(--b4-deep))" }} />
             <div className="p-4 flex-1 flex flex-col gap-2">
               <span
                 className="self-start inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-semibold text-white"
-                style={{ backgroundColor: TOOL_COLOUR[p.tool] ?? "#1F3864" }}
+                style={{ backgroundColor: TOOL_COLOUR[p.tool] ?? "hsl(var(--b4-deep))" }}
               >
                 {p.tool}
               </span>
-              <h3 className="font-bold text-[15px] text-[#1F3864] leading-tight">{p.title}</h3>
-              <p className="text-[12px] text-[#5F6B7D]">
+              <h3 className="font-bold text-[15px] text-b4-strong leading-tight">{p.title}</h3>
+              <p className="text-[12px] text-b4-muted">
                 {p.staff_name ?? "Bradford College Leader"}
                 {p.department ? ` · ${p.department}` : ""}
               </p>
-              <p className="text-[13px] text-[#1F3864] line-clamp-3">{p.what_i_did}</p>
-              <p className="text-[13px] text-[#1F3864] line-clamp-2 flex gap-1.5">
+              <p className="text-[13px] text-b4-strong line-clamp-3">{p.what_i_did}</p>
+              <p className="text-[13px] text-b4-strong line-clamp-2 flex gap-1.5">
                 <IconHeartFilled size={12} className="text-[#27AE60] mt-1 flex-shrink-0" />
                 <span>{p.learner_impact}</span>
               </p>
@@ -70,7 +70,7 @@ const FromTheClassroom = () => {
                 </p>
               )}
             </div>
-            <div className="px-4 py-2 border-t border-[#EEF1F6] text-[11px] text-[#5F6B7D]">
+            <div className="px-4 py-2 border-t border-b4-wash-2 text-[11px] text-b4-muted">
               {formatDateUK(p.created_at)}
             </div>
           </article>

@@ -73,7 +73,7 @@ const Privacy = () => {
             <p className="text-muted-foreground">
               You can request access to, correction of, or deletion of your personal data
               by emailing the Bradford College Data Protection Officer at{" "}
-              <a href="mailto:dpo@bradfordcollege.ac.uk" className="text-[#1F3864] font-semibold underline">
+              <a href="mailto:dpo@bradfordcollege.ac.uk" className="text-b4-strong font-semibold underline">
                 dpo@bradfordcollege.ac.uk
               </a>.
             </p>

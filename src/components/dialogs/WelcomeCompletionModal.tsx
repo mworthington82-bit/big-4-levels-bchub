@@ -133,24 +133,24 @@ const WelcomeCompletionModal = ({ profile }: Props) => {
         <button
           type="button"
           onClick={() => setOpen(false)}
-          className="absolute right-4 top-4 z-10 inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/95 text-[#1F3864] shadow-sm hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F5A623]"
+          className="absolute right-4 top-4 z-10 inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/95 text-b4-strong shadow-sm hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-b4-flame"
           aria-label="Close welcome message"
         >
           ×
         </button>
 
         {/* Gold header bar */}
-        <div style={{ height: 10, background: "#F5A623" }} />
+        <div style={{ height: 10, background: "hsl(var(--b4-flame))" }} />
 
         <div className="flex-1 overflow-y-auto">
           {/* Navy heading section */}
-          <div style={{ background: "#1F3864", padding: "36px 40px 28px", color: "#fff" }}>
+          <div style={{ background: "hsl(var(--b4-deep))", padding: "36px 40px 28px", color: "#fff" }}>
             <h2
               id="welcome-modal-heading"
               className="font-bold"
               style={{ fontSize: 28, lineHeight: 1.25 }}
             >
-              Well done — you have completed your <span style={{ color: "#F5A623" }}>Big 4 self-assessment!</span>
+              Well done — you have completed your <span style={{ color: "hsl(var(--b4-flame))" }}>Big 4 self-assessment!</span>
             </h2>
             <div className="mt-5 flex items-center gap-4">
               <img
@@ -177,7 +177,7 @@ const WelcomeCompletionModal = ({ profile }: Props) => {
               style={{
                 fontSize: 12,
                 letterSpacing: "0.1em",
-                color: "#1F3864",
+                color: "hsl(var(--b4-strong))",
                 fontWeight: 700,
                 marginBottom: 12,
               }}
@@ -199,7 +199,7 @@ const WelcomeCompletionModal = ({ profile }: Props) => {
           {/* Fixed copy */}
           <div
             style={{
-              background: "#F4F6FB",
+              background: "hsl(var(--b4-wash))",
               padding: "28px 40px",
               fontSize: 16,
               lineHeight: 1.7,
@@ -221,7 +221,7 @@ const WelcomeCompletionModal = ({ profile }: Props) => {
               For any additional support, please contact{" "}
               <a
                 href="mailto:m.worthington@bradfordcollege.ac.uk"
-                style={{ color: "#1F3864", fontWeight: 700 }}
+                style={{ color: "hsl(var(--b4-strong))", fontWeight: 700 }}
                 className="underline"
               >
                 m.worthington@bradfordcollege.ac.uk
@@ -236,8 +236,8 @@ const WelcomeCompletionModal = ({ profile }: Props) => {
             onClick={handleStartJourney}
             className="w-full font-bold"
             style={{
-              background: "#F5A623",
-              color: "#1F3864",
+              background: "hsl(var(--b4-flame))",
+              color: "hsl(var(--b4-strong))",
               fontSize: 18,
               borderRadius: 12,
               padding: "16px 20px",

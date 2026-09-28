@@ -89,8 +89,8 @@ const ReflectionsPanel = () => {
     <details className="bg-white border border-slate-200 rounded-2xl group">
       <summary className="cursor-pointer list-none p-6 flex items-center justify-between gap-2">
         <div className="flex items-center gap-2">
-          <MessageSquareQuote className="w-5 h-5 text-[#1F3864]" />
-          <h2 className="text-xl font-semibold text-[#1F3864]">
+          <MessageSquareQuote className="w-5 h-5 text-b4-strong" />
+          <h2 className="text-xl font-semibold text-b4-strong">
             Reflection wall{" "}
             <span className="text-slate-400 font-normal text-base">({rows.length})</span>
           </h2>

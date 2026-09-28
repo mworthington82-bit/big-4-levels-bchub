@@ -14,8 +14,11 @@ export default {
     },
     extend: {
       fontFamily: {
-        display: ['Calibri', 'Carlito', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'sans-serif'],
-        sans: ['Calibri', 'Carlito', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'sans-serif'],
+        // ThreadWorks house faces; Calibri/Carlito stay as fallbacks. The accessibility
+        // panel's Arial / OpenDyslexic / Calibri choices override these (index.css).
+        display: ['"Space Grotesk"', 'Calibri', 'Carlito', 'system-ui', 'sans-serif'],
+        sans: ['"Space Grotesk"', 'Calibri', 'Carlito', 'system-ui', 'sans-serif'],
+        serif: ['Fraunces', 'Georgia', 'serif'],
       },
       colors: {
         border: "hsl(var(--border))",
@@ -60,6 +63,23 @@ export default {
           "accent-foreground": "hsl(var(--sidebar-accent-foreground))",
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
+        },
+        b4: {
+          strong: "hsl(var(--b4-strong) / <alpha-value>)",
+          ink: "hsl(var(--b4-ink) / <alpha-value>)",
+          deep: "hsl(var(--b4-deep) / <alpha-value>)",
+          "deep-hover": "hsl(var(--b4-deep-hover) / <alpha-value>)",
+          flame: "hsl(var(--b4-flame) / <alpha-value>)",
+          "on-flame": "hsl(var(--b4-on-flame) / <alpha-value>)",
+          "flame-text": "hsl(var(--b4-flame-text) / <alpha-value>)",
+          "flame-ink": "hsl(var(--b4-flame-ink) / <alpha-value>)",
+          "flame-soft": "hsl(var(--b4-flame-soft) / <alpha-value>)",
+          line: "hsl(var(--b4-line) / <alpha-value>)",
+          muted: "hsl(var(--b4-muted) / <alpha-value>)",
+          wash: "hsl(var(--b4-wash) / <alpha-value>)",
+          "wash-2": "hsl(var(--b4-wash-2) / <alpha-value>)",
+          "wash-3": "hsl(var(--b4-wash-3) / <alpha-value>)",
+          navy: "hsl(var(--b4-navy) / <alpha-value>)",
         },
         tool: {
           teams: "hsl(var(--tool-teams))",
@@ -126,11 +146,24 @@ export default {
           "0%": { transform: "translateY(0px)" },
           "100%": { transform: "translateY(-4px)" },
         },
+        // ThreadWorks "Rise": the one entrance (kit v4). Also backs the long-used
+        // but previously undefined `animate-fade-in`.
+        "tw-rise": {
+          from: { opacity: "0", transform: "translateY(6px) scale(0.98)" },
+          to: { opacity: "1", transform: "none" },
+        },
+      },
+      boxShadow: {
+        card: "var(--shadow-card)",
+        hover: "var(--shadow-hover)",
+        lift: "var(--shadow-lift)",
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         "lift": "lift 0.2s ease-out forwards",
+        "tw-rise": "tw-rise 350ms cubic-bezier(0.22, 1, 0.36, 1) both",
+        "fade-in": "tw-rise 350ms cubic-bezier(0.22, 1, 0.36, 1) both",
       },
     },
   },

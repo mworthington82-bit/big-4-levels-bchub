@@ -348,7 +348,7 @@ const Inclusion = () => {
       </header>
 
       {/* Hero */}
-      <section className="relative bg-[#1F3864] overflow-hidden">
+      <section className="relative bg-b4-deep overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_hsl(0_0%_100%_/_0.08)_0%,_transparent_60%)]" />
         <div className="container mx-auto px-4 py-14 md:py-20 relative z-10">
           <div className="max-w-3xl mx-auto text-center">

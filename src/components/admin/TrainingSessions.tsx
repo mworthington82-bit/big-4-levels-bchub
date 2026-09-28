@@ -141,8 +141,8 @@ const TrainingSessions = () => {
   return (
     <section className="bg-white border border-slate-200 rounded-2xl p-6">
       <header className="mb-4 flex items-center gap-2">
-        <Calendar className="w-5 h-5 text-[#1F3864]" />
-        <h2 className="text-xl font-semibold text-[#1F3864]">Training Sessions</h2>
+        <Calendar className="w-5 h-5 text-b4-strong" />
+        <h2 className="text-xl font-semibold text-b4-strong">Training Sessions</h2>
       </header>
       <p className="text-sm text-slate-600 mb-4">
         Create an in-person session and give attendees the bypass password. Staff on the
@@ -178,7 +178,7 @@ const TrainingSessions = () => {
           <Label htmlFor="ts-active" className="cursor-pointer">Active</Label>
         </div>
         <div className="md:col-span-2 flex gap-2">
-          <Button type="submit" disabled={busy} className="bg-[#1F3864] hover:bg-[#1F3864]/90">
+          <Button type="submit" disabled={busy} className="bg-b4-deep hover:bg-b4-deep/90">
             {busy ? "Saving…" : editingId ? "Save changes" : "Create session"}
           </Button>
           {editingId && (

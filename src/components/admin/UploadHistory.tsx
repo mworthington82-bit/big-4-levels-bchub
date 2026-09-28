@@ -27,7 +27,7 @@ const UploadHistory = ({ refreshKey }: { refreshKey: number }) => {
   return (
     <details className="bg-white rounded-xl border border-slate-200 group">
       <summary className="cursor-pointer list-none p-6 flex items-center justify-between gap-2">
-        <h2 className="text-lg font-semibold text-[#1F3864]">
+        <h2 className="text-lg font-semibold text-b4-strong">
           Self-assessment upload history{" "}
           <span className="text-slate-400 font-normal">({rows.length})</span>
         </h2>

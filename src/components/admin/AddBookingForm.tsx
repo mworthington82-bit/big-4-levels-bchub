@@ -377,8 +377,8 @@ const AddBookingForm = () => {
   return (
     <section className="bg-white border border-slate-200 rounded-2xl p-6">
       <header className="mb-4 flex items-center gap-2">
-        <Calendar className="w-5 h-5 text-[#1F3864]" />
-        <h2 className="text-xl font-semibold text-[#1F3864]">Training bookings</h2>
+        <Calendar className="w-5 h-5 text-b4-strong" />
+        <h2 className="text-xl font-semibold text-b4-strong">Training bookings</h2>
       </header>
       <p className="text-sm text-slate-600 mb-4">
         Posts a session to the Bookings page for staff currently at the chosen level who have not
@@ -415,7 +415,7 @@ const AddBookingForm = () => {
           <Input id="b-url" type="url" value={url} onChange={(e) => setUrl(e.target.value)} placeholder="https://outlook.office365.com/owa/calendar/..." />
         </div>
         <div className="md:col-span-2 flex gap-2">
-          <Button type="submit" disabled={busy} className="bg-[#1F3864] hover:bg-[#1F3864]/90">
+          <Button type="submit" disabled={busy} className="bg-b4-deep hover:bg-b4-deep/90">
             {busy ? "Saving…" : editingId ? "Save changes" : "Submit training"}
           </Button>
           {editingId && <Button type="button" variant="outline" onClick={reset}>Cancel</Button>}
@@ -443,7 +443,7 @@ const AddBookingForm = () => {
                 </div>
                 <div className="flex items-center gap-3 flex-shrink-0 flex-wrap">
                   {bookingCounts[b.name] > 0 && (
-                    <span className="inline-flex items-center gap-1 rounded-full bg-[#1F3864]/10 text-[#1F3864] text-xs font-semibold px-2 py-1">
+                    <span className="inline-flex items-center gap-1 rounded-full bg-b4-deep/10 text-b4-strong text-xs font-semibold px-2 py-1">
                       <Users className="w-3 h-3" />
                       {bookingCounts[b.name]} booked
                     </span>

@@ -50,7 +50,7 @@ const Profile = () => {
               <div className="flex flex-col items-center text-center mb-6">
                 <div
                   className="w-16 h-16 rounded-full flex items-center justify-center text-white text-xl font-semibold mb-3"
-                  style={{ background: "#1F3864", border: "1.5px solid rgba(255,255,255,0.3)" }}
+                  style={{ background: "hsl(var(--b4-deep))", border: "1.5px solid rgba(255,255,255,0.3)" }}
                   aria-hidden
                 >
                   {initials}
@@ -87,7 +87,7 @@ const Profile = () => {
 
               <button
                 onClick={() => navigate("/journey")}
-                className="mt-6 w-full inline-flex items-center justify-center gap-2 min-h-[44px] rounded-full bg-[#1F3864] text-white text-sm font-semibold hover:bg-[#1F3864]/90 transition-colors"
+                className="mt-6 w-full inline-flex items-center justify-center gap-2 min-h-[44px] rounded-full bg-b4-deep text-white text-sm font-semibold hover:bg-b4-deep/90 transition-colors"
               >
                 Back to my journey <ArrowRight className="h-4 w-4" />
               </button>

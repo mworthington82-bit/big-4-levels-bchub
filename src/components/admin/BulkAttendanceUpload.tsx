@@ -149,9 +149,9 @@ const BulkAttendanceUpload = () => {
   return (
     <section className="bg-white border border-slate-200 rounded-2xl p-6 space-y-4">
       <header className="flex items-center gap-2">
-        <FileSpreadsheet className="w-5 h-5 text-[#1F3864]" />
+        <FileSpreadsheet className="w-5 h-5 text-b4-strong" />
         <div>
-          <h2 className="text-xl font-semibold text-[#1F3864]">Upload attendance</h2>
+          <h2 className="text-xl font-semibold text-b4-strong">Upload attendance</h2>
           <p className="text-sm text-slate-600">
             Pick the module, then upload a spreadsheet with a single column headed
             "Email". Raw Microsoft Teams attendance reports (.csv downloaded straight
@@ -164,7 +164,7 @@ const BulkAttendanceUpload = () => {
 
       {!done && (
         <div className="bg-slate-50 border border-slate-200 rounded-lg p-4 space-y-2">
-          <label className="block text-sm font-semibold text-[#1F3864]">
+          <label className="block text-sm font-semibold text-b4-strong">
             1. Which module is this attendance for?
           </label>
           <select
@@ -183,7 +183,7 @@ const BulkAttendanceUpload = () => {
             (register grids, the full Forms export) keep their own sessions.
           </p>
           {file && !dryRun && !parsing && parsedRows.some((r) => !r.module_id) && assignedModule && (
-            <Button size="sm" onClick={applyAssignedModule} className="bg-[#1F3864] hover:bg-[#1F3864]/90">
+            <Button size="sm" onClick={applyAssignedModule} className="bg-b4-deep hover:bg-b4-deep/90">
               Preview ({parsedRows.length} row{parsedRows.length === 1 ? "" : "s"})
             </Button>
           )}
@@ -191,9 +191,9 @@ const BulkAttendanceUpload = () => {
       )}
 
       {!file && (
-        <label className="block border-2 border-dashed border-slate-300 rounded-xl p-8 text-center cursor-pointer hover:border-[#1F3864] transition">
+        <label className="block border-2 border-dashed border-slate-300 rounded-xl p-8 text-center cursor-pointer hover:border-b4-strong transition">
           <Upload className="w-8 h-8 mx-auto text-slate-400 mb-2" />
-          <div className="font-medium text-[#1F3864]">2. Drop a spreadsheet or click to browse</div>
+          <div className="font-medium text-b4-strong">2. Drop a spreadsheet or click to browse</div>
           <div className="text-xs text-slate-500 mt-1">.xlsx, .xls, .csv · one column headed "Email" is enough, or a raw Teams attendance report</div>
           <input
             type="file"
@@ -210,7 +210,7 @@ const BulkAttendanceUpload = () => {
       {file && (
         <div className="flex items-center justify-between gap-3 bg-slate-50 border border-slate-200 rounded-lg px-4 py-3">
           <div className="text-sm">
-            <div className="font-medium text-[#1F3864]">{file.name}</div>
+            <div className="font-medium text-b4-strong">{file.name}</div>
             <div className="text-xs text-slate-500">
               {parsing
                 ? "Reading…"
@@ -258,7 +258,7 @@ const BulkAttendanceUpload = () => {
           </div>
 
           <div className="bg-slate-50 border border-slate-200 rounded-lg p-4">
-            <div className="text-sm font-semibold text-[#1F3864] mb-2">Sessions in this file</div>
+            <div className="text-sm font-semibold text-b4-strong mb-2">Sessions in this file</div>
             <ul className="text-sm text-slate-700 space-y-1">
               {grouped.map(([mod, n]) => (
                 <li key={mod} className="flex justify-between">
@@ -304,7 +304,7 @@ const BulkAttendanceUpload = () => {
 
           {externalExcluded.length > 0 && (
             <details className="bg-slate-50 border border-slate-200 rounded-lg p-4 text-sm">
-              <summary className="cursor-pointer font-semibold text-[#1F3864]">
+              <summary className="cursor-pointer font-semibold text-b4-strong">
                 {externalExcluded.length} external guest{externalExcluded.length === 1 ? "" : "s"} excluded (not a Bradford College address)
               </summary>
               <ul className="mt-2 font-mono text-xs text-slate-700 space-y-0.5">
@@ -334,7 +334,7 @@ const BulkAttendanceUpload = () => {
             <Button
               onClick={commit}
               disabled={submitting || dryRun.knownEmailRows === 0}
-              className="bg-[#1F3864] hover:bg-[#1F3864]/90"
+              className="bg-b4-deep hover:bg-b4-deep/90"
             >
               {submitting ? "Saving…" : `Confirm — mark ${dryRun.knownEmailRows} attendance row${dryRun.knownEmailRows === 1 ? "" : "s"}`}
             </Button>
@@ -369,8 +369,8 @@ const BulkAttendanceUpload = () => {
 };
 
 const Stat = ({ label, value }: { label: string; value: number }) => (
-  <div className="bg-[#F4F6FB] border border-slate-200 rounded-lg p-3">
-    <div className="text-2xl font-bold text-[#1F3864]">{value}</div>
+  <div className="bg-b4-wash border border-slate-200 rounded-lg p-3">
+    <div className="text-2xl font-bold text-b4-strong">{value}</div>
     <div className="text-xs text-slate-600">{label}</div>
   </div>
 );

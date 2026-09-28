@@ -52,8 +52,8 @@ const AttendanceUploadHistory = ({ refreshKey }: { refreshKey: number }) => {
     <details className="bg-white rounded-xl border border-slate-200 group">
       <summary className="cursor-pointer list-none p-6 flex items-center justify-between gap-2">
         <div className="flex items-center gap-2">
-          <ClipboardList className="w-5 h-5 text-[#1F3864]" />
-          <h2 className="text-lg font-semibold text-[#1F3864]">
+          <ClipboardList className="w-5 h-5 text-b4-strong" />
+          <h2 className="text-lg font-semibold text-b4-strong">
             Session attendance upload history{" "}
             <span className="text-slate-400 font-normal">({batches.length})</span>
           </h2>

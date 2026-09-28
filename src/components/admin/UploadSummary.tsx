@@ -69,12 +69,12 @@ const UploadSummary = ({
       </div>
 
       <div className="bg-white rounded-xl border border-slate-200 p-6">
-        <h3 className="font-semibold text-[#1F3864] mb-3">Cleaning breakdown</h3>
+        <h3 className="font-semibold text-b4-strong mb-3">Cleaning breakdown</h3>
         <ul className="text-sm space-y-1.5">
           {(Object.keys(RULE_LABELS) as (keyof RemovalStats)[]).map((k) => (
             <li key={k} className="flex justify-between border-b border-slate-100 py-1.5 last:border-0">
               <span className="text-slate-600">{RULE_LABELS[k]}</span>
-              <span className="font-mono font-semibold text-[#1F3864]">
+              <span className="font-mono font-semibold text-b4-strong">
                 {removalStats[k]}
               </span>
             </li>
@@ -110,7 +110,7 @@ const UploadSummary = ({
 
       {warnings.length > 0 && (
         <div className="bg-white rounded-xl border border-slate-200 p-6">
-          <h3 className="font-semibold text-[#1F3864] mb-3">
+          <h3 className="font-semibold text-b4-strong mb-3">
             Warnings ({warnings.length})
           </h3>
           <ul className="text-sm space-y-2 max-h-96 overflow-auto">
@@ -133,7 +133,7 @@ const UploadSummary = ({
 const Stat = ({ label, value, highlight }: { label: string; value: number; highlight?: boolean }) => (
   <div>
     <div className="text-xs uppercase tracking-wide text-slate-500">{label}</div>
-    <div className={`text-2xl font-bold ${highlight ? "text-green-700" : "text-[#1F3864]"}`}>{value}</div>
+    <div className={`text-2xl font-bold ${highlight ? "text-green-700" : "text-b4-strong"}`}>{value}</div>
   </div>
 );
 

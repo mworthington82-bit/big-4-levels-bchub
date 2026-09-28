@@ -44,9 +44,9 @@ const LEVEL_EMBLEM: Record<string, string> = {
 
 const STATUS_BADGE: Record<string, { cls: string; label: string; tick: boolean }> = {
   todo: { cls: "bg-white/20 text-white border border-white/30", label: "To do", tick: false },
-  evidenced: { cls: "bg-[#F5A623] text-[#1F3864]", label: "Evidenced", tick: true },
+  evidenced: { cls: "bg-b4-flame text-b4-on-flame", label: "Evidenced", tick: true },
   completed: { cls: "bg-[#1A6B3A] text-white", label: "Completed", tick: true },
-  attended_pending: { cls: "bg-[#FFF1D6] text-[#8B5A00] border border-[#F5A623]", label: "Knowledge check due", tick: false },
+  attended_pending: { cls: "bg-[#FFF1D6] text-[#8B5A00] border border-b4-flame", label: "Knowledge check due", tick: false },
 };
 
 const LEVEL_PILL: Record<string, string> = {
@@ -85,7 +85,7 @@ interface Props {
 const ModuleCard = ({ card }: Props) => {
   const navigate = useNavigate();
   const logo = LOGO_FOR[card.toolKey];
-  const headerBg = TOOL_HEADER_BG[card.toolKey] ?? "bg-[#1F3864]";
+  const headerBg = TOOL_HEADER_BG[card.toolKey] ?? "bg-b4-deep";
   const toolLabel = TOOL_LABEL[card.toolKey] ?? card.name;
   const status = STATUS_BADGE[card.status];
   const level = card.id.endsWith("_practitioner") ? "practitioner" : "explorer";
@@ -103,8 +103,8 @@ const ModuleCard = ({ card }: Props) => {
     <button
       type="button"
       onClick={() => navigate(destinationFor(card))}
-      className={`text-left rounded-2xl overflow-hidden bg-white border shadow-sm hover:shadow-md transition-shadow focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F5A623] flex flex-col ${
-        isAttendedPending ? "border-2 border-[#F5A623]" : "border-border"
+      className={`text-left rounded-2xl overflow-hidden bg-white border shadow-sm hover:shadow-md transition-shadow focus:outline-none focus-visible:ring-2 focus-visible:ring-b4-flame flex flex-col ${
+        isAttendedPending ? "border-2 border-b4-flame" : "border-border"
       }`}
     >
       {/* Coloured tool header */}
@@ -135,7 +135,7 @@ const ModuleCard = ({ card }: Props) => {
       {/* Body */}
       <div className={`p-5 flex-1 flex flex-col gap-3 ${isAttendedPending ? "bg-[#FFF9EF]" : "bg-white"}`}>
         <div className="flex-1">
-          <h3 className="font-display font-bold text-[15px] text-[#1F3864] leading-tight">
+          <h3 className="font-display font-bold text-[15px] text-b4-strong leading-tight">
             {card.name}
           </h3>
           <p className="text-[13px] text-muted-foreground mt-1.5 leading-snug">
@@ -154,7 +154,7 @@ const ModuleCard = ({ card }: Props) => {
             )}
             {level.charAt(0).toUpperCase() + level.slice(1)}
           </span>
-          <span className={`inline-flex items-center px-3.5 py-2 rounded-lg text-white text-xs font-semibold ${isAttendedPending ? "bg-[#B37400]" : "bg-[#1F3864]"}`}>
+          <span className={`inline-flex items-center px-3.5 py-2 rounded-lg text-white text-xs font-semibold ${isAttendedPending ? "bg-[#B37400]" : "bg-b4-deep"}`}>
             {ctaLabel}
           </span>
         </div>

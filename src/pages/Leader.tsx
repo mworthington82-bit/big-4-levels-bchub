@@ -47,7 +47,7 @@ const ToolPill = ({ tool, small }: { tool: ToolName; small?: boolean }) => (
     className={`inline-flex items-center rounded-md font-semibold text-white ${
       small ? "px-1.5 py-0.5 text-[10px]" : "px-2 py-0.5 text-[11px]"
     }`}
-    style={{ backgroundColor: TOOL_COLOUR[tool] ?? "#1F3864" }}
+    style={{ backgroundColor: TOOL_COLOUR[tool] ?? "hsl(var(--b4-deep))" }}
   >
     {tool}
   </span>
@@ -67,21 +67,21 @@ const EvidenceCard = ({
   onToggleLike?: () => void;
   hideLike?: boolean;
 }) => (
-  <article className="bg-white rounded-xl border border-[#D0D7E2] overflow-hidden flex flex-col">
-    <div className="h-1" style={{ backgroundColor: TOOL_COLOUR[post.tool] ?? "#1F3864" }} />
+  <article className="bg-white rounded-xl border border-b4-line overflow-hidden flex flex-col">
+    <div className="h-1" style={{ backgroundColor: TOOL_COLOUR[post.tool] ?? "hsl(var(--b4-deep))" }} />
     <div className="p-4 flex-1 flex flex-col gap-2">
       <div className="flex items-center gap-2 flex-wrap">
         <ToolPill tool={post.tool} />
-        <h3 className="font-bold text-[16px] text-[#1F3864] leading-tight">{post.title}</h3>
+        <h3 className="font-bold text-[16px] text-b4-strong leading-tight">{post.title}</h3>
       </div>
-      <p className="text-[13px] text-[#5F6B7D]">
+      <p className="text-[13px] text-b4-muted">
         {post.staff_name ?? "Bradford College Leader"}
         {post.department ? ` · ${post.department}` : ""}
       </p>
-      <p className="text-[14px] text-[#1F3864] leading-relaxed whitespace-pre-line">
+      <p className="text-[14px] text-b4-strong leading-relaxed whitespace-pre-line">
         {post.what_i_did}
       </p>
-      <p className="text-[14px] text-[#1F3864] leading-relaxed flex gap-1.5">
+      <p className="text-[14px] text-b4-strong leading-relaxed flex gap-1.5">
         <IconHeartFilled size={14} className="text-[#27AE60] mt-1 flex-shrink-0" />
         <span>{post.learner_impact}</span>
       </p>
@@ -92,26 +92,26 @@ const EvidenceCard = ({
       )}
     </div>
     {!hideLike && (
-      <div className="flex items-center justify-between px-4 py-3 border-t border-[#EEF1F6]">
-        <span className="text-[12px] text-[#5F6B7D]">{formatDateUK(post.created_at)}</span>
+      <div className="flex items-center justify-between px-4 py-3 border-t border-b4-wash-2">
+        <span className="text-[12px] text-b4-muted">{formatDateUK(post.created_at)}</span>
         <button
           onClick={onToggleLike}
           aria-label={liked ? "Unlike this post" : "Like this post"}
           aria-pressed={liked ? "true" : "false"}
-          className="inline-flex items-center gap-1.5 min-h-11 px-2 py-1 rounded-md hover:bg-[#F4F6FB] text-[13px] font-semibold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F5A623]"
+          className="inline-flex items-center gap-1.5 min-h-11 px-2 py-1 rounded-md hover:bg-b4-wash text-[13px] font-semibold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-b4-flame"
         >
           {liked ? (
-            <IconHeartFilled size={16} className="text-[#F5A623]" aria-hidden="true" />
+            <IconHeartFilled size={16} className="text-b4-flame-text" aria-hidden="true" />
           ) : (
             <IconHeart size={16} stroke={1.75} className="text-[#9AA3B0]" aria-hidden="true" />
           )}
-          <span className={liked ? "text-[#F5A623]" : "text-[#5F6B7D]"}>{likeCount ?? 0}</span>
+          <span className={liked ? "text-b4-flame-text" : "text-b4-muted"}>{likeCount ?? 0}</span>
         </button>
       </div>
     )}
     {hideLike && (
-      <div className="px-4 py-3 border-t border-[#EEF1F6]">
-        <span className="text-[12px] text-[#5F6B7D]">{formatDateUK(post.created_at)}</span>
+      <div className="px-4 py-3 border-t border-b4-wash-2">
+        <span className="text-[12px] text-b4-muted">{formatDateUK(post.created_at)}</span>
       </div>
     )}
   </article>
@@ -161,8 +161,8 @@ const MyContributions = ({
     <div className="space-y-10">
       {/* Section A */}
       <section>
-        <h2 className="font-bold text-[#1F3864] text-lg">Your classroom examples</h2>
-        <p className="text-sm text-[#5F6B7D] mt-1 mb-5">
+        <h2 className="font-bold text-b4-strong text-lg">Your classroom examples</h2>
+        <p className="text-sm text-b4-muted mt-1 mb-5">
           Share what you have been doing with the Big 4 tools — your experience helps colleagues
           across the college.
         </p>
@@ -174,11 +174,11 @@ const MyContributions = ({
         )}
 
         {loading ? (
-          <p className="text-sm text-[#5F6B7D]">Loading…</p>
+          <p className="text-sm text-b4-muted">Loading…</p>
         ) : posts.length === 0 ? (
-          <div className="bg-white rounded-xl border border-dashed border-[#D0D7E2] p-6 text-center">
-            <p className="text-[#1F3864] font-semibold">You have not shared any classroom examples yet.</p>
-            <p className="text-sm text-[#5F6B7D] mt-1">
+          <div className="bg-white rounded-xl border border-dashed border-b4-line p-6 text-center">
+            <p className="text-b4-strong font-semibold">You have not shared any classroom examples yet.</p>
+            <p className="text-sm text-b4-muted mt-1">
               Your experience could inspire colleagues across the college.
             </p>
           </div>
@@ -187,25 +187,25 @@ const MyContributions = ({
             {posts.map((p) => (
               <li
                 key={p.id}
-                className="bg-white rounded-xl border border-[#D0D7E2] p-4 flex items-start gap-3"
+                className="bg-white rounded-xl border border-b4-line p-4 flex items-start gap-3"
               >
                 <div
                   className="w-1 self-stretch rounded-full"
-                  style={{ backgroundColor: TOOL_COLOUR[p.tool] ?? "#1F3864" }}
+                  style={{ backgroundColor: TOOL_COLOUR[p.tool] ?? "hsl(var(--b4-deep))" }}
                 />
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 flex-wrap">
                     <ToolPill tool={p.tool} small />
-                    <h3 className="font-bold text-[#1F3864]">{p.title}</h3>
+                    <h3 className="font-bold text-b4-strong">{p.title}</h3>
                   </div>
-                  <p className="text-xs text-[#5F6B7D] mt-1">Submitted {formatDateUK(p.created_at)}</p>
+                  <p className="text-xs text-b4-muted mt-1">Submitted {formatDateUK(p.created_at)}</p>
                 </div>
                 <span
                   className="text-[11px] font-bold uppercase tracking-wide px-2.5 py-1 rounded-full"
                   style={
                     p.is_published
                       ? { backgroundColor: "#EAF3DE", color: "#3B6D11" }
-                      : { backgroundColor: "#FEF6E8", color: "#854F0B" }
+                      : { backgroundColor: "hsl(var(--b4-flame-soft))", color: "hsl(var(--b4-flame-ink))" }
                   }
                 >
                   {p.is_published ? "Published" : "Awaiting review"}
@@ -221,7 +221,7 @@ const MyContributions = ({
               setSuccessMsg(null);
               setShowPostForm(true);
             }}
-            className="mt-4 inline-flex items-center bg-[#1F3864] hover:bg-[#2A4A80] text-white font-bold px-5 py-2.5 rounded-lg"
+            className="mt-4 inline-flex items-center bg-b4-deep hover:bg-b4-deep-hover text-white font-bold px-5 py-2.5 rounded-lg"
           >
             Share a classroom example
           </button>
@@ -246,8 +246,8 @@ const MyContributions = ({
 
       {/* Section B */}
       <section>
-        <h2 className="font-bold text-[#1F3864] text-lg">Offer mentoring support</h2>
-        <p className="text-sm text-[#5F6B7D] mt-1 mb-5">
+        <h2 className="font-bold text-b4-strong text-lg">Offer mentoring support</h2>
+        <p className="text-sm text-b4-muted mt-1 mb-5">
           Let Explorer and Practitioner colleagues know you are available to support them.
         </p>
 
@@ -264,17 +264,17 @@ const MyContributions = ({
             }}
           />
         ) : (
-          <div className="bg-white rounded-xl border border-[#D0D7E2] p-5">
+          <div className="bg-white rounded-xl border border-b4-line p-5">
             <div className="flex flex-wrap gap-1.5 mb-3">
               {mentor.tools_offered.map((t) => (
                 <ToolPill key={t} tool={t as ToolName} small />
               ))}
             </div>
             {mentor.mentor_bio && (
-              <p className="text-sm italic text-[#5F6B7D] mb-4">{mentor.mentor_bio}</p>
+              <p className="text-sm italic text-b4-muted mb-4">{mentor.mentor_bio}</p>
             )}
             <div className="flex items-center justify-between flex-wrap gap-3">
-              <label className="inline-flex items-center gap-2 text-sm font-semibold text-[#1F3864]">
+              <label className="inline-flex items-center gap-2 text-sm font-semibold text-b4-strong">
                 <input
                   type="checkbox"
                   checked={mentor.is_active}
@@ -350,7 +350,7 @@ const EvidenceForm = ({
   };
 
   return (
-    <div className="mt-4 bg-white rounded-xl border border-[#D0D7E2] p-5 space-y-4">
+    <div className="mt-4 bg-white rounded-xl border border-b4-line p-5 space-y-4">
       <Field label="Which tool?">
         <select
           value={tool}
@@ -408,13 +408,13 @@ const EvidenceForm = ({
         <button
           onClick={submit}
           disabled={!canSubmit}
-          className="flex-1 bg-[#1F3864] hover:bg-[#2A4A80] disabled:opacity-60 text-white font-bold py-3 rounded-lg"
+          className="flex-1 bg-b4-deep hover:bg-b4-deep-hover disabled:opacity-60 text-white font-bold py-3 rounded-lg"
         >
           {busy ? "Submitting…" : "Submit for review"}
         </button>
         <button
           onClick={onCancel}
-          className="px-5 py-3 text-[#5F6B7D] hover:text-[#1F3864] font-semibold"
+          className="px-5 py-3 text-b4-muted hover:text-b4-strong font-semibold"
         >
           Cancel
         </button>
@@ -471,16 +471,16 @@ const MentorForm = ({
   };
 
   return (
-    <div className="bg-white rounded-xl border border-[#D0D7E2] p-5 space-y-4">
+    <div className="bg-white rounded-xl border border-b4-line p-5 space-y-4">
       <div>
-        <p className="text-xs font-semibold text-[#1F3864] mb-2">
+        <p className="text-xs font-semibold text-b4-strong mb-2">
           Which tools can you support others with? (Check all that apply)
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
           {TOOL_OPTIONS.map((t) => (
             <label
               key={t}
-              className="inline-flex items-center gap-2 text-sm text-[#1F3864] bg-[#F8FAFD] border border-[#D0D7E2] rounded-lg px-3 py-2 cursor-pointer"
+              className="inline-flex items-center gap-2 text-sm text-b4-strong bg-[#F8FAFD] border border-b4-line rounded-lg px-3 py-2 cursor-pointer"
             >
               <input
                 type="checkbox"
@@ -506,12 +506,12 @@ const MentorForm = ({
         <button
           onClick={submit}
           disabled={tools.length === 0 || busy}
-          className="flex-1 bg-[#1F3864] hover:bg-[#2A4A80] disabled:opacity-60 text-white font-bold py-3 rounded-lg"
+          className="flex-1 bg-b4-deep hover:bg-b4-deep-hover disabled:opacity-60 text-white font-bold py-3 rounded-lg"
         >
           {busy ? "Saving…" : existing ? "Save changes" : "Add me to the mentor directory"}
         </button>
         {onCancel && (
-          <button onClick={onCancel} className="px-5 py-3 text-[#5F6B7D] hover:text-[#1F3864] font-semibold">
+          <button onClick={onCancel} className="px-5 py-3 text-b4-muted hover:text-b4-strong font-semibold">
             Cancel
           </button>
         )}
@@ -531,7 +531,7 @@ const Field = ({
 }) => (
   <label className="block">
     <div className="flex items-center justify-between mb-1">
-      <span className="text-xs font-semibold text-[#1F3864]">{label}</span>
+      <span className="text-xs font-semibold text-b4-strong">{label}</span>
       {hint && <span className="text-[11px] text-[#9AA3B0]">{hint}</span>}
     </div>
     {children}
@@ -616,7 +616,7 @@ const EvidenceGalleryTab = ({ email }: { email: string | null }) => {
       <div className="flex flex-wrap gap-3 items-end justify-between">
         <div className="flex flex-wrap gap-3">
           <label className="block">
-            <span className="text-xs font-semibold text-[#1F3864] block mb-1">Tool</span>
+            <span className="text-xs font-semibold text-b4-strong block mb-1">Tool</span>
             <select
               value={toolFilter}
               onChange={(e) => setToolFilter(e.target.value as any)}
@@ -629,14 +629,14 @@ const EvidenceGalleryTab = ({ email }: { email: string | null }) => {
             </select>
           </label>
           <label className="block">
-            <span className="text-xs font-semibold text-[#1F3864] block mb-1">Sort</span>
+            <span className="text-xs font-semibold text-b4-strong block mb-1">Sort</span>
             <select value={sort} onChange={(e) => setSort(e.target.value as any)} className="input">
               <option value="liked">Most liked</option>
               <option value="recent">Most recent</option>
             </select>
           </label>
         </div>
-        <p className="text-xs font-semibold text-[#5F6B7D]">
+        <p className="text-xs font-semibold text-b4-muted">
           {filtered.length} {filtered.length === 1 ? "example" : "examples"} shared
         </p>
       </div>
@@ -644,11 +644,11 @@ const EvidenceGalleryTab = ({ email }: { email: string | null }) => {
       {loading ? (
         <div className="grid gap-4 grid-cols-1 md:grid-cols-2" aria-busy="true" aria-label="Loading evidence gallery">
           {[0,1,2,3].map((i) => (
-            <div key={i} className="bg-white rounded-xl border border-[#D0D7E2] h-48 animate-pulse" />
+            <div key={i} className="bg-white rounded-xl border border-b4-line h-48 animate-pulse" />
           ))}
         </div>
       ) : filtered.length === 0 ? (
-        <div className="bg-white rounded-xl border border-[#D0D7E2] p-8 text-center text-[#1F3864] font-semibold">
+        <div className="bg-white rounded-xl border border-b4-line p-8 text-center text-b4-strong font-semibold">
           No examples shared yet — Leaders who submit classroom examples will appear here.
         </div>
       ) : (
@@ -668,7 +668,7 @@ const EvidenceGalleryTab = ({ email }: { email: string | null }) => {
             <div className="flex justify-center mt-6">
               <button
                 onClick={() => setVisibleCount((c) => c + 12)}
-                className="inline-flex items-center min-h-11 px-6 py-2.5 rounded-full bg-white border border-[#D0D7E2] text-sm font-semibold text-[#1F3864] hover:bg-[#F4F6FB] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#185FA5]"
+                className="inline-flex items-center min-h-11 px-6 py-2.5 rounded-full bg-white border border-b4-line text-sm font-semibold text-b4-strong hover:bg-b4-wash focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#185FA5]"
               >
                 Load more ({filtered.length - visibleCount} remaining)
               </button>
@@ -706,7 +706,7 @@ const MentorDirectoryTab = () => {
   return (
     <div className="space-y-5">
       <label className="block">
-        <span className="text-xs font-semibold text-[#1F3864] block mb-1">Tool</span>
+        <span className="text-xs font-semibold text-b4-strong block mb-1">Tool</span>
         <select
           value={toolFilter}
           onChange={(e) => setToolFilter(e.target.value as any)}
@@ -722,11 +722,11 @@ const MentorDirectoryTab = () => {
       {loading ? (
         <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3" aria-busy="true" aria-label="Loading mentor directory">
           {[0,1,2].map((i) => (
-            <div key={i} className="bg-white rounded-xl border border-[#D0D7E2] h-40 animate-pulse" />
+            <div key={i} className="bg-white rounded-xl border border-b4-line h-40 animate-pulse" />
           ))}
         </div>
       ) : filtered.length === 0 ? (
-        <div className="bg-white rounded-xl border border-[#D0D7E2] p-8 text-center text-[#1F3864] font-semibold">
+        <div className="bg-white rounded-xl border border-b4-line p-8 text-center text-b4-strong font-semibold">
           No mentors listed yet — Leaders who sign up will appear here.
         </div>
       ) : (
@@ -737,20 +737,20 @@ const MentorDirectoryTab = () => {
             return (
               <article
                 key={m.id}
-                className="bg-white rounded-xl border border-[#D0D7E2] overflow-hidden flex"
+                className="bg-white rounded-xl border border-b4-line overflow-hidden flex"
               >
                 <div className="w-1 bg-[#27AE60]" />
                 <div className="p-4 flex-1 flex flex-col gap-3">
                   <div className="flex items-start gap-3">
-                    <div className="w-9 h-9 rounded-full bg-[#1F3864] text-white font-bold flex items-center justify-center text-[13px]">
+                    <div className="w-9 h-9 rounded-full bg-b4-deep text-white font-bold flex items-center justify-center text-[13px]">
                       {initialsOf(m.staff_name)}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="font-bold text-[15px] text-[#1F3864] truncate">
+                      <p className="font-bold text-[15px] text-b4-strong truncate">
                         {m.staff_name ?? "Bradford College Leader"}
                       </p>
                       {m.department && (
-                        <p className="text-[13px] text-[#5F6B7D] truncate">{m.department}</p>
+                        <p className="text-[13px] text-b4-muted truncate">{m.department}</p>
                       )}
                       <span className="inline-flex items-center mt-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#EAF3DE] text-[#3B6D11]">
                         Leader
@@ -763,11 +763,11 @@ const MentorDirectoryTab = () => {
                     ))}
                   </div>
                   {m.mentor_bio && (
-                    <p className="text-[13px] italic text-[#5F6B7D]">{m.mentor_bio}</p>
+                    <p className="text-[13px] italic text-b4-muted">{m.mentor_bio}</p>
                   )}
                   <a
                     href={mailto}
-                    className="mt-auto inline-flex items-center justify-center gap-1.5 bg-[#1F3864] hover:bg-[#2A4A80] text-white font-semibold text-sm py-2 rounded-lg"
+                    className="mt-auto inline-flex items-center justify-center gap-1.5 bg-b4-deep hover:bg-b4-deep-hover text-white font-semibold text-sm py-2 rounded-lg"
                   >
                     <IconMail size={16} stroke={2} />
                     Get in touch
@@ -810,13 +810,13 @@ const Leader = () => {
   if (loading || !profile || !email) {
     return (
       <AppShell>
-        <div className="min-h-full bg-[#F4F6FB]" aria-busy="true" aria-label="Loading Leader Hub">
-          <div className="bg-[#1F3864] h-32" />
+        <div className="min-h-full bg-b4-wash" aria-busy="true" aria-label="Loading Leader Hub">
+          <div className="bg-b4-deep h-32" />
           <div className="container mx-auto px-4 py-8 max-w-6xl space-y-6">
-            <div className="h-8 w-64 bg-[#E5E9F0] rounded animate-pulse" />
+            <div className="h-8 w-64 bg-b4-wash-3 rounded animate-pulse" />
             <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
               {[0,1,2,3].map((i) => (
-                <div key={i} className="bg-white rounded-xl border border-[#D0D7E2] h-48 animate-pulse" />
+                <div key={i} className="bg-white rounded-xl border border-b4-line h-48 animate-pulse" />
               ))}
             </div>
           </div>
@@ -833,17 +833,17 @@ const Leader = () => {
         .input {
           width: 100%;
           border-radius: 0.5rem;
-          border: 1px solid #D0D7E2;
-          background: #fff;
+          border: 1px solid hsl(var(--b4-line));
+          background: hsl(var(--card));
           padding: 0.625rem 0.75rem;
           font-size: 0.875rem;
-          color: #1F3864;
+          color: hsl(var(--b4-strong));
         }
-        .input:focus { outline: none; border-color: #185FA5; box-shadow: 0 0 0 3px rgba(24,95,165,0.15); }
+        .input:focus { outline: none; border-color: hsl(var(--ring)); box-shadow: 0 0 0 3px hsl(var(--ring) / 0.15); }
       `}</style>
-      <div className="min-h-full bg-[#F4F6FB]">
+      <div className="min-h-full bg-b4-wash">
         {/* Header */}
-        <div className="bg-[#1F3864] text-white">
+        <div className="bg-b4-deep text-white">
           <div className="container mx-auto px-4 py-10 md:py-12 max-w-6xl flex items-start gap-4">
             <div className="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center flex-shrink-0">
               <img src={emblemLeader} alt="Leader" className="w-8 h-8" />
@@ -872,7 +872,7 @@ const Leader = () => {
 
         <div className="container mx-auto px-4 py-8 max-w-6xl space-y-6">
           {/* Tabs */}
-          <div className="flex gap-1 border-b border-[#D0D7E2] overflow-x-auto">
+          <div className="flex gap-1 border-b border-b4-line overflow-x-auto">
             {(
               [
                 ...(readOnly ? [] : [{ id: "contributions", label: "My Contributions" }]),
@@ -885,8 +885,8 @@ const Leader = () => {
                 onClick={() => setTab(t.id)}
                 className={`px-4 py-2.5 text-sm font-semibold -mb-px border-b-2 whitespace-nowrap ${
                   tab === t.id
-                    ? "border-[#1F3864] text-[#1F3864]"
-                    : "border-transparent text-[#5F6B7D] hover:text-[#1F3864]"
+                    ? "border-b4-strong text-b4-strong"
+                    : "border-transparent text-b4-muted hover:text-b4-strong"
                 }`}
               >
                 {t.label}

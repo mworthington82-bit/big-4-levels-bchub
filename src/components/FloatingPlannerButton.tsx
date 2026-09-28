@@ -28,7 +28,7 @@ const FloatingPlannerButton = () => {
     <button
       type="button"
       onClick={() => navigate("/planner")}
-      className="fixed bottom-5 right-5 z-50 inline-flex min-h-11 items-center gap-2 rounded-full bg-[#F5A623] px-5 py-3 text-sm font-bold text-[#1F3864] shadow-lg transition hover:bg-[#F5A623]/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1F3864] focus-visible:ring-offset-2"
+      className="fixed bottom-5 right-5 z-50 inline-flex min-h-11 items-center gap-2 rounded-full bg-b4-flame px-5 py-3 text-sm font-bold text-b4-on-flame shadow-lg transition hover:bg-b4-flame/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-b4-strong focus-visible:ring-offset-2"
       aria-label="Open Activity Planner"
     >
       <Sparkles className="h-4 w-4" aria-hidden="true" />

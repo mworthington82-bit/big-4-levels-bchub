@@ -104,7 +104,7 @@ const DatabaseSummary = ({ refreshKey }: { refreshKey: number }) => {
   if (!s) return null;
 
   const levelTint: Record<Level, string> = {
-    Explorer: "bg-[#E6F0FB] text-[#1F3864]",
+    Explorer: "bg-[#E6F0FB] text-b4-strong",
     Practitioner: "bg-[#FFF1DA] text-[#8A5A00]",
     Leader: "bg-[#E0F2E5] text-[#1B5E2A]",
   };
@@ -115,7 +115,7 @@ const DatabaseSummary = ({ refreshKey }: { refreshKey: number }) => {
         <button
           onClick={handleDownload}
           disabled={exporting}
-          className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[#F5A623] text-[#1C1C2E] font-semibold hover:brightness-95 disabled:opacity-60"
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-b4-flame text-b4-on-flame font-semibold hover:brightness-95 disabled:opacity-60"
         >
           <Download className="w-4 h-4" />
           {exporting ? "Preparing..." : "Download PNG"}
@@ -125,8 +125,8 @@ const DatabaseSummary = ({ refreshKey }: { refreshKey: number }) => {
         ref={exportRef}
         className="bg-white rounded-xl border border-slate-200 overflow-hidden"
       >
-        <div className="bg-[#1C1C2E] text-white px-6 py-5 relative">
-          <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-[#F5A623]" />
+        <div className="bg-b4-deep text-white px-6 py-5 relative">
+          <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-b4-flame" />
           <h2
             className="text-xl font-semibold"
             style={{ fontFamily: "Fraunces, serif" }}
@@ -145,11 +145,11 @@ const DatabaseSummary = ({ refreshKey }: { refreshKey: number }) => {
 
       <div className="mb-6">
         <div className="text-xs uppercase tracking-wide text-slate-500">Total staff</div>
-        <div className="text-3xl font-bold text-[#1F3864]">{s.total}</div>
+        <div className="text-3xl font-bold text-b4-strong">{s.total}</div>
       </div>
 
       {/* Staff on each level (current, effective) */}
-      <h3 className="text-sm font-semibold text-[#1F3864] mb-2">
+      <h3 className="text-sm font-semibold text-b4-strong mb-2">
         Staff on each level (current)
       </h3>
       <p className="text-xs text-slate-500 mb-3">
@@ -170,7 +170,7 @@ const DatabaseSummary = ({ refreshKey }: { refreshKey: number }) => {
       </div>
 
       {/* Progressed beyond starting level */}
-      <h3 className="text-sm font-semibold text-[#1F3864] mb-2">
+      <h3 className="text-sm font-semibold text-b4-strong mb-2">
         Staff who have gained an additional level
       </h3>
       <p className="text-xs text-slate-500 mb-3">
@@ -214,7 +214,7 @@ const DatabaseSummary = ({ refreshKey }: { refreshKey: number }) => {
       )}
 
       <div>
-        <h3 className="text-sm font-semibold text-[#1F3864] mb-2">By department</h3>
+        <h3 className="text-sm font-semibold text-b4-strong mb-2">By department</h3>
         <ul className="text-sm space-y-1">
           {EXPECTED_DEPARTMENTS.map((d) => (
             <li
@@ -222,7 +222,7 @@ const DatabaseSummary = ({ refreshKey }: { refreshKey: number }) => {
               className="flex justify-between border-b border-slate-100 py-1.5 last:border-0"
             >
               <span className="text-slate-700">{d}</span>
-              <span className="font-mono font-semibold text-[#1F3864]">
+              <span className="font-mono font-semibold text-b4-strong">
                 {s.byDept[d] ?? 0}
               </span>
             </li>

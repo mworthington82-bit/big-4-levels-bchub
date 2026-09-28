@@ -21,7 +21,7 @@ const TempLanding = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#F5A623] flex flex-col items-center justify-center px-4 py-8">
+    <div className="min-h-screen bg-b4-flame flex flex-col items-center justify-center px-4 py-8">
       <main className="w-full max-w-6xl mx-auto">
         <img
           src={flairImage}
@@ -30,7 +30,7 @@ const TempLanding = () => {
         />
 
         <div className="mt-8 text-center">
-          <p className="text-2xl md:text-3xl font-bold text-[#1C1C2E]">
+          <p className="text-2xl md:text-3xl font-bold text-b4-ink">
             To start your Self-Assessment,{" "}
             <a
               href={SELF_ASSESSMENT_URL}
@@ -42,7 +42,7 @@ const TempLanding = () => {
             </a>
             .
           </p>
-          <p className="text-base md:text-lg text-[#1C1C2E]/80 mt-3">
+          <p className="text-base md:text-lg text-b4-ink/80 mt-3">
             Remember to click <strong>Submit</strong> at the end so your responses are saved.
           </p>
         </div>
@@ -52,7 +52,7 @@ const TempLanding = () => {
       <button
         onClick={handleAdminBypass}
         aria-label="Admin access"
-        className="fixed bottom-4 right-4 px-4 py-2 rounded-full bg-[#1C1C2E] text-white text-sm font-medium shadow-lg hover:bg-[#1C1C2E]/90 transition-colors"
+        className="fixed bottom-4 right-4 px-4 py-2 rounded-full bg-b4-deep text-white text-sm font-medium shadow-lg hover:bg-b4-deep/90 transition-colors"
       >
         Admin Login
       </button>

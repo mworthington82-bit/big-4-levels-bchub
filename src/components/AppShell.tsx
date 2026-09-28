@@ -66,7 +66,7 @@ const AppShell = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
-      <header className="bg-[#1F3864] text-white shadow-md">
+      <header className="bg-b4-deep text-white shadow-md">
         <div
           className="container mx-auto px-4 py-3 flex items-center gap-4 min-h-[64px]"
           style={{ flexWrap: "nowrap" }}
@@ -114,7 +114,7 @@ const AppShell = ({ children }: { children: React.ReactNode }) => {
                   width: 32,
                   height: 32,
                   borderRadius: "9999px",
-                  background: "#1F3864",
+                  background: "hsl(var(--b4-deep))",
                   color: "#fff",
                   fontSize: 12,
                   fontWeight: 500,
@@ -173,7 +173,7 @@ const AppShell = ({ children }: { children: React.ReactNode }) => {
                 <span
                   style={{
                     width: 24, height: 24, borderRadius: "9999px",
-                    background: "#1F3864", color: "#fff", fontSize: 11, fontWeight: 500,
+                    background: "hsl(var(--b4-deep))", color: "#fff", fontSize: 11, fontWeight: 500,
                     border: "1.5px solid rgba(255,255,255,0.3)",
                     display: "inline-flex", alignItems: "center", justifyContent: "center",
                   }}

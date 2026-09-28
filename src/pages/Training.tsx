@@ -308,7 +308,7 @@ const Training = () => {
     edpuzzle: '#1DA1F2',
     copilot: '#0078D4'
   };
-  const currentBrandColor = selectedTool ? brandColors[selectedTool] : '#F5A623';
+  const currentBrandColor = selectedTool ? brandColors[selectedTool] : 'hsl(var(--b4-flame))';
   const levelDurationOverrides: Record<string, Record<string, string>> = {
     canva: { explorer: '~30 min', practitioner: '~75 min' }
   };
@@ -429,7 +429,7 @@ const Training = () => {
             </div>
 
             {/* Gold reassurance note */}
-            <div className="bg-[#F5A623]/10 border border-[#F5A623]/30 rounded-xl px-5 py-3 mb-4 text-center animate-fade-in">
+            <div className="bg-b4-flame/10 border border-b4-flame/30 rounded-xl px-5 py-3 mb-4 text-center animate-fade-in">
               <p className="text-sm text-foreground">
                 <span className="font-semibold">Not sure which level?</span> Your self-assessment result will have indicated Explorer, Practitioner, or Leader.
               </p>
@@ -447,7 +447,7 @@ const Training = () => {
               </p>
               <p className="text-sm text-muted-foreground">
                 To query your level assignment, contact the Learning Innovation team at{" "}
-                <a href="mailto:m.worthington@bradfordcollege.ac.uk" className="text-[#1F3864] font-semibold underline">
+                <a href="mailto:m.worthington@bradfordcollege.ac.uk" className="text-b4-strong font-semibold underline">
                   m.worthington@bradfordcollege.ac.uk
                 </a>.
               </p>
@@ -458,18 +458,18 @@ const Training = () => {
             <div className="space-y-3 mb-8 animate-fade-in">
               {/* Explorer */}
               <div
-                className="group flex items-center gap-4 md:gap-6 bg-card rounded-2xl border-2 border-border hover:border-t-4 hover:border-t-[#F5A623] cursor-pointer transition-all duration-300 hover:shadow-[var(--shadow-hover)] p-5"
+                className="group flex items-center gap-4 md:gap-6 bg-card rounded-2xl border-2 border-border hover:border-t-4 hover:border-t-b4-flame cursor-pointer transition-all duration-300 hover:shadow-[var(--shadow-hover)] p-5"
                 onClick={() => handleLevelEntry('explorer')}>
 
                 <img src={emblemExplorer} alt="Explorer emblem" className="h-12 w-12 flex-shrink-0" />
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-3 mb-1">
                     <h3 className="font-display text-xl font-bold text-foreground">Explorer</h3>
-                    <span className="text-xs font-semibold px-3 py-1 rounded-full bg-[#F5A623]/15 text-[#B8860B]">Beginner</span>
+                    <span className="text-xs font-semibold px-3 py-1 rounded-full bg-b4-flame/15 text-[#B8860B]">Beginner</span>
                   </div>
                   <p className="text-sm text-muted-foreground">Discover and build confidence with core digital tools</p>
                 </div>
-                <ArrowRight className="h-5 w-5 text-muted-foreground group-hover:text-[#F5A623] group-hover:translate-x-1 transition-all flex-shrink-0" />
+                <ArrowRight className="h-5 w-5 text-muted-foreground group-hover:text-b4-flame-text group-hover:translate-x-1 transition-all flex-shrink-0" />
               </div>
 
               {/* Practitioner */}
@@ -801,15 +801,15 @@ const Training = () => {
             {/* My Learning Summary - always accessible */}
             {selectedLevel && selectedLevel !== 'leader' &&
           <div
-            className="mb-10 animate-fade-in rounded-2xl border-2 border-[#F5A623] bg-[#F5A623]/5 cursor-pointer hover:shadow-[var(--shadow-hover)] transition-all duration-300"
+            className="mb-10 animate-fade-in rounded-2xl border-2 border-b4-flame bg-b4-flame/5 cursor-pointer hover:shadow-[var(--shadow-hover)] transition-all duration-300"
             onClick={() => setStage('summary')}>
 
                 <div className="flex items-center gap-4 md:gap-6 p-6">
-                  <BookOpen className="text-[#F5A623] flex-shrink-0 h-8 w-8" />
+                  <BookOpen className="text-b4-flame-text flex-shrink-0 h-8 w-8" />
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-3 mb-1">
                       <h3 className="font-display text-xl font-bold text-foreground">My Learning Summary</h3>
-                      <span className="text-xs font-semibold px-3 py-1 rounded-full bg-[#F5A623]/15 text-[#B8860B]">
+                      <span className="text-xs font-semibold px-3 py-1 rounded-full bg-b4-flame/15 text-[#B8860B]">
                         {completedTools.size}/4 modules complete
                       </span>
                     </div>
@@ -817,7 +817,7 @@ const Training = () => {
                       Review what you've learned and plan your next steps
                     </p>
                   </div>
-                  <ArrowRight className="h-5 w-5 text-[#F5A623] flex-shrink-0" />
+                  <ArrowRight className="h-5 w-5 text-b4-flame-text flex-shrink-0" />
                 </div>
               </div>
           }

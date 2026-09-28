@@ -13,7 +13,7 @@ const TOOLS = [
 ];
 
 const LEVELS = [
-  { id: "explorer", name: "Explorer", emblem: emblemExplorer, color: "#F5A623" },
+  { id: "explorer", name: "Explorer", emblem: emblemExplorer, color: "hsl(var(--explorer))" },
   { id: "practitioner", name: "Practitioner", emblem: emblemPractitioner, color: "#5B5FC7" },
   { id: "leader", name: "Leader", emblem: emblemLeader, color: "#22C55E" },
 ];

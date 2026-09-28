@@ -8,7 +8,7 @@ interface ProgressTrackerProps {
   brandColor?: string;
 }
 
-const ProgressTracker = ({ currentStep, steps, onStepClick, brandColor = '#F5A623' }: ProgressTrackerProps) => {
+const ProgressTracker = ({ currentStep, steps, onStepClick, brandColor = 'hsl(var(--b4-flame))' }: ProgressTrackerProps) => {
   const handleStepClick = (index: number) => {
     if (index <= currentStep && onStepClick) {
       onStepClick(index);

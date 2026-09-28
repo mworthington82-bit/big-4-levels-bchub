@@ -33,14 +33,14 @@ const TOOL_BAR: Record<ResourceRow["tool"], string> = {
   Edpuzzle: "#1A6B3A",
   "Microsoft Copilot": "#B35A00",
   "Immersive Room": "#8B1A1A",
-  All: "#1F3864",
+  All: "hsl(var(--b4-deep))",
 };
 
 const LEVEL_PILL: Record<ResourceRow["level"], { bg: string; text: string }> = {
   Explorer: { bg: "bg-[#E6F1FB]", text: "text-[#185FA5]" },
-  Practitioner: { bg: "bg-[#FEF6E8]", text: "text-[#854F0B]" },
+  Practitioner: { bg: "bg-b4-flame-soft", text: "text-b4-flame-ink" },
   Leader: { bg: "bg-[#EAF3DE]", text: "text-[#3B6D11]" },
-  All: { bg: "bg-[#EEF1F6]", text: "text-[#4F5969]" },
+  All: { bg: "bg-b4-wash-2", text: "text-[#4F5969]" },
 };
 
 const TOOL_OPTIONS: ResourceRow["tool"][] = ["MS Teams","MS Forms","Canva","Edpuzzle","Microsoft Copilot","Immersive Room"];
@@ -91,16 +91,16 @@ const ActivityPlanner = () => {
     <div
       id="activity-planner"
       className="relative bg-white rounded-2xl shadow-sm overflow-hidden"
-      style={{ borderLeft: "4px solid #F5A623" }}
+      style={{ borderLeft: "4px solid hsl(var(--b4-flame))" }}
     >
       <div className="p-6 md:p-8">
         <div className="flex items-start gap-3 mb-1">
-          <div className="w-9 h-9 rounded-lg bg-[#FEF6E8] flex items-center justify-center">
-            <IconSparkles size={20} stroke={1.75} className="text-[#854F0B]" />
+          <div className="w-9 h-9 rounded-lg bg-b4-flame-soft flex items-center justify-center">
+            <IconSparkles size={20} stroke={1.75} className="text-b4-flame-ink" />
           </div>
           <div>
-            <h2 className="font-bold text-[#1F3864] text-lg md:text-xl">Activity Planner</h2>
-            <p className="text-sm text-[#5F6B7D]">
+            <h2 className="font-bold text-b4-strong text-lg md:text-xl">Activity Planner</h2>
+            <p className="text-sm text-b4-muted">
               Tell us about your learners and we will suggest practical ideas for your session.
             </p>
           </div>
@@ -113,46 +113,46 @@ const ActivityPlanner = () => {
         </div>
 
         <label className="block mt-4">
-          <span className="text-xs font-semibold text-[#1F3864]">Learner challenge or focus (optional)</span>
+          <span className="text-xs font-semibold text-b4-strong">Learner challenge or focus (optional)</span>
           <input
             type="text"
             maxLength={200}
             value={challenge}
             onChange={(e) => setChallenge(e.target.value)}
             placeholder="e.g. ESOL learners, low confidence with technology, mixed ability group, SEND support"
-            className="mt-1 w-full rounded-lg border border-[#D0D7E2] bg-white px-3 py-2.5 text-sm text-[#1F3864] focus:border-[#185FA5] focus:outline-none focus:ring-2 focus:ring-[#185FA5]/20"
+            className="mt-1 w-full rounded-lg border border-b4-line bg-white px-3 py-2.5 text-sm text-b4-strong focus:border-[#185FA5] focus:outline-none focus:ring-2 focus:ring-[#185FA5]/20"
           />
         </label>
 
         <button
           onClick={generate}
           disabled={!canSubmit}
-          className="mt-5 w-full bg-[#1F3864] hover:bg-[#2A4A80] disabled:opacity-60 disabled:cursor-not-allowed text-white font-bold text-[15px] rounded-lg py-3 transition-colors"
+          className="mt-5 w-full bg-b4-deep hover:bg-b4-deep-hover disabled:opacity-60 disabled:cursor-not-allowed text-white font-bold text-[15px] rounded-lg py-3 transition-colors"
         >
           {loading ? "Generating ideas…" : result?.ideas ? "Generate again" : "Generate ideas"}
         </button>
 
         {loading && (
           <div className="mt-6 animate-pulse">
-            <div className="h-3 bg-[#EEF1F6] rounded w-2/3 mb-2" />
-            <div className="h-3 bg-[#EEF1F6] rounded w-5/6 mb-2" />
-            <div className="h-3 bg-[#EEF1F6] rounded w-3/4" />
-            <p className="text-sm text-[#5F6B7D] mt-3">Generating ideas…</p>
+            <div className="h-3 bg-b4-wash-2 rounded w-2/3 mb-2" />
+            <div className="h-3 bg-b4-wash-2 rounded w-5/6 mb-2" />
+            <div className="h-3 bg-b4-wash-2 rounded w-3/4" />
+            <p className="text-sm text-b4-muted mt-3">Generating ideas…</p>
           </div>
         )}
 
         {!loading && result?.error && (
-          <div className="mt-5 rounded-lg bg-[#FEF6E8] border border-[#F0D8A4] px-4 py-3 text-sm text-[#854F0B]">
+          <div className="mt-5 rounded-lg bg-b4-flame-soft border border-[#F0D8A4] px-4 py-3 text-sm text-b4-flame-ink">
             {result.error}
           </div>
         )}
 
         {!loading && result?.ideas && (
           <div className="mt-6">
-            <p className="text-xs font-semibold uppercase tracking-wide text-[#5F6B7D] mb-2">
+            <p className="text-xs font-semibold uppercase tracking-wide text-b4-muted mb-2">
               Suggested ideas for {result.tool} at {result.level} — {result.stage} stage
             </p>
-            <div className="prose prose-sm max-w-none text-[#1F3864] leading-relaxed whitespace-pre-line">
+            <div className="prose prose-sm max-w-none text-b4-strong leading-relaxed whitespace-pre-line">
               {result.ideas}
             </div>
             <button
@@ -180,11 +180,11 @@ const Select = ({
   renderLabel?: (o: string) => string;
 }) => (
   <label className="block">
-    <span className="text-xs font-semibold text-[#1F3864]">{label}</span>
+    <span className="text-xs font-semibold text-b4-strong">{label}</span>
     <select
       value={value}
       onChange={(e) => onChange(e.target.value)}
-      className="mt-1 w-full rounded-lg border border-[#D0D7E2] bg-white px-3 py-2.5 text-sm text-[#1F3864] focus:border-[#185FA5] focus:outline-none focus:ring-2 focus:ring-[#185FA5]/20"
+      className="mt-1 w-full rounded-lg border border-b4-line bg-white px-3 py-2.5 text-sm text-b4-strong focus:border-[#185FA5] focus:outline-none focus:ring-2 focus:ring-[#185FA5]/20"
     >
       <option value="">Choose…</option>
       {options.map((o) => (
@@ -211,26 +211,26 @@ const ResourceCard = ({
   const stageStyle: Record<string, string> = {
     Launch: "bg-[#E6F4E0] text-[#2F6F1B]",
     Establish: "bg-[#E6F1FB] text-[#185FA5]",
-    Apply: "bg-[#FEF1DC] text-[#854F0B]",
+    Apply: "bg-[#FEF1DC] text-b4-flame-ink",
     Demonstrate: "bg-[#F0E6FB] text-[#5B2D8E]",
-    All: "bg-[#EEF1F6] text-[#4F5969]",
+    All: "bg-b4-wash-2 text-[#4F5969]",
   };
   const lvl = LEVEL_PILL[r.level];
   return (
-    <div className="bg-white rounded-xl border border-[#D0D7E2] overflow-hidden flex flex-col">
+    <div className="bg-white rounded-xl border border-b4-line overflow-hidden flex flex-col">
       <div className="h-1" style={{ backgroundColor: TOOL_BAR[r.tool] }} />
       <button
         type="button"
         onClick={handleOpen}
         className="flex-1 text-left p-4 flex flex-col gap-2 hover:bg-[#F8FAFD] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#185FA5]"
       >
-        <span className="self-start inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold uppercase tracking-wide bg-[#EEF1F6] text-[#4F5969]">
+        <span className="self-start inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold uppercase tracking-wide bg-b4-wash-2 text-[#4F5969]">
           {r.resource_type}
         </span>
-        <h3 className="font-bold text-[15px] text-[#1F3864] leading-tight">{r.title}</h3>
-        <p className="text-[13px] text-[#5F6B7D] leading-snug line-clamp-2">{r.description}</p>
+        <h3 className="font-bold text-[15px] text-b4-strong leading-tight">{r.title}</h3>
+        <p className="text-[13px] text-b4-muted leading-snug line-clamp-2">{r.description}</p>
         <div className="flex flex-wrap gap-1.5 mt-1">
-          <span className="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-semibold bg-[#EEF1F6] text-[#1F3864]">
+          <span className="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-semibold bg-b4-wash-2 text-b4-strong">
             {r.tool}
           </span>
           <span className={`inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-semibold ${stageStyle[r.lead_stage] ?? stageStyle.All}`}>
@@ -238,7 +238,7 @@ const ResourceCard = ({
           </span>
         </div>
       </button>
-      <div className="flex items-center justify-between px-4 py-3 border-t border-[#EEF1F6]">
+      <div className="flex items-center justify-between px-4 py-3 border-t border-b4-wash-2">
         <span className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-bold ${lvl.bg} ${lvl.text}`}>
           {r.level}
         </span>
@@ -247,10 +247,10 @@ const ResourceCard = ({
           onClick={onToggleBookmark}
           aria-label={bookmarked ? "Remove bookmark" : "Add bookmark"}
           aria-pressed={bookmarked}
-          className="inline-flex items-center justify-center min-h-11 min-w-11 rounded-md hover:bg-[#F4F6FB] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#185FA5]"
+          className="inline-flex items-center justify-center min-h-11 min-w-11 rounded-md hover:bg-b4-wash focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#185FA5]"
         >
           {bookmarked
-            ? <IconBookmarkFilled size={20} className="text-[#F5A623]" />
+            ? <IconBookmarkFilled size={20} className="text-b4-flame-text" />
             : <IconBookmark size={20} stroke={1.75} className="text-[#9AA3B0]" />}
         </button>
       </div>
@@ -354,13 +354,13 @@ const Resources = () => {
 
   return (
     <AppShell>
-      <div className="min-h-full bg-[#F4F6FB]">
+      <div className="min-h-full bg-b4-wash">
         <div className="container mx-auto px-4 py-8 md:py-10 max-w-6xl space-y-8">
           {/* Header */}
           <header>
-            <h1 className="font-bold text-[#1F3864] text-2xl md:text-3xl">Resources</h1>
-            <p className="text-[#5F6B7D] mt-1">Practical tools, guides and ideas for your classroom.</p>
-            <div className="mt-4 flex gap-2 border-b border-[#D0D7E2]">
+            <h1 className="font-bold text-b4-strong text-2xl md:text-3xl">Resources</h1>
+            <p className="text-b4-muted mt-1">Practical tools, guides and ideas for your classroom.</p>
+            <div className="mt-4 flex gap-2 border-b border-b4-line">
               {[
                 { id: "ideas", label: "Ideas Wall" },
                 { id: "bookmarks", label: "My Bookmarks" },
@@ -370,8 +370,8 @@ const Resources = () => {
                   onClick={() => setTab(t.id as any)}
                   className={`px-4 py-2 text-sm font-semibold -mb-px border-b-2 transition-colors ${
                     tab === t.id
-                      ? "border-[#1F3864] text-[#1F3864]"
-                      : "border-transparent text-[#5F6B7D] hover:text-[#1F3864]"
+                      ? "border-b4-strong text-b4-strong"
+                      : "border-transparent text-b4-muted hover:text-b4-strong"
                   }`}
                 >
                   {t.label}
@@ -385,7 +385,7 @@ const Resources = () => {
           {tab === "ideas" ? (
             <>
               {/* Filter bar */}
-              <section className="bg-white rounded-xl border border-[#D0D7E2] p-4">
+              <section className="bg-white rounded-xl border border-b4-line p-4">
                 <div className="grid gap-3 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
                   <Select
                     label="Tool" value={filters.tool}
@@ -408,7 +408,7 @@ const Resources = () => {
                     options={["All", ...STAGE_OPTIONS]}
                   />
                 </div>
-                <p className="text-xs font-semibold text-[#5F6B7D] mt-3">
+                <p className="text-xs font-semibold text-b4-muted mt-3">
                   {filtered.length} {filtered.length === 1 ? "resource" : "resources"}
                 </p>
               </section>
@@ -417,12 +417,12 @@ const Resources = () => {
               {loading ? (
                 <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3" aria-busy="true" aria-label="Loading resources">
                   {[0,1,2,3,4,5].map((i) => (
-                    <div key={i} className="bg-white rounded-xl border border-[#D0D7E2] h-56 animate-pulse" />
+                    <div key={i} className="bg-white rounded-xl border border-b4-line h-56 animate-pulse" />
                   ))}
                 </div>
               ) : filtered.length === 0 ? (
-                <div className="bg-white rounded-xl border border-[#D0D7E2] p-8 text-center">
-                  <p className="text-[#1F3864] font-semibold">No resources match your filters yet — check back soon as we add more.</p>
+                <div className="bg-white rounded-xl border border-b4-line p-8 text-center">
+                  <p className="text-b4-strong font-semibold">No resources match your filters yet — check back soon as we add more.</p>
                   {hasActiveFilters && (
                     <button
                       onClick={clearFilters}
@@ -448,7 +448,7 @@ const Resources = () => {
                     <div className="flex justify-center mt-6">
                       <button
                         onClick={() => setVisibleCount((c) => c + 12)}
-                        className="inline-flex items-center min-h-11 px-6 py-2.5 rounded-full bg-white border border-[#D0D7E2] text-sm font-semibold text-[#1F3864] hover:bg-[#F4F6FB] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#185FA5]"
+                        className="inline-flex items-center min-h-11 px-6 py-2.5 rounded-full bg-white border border-b4-line text-sm font-semibold text-b4-strong hover:bg-b4-wash focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#185FA5]"
                       >
                         Load more ({filtered.length - visibleCount} remaining)
                       </button>
@@ -464,18 +464,18 @@ const Resources = () => {
               {loading ? (
                 <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3" aria-busy="true" aria-label="Loading bookmarks">
                   {[0,1,2].map((i) => (
-                    <div key={i} className="bg-white rounded-xl border border-[#D0D7E2] h-56 animate-pulse" />
+                    <div key={i} className="bg-white rounded-xl border border-b4-line h-56 animate-pulse" />
                   ))}
                 </div>
               ) : bookmarkedList.length === 0 ? (
-                <div className="bg-white rounded-xl border border-[#D0D7E2] p-10 text-center">
-                  <h3 className="font-bold text-[#1F3864] text-lg">You have not saved anything yet.</h3>
-                  <p className="text-sm text-[#5F6B7D] mt-2">
+                <div className="bg-white rounded-xl border border-b4-line p-10 text-center">
+                  <h3 className="font-bold text-b4-strong text-lg">You have not saved anything yet.</h3>
+                  <p className="text-sm text-b4-muted mt-2">
                     Browse the Ideas Wall and tap the bookmark icon on any resource to save it here.
                   </p>
                   <button
                     onClick={() => setTab("ideas")}
-                    className="inline-flex items-center gap-1.5 mt-5 bg-[#1F3864] hover:bg-[#2A4A80] text-white font-semibold px-5 py-2.5 rounded-full"
+                    className="inline-flex items-center gap-1.5 mt-5 bg-b4-deep hover:bg-b4-deep-hover text-white font-semibold px-5 py-2.5 rounded-full"
                   >
                     Browse resources
                     <IconArrowRight size={16} stroke={2} />

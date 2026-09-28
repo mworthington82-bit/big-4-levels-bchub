@@ -14,8 +14,8 @@ import { Download } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { downloadNodeAsPng } from "@/lib/exportPng";
 
-const INK = "#1C1C2E";
-const GOLD = "#F5A623";
+const INK = "hsl(var(--b4-ink))";
+const GOLD = "hsl(var(--b4-flame))";
 const BLUE = "#185FA5";
 const GREEN = "#5A7D2A";
 
@@ -209,7 +209,7 @@ const ProgressionInsights = ({ refreshKey = 0 }: { refreshKey?: number } = {}) =
       <header className="flex items-end justify-between gap-3 flex-wrap">
         <div>
           <h2
-            className="text-2xl font-bold text-[#1C1C2E]"
+            className="text-2xl font-bold text-b4-ink"
             style={{ fontFamily: "Fraunces, serif" }}
           >
             Progression insights
@@ -225,7 +225,7 @@ const ProgressionInsights = ({ refreshKey = 0 }: { refreshKey?: number } = {}) =
                 key={r}
                 onClick={() => setRange(r)}
                 className={`px-3 py-1.5 font-medium ${
-                  range === r ? "bg-[#1C1C2E] text-white" : "bg-white text-slate-600 hover:bg-slate-50"
+                  range === r ? "bg-b4-deep text-white" : "bg-white text-slate-600 hover:bg-slate-50"
                 }`}
               >
                 {r === "month" ? "This month" : r === "30d" ? "Last 30 days" : "All time"}
@@ -235,7 +235,7 @@ const ProgressionInsights = ({ refreshKey = 0 }: { refreshKey?: number } = {}) =
           <button
             onClick={handleDownload}
             disabled={exporting}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[#F5A623] text-[#1C1C2E] font-semibold hover:brightness-95 disabled:opacity-60"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-b4-flame text-b4-on-flame font-semibold hover:brightness-95 disabled:opacity-60"
           >
             <Download className="w-4 h-4" />
             {exporting ? "Preparing…" : "Download PNG"}
@@ -244,8 +244,8 @@ const ProgressionInsights = ({ refreshKey = 0 }: { refreshKey?: number } = {}) =
       </header>
 
       <div ref={exportRef} className="bg-white rounded-xl border border-slate-200 overflow-hidden">
-        <div className="bg-[#1C1C2E] text-white px-6 py-5 relative">
-          <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-[#F5A623]" />
+        <div className="bg-b4-deep text-white px-6 py-5 relative">
+          <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-b4-flame" />
           <h3 className="text-xl font-semibold" style={{ fontFamily: "Fraunces, serif" }}>
             Progression insights · {rangeLabel}
           </h3>
@@ -276,7 +276,7 @@ const ProgressionInsights = ({ refreshKey = 0 }: { refreshKey?: number } = {}) =
               </div>
 
               <div>
-                <h4 className="text-sm font-semibold text-[#1C1C2E] mb-3">
+                <h4 className="text-sm font-semibold text-b4-ink mb-3">
                   Level-ups per department · {rangeLabel}
                 </h4>
                 {stats.chartData.length === 0 ? (
@@ -289,7 +289,7 @@ const ProgressionInsights = ({ refreshKey = 0 }: { refreshKey?: number } = {}) =
                       <BarChart data={stats.chartData} layout="vertical" margin={{ left: 10, right: 30, top: 10, bottom: 10 }}>
                         <CartesianGrid strokeDasharray="3 3" horizontal={false} />
                         <XAxis type="number" allowDecimals={false} stroke="#64748b" fontSize={12} />
-                        <YAxis type="category" dataKey="department" width={180} stroke="#1C1C2E" fontSize={12} interval={0} />
+                        <YAxis type="category" dataKey="department" width={180} stroke="hsl(var(--b4-ink))" fontSize={12} interval={0} />
                         <Tooltip
                           cursor={{ fill: "rgba(28,28,46,0.05)" }}
                           contentStyle={{ borderRadius: 8, border: "1px solid #e2e8f0", fontSize: 12 }}
@@ -304,7 +304,7 @@ const ProgressionInsights = ({ refreshKey = 0 }: { refreshKey?: number } = {}) =
               </div>
 
               <div>
-                <h4 className="text-sm font-semibold text-[#1C1C2E] mb-2">
+                <h4 className="text-sm font-semibold text-b4-ink mb-2">
                   Department engagement matrix
                 </h4>
                 <div className="border border-slate-200 rounded-lg overflow-x-auto">
@@ -324,21 +324,21 @@ const ProgressionInsights = ({ refreshKey = 0 }: { refreshKey?: number } = {}) =
                       {stats.deptMatrix.map((d) => (
                         <tr key={d.department} className="border-t border-slate-100">
                           <td className="px-3 py-2 text-slate-800">{d.department}</td>
-                          <td className="px-3 py-2 text-right font-mono text-[#1C1C2E]">{d.total}</td>
-                          <td className="px-3 py-2 text-right text-[#1C1C2E]">
+                          <td className="px-3 py-2 text-right font-mono text-b4-ink">{d.total}</td>
+                          <td className="px-3 py-2 text-right text-b4-ink">
                             <span className="font-semibold">{d.engagedPct}%</span>
                             <span className="text-slate-400 text-xs"> ({d.engagedCount})</span>
                           </td>
-                          <td className="px-3 py-2 text-right text-[#1C1C2E]">
+                          <td className="px-3 py-2 text-right text-b4-ink">
                             <span className="font-semibold">{d.pracPct}%</span>
                             <span className="text-slate-400 text-xs"> ({d.pracCount})</span>
                           </td>
-                          <td className="px-3 py-2 text-right text-[#1C1C2E]">
+                          <td className="px-3 py-2 text-right text-b4-ink">
                             <span className="font-semibold">{d.leaderPct}%</span>
                             <span className="text-slate-400 text-xs"> ({d.leaderCount})</span>
                           </td>
-                          <td className="px-3 py-2 text-right font-mono text-[#1C1C2E]">{d.modulesInRange}</td>
-                          <td className="px-3 py-2 text-right font-mono text-[#1C1C2E]">{d.bookingsInRange}</td>
+                          <td className="px-3 py-2 text-right font-mono text-b4-ink">{d.modulesInRange}</td>
+                          <td className="px-3 py-2 text-right font-mono text-b4-ink">{d.bookingsInRange}</td>
                         </tr>
                       ))}
                     </tbody>
@@ -359,7 +359,7 @@ const ProgressionInsights = ({ refreshKey = 0 }: { refreshKey?: number } = {}) =
 const StatCard = ({ label, value, hint }: { label: string; value: string | number; hint?: string }) => (
   <div className="rounded-lg border border-slate-200 p-3 bg-slate-50">
     <div className="text-xs uppercase tracking-wide text-slate-500">{label}</div>
-    <div className="text-2xl font-bold text-[#1C1C2E] mt-1">{value}</div>
+    <div className="text-2xl font-bold text-b4-ink mt-1">{value}</div>
     {hint && <div className="text-[11px] text-slate-500 mt-0.5">{hint}</div>}
   </div>
 );

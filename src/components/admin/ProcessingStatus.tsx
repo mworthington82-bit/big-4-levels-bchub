@@ -26,13 +26,13 @@ const ProcessingStatus = ({ fileName, fileSize, steps }: Props) => {
   return (
     <div className="bg-white rounded-xl p-6 border border-slate-200">
       <div className="flex items-baseline justify-between mb-3">
-        <div className="font-semibold text-[#1F3864]">{fileName}</div>
+        <div className="font-semibold text-b4-strong">{fileName}</div>
         <div className="text-xs text-slate-500">{formatSize(fileSize)}</div>
       </div>
 
       <div className="h-2 w-full bg-slate-100 rounded-full overflow-hidden mb-4">
         <div
-          className="h-full bg-[#F5A623] transition-all"
+          className="h-full bg-b4-flame transition-all"
           style={{ width: `${pct}%` }}
         />
       </div>
@@ -43,7 +43,7 @@ const ProcessingStatus = ({ fileName, fileSize, steps }: Props) => {
             {s.status === "done" ? (
               <Check className="w-4 h-4 text-green-600" />
             ) : s.status === "active" ? (
-              <Loader2 className="w-4 h-4 text-[#F5A623] animate-spin" />
+              <Loader2 className="w-4 h-4 text-b4-flame-text animate-spin" />
             ) : (
               <span className="w-4 h-4 rounded-full border border-slate-300 inline-block" />
             )}
@@ -52,7 +52,7 @@ const ProcessingStatus = ({ fileName, fileSize, steps }: Props) => {
                 s.status === "done"
                   ? "text-slate-700"
                   : s.status === "active"
-                  ? "text-[#1F3864] font-medium"
+                  ? "text-b4-strong font-medium"
                   : "text-slate-400"
               }
             >
