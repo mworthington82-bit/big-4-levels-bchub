@@ -1,4 +1,6 @@
-import { IconCheck, IconClock, IconArrowRight } from "@tabler/icons-react";
+import { useState } from "react";
+import { IconCheck, IconClock, IconArrowRight, IconUsers } from "@tabler/icons-react";
+import { claimAttendance, type ClaimResult } from "@/lib/attendanceClaim";
 import { useWeaveTo } from "@/components/threadworks/WeaveTransition";
 import {
   STATUS_LABEL,
@@ -21,7 +23,7 @@ const levelSlug = (id: string) => (id.endsWith("_practitioner") ? "practitioner"
 type Action = { label: string; to: string; loading: string } | null;
 
 const actionFor = (t: ModuleCardSpec): Action => {
-  if (t.status === "review_pending") return null;
+  if (t.status === "review_pending" || t.status === "attendance_claimed") return null;
   if (t.status === "attended_pending")
     return { label: "Do the quiz", to: knowledgeCheckPath(t.id), loading: `Opening the ${t.name} quiz…` };
   if (t.toolKey === "immersive") {
@@ -38,6 +40,7 @@ const TAG: Record<ModuleStatus, string> = {
   todo: "bg-muted text-foreground border border-border",
   attended_pending: "bg-b4-flame-soft text-b4-flame-ink border border-b4-flame",
   review_pending: "bg-b4-wash-2 text-b4-strong border border-b4-line",
+  attendance_claimed: "bg-b4-wash-2 text-b4-strong border border-b4-line",
   evidenced: "text-b4-strong",
   completed: "text-b4-strong",
 };
@@ -45,7 +48,7 @@ const TAG: Record<ModuleStatus, string> = {
 export const StatusTag = ({ status }: { status: ModuleStatus }) => (
   <span className={`inline-flex self-start sm:self-auto items-center gap-1.5 rounded-full px-3 py-1 text-sm font-semibold whitespace-nowrap ${TAG[status]}`}>
     {isDone(status) && <IconCheck size={16} stroke={3} aria-hidden="true" />}
-    {status === "review_pending" && <IconClock size={16} stroke={2} aria-hidden="true" />}
+    {(status === "review_pending" || status === "attendance_claimed") && <IconClock size={16} stroke={2} aria-hidden="true" />}
     {STATUS_LABEL[status]}
   </span>
 );
@@ -65,7 +68,7 @@ export const HowItWorks = () => (
       ))}
     </ol>
     <p className="mt-3 text-sm text-muted-foreground">
-      Been to a training session? You only need to do the quiz. Anything your self-assessment already covers is ticked off for you.
+      Been to a training session? Press <strong>I attended training</strong> and we'll check the LDI register. Anything your self-assessment already covers is ticked off for you. We'll email you when something has been reviewed and signed off.
     </p>
   </section>
 );
@@ -78,7 +81,7 @@ export const NextStepCard = ({ tasks, level }: { tasks: ModuleCardSpec[]; level:
   const next =
     tasks.find((t) => t.status === "attended_pending") ??
     tasks.find((t) => t.status === "todo");
-  const waiting = tasks.filter((t) => t.status === "review_pending");
+  const waiting = tasks.filter((t) => t.status === "review_pending" || t.status === "attendance_claimed");
 
   let title: string;
   let body: string;
@@ -94,7 +97,7 @@ export const NextStepCard = ({ tasks, level }: { tasks: ModuleCardSpec[]; level:
       : next.description;
   } else if (waiting.length) {
     title = "You're all caught up";
-    body = `${waiting.length === 1 ? "One module is" : `${waiting.length} modules are`} waiting for review. We'll tick ${waiting.length === 1 ? "it" : "them"} off here once checked.`;
+    body = `${waiting.length === 1 ? "One module is" : `${waiting.length} modules are`} being checked. We'll email you when ${waiting.length === 1 ? "it's" : "they're"} reviewed and signed off.`;
   } else {
     title = `${level} level: all done`;
     body = NEXT_LEVEL[level]
@@ -127,7 +130,60 @@ export const NextStepCard = ({ tasks, level }: { tasks: ModuleCardSpec[]; level:
 };
 
 /* ---------- the task list ---------- */
-export const TaskList = ({ tasks, heading }: { tasks: ModuleCardSpec[]; heading: string }) => {
+/**
+ * "I attended training": first click asks to confirm, second click sends it.
+ * Then it says it's with LDI and that they'll be emailed.
+ */
+const AttendedButton = ({ task, onChanged }: { task: ModuleCardSpec; onChanged?: () => void }) => {
+  const [step, setStep] = useState<"idle" | "confirm" | "sending" | ClaimResult>("idle");
+  if (step === "sent")
+    return (
+      <p role="status" className="text-sm font-semibold text-b4-strong">
+        Submitted to check LDI records. You'll be emailed when it's signed off.
+      </p>
+    );
+  if (step === "not_enabled" || step === "error")
+    return (
+      <p role="status" className="text-sm text-muted-foreground">
+        {step === "not_enabled" ? "This isn't switched on yet. Please contact the LDI team." : "That didn't send. Please try again."}
+      </p>
+    );
+  if (step === "confirm" || step === "sending")
+    return (
+      <div className="flex flex-wrap items-center gap-2">
+        <span className="text-sm text-b4-strong">Did you go to a {task.name} training session?</span>
+        <button
+          type="button"
+          disabled={step === "sending"}
+          onClick={async () => {
+            setStep("sending");
+            const r = await claimAttendance(task.partIds);
+            setStep(r);
+            if (r === "sent") onChanged?.();
+          }}
+          className="inline-flex min-h-[40px] items-center rounded-lg bg-b4-deep px-3 text-sm font-bold text-white disabled:opacity-60"
+        >
+          {step === "sending" ? "Sending…" : "Yes, send to LDI"}
+        </button>
+        <button type="button" onClick={() => setStep("idle")} className="min-h-[40px] rounded-lg px-3 text-sm font-semibold text-b4-strong underline-offset-4 hover:underline">
+          Cancel
+        </button>
+      </div>
+    );
+  return (
+    <button
+      type="button"
+      onClick={() => setStep("confirm")}
+      aria-label={`I attended training: ${task.name}`}
+      className="inline-flex min-h-[40px] items-center gap-1.5 rounded-lg border border-border bg-card px-3 text-sm font-semibold text-b4-strong hover:bg-muted"
+    >
+      <IconUsers size={16} aria-hidden="true" />
+      I attended training
+    </button>
+  );
+};
+
+export const TaskList = ({ tasks, heading, onChanged }: { tasks: ModuleCardSpec[]; heading: string; onChanged?: () => void }) => {
   const weaveTo = useWeaveTo();
   return (
     <section aria-labelledby="tasks-heading" className="space-y-3">
@@ -147,11 +203,18 @@ export const TaskList = ({ tasks, heading }: { tasks: ModuleCardSpec[]; heading:
                   {t.status === "evidenced"
                     ? "Covered by your self-assessment"
                     : t.status === "review_pending"
-                    ? "Sent for review. We'll tick it off soon."
+                    ? "Sent for review. You'll be emailed when it's reviewed and signed off."
+                    : t.status === "attendance_claimed"
+                    ? "Submitted to check LDI records. You'll be emailed when it's signed off."
                     : t.status === "attended_pending"
                     ? "You came to the session. The quiz is still to do."
                     : t.description}
                 </p>
+                {t.status === "todo" && t.toolKey !== "immersive" && (
+                  <div className="mt-2">
+                    <AttendedButton task={t} onChanged={onChanged} />
+                  </div>
+                )}
               </div>
               <StatusTag status={t.status} />
               <div className="sm:w-40 sm:text-right">

@@ -5,16 +5,18 @@ import type { StaffProfile } from "@/hooks/useStaffProfile";
  * - todo              → "Not started"
  * - attended_pending  → "Quiz to do"      (came to the session, knowledge check outstanding)
  * - review_pending    → "Waiting for review" (online quiz done, sent for review)
+ * - attendance_claimed → "Checking LDI records" (learner says they attended; LDI checks the register)
  * - evidenced         → "Done"            (already covered by the self-assessment)
  * - completed         → "Done"
  */
-export type ModuleStatus = "todo" | "evidenced" | "completed" | "attended_pending" | "review_pending";
+export type ModuleStatus = "todo" | "evidenced" | "completed" | "attended_pending" | "review_pending" | "attendance_claimed";
 export type LevelKey = "Explorer" | "Practitioner" | "Leader";
 
 export const STATUS_LABEL: Record<ModuleStatus, string> = {
   todo: "Not started",
   attended_pending: "Quiz to do",
   review_pending: "Waiting for review",
+  attendance_claimed: "Checking LDI records",
   evidenced: "Done",
   completed: "Done",
 };
@@ -69,13 +71,14 @@ export const normaliseLevel = (raw: string | null | undefined): LevelKey => {
   return "Explorer"; // default fallback
 };
 
-type Sets = { completed: Set<string>; attended: Set<string>; review: Set<string> };
+type Sets = { completed: Set<string>; attended: Set<string>; review: Set<string>; claimed: Set<string> };
 
 const partStatus = (id: string, evidenced: boolean, s: Sets): ModuleStatus => {
   if (s.completed.has(id)) return "completed";
   if (evidenced) return "evidenced";
   if (s.attended.has(id)) return "attended_pending";
   if (s.review.has(id)) return "review_pending";
+  if (s.claimed.has(id)) return "attendance_claimed";
   return "todo";
 };
 
@@ -85,6 +88,7 @@ const combine = (parts: ModuleStatus[]): ModuleStatus => {
   if (parts.every(isDone)) return "evidenced";
   if (parts.some((p) => p === "attended_pending")) return "attended_pending";
   if (parts.some((p) => p === "review_pending")) return "review_pending";
+  if (parts.some((p) => p === "attendance_claimed")) return "attendance_claimed";
   return "todo";
 };
 
@@ -95,11 +99,13 @@ const buildTasks = (
   viaMap?: Map<string, "quiz" | "in_person">,
   attendedPendingIds?: string[],
   reviewPendingIds?: string[],
+  attendanceClaimIds?: string[],
 ): ModuleCardSpec[] => {
   const sets: Sets = {
     completed: new Set(completedIds),
     attended: new Set(attendedPendingIds ?? []),
     review: new Set(reviewPendingIds ?? []),
+    claimed: new Set(attendanceClaimIds ?? []),
   };
   return TASKS.map(({ tool, parts }) => {
     const partIds = parts.map((p) => `${p}_${suffix}`);
@@ -125,7 +131,8 @@ export const buildExplorerCards = (
   viaMap?: Map<string, "quiz" | "in_person">,
   attendedPendingIds?: string[],
   reviewPendingIds?: string[],
-): ModuleCardSpec[] => buildTasks(profile, "explorer", completedIds, viaMap, attendedPendingIds, reviewPendingIds);
+  attendanceClaimIds?: string[],
+): ModuleCardSpec[] => buildTasks(profile, "explorer", completedIds, viaMap, attendedPendingIds, reviewPendingIds, attendanceClaimIds);
 
 export const buildPractitionerCards = (
   profile: StaffProfile,
@@ -133,8 +140,9 @@ export const buildPractitionerCards = (
   viaMap?: Map<string, "quiz" | "in_person">,
   attendedPendingIds?: string[],
   reviewPendingIds?: string[],
+  attendanceClaimIds?: string[],
 ): ModuleCardSpec[] => {
-  const cards = buildTasks(profile, "practitioner", completedIds, viaMap, attendedPendingIds, reviewPendingIds);
+  const cards = buildTasks(profile, "practitioner", completedIds, viaMap, attendedPendingIds, reviewPendingIds, attendanceClaimIds);
   const immersiveId = "immersive_practitioner";
   cards.push({
     id: immersiveId,
@@ -156,11 +164,12 @@ export const buildModuleCards = (
   viaMap?: Map<string, "quiz" | "in_person">,
   attendedPendingIds?: string[],
   reviewPendingIds?: string[],
+  attendanceClaimIds?: string[],
 ): ModuleCardSpec[] => {
   const lvl = level ?? normaliseLevel(profile.assigned_level);
   if (lvl === "Leader") return [];
-  if (lvl === "Practitioner") return buildPractitionerCards(profile, completedIds, viaMap, attendedPendingIds, reviewPendingIds);
-  return buildExplorerCards(profile, completedIds, viaMap, attendedPendingIds, reviewPendingIds);
+  if (lvl === "Practitioner") return buildPractitionerCards(profile, completedIds, viaMap, attendedPendingIds, reviewPendingIds, attendanceClaimIds);
+  return buildExplorerCards(profile, completedIds, viaMap, attendedPendingIds, reviewPendingIds, attendanceClaimIds);
 };
 
 /** Has the user started any Practitioner module on the platform? */
