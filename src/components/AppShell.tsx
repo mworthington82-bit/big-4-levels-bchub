@@ -124,7 +124,7 @@ const AppShell = ({ children }: { children: React.ReactNode }) => {
             )}
             <button
               onClick={fullSignOut}
-              className="hidden md:inline-flex items-center justify-center gap-1.5 text-b4-muted hover:text-b4-strong text-sm shrink-0 min-h-[44px] rounded-full hover:bg-muted px-2 lg:px-3"
+              className="hidden md:inline-flex items-center justify-center gap-1.5 text-b4-muted hover:text-b4-strong text-sm shrink-0 min-h-[44px] rounded-[4px] hover:bg-muted px-2 lg:px-3 pill-95"
               aria-label="Sign out"
               title="Sign out"
               style={{ minWidth: "fit-content" }}
@@ -164,7 +164,7 @@ const AppShell = ({ children }: { children: React.ReactNode }) => {
             {profile && (
               <button
                 onClick={() => { setMobileOpen(false); navigate("/profile"); }}
-                className="inline-flex items-center gap-2 px-4 min-h-[44px] rounded-full text-sm font-semibold text-b4-muted hover:text-b4-strong hover:bg-muted"
+                className="inline-flex items-center gap-2 px-4 min-h-[44px] rounded-[4px] text-sm font-semibold text-b4-muted hover:text-b4-strong hover:bg-muted pill-95"
               >
                 <span
                   style={{
@@ -181,7 +181,7 @@ const AppShell = ({ children }: { children: React.ReactNode }) => {
             )}
             <button
               onClick={fullSignOut}
-              className="inline-flex items-center gap-2 px-4 min-h-[44px] rounded-full text-sm font-semibold text-b4-muted hover:text-b4-strong hover:bg-muted"
+              className="inline-flex items-center gap-2 px-4 min-h-[44px] rounded-[4px] text-sm font-semibold text-b4-muted hover:text-b4-strong hover:bg-muted pill-95"
             >
               <LogOut className="w-4 h-4" /> Sign out
             </button>

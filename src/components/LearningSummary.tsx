@@ -76,7 +76,7 @@ const LearningSummary = ({ level, onContinue }: LearningSummaryProps) => {
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
                       <CardTitle className="font-display text-xl">{section.toolName}</CardTitle>
-                      <span className="text-xs text-muted-foreground bg-muted px-2 py-1 rounded-full no-print">
+                      <span className="text-xs text-muted-foreground bg-muted px-2 py-1 rounded-[4px] no-print pill-95">
                         {markedCount}/{section.objectives.length} marked
                       </span>
                     </div>
@@ -179,14 +179,14 @@ const LearningSummary = ({ level, onContinue }: LearningSummaryProps) => {
         <Button
           variant="outline"
           onClick={handlePrint}
-          className="flex-1 py-6 text-base rounded-xl border-border"
+          className="flex-1 py-6 text-base rounded-[4px] border-border pill-95 pill-95--press"
         >
           <Printer className="mr-2 h-5 w-5" />
           Save / Print Summary
         </Button>
         <Button
           onClick={onContinue}
-          className="flex-1 bg-b4-flame hover:bg-b4-flame/90 text-b4-on-flame py-6 text-base rounded-xl font-semibold group"
+          className="flex-1 bg-b4-flame hover:bg-b4-flame/90 text-b4-on-flame py-6 text-base rounded-[4px] font-semibold group pill-95 pill-95--press"
         >
           Back to Modules
           <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />

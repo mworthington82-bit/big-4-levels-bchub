@@ -29,18 +29,18 @@ const COLS = [
 const StatusPill = ({ status }: { status: ModuleCardSpec["status"] }) => {
   if (status === "completed")
     return (
-      <span className="inline-flex items-center gap-1 text-xs font-semibold text-green-700 bg-green-50 px-2 py-0.5 rounded-full">
+      <span className="inline-flex items-center gap-1 text-xs font-semibold text-green-700 bg-green-50 px-2 py-0.5 rounded-[4px] pill-95">
         <CheckCircle2 className="w-3 h-3" /> Completed
       </span>
     );
   if (status === "evidenced")
     return (
-      <span className="inline-flex items-center gap-1 text-xs font-semibold text-amber-800 bg-amber-50 px-2 py-0.5 rounded-full">
+      <span className="inline-flex items-center gap-1 text-xs font-semibold text-amber-800 bg-amber-50 px-2 py-0.5 rounded-[4px] pill-95">
         <Sparkles className="w-3 h-3" /> Auto-evidenced
       </span>
     );
   return (
-    <span className="inline-flex items-center gap-1 text-xs font-semibold text-muted-foreground bg-muted px-2 py-0.5 rounded-full">
+    <span className="inline-flex items-center gap-1 text-xs font-semibold text-muted-foreground bg-muted px-2 py-0.5 rounded-[4px] pill-95">
       <Circle className="w-3 h-3" /> To do
     </span>
   );
@@ -155,7 +155,7 @@ const StaffJourneySearch = () => {
                         </div>
                       </div>
                     </div>
-                    <span className="text-xs font-semibold text-foreground bg-muted px-2 py-0.5 rounded-full flex-shrink-0">
+                    <span className="text-xs font-semibold text-foreground bg-muted px-2 py-0.5 rounded-[4px] flex-shrink-0 pill-95">
                       {r.assigned_level ?? "Unassigned"}
                     </span>
                   </button>
@@ -185,7 +185,7 @@ const StaffJourneySearch = () => {
                   {selected.email} · {selected.department ?? "—"}
                 </div>
               </div>
-              <span className="text-xs font-bold text-white bg-b4-deep px-3 py-1 rounded-full">
+              <span className="text-xs font-bold text-white bg-b4-deep px-3 py-1 rounded-[4px] pill-95">
                 {selected.assigned_level ?? "Unassigned"}
               </span>
             </div>

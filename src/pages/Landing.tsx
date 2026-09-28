@@ -233,7 +233,7 @@ const Landing = () => {
                     <button
                       onClick={handleSignIn}
                       disabled={signingIn}
-                      className="inline-flex h-14 w-full items-center justify-center rounded-xl bg-b4-flame px-8 text-[17px] font-bold text-b4-on-flame shadow-lg transition-colors hover:bg-b4-flame/90 disabled:opacity-60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+                      className="inline-flex h-14 w-full items-center justify-center rounded-[4px] bg-b4-flame px-8 text-[17px] font-bold text-b4-on-flame transition-colors hover:bg-b4-flame/90 disabled:opacity-60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white pill-95 pill-95--press"
                     >
                       {signingIn ? "Redirecting…" : "Sign in with Microsoft"}
                     </button>
@@ -241,7 +241,7 @@ const Landing = () => {
                       href="https://bradfordcollege-handsmisconducttraining.my.canva.site/final-24-03the-big-4-tools"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex h-14 w-full items-center justify-center rounded-xl border-2 border-white/40 px-8 text-[17px] font-bold text-white transition-colors hover:border-white/60 hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+                      className="inline-flex h-14 w-full items-center justify-center rounded-[4px] border-2 border-white/40 px-8 text-[17px] font-bold text-white transition-colors hover:border-white/60 hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white pill-95 pill-95--press"
                     >
                       Take the self-assessment
                     </a>
@@ -258,13 +258,13 @@ const Landing = () => {
                       <>
                         <button
                           onClick={() => navigate("/new/journey")}
-                          className="inline-flex h-14 items-center justify-center px-8 rounded-xl bg-b4-flame text-b4-on-flame font-bold text-[17px] hover:bg-b4-flame/90 transition-colors shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white w-full"
+                          className="inline-flex h-14 items-center justify-center px-8 rounded-[4px] bg-b4-flame text-b4-on-flame font-bold text-[17px] hover:bg-b4-flame/90 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white w-full pill-95 pill-95--press"
                         >
                           Go to My Journey
                         </button>
                         <button
                           onClick={() => navigate("/planner")}
-                          className="inline-flex h-14 items-center justify-center px-8 rounded-xl bg-transparent text-white font-bold text-[17px] border-2 border-white/40 hover:bg-white/10 hover:border-white/60 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white w-full"
+                          className="inline-flex h-14 items-center justify-center px-8 rounded-[4px] bg-transparent text-white font-bold text-[17px] border-2 border-white/40 hover:bg-white/10 hover:border-white/60 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white w-full pill-95 pill-95--press"
                         >
                           Open Activity Planner
                         </button>
@@ -272,7 +272,7 @@ const Landing = () => {
                     ) : (
                       <button
                         onClick={() => weaveTo("/bookings", "Opening Book Training…")}
-                        className="inline-flex h-14 items-center justify-center px-8 rounded-xl bg-b4-flame text-b4-on-flame font-bold text-[17px] hover:bg-b4-flame/90 transition-colors shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white w-full"
+                        className="inline-flex h-14 items-center justify-center px-8 rounded-[4px] bg-b4-flame text-b4-on-flame font-bold text-[17px] hover:bg-b4-flame/90 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white w-full pill-95 pill-95--press"
                       >
                         Go to my bookings
                       </button>

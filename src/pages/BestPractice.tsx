@@ -58,7 +58,7 @@ const BestPractice = () => {
                         href={url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="self-start inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-b4-deep text-white text-sm font-semibold hover:bg-[#162a4d] transition-colors"
+                        className="self-start inline-flex items-center gap-2 px-4 py-2.5 rounded-[4px] bg-b4-deep text-white text-sm font-semibold hover:bg-[#162a4d] transition-colors pill-95 pill-95--press"
                       >
                         Open Padlet
                         <IconExternalLink size={16} stroke={2} />

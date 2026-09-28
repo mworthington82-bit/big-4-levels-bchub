@@ -202,7 +202,7 @@ const MyContributions = ({
                   <p className="text-xs text-b4-muted mt-1">Submitted {formatDateUK(p.created_at)}</p>
                 </div>
                 <span
-                  className="text-[11px] font-bold uppercase tracking-wide px-2.5 py-1 rounded-full"
+                  className="text-[11px] font-bold uppercase tracking-wide px-2.5 py-1 rounded-[4px] pill-95"
                   style={
                     p.is_published
                       ? { backgroundColor: "#EAF3DE", color: "#3B6D11" }
@@ -222,7 +222,7 @@ const MyContributions = ({
               setSuccessMsg(null);
               setShowPostForm(true);
             }}
-            className="mt-4 inline-flex items-center bg-b4-deep hover:bg-b4-deep-hover text-white font-bold px-5 py-2.5 rounded-lg"
+            className="mt-4 inline-flex items-center bg-b4-deep hover:bg-b4-deep-hover text-white font-bold px-5 py-2.5 rounded-[4px] pill-95 pill-95--press"
           >
             Share a classroom example
           </button>
@@ -409,7 +409,7 @@ const EvidenceForm = ({
         <button
           onClick={submit}
           disabled={!canSubmit}
-          className="flex-1 bg-b4-deep hover:bg-b4-deep-hover disabled:opacity-60 text-white font-bold py-3 rounded-lg"
+          className="flex-1 bg-b4-deep hover:bg-b4-deep-hover disabled:opacity-60 text-white font-bold py-3 rounded-[4px] pill-95 pill-95--press"
         >
           {busy ? "Submitting…" : "Submit for review"}
         </button>
@@ -507,7 +507,7 @@ const MentorForm = ({
         <button
           onClick={submit}
           disabled={tools.length === 0 || busy}
-          className="flex-1 bg-b4-deep hover:bg-b4-deep-hover disabled:opacity-60 text-white font-bold py-3 rounded-lg"
+          className="flex-1 bg-b4-deep hover:bg-b4-deep-hover disabled:opacity-60 text-white font-bold py-3 rounded-[4px] pill-95 pill-95--press"
         >
           {busy ? "Saving…" : existing ? "Save changes" : "Add me to the mentor directory"}
         </button>
@@ -669,7 +669,7 @@ const EvidenceGalleryTab = ({ email }: { email: string | null }) => {
             <div className="flex justify-center mt-6">
               <button
                 onClick={() => setVisibleCount((c) => c + 12)}
-                className="inline-flex items-center min-h-11 px-6 py-2.5 rounded-full bg-card border border-b4-line text-sm font-semibold text-b4-strong hover:bg-b4-wash focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#185FA5]"
+                className="inline-flex items-center min-h-11 px-6 py-2.5 rounded-[4px] bg-card border border-b4-line text-sm font-semibold text-b4-strong hover:bg-b4-wash focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#185FA5] pill-95 pill-95--press"
               >
                 Load more ({filtered.length - visibleCount} remaining)
               </button>
@@ -753,7 +753,7 @@ const MentorDirectoryTab = () => {
                       {m.department && (
                         <p className="text-[13px] text-b4-muted truncate">{m.department}</p>
                       )}
-                      <span className="inline-flex items-center mt-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#EAF3DE] text-[#3B6D11]">
+                      <span className="inline-flex items-center mt-1 px-2 py-0.5 rounded-[4px] text-[10px] font-bold bg-[#EAF3DE] text-[#3B6D11] pill-95">
                         Leader
                       </span>
                     </div>
@@ -768,7 +768,7 @@ const MentorDirectoryTab = () => {
                   )}
                   <a
                     href={mailto}
-                    className="mt-auto inline-flex items-center justify-center gap-1.5 bg-b4-deep hover:bg-b4-deep-hover text-white font-semibold text-sm py-2 rounded-lg"
+                    className="mt-auto inline-flex items-center justify-center gap-1.5 bg-b4-deep hover:bg-b4-deep-hover text-white font-semibold text-sm py-2 rounded-[4px] pill-95 pill-95--press"
                   >
                     <IconMail size={16} stroke={2} />
                     Get in touch
@@ -860,7 +860,7 @@ const Leader = () => {
               </p>
               {!readOnly && (
                 <>
-                  <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold bg-[#EAF3DE] text-[#3B6D11] mt-4">
+                  <span className="inline-flex items-center gap-2 px-3 py-1 rounded-[4px] text-xs font-bold bg-[#EAF3DE] text-[#3B6D11] mt-4 pill-95">
                     <span className="w-1.5 h-1.5 rounded-full bg-[#3B6D11]" />
                     Leader level
                   </span>

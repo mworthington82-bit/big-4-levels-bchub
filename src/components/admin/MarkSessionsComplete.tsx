@@ -263,7 +263,7 @@ const IndividualPanel = () => {
                         </div>
                       </div>
                     </div>
-                    <span className="text-xs font-semibold text-foreground bg-muted px-2 py-0.5 rounded-full flex-shrink-0">
+                    <span className="text-xs font-semibold text-foreground bg-muted px-2 py-0.5 rounded-[4px] flex-shrink-0 pill-95">
                       {r.assigned_level ?? "Unassigned"}
                     </span>
                   </button>

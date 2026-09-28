@@ -64,15 +64,15 @@ const ModuleHeroBanner = ({ tool, level, brandColor, duration = '~15 min' }: Mod
 
           {/* Info chips */}
           <div className="flex flex-wrap gap-2">
-            <span className="inline-flex items-center gap-1.5 bg-white/15 text-white text-xs font-medium px-3 py-1.5 rounded-full backdrop-blur-sm">
+            <span className="inline-flex items-center gap-1.5 bg-white/15 text-white text-xs font-medium px-3 py-1.5 rounded-[4px] backdrop-blur-sm pill-95">
               <Clock className="h-3.5 w-3.5" />
               {duration}
             </span>
-            <span className="inline-flex items-center gap-1.5 bg-white/15 text-white text-xs font-medium px-3 py-1.5 rounded-full backdrop-blur-sm">
+            <span className="inline-flex items-center gap-1.5 bg-white/15 text-white text-xs font-medium px-3 py-1.5 rounded-[4px] backdrop-blur-sm pill-95">
               <Layers className="h-3.5 w-3.5" />
               5 sections
             </span>
-            <span className="inline-flex items-center gap-1.5 bg-white/15 text-white text-xs font-medium px-3 py-1.5 rounded-full backdrop-blur-sm">
+            <span className="inline-flex items-center gap-1.5 bg-white/15 text-white text-xs font-medium px-3 py-1.5 rounded-[4px] backdrop-blur-sm pill-95">
               <Award className="h-3.5 w-3.5" />
               Badge on completion
             </span>

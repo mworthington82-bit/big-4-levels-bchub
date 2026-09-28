@@ -27,7 +27,7 @@ const NotFound = () => {
           </p>
           <Link
             to="/"
-            className="inline-flex min-h-[44px] items-center justify-center rounded-xl bg-primary px-6 font-semibold text-primary-foreground hover:bg-primary/90"
+            className="inline-flex min-h-[44px] items-center justify-center rounded-[4px] bg-primary px-6 font-semibold text-primary-foreground hover:bg-primary/90 pill-95 pill-95--press"
           >
             Back to The Big 4
           </Link>

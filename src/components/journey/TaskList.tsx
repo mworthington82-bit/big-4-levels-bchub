@@ -47,7 +47,7 @@ const TAG: Record<ModuleStatus, string> = {
 };
 
 export const StatusTag = ({ status }: { status: ModuleStatus }) => (
-  <span className={`inline-flex self-start sm:self-auto items-center gap-1.5 rounded-full px-3 py-1 text-sm font-semibold whitespace-nowrap ${TAG[status]}`}>
+  <span className={`inline-flex self-start sm:self-auto items-center gap-1.5 rounded-[4px] px-3 py-1 text-sm font-semibold whitespace-nowrap ${TAG[status]} pill-95`}>
     {isDone(status) && <IconCheck size={16} stroke={3} aria-hidden="true" />}
     {(status === "review_pending" || status === "attendance_claimed") && <Hourglass className="h-5 w-auto -my-1" />}
     {STATUS_LABEL[status]}
@@ -120,7 +120,7 @@ export const NextStepCard = ({ tasks, level }: { tasks: ModuleCardSpec[]; level:
         <button
           type="button"
           onClick={() => weaveTo(action!.to, action!.loading)}
-          className="mt-5 inline-flex min-h-[48px] items-center gap-2 rounded-xl bg-primary px-6 text-base font-bold text-primary-foreground hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+          className="mt-5 inline-flex min-h-[48px] items-center gap-2 rounded-[4px] bg-primary px-6 text-base font-bold text-primary-foreground hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 pill-95 pill-95--press"
         >
           {action.label}
           <IconArrowRight size={18} stroke={2.25} aria-hidden="true" />
@@ -243,7 +243,7 @@ export const TaskList = ({ tasks, heading, onChanged }: { tasks: ModuleCardSpec[
                     className={
                       quiet
                         ? "inline-flex min-h-[44px] items-center gap-1 rounded-lg px-3 text-sm font-semibold text-b4-strong underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                        : "inline-flex min-h-[44px] items-center gap-1.5 rounded-lg bg-b4-deep px-4 text-sm font-bold text-white hover:bg-b4-deep-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                        : "inline-flex min-h-[44px] items-center gap-1.5 rounded-[4px] bg-b4-deep px-4 text-sm font-bold text-white hover:bg-b4-deep-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 pill-95 pill-95--press"
                     }
                   >
                     {action.label}

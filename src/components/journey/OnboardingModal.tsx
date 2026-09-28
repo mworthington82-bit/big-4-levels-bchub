@@ -93,7 +93,7 @@ const OnboardingModal = ({ profile, email, onClose }: Props) => {
         <div className="h-[6px] bg-b4-deep w-full" />
         <div className="p-8">
           <span
-            className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold ${styles.pillBg} ${styles.pillText}`}
+            className={`inline-flex items-center gap-2 px-3 py-1 rounded-[4px] text-xs font-bold ${styles.pillBg} ${styles.pillText} pill-95`}
           >
             <span className={`w-1.5 h-1.5 rounded-full ${styles.dot}`} />
             {level} level
@@ -115,7 +115,7 @@ const OnboardingModal = ({ profile, email, onClose }: Props) => {
           <button
             onClick={handleCta}
             disabled={saving}
-            className="w-full mt-7 bg-b4-deep hover:bg-b4-deep-hover disabled:opacity-70 text-white font-bold text-[15px] rounded-lg py-[14px] transition-colors"
+            className="w-full mt-7 bg-b4-deep hover:bg-b4-deep-hover disabled:opacity-70 text-white font-bold text-[15px] rounded-[4px] py-[14px] transition-colors pill-95 pill-95--press"
           >
             {saving ? "Opening your modules…" : "See my modules"}
           </button>

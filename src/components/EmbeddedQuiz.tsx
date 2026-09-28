@@ -52,7 +52,7 @@ const EmbeddedQuiz = ({ tool, level, onComplete, brandColor }: EmbeddedQuizProps
 
         <Button
           onClick={handleComplete}
-          className="w-full py-6 text-base rounded-xl font-semibold text-white"
+          className="w-full py-6 text-base rounded-[4px] font-semibold text-white pill-95 pill-95--press"
           style={{ backgroundColor: brandColor }}
           size="lg"
         >

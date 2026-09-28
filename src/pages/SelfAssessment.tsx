@@ -129,7 +129,7 @@ const SelfAssessment = () => {
               <Button 
                 size="lg"
                 onClick={() => navigate("/training")}
-                className="w-full bg-primary hover:bg-primary/90 text-primary-foreground py-6 text-lg rounded-xl transition-all duration-300 font-semibold group"
+                className="w-full bg-primary hover:bg-primary/90 text-primary-foreground py-6 text-lg rounded-[4px] transition-all duration-300 font-semibold group pill-95 pill-95--press"
               >
                 I've Completed the Assessment - Continue
                 <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />

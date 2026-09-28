@@ -151,7 +151,7 @@ const BookingsDashboard = ({ refreshKey }: { refreshKey: number }) => {
         <button
           onClick={handleDownload}
           disabled={exporting}
-          className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-b4-flame text-b4-on-flame font-semibold hover:brightness-95 disabled:opacity-60"
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-[4px] bg-b4-flame text-b4-on-flame font-semibold hover:brightness-95 disabled:opacity-60 pill-95 pill-95--press"
         >
           <Download className="w-4 h-4" />
           {exporting ? "Preparing..." : "Download PNG"}

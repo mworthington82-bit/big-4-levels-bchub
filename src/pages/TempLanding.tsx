@@ -52,7 +52,7 @@ const TempLanding = () => {
       <button
         onClick={handleAdminBypass}
         aria-label="Admin access"
-        className="fixed bottom-4 right-4 px-4 py-2 rounded-full bg-b4-deep text-white text-sm font-medium shadow-lg hover:bg-b4-deep/90 transition-colors"
+        className="fixed bottom-4 right-4 px-4 py-2 rounded-[4px] bg-b4-deep text-white text-sm font-medium hover:bg-b4-deep/90 transition-colors pill-95 pill-95--press"
       >
         Admin Login
       </button>

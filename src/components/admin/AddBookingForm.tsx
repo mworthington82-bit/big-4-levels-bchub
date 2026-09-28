@@ -443,7 +443,7 @@ const AddBookingForm = () => {
                 </div>
                 <div className="flex items-center gap-3 flex-shrink-0 flex-wrap">
                   {bookingCounts[b.name] > 0 && (
-                    <span className="inline-flex items-center gap-1 rounded-full bg-b4-deep/10 text-b4-strong text-xs font-semibold px-2 py-1">
+                    <span className="inline-flex items-center gap-1 rounded-[4px] bg-b4-deep/10 text-b4-strong text-xs font-semibold px-2 py-1 pill-95">
                       <Users className="w-3 h-3" />
                       {bookingCounts[b.name]} booked
                     </span>

@@ -88,7 +88,7 @@ const Profile = () => {
 
               <button
                 onClick={() => navigate("/journey")}
-                className="mt-6 w-full inline-flex items-center justify-center gap-2 min-h-[44px] rounded-full bg-b4-deep text-white text-sm font-semibold hover:bg-b4-deep/90 transition-colors"
+                className="mt-6 w-full inline-flex items-center justify-center gap-2 min-h-[44px] rounded-[4px] bg-b4-deep text-white text-sm font-semibold hover:bg-b4-deep/90 transition-colors pill-95 pill-95--press"
               >
                 Back to my journey <ArrowRight className="h-4 w-4" />
               </button>

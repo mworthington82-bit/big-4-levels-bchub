@@ -366,7 +366,7 @@ const Module = () => {
                 )}
               </div>
               <div className="shrink-0 flex sm:block justify-center">
-                <span className="inline-flex items-center gap-1.5 bg-b4-wash border border-b4-line text-b4-strong text-sm font-semibold px-3 py-1.5 rounded-full whitespace-nowrap">
+                <span className="inline-flex items-center gap-1.5 bg-b4-wash border border-b4-line text-b4-strong text-sm font-semibold px-3 py-1.5 rounded-[4px] whitespace-nowrap pill-95">
                   <IconClock size={14} stroke={2} />
                   About {module.estimated_minutes} minutes
                 </span>
@@ -385,7 +385,7 @@ const Module = () => {
                 const unlocked = isStepUnlocked(n);
                 const isComplete = visited.has(n) && !isActive;
                 let cls =
-                  "shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold transition-colors ";
+                  "shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-[4px] text-xs font-semibold transition-colors  pill-95";
                 if (isActive) cls += "bg-b4-deep text-white";
                 else if (!unlocked) cls += "bg-b4-wash-3 text-[#A0A8B5] cursor-not-allowed";
                 else if (isComplete) cls += "bg-[#E6F1FB] text-[#185FA5] hover:bg-[#D7E8F8]";
@@ -486,7 +486,7 @@ const Module = () => {
                 {currentStep > 1 ? (
                   <button
                     onClick={handlePrev}
-                    className="inline-flex items-center gap-1.5 text-[#185FA5] font-semibold px-5 py-2.5 rounded-full hover:bg-card"
+                    className="inline-flex items-center gap-1.5 text-[#185FA5] font-semibold px-5 py-2.5 rounded-[4px] hover:bg-card pill-95"
                   >
                     <IconArrowLeft size={16} stroke={2} />
                     Previous
@@ -496,7 +496,7 @@ const Module = () => {
                 )}
                 <button
                   onClick={handleNext}
-                  className="inline-flex items-center gap-1.5 bg-[#185FA5] hover:bg-[#13497F] text-white font-semibold px-6 py-2.5 rounded-full"
+                  className="inline-flex items-center gap-1.5 bg-[#185FA5] hover:bg-[#13497F] text-white font-semibold px-6 py-2.5 rounded-[4px] pill-95 pill-95--press"
                 >
                   {currentStep === 4 ? "Start quiz" : "Next"}
                   <IconArrowRight size={16} stroke={2} />
@@ -514,7 +514,7 @@ const Module = () => {
                   {!bypassOpen ? (
                     <button
                       onClick={() => setBypassOpen(true)}
-                      className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 bg-card border-2 border-b4-strong text-b4-strong font-semibold px-5 py-2.5 rounded-full hover:bg-b4-wash"
+                      className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 bg-card border-2 border-b4-strong text-b4-strong font-semibold px-5 py-2.5 rounded-[4px] hover:bg-b4-wash pill-95 pill-95--press"
                     >
                       I completed in-person training
                     </button>
@@ -537,7 +537,7 @@ const Module = () => {
                         <button
                           onClick={submitBypass}
                           disabled={bypassBusy || bypassSuccess || !bypassPwd.trim()}
-                          className="inline-flex items-center justify-center gap-1.5 bg-b4-deep hover:bg-b4-deep-hover text-white font-semibold px-5 py-2.5 rounded-full disabled:opacity-50"
+                          className="inline-flex items-center justify-center gap-1.5 bg-b4-deep hover:bg-b4-deep-hover text-white font-semibold px-5 py-2.5 rounded-[4px] disabled:opacity-50 pill-95 pill-95--press"
                         >
                           {bypassBusy ? "Validating…" : "Confirm attendance"}
                         </button>
@@ -594,7 +594,7 @@ const Module = () => {
               <div className="flex justify-end">
                 <button
                   onClick={() => setAttendedDialogOpen(false)}
-                  className="inline-flex items-center gap-1.5 bg-b4-deep hover:bg-b4-deep-hover text-white font-semibold px-5 py-2.5 rounded-full"
+                  className="inline-flex items-center gap-1.5 bg-b4-deep hover:bg-b4-deep-hover text-white font-semibold px-5 py-2.5 rounded-[4px] pill-95 pill-95--press"
                 >
                   Got it
                 </button>

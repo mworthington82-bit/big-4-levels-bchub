@@ -44,7 +44,7 @@ const LearningObjectivesCarousel = ({ tool, level }: LearningObjectivesCarouselP
             <Tooltip key={objective.id}>
               <TooltipTrigger asChild>
                 <span 
-                  className="inline-flex items-center gap-1 px-2 py-1 rounded-full border border-accent/20 bg-accent/5 text-xs whitespace-nowrap cursor-help hover:bg-accent/10 hover:border-accent/40 transition-colors"
+                  className="inline-flex items-center gap-1 px-2 py-1 rounded-[4px] border border-accent/20 bg-accent/5 text-xs whitespace-nowrap cursor-help hover:bg-accent/10 hover:border-accent/40 transition-colors pill-95"
                 >
                   <CheckCircle className="h-3 w-3 text-accent flex-shrink-0" />
                   <span className="text-muted-foreground">

@@ -126,7 +126,7 @@ const ModuleCard = ({ card }: Props) => {
             {toolLabel}
           </span>
         </div>
-        <span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-semibold ${status.cls}`}>
+        <span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-[4px] text-[11px] font-semibold ${status.cls} pill-95`}>
           {status.tick && <IconCheck size={12} stroke={3} />}
           {status.label}
         </span>
@@ -153,7 +153,7 @@ const ModuleCard = ({ card }: Props) => {
           )}
         </div>
         <div className="flex items-center justify-between gap-2 pt-1">
-          <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-semibold ${LEVEL_PILL[level]}`}>
+          <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-[4px] text-[11px] font-semibold ${LEVEL_PILL[level]} pill-95`}>
             {LEVEL_EMBLEM[level] && (
               <img src={LEVEL_EMBLEM[level]} alt="" aria-hidden className="h-3.5 w-3.5" />
             )}
