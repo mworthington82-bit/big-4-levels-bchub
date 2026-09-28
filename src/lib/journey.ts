@@ -1,10 +1,30 @@
 import type { StaffProfile } from "@/hooks/useStaffProfile";
 
-export type ModuleStatus = "todo" | "evidenced" | "completed" | "attended_pending";
+/**
+ * A task's status. Plain-English labels live in STATUS_LABEL below.
+ * - todo              → "Not started"
+ * - attended_pending  → "Quiz to do"      (came to the session, knowledge check outstanding)
+ * - review_pending    → "Waiting for review" (online quiz done, sent for review)
+ * - evidenced         → "Done"            (already covered by the self-assessment)
+ * - completed         → "Done"
+ */
+export type ModuleStatus = "todo" | "evidenced" | "completed" | "attended_pending" | "review_pending";
 export type LevelKey = "Explorer" | "Practitioner" | "Leader";
 
+export const STATUS_LABEL: Record<ModuleStatus, string> = {
+  todo: "Not started",
+  attended_pending: "Quiz to do",
+  review_pending: "Waiting for review",
+  evidenced: "Done",
+  completed: "Done",
+};
+
+export const isDone = (s: ModuleStatus) => s === "completed" || s === "evidenced";
+
 export interface ModuleCardSpec {
-  id: string; // matches module_completions.module_id
+  id: string; // primary module_completions.module_id (e.g. teams_explorer)
+  /** Every module_id this task stands for. MS Teams & Forms = teams_* + forms_*. */
+  partIds: string[];
   toolKey: "teams" | "forms" | "canva" | "edpuzzle" | "copilot" | "immersive";
   name: string;
   description: string;
@@ -13,7 +33,7 @@ export interface ModuleCardSpec {
 }
 
 const TOOL_LABEL: Record<string, string> = {
-  teams: "MS Teams",
+  teams: "MS Teams & Forms",
   forms: "MS Forms",
   canva: "Canva",
   edpuzzle: "Edpuzzle",
@@ -22,7 +42,7 @@ const TOOL_LABEL: Record<string, string> = {
 };
 
 const DESCRIPTIONS: Record<string, string> = {
-  teams: "Class Teams, assignments and insights",
+  teams: "Class Teams, assignments and quizzes",
   forms: "Quizzes, surveys and anonymous responses",
   canva: "Accessible resource design and templates",
   edpuzzle: "Interactive video and embedded questions",
@@ -30,8 +50,17 @@ const DESCRIPTIONS: Record<string, string> = {
   immersive: "Multisensory learning experiences",
 };
 
-const EXPLORER_TOOLS = ["teams", "forms", "canva", "edpuzzle", "copilot"] as const;
-const PRACTITIONER_TOOLS = ["teams", "forms", "canva", "edpuzzle", "copilot"] as const;
+/**
+ * One task per tool. MS Teams and MS Forms are taught as one module, so they are
+ * one task here — but the database still tracks (and the level-up rule still
+ * checks) teams_* and forms_* separately, so the task is only "Done" when both are.
+ */
+const TASKS: { tool: ModuleCardSpec["toolKey"]; parts: string[] }[] = [
+  { tool: "teams", parts: ["teams", "forms"] },
+  { tool: "canva", parts: ["canva"] },
+  { tool: "edpuzzle", parts: ["edpuzzle"] },
+  { tool: "copilot", parts: ["copilot"] },
+];
 
 export const normaliseLevel = (raw: string | null | undefined): LevelKey => {
   const v = (raw ?? "").toLowerCase();
@@ -40,65 +69,80 @@ export const normaliseLevel = (raw: string | null | undefined): LevelKey => {
   return "Explorer"; // default fallback
 };
 
+type Sets = { completed: Set<string>; attended: Set<string>; review: Set<string> };
+
+const partStatus = (id: string, evidenced: boolean, s: Sets): ModuleStatus => {
+  if (s.completed.has(id)) return "completed";
+  if (evidenced) return "evidenced";
+  if (s.attended.has(id)) return "attended_pending";
+  if (s.review.has(id)) return "review_pending";
+  return "todo";
+};
+
+/** Combine the parts of a task into one status. */
+const combine = (parts: ModuleStatus[]): ModuleStatus => {
+  if (parts.every((p) => p === "completed")) return "completed";
+  if (parts.every(isDone)) return "evidenced";
+  if (parts.some((p) => p === "attended_pending")) return "attended_pending";
+  if (parts.some((p) => p === "review_pending")) return "review_pending";
+  return "todo";
+};
+
+const buildTasks = (
+  profile: StaffProfile,
+  suffix: "explorer" | "practitioner",
+  completedIds: string[],
+  viaMap?: Map<string, "quiz" | "in_person">,
+  attendedPendingIds?: string[],
+  reviewPendingIds?: string[],
+): ModuleCardSpec[] => {
+  const sets: Sets = {
+    completed: new Set(completedIds),
+    attended: new Set(attendedPendingIds ?? []),
+    review: new Set(reviewPendingIds ?? []),
+  };
+  return TASKS.map(({ tool, parts }) => {
+    const partIds = parts.map((p) => `${p}_${suffix}`);
+    const statuses = parts.map((p) =>
+      partStatus(`${p}_${suffix}`, profile[`${p}_${suffix}_evidenced` as keyof StaffProfile] === true, sets),
+    );
+    const id = partIds[0];
+    return {
+      id,
+      partIds,
+      toolKey: tool,
+      name: TOOL_LABEL[tool],
+      description: DESCRIPTIONS[tool],
+      status: combine(statuses),
+      completedVia: viaMap?.get(id),
+    };
+  });
+};
+
 export const buildExplorerCards = (
   profile: StaffProfile,
   completedIds: string[],
   viaMap?: Map<string, "quiz" | "in_person">,
   attendedPendingIds?: string[],
-): ModuleCardSpec[] => {
-  const completed = new Set(completedIds);
-  const attended = new Set(attendedPendingIds ?? []);
-  return EXPLORER_TOOLS.map((tool) => {
-    const id = `${tool}_explorer`;
-    const flagKey = `${tool}_explorer_evidenced` as keyof StaffProfile;
-    const evidenced = profile[flagKey] === true;
-    let status: ModuleStatus = "todo";
-    if (completed.has(id)) status = "completed";
-    else if (attended.has(id)) status = "attended_pending";
-    else if (evidenced) status = "evidenced";
-    return {
-      id,
-      toolKey: tool,
-      name: TOOL_LABEL[tool],
-      description: DESCRIPTIONS[tool],
-      status,
-      completedVia: viaMap?.get(id),
-    };
-  });
-};
+  reviewPendingIds?: string[],
+): ModuleCardSpec[] => buildTasks(profile, "explorer", completedIds, viaMap, attendedPendingIds, reviewPendingIds);
 
 export const buildPractitionerCards = (
   profile: StaffProfile,
   completedIds: string[],
   viaMap?: Map<string, "quiz" | "in_person">,
   attendedPendingIds?: string[],
+  reviewPendingIds?: string[],
 ): ModuleCardSpec[] => {
-  const completed = new Set(completedIds);
-  const attended = new Set(attendedPendingIds ?? []);
-  const cards: ModuleCardSpec[] = PRACTITIONER_TOOLS.map((tool) => {
-    const id = `${tool}_practitioner`;
-    const flagKey = `${tool}_practitioner_evidenced` as keyof StaffProfile;
-    const evidenced = profile[flagKey] === true;
-    let status: ModuleStatus = "todo";
-    if (completed.has(id)) status = "completed";
-    else if (attended.has(id)) status = "attended_pending";
-    else if (evidenced) status = "evidenced";
-    return {
-      id,
-      toolKey: tool,
-      name: TOOL_LABEL[tool],
-      description: DESCRIPTIONS[tool],
-      status,
-      completedVia: viaMap?.get(id),
-    };
-  });
+  const cards = buildTasks(profile, "practitioner", completedIds, viaMap, attendedPendingIds, reviewPendingIds);
   const immersiveId = "immersive_practitioner";
   cards.push({
     id: immersiveId,
+    partIds: [immersiveId],
     toolKey: "immersive",
     name: TOOL_LABEL.immersive,
     description: DESCRIPTIONS.immersive,
-    status: completed.has(immersiveId) ? "completed" : "todo",
+    status: completedIds.includes(immersiveId) ? "completed" : "todo",
     completedVia: viaMap?.get(immersiveId),
   });
   return cards;
@@ -111,11 +155,12 @@ export const buildModuleCards = (
   level?: LevelKey,
   viaMap?: Map<string, "quiz" | "in_person">,
   attendedPendingIds?: string[],
+  reviewPendingIds?: string[],
 ): ModuleCardSpec[] => {
   const lvl = level ?? normaliseLevel(profile.assigned_level);
   if (lvl === "Leader") return [];
-  if (lvl === "Practitioner") return buildPractitionerCards(profile, completedIds, viaMap, attendedPendingIds);
-  return buildExplorerCards(profile, completedIds, viaMap, attendedPendingIds);
+  if (lvl === "Practitioner") return buildPractitionerCards(profile, completedIds, viaMap, attendedPendingIds, reviewPendingIds);
+  return buildExplorerCards(profile, completedIds, viaMap, attendedPendingIds, reviewPendingIds);
 };
 
 /** Has the user started any Practitioner module on the platform? */
@@ -128,37 +173,29 @@ export const hasAnyPractitionerCompletion = (completedIds: string[]) => {
 };
 
 export const countCompleteOrEvidenced = (cards: ModuleCardSpec[]) =>
-  cards.filter((c) => c.status === "completed" || c.status === "evidenced").length;
+  cards.filter((c) => isDone(c.status)).length;
 
 /** Deep link to a module's knowledge check (step 5). */
 export const knowledgeCheckPath = (moduleId: string) =>
   `/new/module/${moduleId}?step=assess`;
 
+/** Tasks per level: Explorer 4 tools; Practitioner 4 tools + the Immersive Room. */
 export const totalForLevel = (level: LevelKey) =>
-  level === "Practitioner" ? 6 : level === "Explorer" ? 5 : 0;
+  level === "Practitioner" ? 5 : level === "Explorer" ? 4 : 0;
 
 export const toolLabel = (k: string) => TOOL_LABEL[k] ?? k;
 
-export const listEvidencedToolNames = (
-  profile: StaffProfile,
-  level: LevelKey,
-): string[] => {
+const taskEvidenced = (profile: StaffProfile, parts: string[], suffix: string) =>
+  parts.every((p) => profile[`${p}_${suffix}_evidenced` as keyof StaffProfile] === true);
+
+export const listEvidencedToolNames = (profile: StaffProfile, level: LevelKey): string[] => {
   const suffix = level === "Explorer" ? "explorer" : "practitioner";
-  const tools = level === "Explorer" ? EXPLORER_TOOLS : PRACTITIONER_TOOLS;
-  return tools
-    .filter((t) => profile[`${t}_${suffix}_evidenced` as keyof StaffProfile] === true)
-    .map((t) => TOOL_LABEL[t]);
+  return TASKS.filter((t) => taskEvidenced(profile, t.parts, suffix)).map((t) => TOOL_LABEL[t.tool]);
 };
 
-export const listToDoToolNames = (
-  profile: StaffProfile,
-  level: LevelKey,
-): string[] => {
+export const listToDoToolNames = (profile: StaffProfile, level: LevelKey): string[] => {
   const suffix = level === "Explorer" ? "explorer" : "practitioner";
-  const tools = level === "Explorer" ? EXPLORER_TOOLS : PRACTITIONER_TOOLS;
-  return tools
-    .filter((t) => profile[`${t}_${suffix}_evidenced` as keyof StaffProfile] !== true)
-    .map((t) => TOOL_LABEL[t]);
+  return TASKS.filter((t) => !taskEvidenced(profile, t.parts, suffix)).map((t) => TOOL_LABEL[t.tool]);
 };
 
 export const formatList = (items: string[]): string => {

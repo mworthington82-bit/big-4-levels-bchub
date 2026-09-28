@@ -16,7 +16,7 @@ const COPY = {
   },
   practitioner: {
     heading: "Practitioner complete",
-    body: "You have finished your Practitioner pathway. Leader level is unlocked — your Leader Hub is on its way.",
+    body: "You have finished Practitioner. Leader level is unlocked.",
     pill: "Leader unlocked",
     emblem: emblemPractitioner,
     label: "Practitioner",

@@ -39,6 +39,8 @@ interface State {
   completions: CompletionInfo[];
   /** Modules attended in person where the knowledge check is still outstanding. */
   attendedPendingIds: string[];
+  /** Online quiz done and "Submit for completion review" sent; an admin hasn't accepted it yet. */
+  reviewPendingIds: string[];
 }
 
 const PROFILE_COLUMNS = [
@@ -61,6 +63,7 @@ export const useStaffProfile = () => {
     completedModuleIds: [],
     completions: [],
     attendedPendingIds: [],
+    reviewPendingIds: [],
   });
   const [reloadKey, setReloadKey] = useState(0);
 
@@ -74,7 +77,7 @@ export const useStaffProfile = () => {
         const email = sessionData.session?.user.email ?? null;
         if (!email) {
           if (!cancelled)
-            setState({ profile: null, email: null, loading: false, notFound: false, error: false, completedModuleIds: [], completions: [], attendedPendingIds: [] });
+            setState({ profile: null, email: null, loading: false, notFound: false, error: false, completedModuleIds: [], completions: [], attendedPendingIds: [], reviewPendingIds: [] });
           return;
         }
         const { data, error } = await supabase
@@ -86,6 +89,7 @@ export const useStaffProfile = () => {
         let completedModuleIds: string[] = [];
         let completions: CompletionInfo[] = [];
         let attendedPendingIds: string[] = [];
+        let reviewPendingIds: string[] = [];
         try {
           const { data: comps } = await supabase
             .from("module_completions")
@@ -101,15 +105,20 @@ export const useStaffProfile = () => {
             .filter((c: any) => c.quiz_passed !== true && c.completed_via === "in_person")
             .map((c: any) => c.module_id as string)
             .filter((id: string) => !completedModuleIds.includes(id));
+          reviewPendingIds = (comps ?? [])
+            .filter((c: any) => c.quiz_passed !== true && c.completed_via === "quiz")
+            .map((c: any) => c.module_id as string)
+            .filter((id: string) => !completedModuleIds.includes(id));
         } catch {
           completedModuleIds = [];
           completions = [];
           attendedPendingIds = [];
+          reviewPendingIds = [];
         }
 
         if (cancelled) return;
         if (error) {
-          setState({ profile: null, email, loading: false, notFound: true, error: false, completedModuleIds, completions, attendedPendingIds });
+          setState({ profile: null, email, loading: false, notFound: true, error: false, completedModuleIds, completions, attendedPendingIds, reviewPendingIds });
           return;
         }
 
@@ -129,10 +138,11 @@ export const useStaffProfile = () => {
           completedModuleIds,
           completions,
           attendedPendingIds,
+          reviewPendingIds,
         });
       } catch {
         if (!cancelled)
-          setState({ profile: null, email: null, loading: false, notFound: false, error: true, completedModuleIds: [], completions: [], attendedPendingIds: [] });
+          setState({ profile: null, email: null, loading: false, notFound: false, error: true, completedModuleIds: [], completions: [], attendedPendingIds: [], reviewPendingIds: [] });
       }
     })();
     return () => {
