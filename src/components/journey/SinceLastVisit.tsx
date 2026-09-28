@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { IconX, IconCircleCheck } from "@tabler/icons-react";
+import { FabricWindow } from "@/components/SaveToDisk";
 import { formatList, isDone, type ModuleCardSpec } from "@/lib/journey";
 
 /**
@@ -37,26 +37,20 @@ const SinceLastVisit = ({ email, tasks }: { email: string; tasks: ModuleCardSpec
 
   if (hidden || newlyDone.length === 0) return null;
 
+  // A fabric window: "Disk checked" with what was signed off since last time.
   return (
-    <section
-      role="status"
-      className="flex items-start gap-3 rounded-2xl border border-leader bg-leader-bg p-4 md:p-5 text-b4-strong"
-    >
-      <IconCircleCheck size={24} className="mt-0.5 shrink-0 text-leader" aria-hidden="true" />
-      <div className="flex-1">
-        <h2 className="font-display text-lg font-bold">Since your last visit</h2>
-        <p className="mt-0.5">
+    <section role="status" aria-labelledby="since-heading">
+      <FabricWindow title="Disk checked ✓" onClose={() => setHidden(true)} className="max-w-2xl">
+        <h2 id="since-heading" className="font-display text-lg font-bold text-b4-strong">Since your last visit</h2>
+        <p className="mt-1">
           {formatList(newlyDone)} {newlyDone.length === 1 ? "has" : "have"} been reviewed and signed off.
         </p>
-      </div>
-      <button
-        type="button"
-        onClick={() => setHidden(true)}
-        aria-label="Dismiss"
-        className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full hover:bg-card"
-      >
-        <IconX size={18} aria-hidden="true" />
-      </button>
+        <div className="mt-4 flex justify-end">
+          <button type="button" onClick={() => setHidden(true)} className="btn-95 min-w-[96px]">
+            OK
+          </button>
+        </div>
+      </FabricWindow>
     </section>
   );
 };
