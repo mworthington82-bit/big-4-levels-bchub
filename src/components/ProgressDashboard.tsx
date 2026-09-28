@@ -135,7 +135,7 @@ const ProgressDashboard = () => {
               {badges.map((b) => {
                 const level = LEVELS.find((l) => l.id === b)!;
                 return (
-                  <div key={b} className="flex items-center gap-2 px-3 py-1.5 rounded-full border" style={{ borderColor: level.color, backgroundColor: `${level.color}15` }}>
+                  <div key={b} className="flex items-center gap-2 px-3 py-1.5 rounded-[4px] border pill-95" style={{ borderColor: level.color, backgroundColor: `${level.color}15` }}>
                     <img src={level.emblem} alt={level.name} className="h-5 w-5" />
                     <span className="text-xs font-semibold" style={{ color: level.color }}>{level.name}</span>
                   </div>

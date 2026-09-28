@@ -164,7 +164,7 @@ const InclusionIdeasWall = () => {
                       {idea.level}
                     </span>
                     {badge && (
-                      <span className={`text-[10px] px-2 py-0.5 rounded-full font-semibold border ${badge.color}`}>
+                      <span className={`text-[10px] px-2 py-0.5 rounded-[4px] font-semibold border ${badge.color} pill-95`}>
                         {badge.label}
                       </span>
                     )}
@@ -176,7 +176,7 @@ const InclusionIdeasWall = () => {
                   {/* Footer */}
                   <div className="flex items-center justify-between flex-wrap gap-2">
                     <div className="flex items-center gap-2 flex-wrap">
-                      <span className="text-[10px] px-2 py-0.5 rounded-full bg-muted text-muted-foreground border border-border">
+                      <span className="text-[10px] px-2 py-0.5 rounded-[4px] bg-muted text-muted-foreground border border-border pill-95">
                         {idea.department}
                       </span>
                       <span className="text-[10px] text-muted-foreground/60">

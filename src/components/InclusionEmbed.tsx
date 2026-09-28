@@ -238,7 +238,7 @@ const InclusionEmbed = ({ tool, level, brandColor }: InclusionEmbedProps) => {
       <div className="text-center">
         <Button
           onClick={handleSave}
-          className="bg-inclusion hover:bg-inclusion-dark text-white rounded-xl gap-2"
+          className="bg-inclusion hover:bg-inclusion-dark text-white rounded-[4px] gap-2 pill-95 pill-95--press"
         >
           <CheckCircle2 className="w-4 h-4" />
           {saved ? "Responses Saved ✓" : "Save Inclusion Responses"}

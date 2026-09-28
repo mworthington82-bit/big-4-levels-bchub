@@ -453,7 +453,7 @@ const Training = () => {
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-3 mb-1">
                     <h3 className="font-display text-xl font-bold text-foreground">Explorer</h3>
-                    <span className="text-xs font-semibold px-3 py-1 rounded-full bg-b4-flame/15 text-[#B8860B]">Beginner</span>
+                    <span className="text-xs font-semibold px-3 py-1 rounded-[4px] bg-b4-flame/15 text-[#B8860B] pill-95">Beginner</span>
                   </div>
                   <p className="text-sm text-muted-foreground">Discover and build confidence with core digital tools</p>
                 </div>
@@ -469,7 +469,7 @@ const Training = () => {
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-3 mb-1">
                     <h3 className="font-display text-xl font-bold text-foreground">Practitioner</h3>
-                    <span className="text-xs font-semibold px-3 py-1 rounded-full bg-[#5B5FC7]/15 text-[#5B5FC7]">Developing</span>
+                    <span className="text-xs font-semibold px-3 py-1 rounded-[4px] bg-[#5B5FC7]/15 text-[#5B5FC7] pill-95">Developing</span>
                   </div>
                   <p className="text-sm text-muted-foreground">Apply digital tools purposefully to enhance teaching</p>
                 </div>
@@ -485,7 +485,7 @@ const Training = () => {
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-3 mb-1">
                     <h3 className="font-display text-xl font-bold text-foreground">Leader</h3>
-                    <span className="text-xs font-semibold px-3 py-1 rounded-full bg-[#22C55E]/15 text-[#22C55E]">Expert</span>
+                    <span className="text-xs font-semibold px-3 py-1 rounded-[4px] bg-[#22C55E]/15 text-[#22C55E] pill-95">Expert</span>
                   </div>
                   <p className="text-sm text-muted-foreground">Lead with confidence, creativity, and mentor others</p>
                 </div>
@@ -498,7 +498,7 @@ const Training = () => {
               <Button
                 variant="outline"
                 onClick={() => navigate("/new/journey")}
-                className="border-border hover:bg-muted hover:text-foreground px-8 py-6 text-base rounded-xl">
+                className="border-border hover:bg-muted hover:text-foreground px-8 py-6 text-base rounded-[4px] pill-95 pill-95--press">
 
                 <Home className="mr-2 h-5 w-5" />
                 Back to Home
@@ -598,7 +598,7 @@ const Training = () => {
           </div>
 
           <div className="text-center animate-fade-in">
-            <Button size="lg" onClick={() => setStage('tool-select')} className="bg-b4-flame hover:bg-b4-flame/90 text-b4-on-flame px-10 py-7 text-lg rounded-full shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-hover)] transition-all duration-300 hover:scale-105 font-semibold group">
+            <Button size="lg" onClick={() => setStage('tool-select')} className="bg-b4-flame hover:bg-b4-flame/90 text-b4-on-flame px-10 py-7 text-lg rounded-[4px] transition-all duration-300 hover:scale-105 font-semibold group pill-95 pill-95--press">
               Begin Your Journey
               <ArrowRight className="ml-2 h-6 w-6 group-hover:translate-x-1 transition-transform" />
             </Button>
@@ -650,7 +650,7 @@ const Training = () => {
                         <div className="text-left">
                           <div className="flex items-center gap-3 mb-1">
                             <h3 className="font-display text-lg md:text-xl font-bold text-foreground">Immersive Learning</h3>
-                            <span className="text-xs font-semibold px-3 py-1 rounded-full bg-rose-200 text-rose-700">Required</span>
+                            <span className="text-xs font-semibold px-3 py-1 rounded-[4px] bg-rose-200 text-rose-700 pill-95">Required</span>
                           </div>
                           <p className="text-sm text-muted-foreground">
                             {selectedLevel === 'explorer'
@@ -781,7 +781,7 @@ const Training = () => {
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-3 mb-1">
                       <h3 className="font-display text-xl font-bold text-foreground">My Learning Summary</h3>
-                      <span className="text-xs font-semibold px-3 py-1 rounded-full bg-b4-flame/15 text-[#B8860B]">
+                      <span className="text-xs font-semibold px-3 py-1 rounded-[4px] bg-b4-flame/15 text-[#B8860B] pill-95">
                         {completedTools.size}/4 modules complete
                       </span>
                     </div>
@@ -795,7 +795,7 @@ const Training = () => {
           }
 
             <div className="text-center animate-fade-in">
-              <Button variant="outline" onClick={handleRestart} className="border-border hover:bg-accent hover:text-accent-foreground hover:border-accent transition-all px-8 py-6 text-base rounded-xl">
+              <Button variant="outline" onClick={handleRestart} className="border-border hover:bg-accent hover:text-accent-foreground hover:border-accent transition-all px-8 py-6 text-base rounded-[4px] pill-95 pill-95--press">
                 <Home className="mr-2 h-5 w-5" />
                 Back to Home
               </Button>
@@ -933,7 +933,7 @@ const Training = () => {
             {/* Section pill */}
             <div className="flex items-center gap-2">
               <span
-            className="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full text-white"
+            className="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-[4px] text-white pill-95"
             style={{ backgroundColor: currentBrandColor }}>
 
                 Section {sectionInfo.num} of 5 — {sectionInfo.name}
@@ -1014,7 +1014,7 @@ const Training = () => {
 
             <Button
           onClick={() => setStage('learning')}
-          className="w-full py-6 text-base rounded-xl font-semibold transition-all hover:-translate-y-0.5 hover:shadow-lg text-white"
+          className="w-full py-6 text-base rounded-[4px] font-semibold transition-all hover:-translate-y-0.5 text-white pill-95 pill-95--press"
           style={{ backgroundColor: currentBrandColor }}
           size="lg">
 
@@ -1029,7 +1029,7 @@ const Training = () => {
             {/* Section pill */}
             <div className="flex items-center gap-2">
               <span
-            className="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full text-white"
+            className="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-[4px] text-white pill-95"
             style={{ backgroundColor: currentBrandColor }}>
 
                 Section {sectionInfo.num} of 5 — {sectionInfo.name}
@@ -1220,7 +1220,7 @@ const Training = () => {
 
                 <Button
               onClick={() => { setStage('benefits'); setActivityConfirmed(false); }}
-              className="w-full py-6 text-base rounded-xl font-semibold transition-all hover:-translate-y-0.5 hover:shadow-lg text-white"
+              className="w-full py-6 text-base rounded-[4px] font-semibold transition-all hover:-translate-y-0.5 text-white pill-95 pill-95--press"
               style={{ backgroundColor: currentBrandColor }}
               size="lg"
               disabled={viewedExamples.size < pathway.mainContent.examples.length || !activityConfirmed}>
@@ -1241,7 +1241,7 @@ const Training = () => {
 
             <div className="flex items-center gap-2">
               <span
-            className="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full text-white"
+            className="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-[4px] text-white pill-95"
             style={{ backgroundColor: currentBrandColor }}>
 
                 Section {sectionInfo.num} of 5 — {sectionInfo.name}
@@ -1272,7 +1272,7 @@ const Training = () => {
                 
                 <Button
               onClick={() => setStage('reflection')}
-              className="w-full py-6 text-base rounded-xl font-semibold transition-all hover:-translate-y-0.5 hover:shadow-lg text-white"
+              className="w-full py-6 text-base rounded-[4px] font-semibold transition-all hover:-translate-y-0.5 text-white pill-95 pill-95--press"
               style={{ backgroundColor: currentBrandColor }}
               size="lg">
 

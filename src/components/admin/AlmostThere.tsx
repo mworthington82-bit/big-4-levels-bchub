@@ -204,7 +204,7 @@ const AlmostThere = ({ refreshKey = 0 }: { refreshKey?: number } = {}) => {
               {showEmail && (
                 <button
                   onClick={copyEmails}
-                  className="mt-3 flex items-center gap-2 rounded-lg bg-b4-deep px-3 py-2 text-sm font-medium text-white hover:opacity-90"
+                  className="mt-3 flex items-center gap-2 rounded-[4px] bg-b4-deep px-3 py-2 text-sm font-medium text-white hover:opacity-90 pill-95 pill-95--press"
                 >
                   {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
                   {copied ? "Copied" : "Copy all emails"}
@@ -258,7 +258,7 @@ const AlmostThere = ({ refreshKey = 0 }: { refreshKey?: number } = {}) => {
           <button
             onClick={handleDownloadPng}
             disabled={exporting}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-b4-flame text-b4-on-flame font-semibold hover:brightness-95 disabled:opacity-60"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-[4px] bg-b4-flame text-b4-on-flame font-semibold hover:brightness-95 disabled:opacity-60 pill-95 pill-95--press"
           >
             <Download className="w-4 h-4" />
             {exporting ? "Preparing…" : "Download PNG"}

@@ -54,6 +54,7 @@ All colors MUST be HSL.
     --b4-deep-hover: 24 23% 21%;
     --b4-flame: 22 86% 51%;            /* orange fill #EE6415, ink on it 4.87:1 */
     --b4-on-flame: 30 27% 13%;         /* text on a flame fill: always ink */
+    --b4-press: 30 27% 13%;            /* hard shadow under square felt buttons */
     --b4-flame-text: 17 89% 38%;       /* orange text #B53A0B, 4.99:1 on paper */
     --b4-flame-ink: 15 79% 34%;        /* #9A3412 */
     --b4-flame-soft: 25 87% 94%;       /* #FDEEE3 */
@@ -157,6 +158,7 @@ All colors MUST be HSL.
     --b4-deep-hover: 27 24% 22%;
     --b4-flame: 22 86% 51%;
     --b4-on-flame: 30 27% 13%;
+    --b4-press: 17 75% 30%;
     --b4-flame-text: 27 96% 61%;
     --b4-flame-ink: 31 97% 72%;
     --b4-flame-soft: 24 47% 15%;
@@ -308,6 +310,7 @@ All colors MUST be HSL.
   --b4-deep-hover: 0 0% 15%;
   --b4-flame: 48 100% 50%;
   --b4-on-flame: 0 0% 0%;
+  --b4-press: 0 0% 100%;
   --b4-flame-text: 48 100% 50%;
   --b4-flame-ink: 48 100% 50%;
   --b4-flame-soft: 0 0% 10%;
@@ -647,3 +650,32 @@ html[data-reduce-motion] .student-pc__roll { animation: none; }
 html[data-reduce-motion] .s2d__floppy { display: none; }
 html[data-reduce-motion] .s2d.is-saving .s2d__light { opacity: 1; }
 html[data-reduce-motion] .s2d__progress span { opacity: 1; }
+
+/* ---------- Square felt pills (were rounded-full): Windows 95 in wool ----------
+   In the components layer so a Tailwind border / colour on the element still wins.
+   .pill-95          square tag or label, soft stitched edge, no shadow (not clickable)
+   .pill-95--press   clickable: hard offset shadow that presses in on click */
+@layer components {
+  .pill-95 {
+    border-radius: 4px;
+    border-width: 1.5px;
+    border-style: solid;
+    border-color: color-mix(in srgb, currentColor 28%, transparent);
+  }
+  .pill-95--press {
+    --press: var(--b4-press);
+    border-width: 2px;
+    border-color: hsl(var(--press));
+    box-shadow: 3px 3px 0 hsl(var(--press));
+    transition: transform 90ms ease, box-shadow 90ms ease, background-color 150ms ease, color 150ms ease, border-color 150ms ease;
+  }
+  .pill-95--press:hover:not(:disabled) { transform: translate(-1px, -1px); box-shadow: 4px 4px 0 hsl(var(--press)); }
+  .pill-95--press:active:not(:disabled) { transform: translate(2px, 2px); box-shadow: 1px 1px 0 hsl(var(--press)); }
+  /* on the dark brown hero / panels the ink shadow would vanish: use burnt orange */
+  .bg-b4-deep .pill-95--press, .pill-95--press.bg-b4-deep { --press: 17 75% 30%; }
+  .bg-b4-deep .pill-95--press:not(.bg-b4-flame) { --press: 0 0% 100% / 0.28; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pill-95--press, .pill-95--press:hover, .pill-95--press:active { transition: none; transform: none; }
+}
+html[data-reduce-motion] .pill-95--press:hover, html[data-reduce-motion] .pill-95--press:active { transform: none; }

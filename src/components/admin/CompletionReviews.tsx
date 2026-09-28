@@ -153,7 +153,7 @@ LDI team`;
       <h2 id="reviews-heading" className="text-xl font-bold text-b4-strong inline-flex items-center gap-2">
         Completion reviews
         {!loading && items.length > 0 && (
-          <span className="rounded-full bg-b4-flame px-2.5 py-0.5 text-sm text-b4-on-flame">{items.length} waiting</span>
+          <span className="rounded-[4px] bg-b4-flame px-2.5 py-0.5 text-sm text-b4-on-flame pill-95">{items.length} waiting</span>
         )}
       </h2>
       <p className="text-sm text-muted-foreground">
@@ -163,7 +163,7 @@ LDI team`;
         <div role="status" className="flex flex-wrap items-center gap-3 rounded-lg bg-b4-wash px-4 py-2 text-sm text-b4-strong">
           <span>{message}</span>
           {emailLink && (
-            <a href={emailLink.href} className="inline-flex min-h-[36px] items-center rounded-md bg-b4-deep px-3 font-semibold text-white hover:bg-b4-deep-hover">
+            <a href={emailLink.href} className="inline-flex min-h-[36px] items-center rounded-[4px] bg-b4-deep px-3 font-semibold text-white hover:bg-b4-deep-hover pill-95 pill-95--press">
               {emailLink.label}
             </a>
           )}

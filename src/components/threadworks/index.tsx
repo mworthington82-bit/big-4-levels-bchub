@@ -98,7 +98,7 @@ export function ThreadWorksFooter() {
         </div>
         <a
           href={HUB_URL}
-          className="inline-flex min-h-[44px] items-center gap-2 self-start rounded-full px-3 font-semibold text-foreground hover:bg-muted md:self-auto"
+          className="inline-flex min-h-[44px] items-center gap-2 self-start rounded-[4px] px-3 font-semibold text-foreground hover:bg-muted md:self-auto pill-95"
         >
           <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true" focusable="false">
             <path d="M3 14V7.5a5 5 0 0 1 10 0V14" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />

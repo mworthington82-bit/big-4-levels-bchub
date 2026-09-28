@@ -354,7 +354,7 @@ const CheatSheetButton = ({ toolId, className, children }: CheatSheetButtonProps
     <button
       type="button"
       onClick={() => setOpen(true)}
-      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-semibold border-2 border-border bg-card hover:border-accent/60 transition"
+      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-[4px] text-sm font-semibold border-2 border-border bg-card hover:border-accent/60 transition pill-95 pill-95--press"
     >
       <Eye className="h-3.5 w-3.5" />
       {content.tool} Cheat Sheet

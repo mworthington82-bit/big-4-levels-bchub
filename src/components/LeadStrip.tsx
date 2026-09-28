@@ -20,7 +20,7 @@ const LeadStrip = () => {
         {stages.map((s) => (
           <span
             key={s.letter}
-            className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs md:text-sm font-bold text-white ${s.bg}`}
+            className={`inline-flex items-center gap-1.5 rounded-[4px] px-3 py-1 text-xs md:text-sm font-bold text-white ${s.bg} pill-95`}
           >
             <span className="font-mono">{s.letter}</span>
             <span>— {s.label}</span>

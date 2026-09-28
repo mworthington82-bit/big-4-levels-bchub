@@ -19,7 +19,7 @@ const ErrorBody = () => (
       </p>
       <button
         onClick={() => window.location.reload()}
-        className="inline-flex items-center justify-center min-h-11 px-6 bg-b4-deep hover:bg-b4-deep-hover text-white font-semibold rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-b4-flame"
+        className="inline-flex items-center justify-center min-h-11 px-6 bg-b4-deep hover:bg-b4-deep-hover text-white font-semibold rounded-[4px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-b4-flame pill-95 pill-95--press"
       >
         Refresh
       </button>

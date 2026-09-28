@@ -38,7 +38,7 @@ const MilestoneBanner = ({ variant }: Props) => {
           <p className="text-sm text-white/85 mt-1 max-w-2xl leading-relaxed">{c.body}</p>
         </div>
       </div>
-      <span className="self-start md:self-center inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold bg-[#EAF3DE] text-[#3B6D11] shrink-0">
+      <span className="self-start md:self-center inline-flex items-center gap-1.5 px-3 py-1.5 rounded-[4px] text-xs font-bold bg-[#EAF3DE] text-[#3B6D11] shrink-0 pill-95">
         {c.pill}
       </span>
     </div>

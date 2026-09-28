@@ -56,7 +56,7 @@ const ModuleQuiz = ({ questions, onComplete, onBackToPathway }: Props) => {
         </p>
         <button
           onClick={onBackToPathway}
-          className="inline-flex items-center gap-2 bg-[#185FA5] hover:bg-[#13497F] text-white font-semibold px-6 py-3 rounded-full"
+          className="inline-flex items-center gap-2 bg-[#185FA5] hover:bg-[#13497F] text-white font-semibold px-6 py-3 rounded-[4px] pill-95 pill-95--press"
         >
           Back to My Journey
           <IconArrowRight size={18} stroke={2} />
@@ -184,7 +184,7 @@ const ModuleQuiz = ({ questions, onComplete, onBackToPathway }: Props) => {
         <div className="flex justify-end">
           <button
             onClick={handleContinue}
-            className="inline-flex items-center gap-2 bg-[#185FA5] hover:bg-[#13497F] text-white font-semibold px-6 py-3 rounded-full"
+            className="inline-flex items-center gap-2 bg-[#185FA5] hover:bg-[#13497F] text-white font-semibold px-6 py-3 rounded-[4px] pill-95 pill-95--press"
           >
             Continue
             <IconArrowRight size={18} stroke={2} />

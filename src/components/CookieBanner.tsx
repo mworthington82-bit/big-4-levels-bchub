@@ -32,7 +32,7 @@ const CookieBanner = () => {
       <div className="mt-3 flex justify-end">
         <button
           onClick={dismiss}
-          className="inline-flex items-center justify-center min-h-[40px] px-5 rounded-lg bg-b4-flame text-b4-on-flame font-bold text-sm hover:bg-b4-flame/90 transition-colors"
+          className="inline-flex items-center justify-center min-h-[40px] px-5 rounded-[4px] bg-b4-flame text-b4-on-flame font-bold text-sm hover:bg-b4-flame/90 transition-colors pill-95 pill-95--press"
         >
           Got it
         </button>

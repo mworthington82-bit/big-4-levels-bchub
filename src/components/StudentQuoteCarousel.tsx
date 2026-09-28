@@ -120,7 +120,7 @@ const StudentQuoteCarousel = ({ className = "max-w-[640px] mx-auto mt-8", showCa
         <button
           type="button"
           onClick={() => setPaused((p) => !p)}
-          className="inline-flex min-h-[40px] items-center gap-1.5 rounded-full px-3 text-sm text-white/70 hover:text-white hover:bg-white/10"
+          className="inline-flex min-h-[40px] items-center gap-1.5 rounded-[4px] px-3 text-sm text-white/70 hover:text-white hover:bg-white/10 pill-95"
           aria-pressed={paused}
         >
           {paused ? <IconPlayerPlay size={16} aria-hidden="true" /> : <IconPlayerPause size={16} aria-hidden="true" />}

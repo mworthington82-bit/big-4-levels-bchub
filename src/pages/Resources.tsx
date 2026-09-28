@@ -148,7 +148,7 @@ const Resources = () => {
       <div className="flex">
         <div className="w-1 bg-b4-flame" aria-hidden />
         <div className="p-4 flex-1">
-          <span className="inline-block text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-b4-flame text-b4-on-flame mb-2">
+          <span className="inline-block text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-[4px] bg-b4-flame text-b4-on-flame mb-2 pill-95">
             AI-Powered
           </span>
           <h3 className="font-display text-[15px] font-bold text-foreground mb-1">Activity Planner</h3>
@@ -157,7 +157,7 @@ const Resources = () => {
           </p>
           <Button
             onClick={() => setPlannerOpen(true)}
-            className="w-full bg-b4-flame hover:bg-b4-flame/90 text-b4-on-flame font-semibold rounded-full"
+            className="w-full bg-b4-flame hover:bg-b4-flame/90 text-b4-on-flame font-semibold rounded-[4px] pill-95 pill-95--press"
             size="sm"
           >
             Open Planner <ChevronRight className="h-4 w-4 ml-1" />
@@ -171,7 +171,7 @@ const Resources = () => {
     <div ref={leadCardRef} className="bg-card rounded-xl border border-border shadow-sm overflow-hidden">
       <div className="h-1 bg-b4-deep" aria-hidden />
       <div className="p-4">
-        <span className="inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-b4-deep text-white mb-2">
+        <span className="inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-[4px] bg-b4-deep text-white mb-2 pill-95">
           <Pin className="h-3 w-3" /> Pinned
         </span>
         <h3 className="font-display text-sm font-bold text-foreground mb-1">Big 4 × LEAD Model</h3>
@@ -180,7 +180,7 @@ const Resources = () => {
         </p>
         <Button
           onClick={() => window.open('/resources/Big4_LEAD_Guide.docx', '_blank')}
-          className="w-full bg-b4-deep hover:bg-b4-deep/90 text-white font-semibold rounded-full"
+          className="w-full bg-b4-deep hover:bg-b4-deep/90 text-white font-semibold rounded-[4px] pill-95 pill-95--press"
           size="sm"
         >
           Open Guide <ChevronRight className="h-4 w-4 ml-1" />
@@ -203,7 +203,7 @@ const Resources = () => {
           </p>
           <Button
             onClick={() => navigate('/inclusion')}
-            className="w-full bg-[#5B2D8E] hover:bg-[#5B2D8E]/90 text-white font-semibold rounded-full"
+            className="w-full bg-[#5B2D8E] hover:bg-[#5B2D8E]/90 text-white font-semibold rounded-[4px] pill-95 pill-95--press"
             size="sm"
           >
             Explore the Hub <ChevronRight className="h-4 w-4 ml-1" />
@@ -255,7 +255,7 @@ const Resources = () => {
               <button
                 key={lv.id}
                 onClick={() => setSelectedLevel(active ? 'all' : lv.id)}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border-2 text-xs font-semibold transition"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-[4px] border-2 text-xs font-semibold transition pill-95 pill-95--press"
                 style={
                   active
                     ? { borderColor: lv.color, background: `${lv.color}20`, color: lv.color }
@@ -376,19 +376,19 @@ const Resources = () => {
               <div className="flex items-center flex-wrap gap-2 mb-3">
                 <span className="text-xs text-muted-foreground">Active filters:</span>
                 {selectedTool !== 'all' && (
-                  <span className="inline-flex items-center gap-1 px-3 py-1 bg-accent/20 rounded-full text-xs">
+                  <span className="inline-flex items-center gap-1 px-3 py-1 bg-accent/20 rounded-[4px] text-xs pill-95">
                     {toolDisplayNames[selectedTool]}
                     <button onClick={() => setSelectedTool('all')} aria-label="Clear tool filter"><X className="h-3 w-3" /></button>
                   </span>
                 )}
                 {selectedLevel !== 'all' && (
-                  <span className="inline-flex items-center gap-1 px-3 py-1 bg-primary/10 rounded-full text-xs capitalize">
+                  <span className="inline-flex items-center gap-1 px-3 py-1 bg-primary/10 rounded-[4px] text-xs capitalize pill-95">
                     {selectedLevel}
                     <button onClick={() => setSelectedLevel('all')} aria-label="Clear level filter"><X className="h-3 w-3" /></button>
                   </span>
                 )}
                 {showBookmarksOnly && (
-                  <span className="inline-flex items-center gap-1 px-3 py-1 bg-b4-flame/20 rounded-full text-xs">
+                  <span className="inline-flex items-center gap-1 px-3 py-1 bg-b4-flame/20 rounded-[4px] text-xs pill-95">
                     Favourites
                     <button onClick={() => setShowBookmarksOnly(false)} aria-label="Clear favourites filter"><X className="h-3 w-3" /></button>
                   </span>
@@ -427,7 +427,7 @@ const Resources = () => {
                         <span className="text-[14px] font-bold text-b4-strong truncate">{resource.title}</span>
                       </div>
                       <div className="flex items-center gap-2 shrink-0">
-                        <span className={`text-[11px] font-semibold px-2 py-0.5 rounded-full whitespace-nowrap ${badge.color}`}>{badge.label}</span>
+                        <span className={`text-[11px] font-semibold px-2 py-0.5 rounded-[4px] whitespace-nowrap ${badge.color} pill-95`}>{badge.label}</span>
                         <ChevronDown
                           className="h-4 w-4 text-muted-foreground transition-transform duration-200"
                           style={{ transform: isOpen ? "rotate(180deg)" : "rotate(0deg)" }}
@@ -445,7 +445,7 @@ const Resources = () => {
                             <span className={`text-sm font-semibold ${brand.text} truncate`}>{toolDisplayNames[resource.tool]}</span>
                           </div>
                           <div className="flex items-center gap-2 shrink-0">
-                            <span className={`text-xs font-semibold px-2 py-1 rounded-full whitespace-nowrap ${badge.color}`}>{badge.label}</span>
+                            <span className={`text-xs font-semibold px-2 py-1 rounded-[4px] whitespace-nowrap ${badge.color} pill-95`}>{badge.label}</span>
                             <button
                               onClick={(e) => { e.stopPropagation(); toggleBookmark(resource.id); }}
                               className="p-1 rounded hover:bg-white/20 transition-colors"
@@ -475,7 +475,7 @@ const Resources = () => {
                                 <Button
                                   size="sm"
                                   variant="outline"
-                                  className="rounded-full px-3 text-xs font-semibold border-primary/30 hover:bg-primary/10 whitespace-nowrap"
+                                  className="rounded-[4px] px-3 text-xs font-semibold border-primary/30 hover:bg-primary/10 whitespace-nowrap pill-95 pill-95--press"
                                   style={{ minWidth: "fit-content" }}
                                   onClick={(e) => { e.stopPropagation(); window.open(resource.pdfUrl, '_blank'); }}
                                 >
@@ -484,7 +484,7 @@ const Resources = () => {
                               )}
                               <Button
                                 size="sm"
-                                className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-full px-4 text-xs font-semibold whitespace-nowrap"
+                                className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-[4px] px-4 text-xs font-semibold whitespace-nowrap pill-95 pill-95--press"
                                 style={{ minWidth: "fit-content" }}
                                 onClick={(e) => {
                                   e.stopPropagation();
@@ -537,7 +537,7 @@ const Resources = () => {
                     className="group flex w-full flex-col items-center rounded-2xl p-1 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
                   >
                     <FabricFloppy title={tool.name} line="Quick reference, one page" logo={tool.logo} tilt={[-2, 1.5, -1, 2, -1.5][i]} />
-                    <span className="mt-3 inline-flex items-center gap-1.5 rounded-full bg-b4-deep px-3 py-1.5 text-sm font-semibold text-white group-hover:bg-b4-deep-hover">
+                    <span className="mt-3 inline-flex items-center gap-1.5 rounded-[4px] bg-b4-deep px-3 py-1.5 text-sm font-semibold text-white group-hover:bg-b4-deep-hover pill-95">
                       <Download className="h-4 w-4" aria-hidden="true" /> Download PDF
                     </span>
                   </CheatSheetButton>

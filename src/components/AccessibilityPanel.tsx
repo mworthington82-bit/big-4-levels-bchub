@@ -16,7 +16,7 @@ export const AccessibilityPanel = ({ inline = false }: { inline?: boolean }) => 
           variant="outline"
           size="sm"
           className={inline
-            ? "min-h-[44px] rounded-full bg-card/70 px-3 shrink-0"
+            ? "min-h-[44px] rounded-[4px] bg-card/70 px-3 shrink-0 pill-95 pill-95--press"
             : "fixed bottom-4 right-4 z-50 shadow-lg"}
           aria-label="Accessibility settings"
         >

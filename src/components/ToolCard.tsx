@@ -80,7 +80,7 @@ const ToolCard = ({
           </div>
         ) : (
           <Button
-            className={`${colors.btn} rounded-full px-5 font-semibold text-sm group-hover:scale-105 transition-transform`}
+            className={`${colors.btn} rounded-[4px] px-5 font-semibold text-sm group-hover:scale-105 transition-transform pill-95 pill-95--press`}
           >
             Start Learning
             <ArrowRight className="ml-1.5 h-4 w-4" />

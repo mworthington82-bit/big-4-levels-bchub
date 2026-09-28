@@ -34,7 +34,7 @@ const InclusionIdeaChecker = ({ brandColor, onContinue }: InclusionIdeaCheckerPr
     </div>
     <Button
       onClick={onContinue}
-      className="rounded-xl text-white gap-2"
+      className="rounded-[4px] text-white gap-2 pill-95 pill-95--press"
       style={{ backgroundColor: brandColor }}
     >
       Continue to quiz

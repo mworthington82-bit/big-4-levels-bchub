@@ -72,7 +72,7 @@ const LeadCallout = ({ tool }: LeadCalloutProps) => {
       style={{ borderLeft: "4px solid #2563eb" }}
     >
       <div className="absolute top-4 right-4">
-        <span className="inline-flex items-center gap-1 rounded-full bg-[#2563eb] px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-white">
+        <span className="inline-flex items-center gap-1 rounded-[4px] bg-[#2563eb] px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-white pill-95">
           LEAD
         </span>
       </div>

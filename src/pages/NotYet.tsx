@@ -41,13 +41,13 @@ const NotYet = () => {
                 href={SELF_ASSESSMENT_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center px-6 py-3 rounded-xl bg-b4-deep text-white font-bold hover:bg-b4-deep/90 transition-colors"
+                className="inline-flex items-center justify-center px-6 py-3 rounded-[4px] bg-b4-deep text-white font-bold hover:bg-b4-deep/90 transition-colors pill-95 pill-95--press"
               >
                 Take the self-assessment
               </a>
               <button
                 onClick={fullSignOut}
-                className="inline-flex items-center justify-center px-6 py-3 rounded-xl border-2 border-b4-strong text-b4-strong font-bold hover:bg-b4-deep/5 transition-colors"
+                className="inline-flex items-center justify-center px-6 py-3 rounded-[4px] border-2 border-b4-strong text-b4-strong font-bold hover:bg-b4-deep/5 transition-colors pill-95 pill-95--press"
               >
                 Sign out
               </button>

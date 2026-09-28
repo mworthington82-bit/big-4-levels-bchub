@@ -168,7 +168,7 @@ const ActivityPlanner = () => {
     <div className="bg-card rounded-2xl border border-border shadow-[var(--shadow-card)] overflow-hidden">
       {/* Hero */}
       <div className="relative bg-gradient-to-br from-b4-deep via-b4-deep-hover to-b4-flame-ink p-6 md:p-8 text-white">
-        <div className="absolute top-4 right-4 flex items-center gap-1.5 bg-white/15 backdrop-blur px-3 py-1 rounded-full border border-white/30">
+        <div className="absolute top-4 right-4 flex items-center gap-1.5 bg-white/15 backdrop-blur px-3 py-1 rounded-[4px] border border-white/30 pill-95">
           <Sparkles className="w-3.5 h-3.5" aria-hidden="true" />
           <span className="text-[11px] font-semibold tracking-wide uppercase">AI-Powered</span>
         </div>
@@ -234,12 +234,12 @@ const ActivityPlanner = () => {
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 mb-0.5">
                           {isNotSure ? (
-                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-b4-wash-3 text-foreground border border-b4-line">
+                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-[4px] text-[10px] font-bold bg-b4-wash-3 text-foreground border border-b4-line pill-95">
                               <HelpCircle className="w-3 h-3" aria-hidden="true" />
                               Not sure
                             </span>
                           ) : (
-                            <span className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-bold ${LEAD_BADGE[opt.value]}`}>
+                            <span className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded-[4px] text-[10px] font-bold ${LEAD_BADGE[opt.value]} pill-95`}>
                               <span className="inline-block w-1.5 h-1.5 rounded-full bg-card/90" aria-hidden="true" />
                               {opt.label}
                             </span>
@@ -352,12 +352,12 @@ const PlanResult = ({ plan, shared, onReset, onDownload }: { plan: ActivityPlan;
       <section aria-labelledby="lead-confirmed" className="rounded-xl border border-border bg-muted/30 p-5">
         <div className="flex items-center gap-2 mb-3 flex-wrap">
           <span className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">LEAD stage</span>
-          <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-sm font-bold ${LEAD_BADGE[leadKey]}`} id="lead-confirmed">
+          <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-[4px] text-sm font-bold ${LEAD_BADGE[leadKey]} pill-95`} id="lead-confirmed">
             <span className={`inline-block w-2 h-2 rounded-full bg-card/90`} aria-hidden="true" />
             {LEAD_LABELS[leadKey]} — {LEAD_DESCRIPTIONS[leadKey]}
           </span>
           {plan.lead_was_suggested && (
-            <span className="text-[10px] font-semibold uppercase tracking-wide px-2 py-0.5 rounded-full bg-b4-wash-3 text-foreground">
+            <span className="text-[10px] font-semibold uppercase tracking-wide px-2 py-0.5 rounded-[4px] bg-b4-wash-3 text-foreground pill-95">
               AI-suggested
             </span>
           )}
@@ -374,7 +374,7 @@ const PlanResult = ({ plan, shared, onReset, onDownload }: { plan: ActivityPlan;
         <div className="flex items-center gap-2 mb-3 flex-wrap">
           <Brain className="w-4 h-4 text-muted-foreground" aria-hidden="true" />
           <span className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Bloom's Taxonomy</span>
-          <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-bold border ${BLOOMS_BADGE[bloomsKey]}`} id="blooms-heading">
+          <span className={`inline-flex items-center px-3 py-1 rounded-[4px] text-sm font-bold border ${BLOOMS_BADGE[bloomsKey]} pill-95`} id="blooms-heading">
             {BLOOMS_LABELS[bloomsKey]} — {BLOOMS_DESCRIPTIONS[bloomsKey]}
           </span>
         </div>
@@ -387,7 +387,7 @@ const PlanResult = ({ plan, shared, onReset, onDownload }: { plan: ActivityPlan;
       <section aria-labelledby="primary-tool">
         <div className="flex items-center gap-2 mb-3 flex-wrap">
           <span className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Recommended tool</span>
-          <span className={`px-3 py-1 rounded-full text-sm font-bold ${TOOL_BADGE[plan.primary_tool]}`} id="primary-tool">
+          <span className={`px-3 py-1 rounded-[4px] text-sm font-bold ${TOOL_BADGE[plan.primary_tool]} pill-95`} id="primary-tool">
             {TOOL_LABELS[plan.primary_tool]}
           </span>
         </div>
@@ -401,7 +401,7 @@ const PlanResult = ({ plan, shared, onReset, onDownload }: { plan: ActivityPlan;
       <section aria-labelledby="secondary-tool" className="bg-card rounded-xl border border-dashed border-border p-4">
         <div className="flex items-center gap-2 mb-2 flex-wrap">
           <span className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Also worth considering</span>
-          <span className={`px-2.5 py-0.5 rounded-full text-xs font-bold ${TOOL_BADGE[plan.secondary_tool]}`} id="secondary-tool">
+          <span className={`px-2.5 py-0.5 rounded-[4px] text-xs font-bold ${TOOL_BADGE[plan.secondary_tool]} pill-95`} id="secondary-tool">
             {TOOL_LABELS[plan.secondary_tool]}
           </span>
         </div>
@@ -455,7 +455,7 @@ const PlanResult = ({ plan, shared, onReset, onDownload }: { plan: ActivityPlan;
       <section aria-labelledby="inclusion-heading" className="bg-purple-50 dark:bg-purple-950/20 border border-purple-200 dark:border-purple-900 rounded-xl p-5">
         <div className="flex items-center gap-2 mb-3 flex-wrap">
           <h3 id="inclusion-heading" className="font-display text-lg font-bold text-purple-900 dark:text-purple-100">Inclusion Check</h3>
-          <span className={`px-2.5 py-0.5 rounded-full text-xs font-bold border ${RATING_BADGE[plan.inclusion_rating]}`}>
+          <span className={`px-2.5 py-0.5 rounded-[4px] text-xs font-bold border ${RATING_BADGE[plan.inclusion_rating]} pill-95`}>
             {RATING_LABELS[plan.inclusion_rating]}
           </span>
         </div>

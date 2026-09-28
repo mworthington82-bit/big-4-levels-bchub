@@ -337,7 +337,7 @@ const Inclusion = () => {
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_hsl(0_0%_100%_/_0.08)_0%,_transparent_60%)]" />
         <div className="container mx-auto px-4 py-14 md:py-20 relative z-10">
           <div className="max-w-3xl mx-auto text-center">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/15 backdrop-blur-sm border border-white/20 mb-6">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-[4px] bg-white/15 backdrop-blur-sm border border-white/20 mb-6 pill-95">
               <Users className="w-4 h-4 text-white" />
               <span className="text-sm text-white/90 font-medium">Teaching for Every Learner</span>
             </div>

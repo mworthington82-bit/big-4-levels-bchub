@@ -167,7 +167,7 @@ const ReflectionWall = ({ toolName, level, onComplete }: ReflectionWallProps) =>
     <div className="max-w-5xl mx-auto space-y-8">
       {/* Colourful title section */}
       <div className="text-center mb-2">
-        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent/10 border border-accent/30 mb-4">
+        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-[4px] bg-accent/10 border border-accent/30 mb-4 pill-95">
           <MessageSquare className="h-5 w-5 text-accent" />
           <span className="text-sm font-semibold text-accent">Reflection Time</span>
         </div>
@@ -278,7 +278,7 @@ const ReflectionWall = ({ toolName, level, onComplete }: ReflectionWallProps) =>
           
           <div className="relative">
             <div className="flex justify-center mb-6">
-              <div className="bg-b4-flame text-b4-on-flame rounded-full px-6 py-3 font-semibold text-sm shadow-lg">
+              <div className="bg-b4-flame text-b4-on-flame rounded-[4px] px-6 py-3 font-semibold text-sm shadow-lg pill-95">
                 How will you use {toolName}?
               </div>
             </div>
