@@ -45,7 +45,7 @@ All colors MUST be HSL.
     --input: 39 33% 83%;
     --ring: 17 89% 38%;
 
-    --radius: 1rem;
+    --radius: 4px;
 
     /* Big 4 role tokens (replace the old hard-coded navy/amber) */
     --b4-strong: 30 27% 13%;           /* headings and strong text (was #1F3864) */
@@ -68,9 +68,9 @@ All colors MUST be HSL.
     --gradient-primary: linear-gradient(135deg, hsl(22 86% 51%), hsl(27 96% 61%));
     --gradient-hero: linear-gradient(135deg, hsl(30 27% 13%), hsl(24 23% 21%));
     --gradient-card: linear-gradient(to bottom, hsl(40 53% 97%), hsl(41 42% 93%));
-    --shadow-card: 0 1px 2px rgba(42, 33, 24, 0.1), 0 4px 14px rgba(42, 33, 24, 0.08);
-    --shadow-hover: 0 2px 4px rgba(42, 33, 24, 0.14), 0 12px 28px rgba(42, 33, 24, 0.18);
-    --shadow-lift: 0 20px 50px rgba(42, 33, 24, 0.22);
+    --shadow-card: 3px 3px 0 hsl(var(--b4-line));      /* hard felt shadow, no blur */
+    --shadow-hover: 5px 5px 0 hsl(var(--b4-line));
+    --shadow-lift: 6px 6px 0 hsl(var(--b4-flame-ink)); /* windows: dialogs, menus */
 
     /* Product colours (Teams, Canva, Edpuzzle, Copilot) belong to their makers: unchanged */
     --tool-teams: 239 44% 56%;
@@ -171,9 +171,9 @@ All colors MUST be HSL.
     --gradient-primary: linear-gradient(135deg, hsl(22 86% 51%), hsl(27 96% 61%));
     --gradient-hero: linear-gradient(135deg, hsl(27 24% 9%), hsl(29 29% 15%));
     --gradient-card: linear-gradient(to bottom, hsl(28 26% 11%), hsl(27 24% 9%));
-    --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.3), 0 4px 14px rgba(0, 0, 0, 0.25);
-    --shadow-hover: 0 2px 4px rgba(0, 0, 0, 0.35), 0 12px 28px rgba(0, 0, 0, 0.35);
-    --shadow-lift: 0 20px 50px rgba(0, 0, 0, 0.45);
+    --shadow-card: 3px 3px 0 rgba(0, 0, 0, 0.45);
+    --shadow-hover: 5px 5px 0 rgba(0, 0, 0, 0.5);
+    --shadow-lift: 6px 6px 0 hsl(17 75% 30%);
 
     --tool-teams: 239 44% 65%;
     --tool-teams-bg: 240 50% 20%;
@@ -683,3 +683,32 @@ html[data-reduce-motion] .s2d__progress span { opacity: 1; }
   .pill-95--press, .pill-95--press:hover, .pill-95--press:active { transition: none; transform: none; }
 }
 html[data-reduce-motion] .pill-95--press:hover, html[data-reduce-motion] .pill-95--press:active { transform: none; }
+
+/* ---------- Close: the small stitched felt cross ----------
+   .stitch-close        a quiet 36px square target around the cross
+   .stitch-close--patch sits on a cream felt patch (over busy or dark headers)
+   .stitch-close--sm    inline, for clearing a filter chip
+   On dark surfaces the brown cross gets the cream patch automatically. */
+.stitch-close {
+  display: inline-grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 4px;
+  background: transparent;
+  transition: background-color 150ms ease, transform 90ms ease;
+}
+.stitch-close:hover { background: hsl(var(--b4-wash-2)); }
+.stitch-close:active { transform: scale(0.92); }
+.stitch-close:focus-visible { outline: 3px dashed hsl(var(--b4-flame)); outline-offset: 1px; }
+.stitch-close--patch,
+.dark .stitch-close,
+.bg-b4-deep .stitch-close {
+  background: #F2ECDF;
+  border: 1.5px dashed rgba(42, 33, 24, 0.35);
+  box-shadow: 2px 2px 0 rgba(42, 33, 24, 0.55);
+}
+.stitch-close--patch:hover, .dark .stitch-close:hover, .bg-b4-deep .stitch-close:hover { background: #FFF8EC; }
+.stitch-close--sm { width: 22px; height: 22px; margin-left: 2px; }
+.fw__close { padding: 0; }
+@media (prefers-reduced-motion: reduce) { .stitch-close:active { transform: none; } }

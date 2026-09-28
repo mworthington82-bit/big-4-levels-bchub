@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { IconSparkles, IconX, IconArrowRight } from "@tabler/icons-react";
+import { IconSparkles, IconArrowRight } from "@tabler/icons-react";
+import StitchedCross from "@/components/StitchedCross";
 import { toolLabel, formatList, listToDoToolNames, normaliseLevel } from "@/lib/journey";
 import type { StaffProfile } from "@/hooks/useStaffProfile";
 
@@ -111,9 +112,9 @@ const RecentAttendanceBanner = ({ email, profile, completedModuleIds }: Props) =
         <button
           onClick={handleDismiss}
           aria-label="Dismiss"
-          className="absolute top-3 right-3 text-[#8A6A1F] hover:text-b4-strong transition-colors"
+          className="stitch-close absolute top-2 right-2"
         >
-          <IconX size={18} stroke={2} />
+          <StitchedCross />
         </button>
         <div className="flex items-start gap-3 pr-6">
           <div className="w-10 h-10 rounded-xl bg-b4-flame/15 flex items-center justify-center flex-shrink-0">

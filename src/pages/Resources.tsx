@@ -5,12 +5,13 @@ import { Input } from '@/components/ui/input';
 import { Switch } from '@/components/ui/switch';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import {
-  Search, ArrowLeft, X, Bookmark, BookmarkCheck,
+  Search, ArrowLeft, Bookmark, BookmarkCheck,
   ChevronRight, ChevronDown, Download, SlidersHorizontal, Pin, Calendar, Heart,
 } from 'lucide-react';
 import { resources, searchResources, toolDisplayNames, Resource } from '@/data/resources';
 import CheatSheetButton from '@/components/CheatSheetButton';
 import FabricFloppy from '@/components/FabricFloppy';
+import StitchedCross from '@/components/StitchedCross';
 import ActivityPlanner from '@/components/ActivityPlanner';
 import AppShell from '@/components/AppShell';
 import { useStaffProfile } from '@/hooks/useStaffProfile';
@@ -359,8 +360,8 @@ const Resources = () => {
                 className="pl-10 pr-10 py-6 text-base border-border"
               />
               {searchQuery && (
-                <button onClick={() => setSearchQuery('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground">
-                  <X className="h-5 w-5" />
+                <button onClick={() => setSearchQuery('')} aria-label="Clear search" className="stitch-close absolute right-2 top-1/2 -translate-y-1/2">
+                  <StitchedCross />
                 </button>
               )}
             </div>
@@ -378,19 +379,19 @@ const Resources = () => {
                 {selectedTool !== 'all' && (
                   <span className="inline-flex items-center gap-1 px-3 py-1 bg-accent/20 rounded-[4px] text-xs pill-95">
                     {toolDisplayNames[selectedTool]}
-                    <button onClick={() => setSelectedTool('all')} aria-label="Clear tool filter"><X className="h-3 w-3" /></button>
+                    <button onClick={() => setSelectedTool('all')} aria-label="Clear tool filter" className="stitch-close stitch-close--sm"><StitchedCross className="h-3.5 w-3.5" /></button>
                   </span>
                 )}
                 {selectedLevel !== 'all' && (
                   <span className="inline-flex items-center gap-1 px-3 py-1 bg-primary/10 rounded-[4px] text-xs capitalize pill-95">
                     {selectedLevel}
-                    <button onClick={() => setSelectedLevel('all')} aria-label="Clear level filter"><X className="h-3 w-3" /></button>
+                    <button onClick={() => setSelectedLevel('all')} aria-label="Clear level filter" className="stitch-close stitch-close--sm"><StitchedCross className="h-3.5 w-3.5" /></button>
                   </span>
                 )}
                 {showBookmarksOnly && (
                   <span className="inline-flex items-center gap-1 px-3 py-1 bg-b4-flame/20 rounded-[4px] text-xs pill-95">
                     Favourites
-                    <button onClick={() => setShowBookmarksOnly(false)} aria-label="Clear favourites filter"><X className="h-3 w-3" /></button>
+                    <button onClick={() => setShowBookmarksOnly(false)} aria-label="Clear favourites filter" className="stitch-close stitch-close--sm"><StitchedCross className="h-3.5 w-3.5" /></button>
                   </span>
                 )}
                 <button onClick={clearFilters} className="text-xs text-accent hover:underline ml-1">Clear all</button>

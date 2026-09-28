@@ -2,6 +2,7 @@ import { useEffect, useRef, type ReactNode } from "react";
 import fabricPc from "@/assets/art/fabric-pc.webp";
 import fabricFloppy from "@/assets/art/fabric-floppy.webp";
 import fabricHourglass from "@/assets/art/fabric-hourglass.webp";
+import StitchedCross from "@/components/StitchedCross";
 
 /**
  * The fabric "Windows 95" moments: a stitched window, the felt hourglass, and the
@@ -38,7 +39,7 @@ export const FabricWindow = ({
       {titleId ? <h2 id={titleId} className="fw__title">{title}</h2> : <p className="fw__title">{title}</p>}
       {onClose && (
         <button type="button" onClick={onClose} className="fw__close" aria-label="Close">
-          <span aria-hidden="true">×</span>
+          <StitchedCross className="h-[18px] w-[18px]" />
         </button>
       )}
     </div>

@@ -293,7 +293,7 @@ const ProgressionInsights = ({ refreshKey = 0 }: { refreshKey?: number } = {}) =
                         <YAxis type="category" dataKey="department" width={180} stroke="hsl(var(--b4-ink))" fontSize={12} interval={0} />
                         <Tooltip
                           cursor={{ fill: "rgba(28,28,46,0.05)" }}
-                          contentStyle={{ borderRadius: 8, border: "1px solid #e2e8f0", fontSize: 12 }}
+                          contentStyle={{ borderRadius: 4, border: "1px solid #e2e8f0", fontSize: 12 }}
                         />
                         <Legend wrapperStyle={{ fontSize: 12 }} />
                         <Bar dataKey="practitioner" name="→ Practitioner" stackId="a" fill={BLUE} />

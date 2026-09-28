@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-import { LogOut, Menu, X } from "lucide-react";
+import { LogOut, Menu } from "lucide-react";
+import StitchedCross from "@/components/StitchedCross";
 import { useStaffProfile } from "@/hooks/useStaffProfile";
 import { fullSignOut } from "@/lib/signOut";
 import { buildModuleCards, countCompleteOrEvidenced, totalForLevel } from "@/lib/journey";
@@ -138,7 +139,7 @@ const AppShell = ({ children }: { children: React.ReactNode }) => {
               aria-label={mobileOpen ? "Close menu" : "Open menu"}
               aria-expanded={mobileOpen}
             >
-              {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" strokeWidth={1.75} />}
+              {mobileOpen ? <StitchedCross /> : <Menu className="w-5 h-5" strokeWidth={1.75} />}
             </button>
           </div>
         </div>

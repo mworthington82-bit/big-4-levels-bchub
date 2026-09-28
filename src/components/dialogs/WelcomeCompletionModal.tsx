@@ -8,6 +8,7 @@ import { deriveEffectiveLevel } from "@/lib/progression";
 import emblemExplorer from "@/assets/art/rope/knot-explorer.webp";
 import emblemPractitioner from "@/assets/art/rope/knot-practitioner.webp";
 import emblemLeader from "@/assets/art/rope/knot-leader.webp";
+import StitchedCross from "@/components/StitchedCross";
 
 interface Props {
   profile: StaffProfile;
@@ -141,15 +142,15 @@ const WelcomeCompletionModal = ({ profile }: Props) => {
     >
       <div
         className="relative bg-card shadow-2xl flex flex-col w-[92%] sm:w-full overflow-hidden"
-        style={{ maxWidth: 820, borderRadius: 20, maxHeight: "92vh" }}
+        style={{ maxWidth: 820, borderRadius: 4, maxHeight: "92vh" }}
       >
         <button
           type="button"
           onClick={() => setOpen(false)}
-          className="absolute right-4 top-4 z-10 inline-flex h-10 w-10 items-center justify-center rounded-full bg-card/95 text-b4-strong shadow-sm hover:bg-card focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-b4-flame"
+          className="stitch-close stitch-close--patch absolute right-4 top-6 z-10"
           aria-label="Close welcome message"
         >
-          ×
+          <StitchedCross />
         </button>
 
         {/* Gold header bar */}
@@ -252,7 +253,7 @@ const WelcomeCompletionModal = ({ profile }: Props) => {
               background: "hsl(var(--b4-flame))",
               color: "hsl(var(--b4-strong))",
               fontSize: 18,
-              borderRadius: 12,
+              borderRadius: 4,
               padding: "16px 20px",
               minHeight: 52,
             }}
