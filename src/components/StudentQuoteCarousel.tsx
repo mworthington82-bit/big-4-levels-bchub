@@ -45,7 +45,7 @@ const quadMatrix = (q: number[][], w: number, h: number) => {
   return `matrix3d(${a / w},${d / w},0,${g / w},${b / h},${e / h},0,${hh / h},0,0,1,0,${c},${f},0,1)`;
 };
 
-const StudentQuoteCarousel = () => {
+const StudentQuoteCarousel = ({ className = "max-w-[640px] mx-auto mt-8" }: { className?: string }) => {
   const boxRef = useRef<HTMLDivElement>(null);
   const [transform, setTransform] = useState<string>("none");
   const [flat, setFlat] = useState({ w: 300, h: 262 });
@@ -79,7 +79,7 @@ const StudentQuoteCarousel = () => {
   }, []);
 
   return (
-    <div className="max-w-[640px] mx-auto mt-8 text-left">
+    <div className={`text-left ${className}`}>
       <p className="uppercase text-b4-flame font-semibold tracking-wide" style={{ fontSize: 12 }}>
         How students see digital learning
       </p>
@@ -87,7 +87,7 @@ const StudentQuoteCarousel = () => {
         We asked Bradford College students why digital innovation matters to them. Here's what they said, in their own words.
       </p>
 
-      <div ref={boxRef} className="student-pc relative mx-auto mt-4 w-full max-w-[560px] aspect-[900/927]">
+      <div ref={boxRef} className="student-pc relative mx-auto mt-4 w-full max-w-[620px] aspect-[900/927]">
         <img src={fabricPc} alt="" className="absolute inset-0 h-full w-full select-none" draggable={false} />
         {/* The quotes, laid out flat then projected onto the angled grey screen */}
         <div
