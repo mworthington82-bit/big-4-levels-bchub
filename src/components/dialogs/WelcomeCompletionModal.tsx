@@ -141,7 +141,7 @@ const WelcomeCompletionModal = ({ profile }: Props) => {
     >
       <div
         className="relative bg-card shadow-2xl flex flex-col w-[92%] sm:w-full overflow-hidden"
-        style={{ maxWidth: 820, borderRadius: 20, maxHeight: "92vh" }}
+        style={{ maxWidth: 820, borderRadius: 4, maxHeight: "92vh" }}
       >
         <button
           type="button"
@@ -252,7 +252,7 @@ const WelcomeCompletionModal = ({ profile }: Props) => {
               background: "hsl(var(--b4-flame))",
               color: "hsl(var(--b4-strong))",
               fontSize: 18,
-              borderRadius: 12,
+              borderRadius: 4,
               padding: "16px 20px",
               minHeight: 52,
             }}

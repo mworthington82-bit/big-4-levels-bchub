@@ -76,7 +76,7 @@ const LeaderTaskCard = () => {
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center bg-card text-b4-strong border border-b4-strong px-4 py-2 text-sm font-semibold hover:bg-b4-wash transition-colors"
-              style={{ borderRadius: "10px" }}
+              style={{ borderRadius: "4px" }}
             >
               {p.label} →
             </a>

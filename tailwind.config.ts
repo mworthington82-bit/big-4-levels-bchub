@@ -120,10 +120,16 @@ export default {
           bg: "hsl(var(--inclusion-bg))",
         },
       },
+      // ThreadWorks felt squares: every soft corner is a 4px square (full stays round
+      // for circles, dots and progress bars).
       borderRadius: {
+        sm: "2px",
+        DEFAULT: "var(--radius)",
+        md: "var(--radius)",
         lg: "var(--radius)",
-        md: "calc(var(--radius) - 2px)",
-        sm: "calc(var(--radius) - 4px)",
+        xl: "var(--radius)",
+        "2xl": "var(--radius)",
+        "3xl": "var(--radius)",
       },
       keyframes: {
         "accordion-down": {
@@ -153,10 +159,18 @@ export default {
           to: { opacity: "1", transform: "none" },
         },
       },
+      // Hard offset shadows, no blur: small ones in the line colour for cards,
+      // big ones in ink for windows (dialogs, popovers, menus).
       boxShadow: {
         card: "var(--shadow-card)",
         hover: "var(--shadow-hover)",
         lift: "var(--shadow-lift)",
+        sm: "var(--shadow-card)",
+        DEFAULT: "var(--shadow-card)",
+        md: "var(--shadow-card)",
+        lg: "var(--shadow-lift)",
+        xl: "var(--shadow-lift)",
+        "2xl": "var(--shadow-lift)",
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",

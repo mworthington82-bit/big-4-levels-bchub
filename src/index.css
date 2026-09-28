@@ -45,7 +45,7 @@ All colors MUST be HSL.
     --input: 39 33% 83%;
     --ring: 17 89% 38%;
 
-    --radius: 1rem;
+    --radius: 4px;
 
     /* Big 4 role tokens (replace the old hard-coded navy/amber) */
     --b4-strong: 30 27% 13%;           /* headings and strong text (was #1F3864) */
@@ -68,9 +68,9 @@ All colors MUST be HSL.
     --gradient-primary: linear-gradient(135deg, hsl(22 86% 51%), hsl(27 96% 61%));
     --gradient-hero: linear-gradient(135deg, hsl(30 27% 13%), hsl(24 23% 21%));
     --gradient-card: linear-gradient(to bottom, hsl(40 53% 97%), hsl(41 42% 93%));
-    --shadow-card: 0 1px 2px rgba(42, 33, 24, 0.1), 0 4px 14px rgba(42, 33, 24, 0.08);
-    --shadow-hover: 0 2px 4px rgba(42, 33, 24, 0.14), 0 12px 28px rgba(42, 33, 24, 0.18);
-    --shadow-lift: 0 20px 50px rgba(42, 33, 24, 0.22);
+    --shadow-card: 3px 3px 0 hsl(var(--b4-line));      /* hard felt shadow, no blur */
+    --shadow-hover: 5px 5px 0 hsl(var(--b4-line));
+    --shadow-lift: 6px 6px 0 hsl(var(--b4-flame-ink)); /* windows: dialogs, menus */
 
     /* Product colours (Teams, Canva, Edpuzzle, Copilot) belong to their makers: unchanged */
     --tool-teams: 239 44% 56%;
@@ -171,9 +171,9 @@ All colors MUST be HSL.
     --gradient-primary: linear-gradient(135deg, hsl(22 86% 51%), hsl(27 96% 61%));
     --gradient-hero: linear-gradient(135deg, hsl(27 24% 9%), hsl(29 29% 15%));
     --gradient-card: linear-gradient(to bottom, hsl(28 26% 11%), hsl(27 24% 9%));
-    --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.3), 0 4px 14px rgba(0, 0, 0, 0.25);
-    --shadow-hover: 0 2px 4px rgba(0, 0, 0, 0.35), 0 12px 28px rgba(0, 0, 0, 0.35);
-    --shadow-lift: 0 20px 50px rgba(0, 0, 0, 0.45);
+    --shadow-card: 3px 3px 0 rgba(0, 0, 0, 0.45);
+    --shadow-hover: 5px 5px 0 rgba(0, 0, 0, 0.5);
+    --shadow-lift: 6px 6px 0 hsl(17 75% 30%);
 
     --tool-teams: 239 44% 65%;
     --tool-teams-bg: 240 50% 20%;

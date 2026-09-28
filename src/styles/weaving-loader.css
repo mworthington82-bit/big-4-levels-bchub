@@ -87,7 +87,7 @@ html[data-reduce-motion] .tw-loader__fill { transition: none; }
   animation: tw-loader-in 250ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 .weave-transition__card {
-  width: min(420px, 100%); border-radius: 20px; padding: 8px 20px;
+  width: min(420px, 100%); border-radius: 4px; padding: 8px 20px;
   background: hsl(var(--card)); border: 1px solid hsl(var(--border));
   box-shadow: 0 20px 50px rgba(42, 33, 24, 0.22);
 }

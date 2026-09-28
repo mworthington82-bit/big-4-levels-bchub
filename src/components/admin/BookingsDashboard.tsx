@@ -245,7 +245,7 @@ const BookingsDashboard = ({ refreshKey }: { refreshKey: number }) => {
                   <Tooltip
                     cursor={{ fill: "rgba(28,28,46,0.05)" }}
                     contentStyle={{
-                      borderRadius: 8,
+                      borderRadius: 4,
                       border: "1px solid #e2e8f0",
                       fontSize: 12,
                     }}
