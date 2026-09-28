@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { IconCheck, IconClock, IconArrowRight, IconUsers } from "@tabler/icons-react";
+import { IconCheck, IconArrowRight, IconUsers } from "@tabler/icons-react";
+import SaveToDiskDialog, { Hourglass, atLeast, type SavePhase } from "@/components/SaveToDisk";
 import { claimAttendance, type ClaimResult } from "@/lib/attendanceClaim";
 import { useWeaveTo } from "@/components/threadworks/WeaveTransition";
 import {
@@ -48,7 +49,7 @@ const TAG: Record<ModuleStatus, string> = {
 export const StatusTag = ({ status }: { status: ModuleStatus }) => (
   <span className={`inline-flex self-start sm:self-auto items-center gap-1.5 rounded-full px-3 py-1 text-sm font-semibold whitespace-nowrap ${TAG[status]}`}>
     {isDone(status) && <IconCheck size={16} stroke={3} aria-hidden="true" />}
-    {(status === "review_pending" || status === "attendance_claimed") && <IconClock size={16} stroke={2} aria-hidden="true" />}
+    {(status === "review_pending" || status === "attendance_claimed") && <Hourglass className="h-5 w-auto -my-1" />}
     {STATUS_LABEL[status]}
   </span>
 );
@@ -135,39 +136,55 @@ export const NextStepCard = ({ tasks, level }: { tasks: ModuleCardSpec[]; level:
  * Then it says it's with LDI and that they'll be emailed.
  */
 const AttendedButton = ({ task, onChanged }: { task: ModuleCardSpec; onChanged?: () => void }) => {
-  const [step, setStep] = useState<"idle" | "confirm" | "sending" | ClaimResult>("idle");
+  const [step, setStep] = useState<"idle" | "confirm" | ClaimResult>("idle");
+  const [dialog, setDialog] = useState<SavePhase | null>(null);
+
+  const send = async () => {
+    setDialog("saving");
+    const r = await atLeast(claimAttendance(task.partIds));
+    setStep(r);
+    setDialog(r === "sent" ? "done" : "error");
+  };
+  // Refresh the list only once the dialog is closed (the row changes status and this button goes).
+  const close = () => {
+    setDialog(null);
+    if (step === "sent") onChanged?.();
+  };
+
+  const dialogEl = (
+    <SaveToDiskDialog
+      open={dialog !== null}
+      phase={dialog ?? "saving"}
+      title="I attended training"
+      savingText="Checking the LDI register…"
+      doneTitle="Submitted to check LDI records"
+      doneText="We'll email you when it's been signed off."
+      errorText={step === "not_enabled" ? "This isn't switched on yet. Please contact the LDI team." : undefined}
+      onClose={close}
+      onRetry={step === "error" ? send : undefined}
+    />
+  );
+
   if (step === "sent")
     return (
-      <p role="status" className="text-sm font-semibold text-b4-strong">
-        Submitted to check LDI records. You'll be emailed when it's signed off.
-      </p>
+      <>
+        <p role="status" className="inline-flex items-center gap-2 text-sm font-semibold text-b4-strong">
+          <Hourglass className="h-5 w-auto" /> Submitted to check LDI records. You'll be emailed when it's signed off.
+        </p>
+        {dialogEl}
+      </>
     );
-  if (step === "not_enabled" || step === "error")
+  if (step === "confirm" || step === "error" || step === "not_enabled")
     return (
-      <p role="status" className="text-sm text-muted-foreground">
-        {step === "not_enabled" ? "This isn't switched on yet. Please contact the LDI team." : "That didn't send. Please try again."}
-      </p>
-    );
-  if (step === "confirm" || step === "sending")
-    return (
-      <div className="flex flex-wrap items-center gap-2">
+      <div className="flex flex-wrap items-center gap-3">
         <span className="text-sm text-b4-strong">Did you go to a {task.name} training session?</span>
-        <button
-          type="button"
-          disabled={step === "sending"}
-          onClick={async () => {
-            setStep("sending");
-            const r = await claimAttendance(task.partIds);
-            setStep(r);
-            if (r === "sent") onChanged?.();
-          }}
-          className="inline-flex min-h-[40px] items-center rounded-lg bg-b4-deep px-3 text-sm font-bold text-white disabled:opacity-60"
-        >
-          {step === "sending" ? "Sending…" : "Yes, send to LDI"}
+        <button type="button" onClick={send} className="btn-95 min-h-[40px] px-3 text-sm">
+          Yes, send to LDI
         </button>
-        <button type="button" onClick={() => setStep("idle")} className="min-h-[40px] rounded-lg px-3 text-sm font-semibold text-b4-strong underline-offset-4 hover:underline">
+        <button type="button" onClick={() => setStep("idle")} className="min-h-[40px] px-3 text-sm font-semibold text-b4-strong underline-offset-4 hover:underline">
           Cancel
         </button>
+        {dialogEl}
       </div>
     );
   return (
@@ -175,7 +192,7 @@ const AttendedButton = ({ task, onChanged }: { task: ModuleCardSpec; onChanged?:
       type="button"
       onClick={() => setStep("confirm")}
       aria-label={`I attended training: ${task.name}`}
-      className="inline-flex min-h-[40px] items-center gap-1.5 rounded-lg border border-border bg-card px-3 text-sm font-semibold text-b4-strong hover:bg-muted"
+      className="btn-95 btn-95--plain min-h-[40px] px-3 text-sm"
     >
       <IconUsers size={16} aria-hidden="true" />
       I attended training
