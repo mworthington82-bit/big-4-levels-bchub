@@ -49,6 +49,7 @@ const STATUS_BADGE: Record<string, { cls: string; label: string; tick: boolean }
   completed: { cls: "bg-white text-[#2A2118]", label: "Done", tick: true },
   attended_pending: { cls: "bg-[#FFF1D6] text-[#7A4A00]", label: "Quiz to do", tick: false },
   review_pending: { cls: "bg-white text-[#2A2118]", label: "Waiting for review", tick: false },
+  attendance_claimed: { cls: "bg-white text-[#2A2118]", label: "Checking LDI records", tick: false },
 };
 
 const LEVEL_PILL: Record<string, string> = {
@@ -61,7 +62,8 @@ const DESC_OVERRIDE: Record<string, string> = {
   evidenced: "Covered by your self-assessment",
   completed: "Done",
   attended_pending: "You came to the session. The quiz is still to do.",
-  review_pending: "Sent for review. We'll tick it off soon.",
+  review_pending: "Sent for review. You'll be emailed when it's signed off.",
+  attendance_claimed: "Submitted to check LDI records. You'll be emailed when it's signed off.",
 };
 
 const TRAINING_TOOL: Record<string, string> = {

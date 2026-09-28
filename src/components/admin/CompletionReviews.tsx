@@ -12,8 +12,8 @@ import { WeavingLoader } from "@/components/threadworks";
  * row so the learner can try again. MS Teams & Forms is one module on screen
  * but two rows here, so the pair is reviewed together.
  */
-type Row = { staff_email: string; module_id: string; created_at: string };
-type Item = { key: string; email: string; ids: string[]; module: string; level: string; submitted: string };
+type Row = { staff_email: string; module_id: string; created_at: string; completed_via: string };
+type Item = { key: string; email: string; ids: string[]; module: string; level: string; submitted: string; kind: "online" | "attended" };
 type Staff = { email: string; name: string | null; department: string | null };
 
 const TOOL_NAME: Record<string, string> = {
@@ -31,7 +31,8 @@ const group = (rows: Row[]): Item[] => {
     const [tool, level] = r.module_id.split("_");
     const email = r.staff_email.toLowerCase();
     const groupTool = tool === "forms" ? "teams" : tool;
-    const key = `${email}|${groupTool}_${level}`;
+    const kind = r.completed_via === "attendance_claim" ? "attended" : "online";
+    const key = `${email}|${groupTool}_${level}|${kind}`;
     const item = map.get(key) ?? {
       key,
       email,
@@ -39,6 +40,7 @@ const group = (rows: Row[]): Item[] => {
       module: TOOL_NAME[tool] ?? tool,
       level: level ? level.charAt(0).toUpperCase() + level.slice(1) : "",
       submitted: r.created_at,
+      kind,
     };
     item.ids.push(r.module_id);
     if (r.created_at < item.submitted) item.submitted = r.created_at;
@@ -53,13 +55,46 @@ const CompletionReviews = () => {
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState<string | null>(null);
   const [message, setMessage] = useState<string | null>(null);
+  const [emailLink, setEmailLink] = useState<{ href: string; label: string } | null>(null);
+
+  // A ready-to-send email in the admin's own mail app, so "you'll be emailed" is one click.
+  const draftEmail = (item: Item, accepted: boolean) => {
+    const name = staff[item.email]?.name?.split(" ")[0] ?? "there";
+    const subject = accepted
+      ? `The Big 4: ${item.module} signed off`
+      : `The Big 4: ${item.module}`;
+    const body = accepted
+      ? `Hi ${name},
+
+Your ${item.module} (${item.level}) module has been reviewed and signed off. You'll see it ticked off on My Journey: https://bradfordbig4.online/new/journey
+
+Thanks,
+LDI team`
+      : item.kind === "attended"
+      ? `Hi ${name},
+
+We couldn't find you on the register for a ${item.module} (${item.level}) session, so it hasn't been signed off yet. If you think this is wrong, just reply and we'll check again.
+
+Thanks,
+LDI team`
+      : `Hi ${name},
+
+We couldn't find a completed ${item.module} (${item.level}) quiz for you yet, so it hasn't been signed off. Please finish the quiz and submit it again from My Journey.
+
+Thanks,
+LDI team`;
+    setEmailLink({
+      href: `mailto:${item.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`,
+      label: `Email ${staff[item.email]?.name ?? item.email}`,
+    });
+  };
 
   const load = async () => {
     setLoading(true);
     const { data } = await supabase
       .from("module_completions")
-      .select("staff_email, module_id, created_at")
-      .eq("completed_via", "quiz")
+      .select("staff_email, module_id, created_at, completed_via")
+      .in("completed_via", ["quiz", "attendance_claim"])
       .eq("quiz_passed", false)
       .order("created_at", { ascending: true });
     const grouped = group((data as Row[]) ?? []);
@@ -82,6 +117,7 @@ const CompletionReviews = () => {
   const accept = async (item: Item) => {
     setBusy(item.key);
     setMessage(null);
+    setEmailLink(null);
     for (const id of item.ids) {
       const { error } = await supabase.rpc("admin_mark_module_complete", { _emails: [item.email], _module_id: id });
       if (error) {
@@ -91,6 +127,7 @@ const CompletionReviews = () => {
       }
     }
     setMessage(`Accepted: ${item.module} (${item.level}) for ${staff[item.email]?.name ?? item.email}.`);
+    draftEmail(item, true);
     setBusy(null);
     load();
   };
@@ -98,6 +135,7 @@ const CompletionReviews = () => {
   const decline = async (item: Item) => {
     setBusy(item.key);
     setMessage(null);
+    setEmailLink(null);
     const { error } = await supabase
       .from("module_completions")
       .delete()
@@ -105,6 +143,7 @@ const CompletionReviews = () => {
       .in("module_id", item.ids)
       .eq("quiz_passed", false);
     setMessage(error ? `Couldn't decline: ${error.message}` : `Declined: ${item.module} for ${staff[item.email]?.name ?? item.email}. They can submit again.`);
+    if (!error) draftEmail(item, false);
     setBusy(null);
     load();
   };
@@ -118,9 +157,18 @@ const CompletionReviews = () => {
         )}
       </h2>
       <p className="text-sm text-muted-foreground">
-        Staff who finished an online module and pressed "Submit for completion review". Accept ticks it off on their journey.
+        Staff who pressed "Submit for completion review" after an online module (check their Canva or Edpuzzle results), or "I attended training" (check the LDI register). Accept ticks it off on their journey; then send them the ready-made email.
       </p>
-      {message && <p role="status" className="rounded-lg bg-b4-wash px-4 py-2 text-sm text-b4-strong">{message}</p>}
+      {message && (
+        <div role="status" className="flex flex-wrap items-center gap-3 rounded-lg bg-b4-wash px-4 py-2 text-sm text-b4-strong">
+          <span>{message}</span>
+          {emailLink && (
+            <a href={emailLink.href} className="inline-flex min-h-[36px] items-center rounded-md bg-b4-deep px-3 font-semibold text-white hover:bg-b4-deep-hover">
+              {emailLink.label}
+            </a>
+          )}
+        </div>
+      )}
       {loading ? (
         <WeavingLoader variant="inline" label="Finding submissions…" />
       ) : items.length === 0 ? (
@@ -133,6 +181,7 @@ const CompletionReviews = () => {
                 <th className="px-4 py-2 font-semibold">Name</th>
                 <th className="px-4 py-2 font-semibold">Department</th>
                 <th className="px-4 py-2 font-semibold">Module</th>
+                <th className="px-4 py-2 font-semibold">Check</th>
                 <th className="px-4 py-2 font-semibold">Level</th>
                 <th className="px-4 py-2 font-semibold">Submitted</th>
                 <th className="px-4 py-2 font-semibold">Actions</th>
@@ -144,6 +193,7 @@ const CompletionReviews = () => {
                   <td className="px-4 py-3">{staff[it.email]?.name ?? it.email}</td>
                   <td className="px-4 py-3">{staff[it.email]?.department ?? "—"}</td>
                   <td className="px-4 py-3">{it.module}</td>
+                  <td className="px-4 py-3">{it.kind === "attended" ? "LDI register" : it.module === "Edpuzzle" ? "Edpuzzle results" : "Canva quiz"}</td>
                   <td className="px-4 py-3">{it.level}</td>
                   <td className="px-4 py-3 whitespace-nowrap">{formatDateUK(it.submitted)}</td>
                   <td className="px-4 py-3 whitespace-nowrap">

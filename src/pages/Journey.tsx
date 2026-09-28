@@ -14,6 +14,7 @@ import {
 } from "@/lib/journey";
 import { deriveEffectiveLevel, runProgressionCheck } from "@/lib/progression";
 import { HowItWorks, NextStepCard, TaskList } from "@/components/journey/TaskList";
+import SinceLastVisit from "@/components/journey/SinceLastVisit";
 import LeaderTaskCard from "@/components/journey/LeaderTaskCard";
 import LeaderAchievementStrip from "@/components/journey/LeaderAchievementStrip";
 import RecentAttendanceBanner from "@/components/journey/RecentAttendanceBanner";
@@ -97,7 +98,7 @@ const JourneySkeleton = () => (
 const Journey = () => {
   usePageTitle("My Journey");
   const navigate = useNavigate();
-  const { profile, email, loading, notFound, error, completedModuleIds, completions, attendedPendingIds, reviewPendingIds, refresh } = useStaffProfile();
+  const { profile, email, loading, notFound, error, completedModuleIds, completions, attendedPendingIds, reviewPendingIds, attendanceClaimIds, refresh } = useStaffProfile();
   const [showOnboarding, setShowOnboarding] = useState(false);
   const progressionRan = useRef(false);
 
@@ -127,7 +128,7 @@ const Journey = () => {
   const effective = deriveEffectiveLevel(profile);
   const styles = LEVEL_STYLES[effective];
   const viaMap = new Map(completions.map((c) => [c.moduleId, c.via]));
-  const cards = buildModuleCards(profile, completedModuleIds, effective, viaMap, attendedPendingIds, reviewPendingIds);
+  const cards = buildModuleCards(profile, completedModuleIds, effective, viaMap, attendedPendingIds, reviewPendingIds, attendanceClaimIds);
   const total = totalForLevel(effective);
   const progressCount = countCompleteOrEvidenced(cards);
   const progressPct = total ? Math.round((progressCount / total) * 100) : 0;
@@ -184,9 +185,10 @@ const Journey = () => {
             </section>
           ) : (
             <>
+              {email && <SinceLastVisit email={email} tasks={cards} />}
               <NextStepCard tasks={cards} level={effective} />
               <div id="pathway" className="scroll-mt-24">
-                <TaskList tasks={cards} heading={`Your ${effective} modules`} />
+                <TaskList tasks={cards} heading={`Your ${effective} modules`} onChanged={refresh} />
               </div>
               {effective === "Practitioner" && (
                 <CompletedLevelStrip profile={profile} completedIds={completedModuleIds} variant="explorer" />

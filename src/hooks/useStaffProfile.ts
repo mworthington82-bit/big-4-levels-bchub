@@ -41,6 +41,8 @@ interface State {
   attendedPendingIds: string[];
   /** Online quiz done and "Submit for completion review" sent; an admin hasn't accepted it yet. */
   reviewPendingIds: string[];
+  /** Learner pressed "I attended training"; LDI is checking the register. */
+  attendanceClaimIds: string[];
 }
 
 const PROFILE_COLUMNS = [
@@ -64,6 +66,7 @@ export const useStaffProfile = () => {
     completions: [],
     attendedPendingIds: [],
     reviewPendingIds: [],
+    attendanceClaimIds: [],
   });
   const [reloadKey, setReloadKey] = useState(0);
 
@@ -77,7 +80,7 @@ export const useStaffProfile = () => {
         const email = sessionData.session?.user.email ?? null;
         if (!email) {
           if (!cancelled)
-            setState({ profile: null, email: null, loading: false, notFound: false, error: false, completedModuleIds: [], completions: [], attendedPendingIds: [], reviewPendingIds: [] });
+            setState({ profile: null, email: null, loading: false, notFound: false, error: false, completedModuleIds: [], completions: [], attendedPendingIds: [], reviewPendingIds: [], attendanceClaimIds: [] });
           return;
         }
         const { data, error } = await supabase
@@ -90,6 +93,7 @@ export const useStaffProfile = () => {
         let completions: CompletionInfo[] = [];
         let attendedPendingIds: string[] = [];
         let reviewPendingIds: string[] = [];
+        let attendanceClaimIds: string[] = [];
         try {
           const { data: comps } = await supabase
             .from("module_completions")
@@ -109,16 +113,20 @@ export const useStaffProfile = () => {
             .filter((c: any) => c.quiz_passed !== true && c.completed_via === "quiz")
             .map((c: any) => c.module_id as string)
             .filter((id: string) => !completedModuleIds.includes(id));
+          attendanceClaimIds = (comps ?? [])
+            .filter((c: any) => c.quiz_passed !== true && c.completed_via === "attendance_claim")
+            .map((c: any) => c.module_id as string);
         } catch {
           completedModuleIds = [];
           completions = [];
           attendedPendingIds = [];
           reviewPendingIds = [];
+          attendanceClaimIds = [];
         }
 
         if (cancelled) return;
         if (error) {
-          setState({ profile: null, email, loading: false, notFound: true, error: false, completedModuleIds, completions, attendedPendingIds, reviewPendingIds });
+          setState({ profile: null, email, loading: false, notFound: true, error: false, completedModuleIds, completions, attendedPendingIds, reviewPendingIds, attendanceClaimIds });
           return;
         }
 
@@ -139,10 +147,11 @@ export const useStaffProfile = () => {
           completions,
           attendedPendingIds,
           reviewPendingIds,
+          attendanceClaimIds,
         });
       } catch {
         if (!cancelled)
-          setState({ profile: null, email: null, loading: false, notFound: false, error: true, completedModuleIds: [], completions: [], attendedPendingIds: [], reviewPendingIds: [] });
+          setState({ profile: null, email: null, loading: false, notFound: false, error: true, completedModuleIds: [], completions: [], attendedPendingIds: [], reviewPendingIds: [], attendanceClaimIds: [] });
       }
     })();
     return () => {

@@ -88,7 +88,7 @@ const SubmitForReview = ({ tool, level }: { tool: string; level: string }) => {
         <>
           <h2 className="font-display text-xl font-bold text-b4-strong">Get this module ticked off</h2>
           <p className="mt-2 text-muted-foreground">
-            You've finished the online part and the quiz. Send it for review and we'll tick it off on My Journey.
+            You've finished the online part and the quiz. Send it for review. We'll email you when your progress has been reviewed and signed off.
           </p>
           <button
             type="button"
@@ -109,7 +109,7 @@ const SubmitForReview = ({ tool, level }: { tool: string; level: string }) => {
             <IconClock size={22} aria-hidden="true" /> Sent for review
           </h2>
           <p className="mt-2 text-muted-foreground">
-            We'll tick it off on My Journey once it's checked. You'll see "Waiting for review" there until then.
+            You'll be emailed when your progress has been reviewed and signed off. Until then, My Journey shows "Waiting for review".
           </p>
           {back}
         </>
