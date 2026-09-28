@@ -1,5 +1,7 @@
-import { useState, useEffect, useCallback } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
+import { IconPlayerPause, IconPlayerPlay } from "@tabler/icons-react";
+import fabricPc from "@/assets/art/fabric-pc.webp";
 
 const quotes = [
   "Technology makes learning more engaging and practical. Digital skills help us collaborate, stay organised and build skills we'll actually use in the future.",
@@ -11,90 +13,116 @@ const quotes = [
   "I felt as if I was in real life, not next to a computer. That's when learning really sticks.",
 ];
 
-const StudentQuoteCarousel = () => {
-  const [current, setCurrent] = useState(0);
-  const [visible, setVisible] = useState(true);
+/**
+ * The screen's four corners on fabric-pc.webp, as % of the image (measured from
+ * the grey screen, inset slightly from its rounded corners): TL, TR, BR, BL.
+ */
+const SCREEN = [
+  [21.2, 17.2],
+  [61.8, 16.6],
+  [60.6, 54.4],
+  [18.4, 50.2],
+] as const;
 
-  const transition = useCallback((next: number) => {
-    setVisible(false);
-    setTimeout(() => {
-      setCurrent(next);
-      setVisible(true);
-    }, 400);
+/**
+ * The "screen" is laid out flat, then projected onto the corners. Its flat width
+ * follows the real screen's width so the text keeps a readable size (~0.78x of
+ * the 23px set in CSS) at any page width.
+ */
+const TEXT_SCALE = 0.78;
+const FLAT_RATIO = 262 / 300;
+
+/** CSS matrix3d that maps a FLAT_W x FLAT_H box onto a quad (Heckbert square→quad). */
+const quadMatrix = (q: number[][], w: number, h: number) => {
+  const [[x0, y0], [x1, y1], [x2, y2], [x3, y3]] = q;
+  const dx1 = x1 - x2, dx2 = x3 - x2, dx3 = x0 - x1 + x2 - x3;
+  const dy1 = y1 - y2, dy2 = y3 - y2, dy3 = y0 - y1 + y2 - y3;
+  const den = dx1 * dy2 - dx2 * dy1;
+  const g = (dx3 * dy2 - dx2 * dy3) / den;
+  const hh = (dx1 * dy3 - dx3 * dy1) / den;
+  const a = x1 - x0 + g * x1, b = x3 - x0 + hh * x3, c = x0;
+  const d = y1 - y0 + g * y1, e = y3 - y0 + hh * y3, f = y0;
+  return `matrix3d(${a / w},${d / w},0,${g / w},${b / h},${e / h},0,${hh / h},0,0,1,0,${c},${f},0,1)`;
+};
+
+const StudentQuoteCarousel = () => {
+  const boxRef = useRef<HTMLDivElement>(null);
+  const [transform, setTransform] = useState<string>("none");
+  const [flat, setFlat] = useState({ w: 300, h: 262 });
+  const [paused, setPaused] = useState(false);
+
+  // Fit the flat screen onto the angled one, and keep it fitted as the page resizes.
+  useLayoutEffect(() => {
+    const el = boxRef.current;
+    if (!el) return;
+    const fit = () => {
+      const { width, height } = el.getBoundingClientRect();
+      const q = SCREEN.map(([px, py]) => [(px / 100) * width, (py / 100) * height]);
+      const screenW = q[1][0] - q[0][0];
+      const w = Math.max(170, Math.round(screenW / TEXT_SCALE));
+      const h = Math.round(w * FLAT_RATIO);
+      setFlat({ w, h });
+      setTransform(quadMatrix(q, w, h));
+    };
+    fit();
+    const ro = new ResizeObserver(fit);
+    ro.observe(el);
+    return () => ro.disconnect();
   }, []);
 
+  // Respect reduced motion (OS setting or the in-app switch): start paused.
   useEffect(() => {
-    const interval = setInterval(() => {
-      transition((current + 1) % quotes.length);
-    }, 5000);
-    return () => clearInterval(interval);
-  }, [current, transition]);
+    const reduce =
+      document.documentElement.hasAttribute("data-reduce-motion") ||
+      window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+    if (reduce) setPaused(true);
+  }, []);
 
   return (
     <div className="max-w-[640px] mx-auto mt-8 text-left">
-      {/* Context label */}
       <p className="uppercase text-b4-flame font-semibold tracking-wide" style={{ fontSize: 12 }}>
         How students see digital learning
       </p>
-      <p className="text-white/50 mt-1 leading-snug" style={{ fontSize: 14 }}>
-        We asked Bradford College students why digital innovation matters to them. Here's what they said — in their own words.
+      <p className="text-white/60 mt-1 leading-snug" style={{ fontSize: 14 }}>
+        We asked Bradford College students why digital innovation matters to them. Here's what they said, in their own words.
       </p>
 
-      {/* Quote box */}
-      <div
-        className="relative mt-4 px-6 py-6 md:px-8 md:py-8 rounded-[20px]"
-        style={{
-          background: "rgba(255,255,255,0.06)",
-          border: "1px solid rgba(255,255,255,0.12)",
-          minHeight: 140,
-        }}
-      >
-
-        <p
-          className="font-display italic text-white/[0.92] relative z-10 transition-all duration-[400ms]"
-          style={{
-            fontSize: "clamp(16px, 2.5vw, 21px)",
-            lineHeight: 1.55,
-            opacity: visible ? 1 : 0,
-            transform: visible ? "translateY(0)" : "translateY(8px)",
-          }}
+      <div ref={boxRef} className="student-pc relative mx-auto mt-4 w-full max-w-[560px] aspect-[900/927]">
+        <img src={fabricPc} alt="" className="absolute inset-0 h-full w-full select-none" draggable={false} />
+        {/* The quotes, laid out flat then projected onto the angled grey screen */}
+        <div
+          className="student-pc__screen absolute left-0 top-0 overflow-hidden"
+          style={{ width: flat.w, height: flat.h, transform, transformOrigin: "0 0" }}
         >
-          "{quotes[current]}"
-        </p>
-      </div>
-
-      {/* Attribution row */}
-      <div className="flex items-center justify-between mt-3 flex-wrap gap-2">
-        <span className="uppercase text-b4-flame font-semibold tracking-[0.1em]" style={{ fontSize: 12 }}>
-          Bradford College Student
-        </span>
-
-        <div className="flex items-center gap-3">
-          {/* Dots */}
-          <div className="flex items-center gap-1.5">
-            {quotes.map((_, i) => (
-              <button
-                key={i}
-                onClick={() => transition(i)}
-                aria-label={`Go to quote ${i + 1}`}
-                className="rounded-full transition-all duration-200"
-                style={{
-                  width: i === current ? 10 : 7,
-                  height: i === current ? 10 : 7,
-                  background: i === current ? "hsl(var(--b4-flame))" : "rgba(255,255,255,0.3)",
-                }}
-              />
+          <div className={`student-pc__roll ${paused ? "is-paused" : ""}`}>
+            {[0, 1].map((copy) => (
+              <ul key={copy} className="student-pc__list" aria-hidden={copy === 1 ? true : undefined}>
+                {quotes.map((q, i) => (
+                  <li key={i} className="student-pc__quote">
+                    <span className="student-pc__mark" aria-hidden="true">“</span>
+                    {q}
+                    <span className="student-pc__who">Bradford College student</span>
+                  </li>
+                ))}
+              </ul>
             ))}
           </div>
-
-          <Link
-            to="/voices"
-            className="text-white/50 hover:text-white/80 transition-colors"
-            style={{ fontSize: 12 }}
-          >
-            Read more student voices →
-          </Link>
         </div>
+      </div>
+
+      <div className="mt-2 flex items-center justify-between flex-wrap gap-2">
+        <button
+          type="button"
+          onClick={() => setPaused((p) => !p)}
+          className="inline-flex min-h-[40px] items-center gap-1.5 rounded-full px-3 text-sm text-white/70 hover:text-white hover:bg-white/10"
+          aria-pressed={paused}
+        >
+          {paused ? <IconPlayerPlay size={16} aria-hidden="true" /> : <IconPlayerPause size={16} aria-hidden="true" />}
+          {paused ? "Play the quotes" : "Pause the quotes"}
+        </button>
+        <Link to="/voices" className="text-white/60 hover:text-white/90 transition-colors" style={{ fontSize: 12 }}>
+          Read more student voices →
+        </Link>
       </div>
     </div>
   );
