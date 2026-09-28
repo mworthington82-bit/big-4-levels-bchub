@@ -9,7 +9,6 @@ import ImmersiveRequestDialog from "@/components/dialogs/ImmersiveRequestDialog"
 import WelcomeCompletionModal from "@/components/dialogs/WelcomeCompletionModal";
 import StudentQuoteCarousel from "@/components/StudentQuoteCarousel";
 
-import StaffSpotlight from "@/components/StaffSpotlight";
 import LeadStrip from "@/components/LeadStrip";
 import SignOutButton from "@/components/SignOutButton";
 import { AccessibilityPanel } from "@/components/AccessibilityPanel";
@@ -21,6 +20,7 @@ import { MAINTENANCE_MODE, isAllowedDuringMaintenance } from "@/lib/maintenanceM
 import B4Brand from "@/components/B4Brand";
 import { useWeaveTo } from "@/components/threadworks/WeaveTransition";
 import LevelLine from "@/components/LevelLine";
+import { ToolsSection, SignOffSteps } from "@/components/landing/LandingSections";
 import { ThreadWorksFooter } from "@/components/threadworks";
 import teamsLogo from "@/assets/teams-logo.png";
 import canvaLogo from "@/assets/canva-logo.jpg";
@@ -193,69 +193,73 @@ const Landing = () => {
       </header>
 
       <main>
-        {/* Dark Hero Section */}
+        {/* Hero: one headline, then the fabric PC (student voices) beside sign-in */}
         <section className="relative bg-b4-deep overflow-hidden">
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_hsl(22_86%_51%_/_0.16)_0%,_transparent_70%)]" />
-          
-          <div className="container mx-auto px-4 py-16 md:py-24 relative z-10">
-            <div className="max-w-3xl mx-auto text-center">
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 mb-8 animate-fade-in">
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_30%_60%,_hsl(22_86%_51%_/_0.16)_0%,_transparent_60%)]" />
+          <div className="container mx-auto px-4 py-12 md:py-16 relative z-10 max-w-7xl">
+            <div className="text-center">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 border border-white/20 mb-5 animate-fade-in">
                 <span className="text-sm text-white/90 font-medium">Welcome to The Big 4: Level Up</span>
               </div>
-
-              <h1 className="font-display text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6 animate-fade-in leading-tight">
+              <h1 className="font-display text-5xl md:text-7xl lg:text-8xl font-bold text-white animate-fade-in leading-[1.02] tracking-tight">
                 The Big 4: <span className="text-b4-flame">Level Up</span>
               </h1>
+            </div>
 
-              <StudentQuoteCarousel />
+            <div className="mt-8 grid items-center gap-10 lg:mt-12 lg:grid-cols-[1.2fr_0.8fr]">
+              <StudentQuoteCarousel className="w-full" />
 
-              {/* Hoverable App logo pills */}
-              <div className="flex flex-wrap justify-center gap-3 mt-10 animate-fade-in" style={{ animationDelay: '200ms' }}>
-                {heroApps.map((app) => (
-                  <div key={app.name} className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/15 backdrop-blur-sm border border-white/10">
-                    <img src={app.logo} alt={app.name} className="h-6 w-6 rounded-md object-contain bg-white/90 p-0.5" />
-                    <span className="text-sm font-medium text-white">{app.name}</span>
+              <div className="rounded-3xl bg-white/[0.06] p-6 text-left ring-1 ring-white/10 md:p-8 animate-fade-in" style={{ animationDelay: "150ms" }}>
+                <h2 className="font-display text-2xl md:text-3xl font-bold text-white">Build your digital confidence</h2>
+                <p className="mt-3 text-lg leading-relaxed text-white/80">
+                  Four tools you use every day, learned at your own level, with training sessions and support from the LDI team.
+                </p>
+                <ul className="mt-5 grid grid-cols-2 gap-3">
+                  {heroApps.map((app) => (
+                    <li key={app.name} className="flex items-center gap-2 text-white">
+                      <img src={app.logo} alt="" className="h-8 w-8 rounded-lg bg-white p-1 object-contain" />
+                      <span className="font-semibold">{app.name}</span>
+                    </li>
+                  ))}
+                </ul>
+
+                {!email && (
+                  <div className="mt-7 flex flex-col gap-3">
+                    <button
+                      onClick={handleSignIn}
+                      disabled={signingIn}
+                      className="inline-flex min-h-[52px] items-center justify-center rounded-xl bg-b4-flame px-8 text-lg font-bold text-b4-on-flame shadow-lg transition-colors hover:bg-b4-flame/90 disabled:opacity-60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+                    >
+                      {signingIn ? "Redirecting…" : "Sign in with Microsoft"}
+                    </button>
+                    <a
+                      href="https://bradfordcollege-handsmisconducttraining.my.canva.site/final-24-03the-big-4-tools"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex min-h-[52px] items-center justify-center rounded-xl border-2 border-white/40 px-8 text-lg font-bold text-white transition-colors hover:border-white/60 hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+                    >
+                      Take the self-assessment
+                    </a>
+                    <p className="text-sm text-white/65">Use your Bradford College Microsoft account. New here? Start with the self-assessment.</p>
                   </div>
-                ))}
-              </div>
-
-              {/* Primary action — Microsoft SSO only. Hidden once signed in. */}
-              {!email && (
-                <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mt-10 animate-fade-in" style={{ animationDelay: '300ms' }}>
-                  <button
-                    onClick={handleSignIn}
-                    disabled={signingIn}
-                    className="inline-flex items-center justify-center min-h-11 px-8 py-4 rounded-xl bg-b4-flame text-b4-on-flame font-bold text-base hover:bg-b4-flame/90 transition-colors disabled:opacity-60 shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white w-full sm:w-[280px]"
-                  >
-                    {signingIn ? "Redirecting…" : "Sign in with Microsoft"}
-                  </button>
-                  <a
-                    href="https://bradfordcollege-handsmisconducttraining.my.canva.site/final-24-03the-big-4-tools"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center justify-center min-h-11 px-8 py-4 rounded-xl bg-transparent text-white font-bold text-base border-2 border-white/40 hover:bg-white/10 hover:border-white/60 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white w-full sm:w-[280px]"
-                  >
-                    Take the Self-Assessment
-                  </a>
-                </div>
-              )}
+                )}
 
               {email && profile && (() => {
                 const lower = (email || "").toLowerCase();
                 const fullAccess = !MAINTENANCE_MODE || isAllowedDuringMaintenance(lower);
                 return (
-                  <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mt-10 animate-fade-in" style={{ animationDelay: '300ms' }}>
+                  <div className="mt-7 flex flex-col gap-3 animate-fade-in" style={{ animationDelay: '300ms' }}>
                     {fullAccess ? (
                       <>
                         <button
                           onClick={() => navigate("/new/journey")}
-                          className="inline-flex items-center justify-center min-h-11 px-8 py-4 rounded-xl bg-b4-flame text-b4-on-flame font-bold text-base hover:bg-b4-flame/90 transition-colors shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white w-full sm:w-[280px]"
+                          className="inline-flex items-center justify-center min-h-11 px-8 py-4 rounded-xl bg-b4-flame text-b4-on-flame font-bold text-base hover:bg-b4-flame/90 transition-colors shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white w-full"
                         >
                           Go to My Journey
                         </button>
                         <button
                           onClick={() => navigate("/planner")}
-                          className="inline-flex items-center justify-center min-h-11 px-8 py-4 rounded-xl bg-transparent text-white font-bold text-base border-2 border-white/40 hover:bg-white/10 hover:border-white/60 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white w-full sm:w-[280px]"
+                          className="inline-flex items-center justify-center min-h-11 px-8 py-4 rounded-xl bg-transparent text-white font-bold text-base border-2 border-white/40 hover:bg-white/10 hover:border-white/60 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white w-full"
                         >
                           Open Activity Planner
                         </button>
@@ -263,7 +267,7 @@ const Landing = () => {
                     ) : (
                       <button
                         onClick={() => weaveTo("/bookings", "Opening Book Training…")}
-                        className="inline-flex items-center justify-center min-h-11 px-8 py-4 rounded-xl bg-b4-flame text-b4-on-flame font-bold text-base hover:bg-b4-flame/90 transition-colors shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white w-full sm:w-[280px]"
+                        className="inline-flex items-center justify-center min-h-11 px-8 py-4 rounded-xl bg-b4-flame text-b4-on-flame font-bold text-base hover:bg-b4-flame/90 transition-colors shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white w-full"
                       >
                         Go to my bookings
                       </button>
@@ -271,87 +275,22 @@ const Landing = () => {
                   </div>
                 );
               })()}
-
-
+              </div>
             </div>
           </div>
         </section>
 
-        <div className="container mx-auto px-4 py-8 md:py-12">
-
-
-
-          {/* LEAD model strip */}
-          <div className="mb-8 animate-fade-in">
+        {/* Below the hero: levels, tools, how it works, LEAD */}
+        <div className="container mx-auto max-w-6xl px-4 py-12 md:py-16 space-y-16">
+          <LevelLine />
+          <ToolsSection />
+          <SignOffSteps />
+          <div className="animate-fade-in">
             <LeadStrip />
           </div>
-
-          <LevelLine className="mb-12" />
-
-          {/* Warm Welcome Card */}
-          <div className="max-w-4xl mx-auto mb-12 animate-fade-in">
-            <div className="bg-card rounded-3xl shadow-[var(--shadow-card)] border-l-4 border-l-b4-flame border border-border p-8 md:p-10 text-left">
-              <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground mb-4">
-                What is The Big 4?
-              </h2>
-              <p className="text-muted-foreground text-lg mb-6 leading-relaxed">
-                The Big 4 Digital Skills Training is a personalised learning experience designed to help Bradford College staff develop confidence with essential digital tools.
-              </p>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6">
-                {appChips.map((chip) => (
-                  <HoverCard key={chip.name} openDelay={100} closeDelay={100}>
-                    <HoverCardTrigger asChild>
-                      <div className={`flex items-center gap-3 px-4 py-3 rounded-xl border cursor-pointer hover:shadow-md transition-shadow ${chip.color}`}>
-                        <img src={chip.logo} alt={chip.name} className="h-8 w-8 rounded-lg object-contain flex-shrink-0" />
-                        <div>
-                          <span className="font-semibold text-foreground text-sm">{chip.name}</span>
-                          <p className="text-xs text-muted-foreground">{chip.desc}</p>
-                        </div>
-                      </div>
-                    </HoverCardTrigger>
-                    <HoverCardContent className="w-80 bg-card border-border shadow-xl" side="top">
-                      <h4 className="font-display font-bold text-foreground mb-3">{chip.name}</h4>
-                      <div className="space-y-2.5">
-                        <div className="flex items-start gap-2">
-                          <img src={emblemExplorer} alt="Explorer" className="h-5 w-5 mt-0.5 flex-shrink-0" />
-                          <div>
-                            <span className="text-xs font-semibold text-explorer">Explorer</span>
-                            <p className="text-xs text-muted-foreground leading-relaxed">{toolLevelInfo[chip.key].explorer}</p>
-                          </div>
-                        </div>
-                        <div className="flex items-start gap-2">
-                          <img src={emblemPractitioner} alt="Practitioner" className="h-5 w-5 mt-0.5 flex-shrink-0" />
-                          <div>
-                            <span className="text-xs font-semibold text-practitioner">Practitioner</span>
-                            <p className="text-xs text-muted-foreground leading-relaxed">{toolLevelInfo[chip.key].practitioner}</p>
-                          </div>
-                        </div>
-                        <div className="flex items-start gap-2">
-                          <img src={emblemLeader} alt="Leader" className="h-5 w-5 mt-0.5 flex-shrink-0" />
-                          <div>
-                            <span className="text-xs font-semibold text-leader">Leader</span>
-                            <p className="text-xs text-muted-foreground leading-relaxed">{toolLevelInfo[chip.key].leader}</p>
-                          </div>
-                        </div>
-                      </div>
-                    </HoverCardContent>
-                  </HoverCard>
-                ))}
-              </div>
-
-              <p className="text-muted-foreground text-sm">
-                Based on your self-assessment level (Explorer, Practitioner, or Leader), you'll receive tailored training content, complete a reflection, and earn a certificate upon completion.
-              </p>
-            </div>
-          </div>
-
-          {/* Staff Spotlight */}
-          <StaffSpotlight />
-
         </div>
       </main>
-      <div className="mt-12"><ThreadWorksFooter /></div>
+      <ThreadWorksFooter />
     </div>
 
 
