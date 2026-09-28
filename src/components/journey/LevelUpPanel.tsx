@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useWeaveTo } from "@/components/threadworks/WeaveTransition";
 import { IconArrowRight, IconTrophy, IconAlertTriangle } from "@tabler/icons-react";
 import type { ModuleCardSpec, LevelKey } from "@/lib/journey";
 import { knowledgeCheckPath } from "@/lib/journey";
@@ -59,7 +59,7 @@ const buildItems = (cards: ModuleCardSpec[], level: LevelKey): Item[] => {
 };
 
 const LevelUpPanel = ({ cards, level }: Props) => {
-  const navigate = useNavigate();
+  const weaveTo = useWeaveTo();
   const items = buildItems(cards, level);
 
   if (items.length === 0) {
@@ -81,7 +81,7 @@ const LevelUpPanel = ({ cards, level }: Props) => {
             </p>
             <button
               type="button"
-              onClick={() => navigate(next === "Leader" ? "/new/leader" : "/bookings")}
+              onClick={() => weaveTo(next === "Leader" ? "/new/leader" : "/bookings", next === "Leader" ? "Opening Leader level…" : "Opening Book Training…")}
               className="mt-4 inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-b4-deep text-white text-sm font-semibold"
             >
               {next === "Leader" ? "Explore Leader level" : "See Practitioner sessions"}
@@ -114,7 +114,7 @@ const LevelUpPanel = ({ cards, level }: Props) => {
             </span>
             <button
               type="button"
-              onClick={() => navigate(item.to)}
+              onClick={() => weaveTo(item.to, item.to === "/bookings" ? "Opening Book Training…" : item.cta === "Start module" ? "Opening your module…" : "Opening the knowledge check…")}
               className={`inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-xs font-semibold flex-shrink-0 ${
                 item.amber ? "bg-[#B37400] text-white" : "bg-b4-deep text-white"
               }`}

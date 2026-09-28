@@ -3,6 +3,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { WeaveTransitionProvider } from "@/components/threadworks/WeaveTransition";
 
 // Auth + entry
 import NotYet from "./pages/NotYet";
@@ -40,6 +41,7 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
+        <WeaveTransitionProvider>
         <FloatingPlannerButton />
         <CookieBanner />
         <Routes>
@@ -84,6 +86,7 @@ const App = () => (
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
+        </WeaveTransitionProvider>
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
