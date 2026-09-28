@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import bradfordLogo from "@/assets/bradford-college-logo.png";
+import B4Brand from "@/components/B4Brand";
 import Footer from "@/components/Footer";
 
 const Privacy = () => {
@@ -9,9 +9,7 @@ const Privacy = () => {
     <div className="min-h-screen bg-background flex flex-col">
       <header className="border-b border-border bg-card shadow-sm">
         <div className="container mx-auto px-4 py-5 flex items-center justify-between">
-          <button onClick={() => navigate("/")} className="flex items-center gap-3" aria-label="Home">
-            <img src={bradfordLogo} alt="Bradford College logo" className="h-10 object-contain" />
-          </button>
+          <B4Brand to="/" />
           <h1 className="font-display text-lg md:text-2xl font-bold text-foreground">Privacy Notice</h1>
         </div>
       </header>

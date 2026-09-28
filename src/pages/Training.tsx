@@ -33,7 +33,7 @@ import RequiredActivityDialog from "@/components/dialogs/RequiredActivityDialog"
 import CheatSheetButton from "@/components/CheatSheetButton";
 import LeadCallout from "@/components/LeadCallout";
 import { useIsDemoUser } from "@/lib/demoAccess";
-import bradfordLogo from "@/assets/bradford-college-logo.jpg";
+import B4Brand from "@/components/B4Brand";
 import heroBanner from "@/assets/hero-banner.jpg";
 import teamsIllustration from "@/assets/teams-illustration.jpg";
 import canvaIllustration from "@/assets/canva-illustration.jpg";
@@ -410,8 +410,8 @@ const Training = () => {
         <header className="border-b border-border bg-card shadow-sm">
           <div className="container mx-auto px-4 py-6">
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-              <img src={bradfordLogo} alt="Bradford College logo" className="h-12 object-contain cursor-pointer" onClick={() => navigate("/")} />
-              <h1 className="font-display text-xl text-muted-foreground md:text-3xl font-bold text-left my-0 py-0">The Big 4: Level Up</h1>
+              <B4Brand to="/" />
+              <p className="sr-only">The Big 4: Level Up</p>
             </div>
           </div>
         </header>
@@ -529,8 +529,8 @@ const Training = () => {
         <header className="border-b border-border bg-card shadow-sm">
           <div className="container mx-auto px-4 py-6">
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-              <img src={bradfordLogo} alt="Bradford College logo" className="h-12 object-contain cursor-pointer" onClick={() => navigate("/")} />
-              <h1 className="font-display text-xl text-muted-foreground md:text-3xl font-bold text-left my-0 py-0">The Big 4: Level Up</h1>
+              <B4Brand to="/" />
+              <p className="sr-only">The Big 4: Level Up</p>
             </div>
           </div>
         </header>
@@ -541,42 +541,42 @@ const Training = () => {
             <img src={heroBanner} alt="Diverse educators collaborating with modern technology" className="w-full h-48 md:h-72 object-cover" />
             <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/40 to-transparent flex items-center justify-center">
               <div className="text-center text-white px-4">
-                <Sparkles className="w-12 h-12 mx-auto mb-4 animate-pulse" />
+                <Sparkles className="w-12 h-12 mx-auto mb-4" />
                 <h2 className="text-3xl font-bold mb-2 drop-shadow-lg text-slate-50 px-0 md:text-7xl">Transform Your Teaching</h2>
               </div>
             </div>
             
             {/* Thought Bubbles */}
-            <div className="hidden lg:block absolute top-4 left-4 bg-white/95 backdrop-blur-sm rounded-2xl px-4 py-3 shadow-lg max-w-[200px] animate-fade-in" style={{
+            <div className="hidden lg:block absolute top-4 left-4 bg-card/95 backdrop-blur-sm rounded-2xl px-4 py-3 shadow-lg max-w-[200px] animate-fade-in" style={{
             animationDelay: '300ms'
           }}>
-              <p className="text-sm text-gray-700 italic">"I don't have time to learn new tech..."</p>
-              <div className="absolute -bottom-2 left-6 w-4 h-4 bg-white/95 rotate-45"></div>
+              <p className="text-sm text-foreground italic">"I don't have time to learn new tech..."</p>
+              <div className="absolute -bottom-2 left-6 w-4 h-4 bg-card/95 rotate-45"></div>
             </div>
             
-            <div className="hidden lg:block absolute top-20 right-8 bg-white/95 backdrop-blur-sm rounded-2xl px-4 py-3 shadow-lg max-w-[220px] animate-fade-in" style={{
+            <div className="hidden lg:block absolute top-20 right-8 bg-card/95 backdrop-blur-sm rounded-2xl px-4 py-3 shadow-lg max-w-[220px] animate-fade-in" style={{
             animationDelay: '500ms'
           }}>
-              <p className="text-sm text-gray-700 italic">"My students know more than me!"</p>
-              <div className="absolute -bottom-2 right-8 w-4 h-4 bg-white/95 rotate-45"></div>
+              <p className="text-sm text-foreground italic">"My students know more than me!"</p>
+              <div className="absolute -bottom-2 right-8 w-4 h-4 bg-card/95 rotate-45"></div>
             </div>
             
-            <div className="hidden md:block lg:hidden absolute top-2 right-4 bg-white/95 backdrop-blur-sm rounded-2xl px-3 py-2 shadow-lg max-w-[180px] animate-fade-in" style={{
+            <div className="hidden md:block lg:hidden absolute top-2 right-4 bg-card/95 backdrop-blur-sm rounded-2xl px-3 py-2 shadow-lg max-w-[180px] animate-fade-in" style={{
             animationDelay: '400ms'
           }}>
-              <p className="text-xs text-gray-700 italic">"Is this really worth it?"</p>
-              <div className="absolute -bottom-1.5 right-6 w-3 h-3 bg-white/95 rotate-45"></div>
+              <p className="text-xs text-foreground italic">"Is this really worth it?"</p>
+              <div className="absolute -bottom-1.5 right-6 w-3 h-3 bg-card/95 rotate-45"></div>
             </div>
             
             <div style={{
             animationDelay: '700ms'
-          }} className="hidden lg:block absolute bottom-8 left-12 bg-white/95 backdrop-blur-sm rounded-2xl px-4 py-3 shadow-lg max-w-[240px] animate-fade-in my-0">
-              <p className="text-sm text-gray-700 italic">"What if I make a mistake in front of my class?"</p>
-              <div className="absolute -bottom-2 left-10 w-4 h-4 bg-white/95 rotate-45"></div>
+          }} className="hidden lg:block absolute bottom-8 left-12 bg-card/95 backdrop-blur-sm rounded-2xl px-4 py-3 shadow-lg max-w-[240px] animate-fade-in my-0">
+              <p className="text-sm text-foreground italic">"What if I make a mistake in front of my class?"</p>
+              <div className="absolute -bottom-2 left-10 w-4 h-4 bg-card/95 rotate-45"></div>
             </div>
           </div>
 
-          <Alert className="max-w-4xl mx-auto mb-12 border-accent animate-fade-in bg-slate-50">
+          <Alert className="max-w-4xl mx-auto mb-12 border-accent animate-fade-in bg-b4-wash">
             <Lightbulb className="h-5 w-5 text-accent" />
             <AlertDescription className="text-base">
               <strong>Before we begin:</strong> You can adjust your reading experience using the accessibility settings button in the bottom right corner. 
@@ -634,7 +634,7 @@ const Training = () => {
         <AccessibilityPanel />
         <header className="border-b border-border bg-card shadow-sm">
           <div className="container mx-auto px-4 py-6">
-            <img src={bradfordLogo} alt="Bradford College logo" className="h-12 object-contain cursor-pointer" onClick={() => navigate("/")} />
+            <B4Brand to="/" />
           </div>
         </header>
 
@@ -884,7 +884,7 @@ const Training = () => {
         <header className="border-b border-border bg-card shadow-sm">
           <div className="container mx-auto px-4 py-6">
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-              <img src={bradfordLogo} alt="Bradford College logo" className="h-12 object-contain cursor-pointer" onClick={() => navigate("/")} />
+              <B4Brand to="/" />
               <h1 className="text-xl md:text-2xl font-bold text-foreground">
                 Leader Level – The Big 4
               </h1>
@@ -911,7 +911,7 @@ const Training = () => {
         <AccessibilityPanel />
         <header className="border-b border-border bg-card shadow-sm">
           <div className="container mx-auto px-4 py-6">
-            <img src={bradfordLogo} alt="Bradford College logo" className="h-12 object-contain cursor-pointer" onClick={() => navigate("/")} />
+            <B4Brand to="/" />
           </div>
         </header>
         <main className="container mx-auto px-4 py-12">
@@ -943,8 +943,8 @@ const Training = () => {
         <header className="border-b border-border bg-card shadow-sm">
           <div className="container mx-auto px-4 py-6">
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-              <img src={bradfordLogo} alt="Bradford College logo" className="h-12 object-contain cursor-pointer" onClick={() => navigate("/")} />
-              <h1 className="font-display text-xl text-muted-foreground md:text-3xl font-bold text-left my-0 py-0">The Big 4: Level Up</h1>
+              <B4Brand to="/" />
+              <p className="sr-only">The Big 4: Level Up</p>
             </div>
           </div>
         </header>
@@ -968,7 +968,7 @@ const Training = () => {
       <header className="border-b border-border bg-card shadow-sm sticky top-0 z-10">
         <div className="container mx-auto px-4 py-3">
           <div className="flex items-center justify-between mb-2">
-            <img src={bradfordLogo} alt="Bradford College logo" className="h-10 object-contain cursor-pointer" onClick={() => navigate("/")} />
+            <B4Brand to="/" />
             <Button variant="outline" size="sm" onClick={handleRestart} className="border-border hover:bg-accent hover:text-accent-foreground">
               <Home className="mr-2 h-4 w-4" />
               Exit

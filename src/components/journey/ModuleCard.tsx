@@ -103,7 +103,7 @@ const ModuleCard = ({ card }: Props) => {
     <button
       type="button"
       onClick={() => navigate(destinationFor(card))}
-      className={`text-left rounded-2xl overflow-hidden bg-white border shadow-sm hover:shadow-md transition-shadow focus:outline-none focus-visible:ring-2 focus-visible:ring-b4-flame flex flex-col ${
+      className={`text-left rounded-2xl overflow-hidden bg-card border shadow-sm hover:shadow-md transition-shadow focus:outline-none focus-visible:ring-2 focus-visible:ring-b4-flame flex flex-col ${
         isAttendedPending ? "border-2 border-b4-flame" : "border-border"
       }`}
     >
@@ -111,7 +111,7 @@ const ModuleCard = ({ card }: Props) => {
       <div className={`${headerBg} px-4 py-3 flex items-center justify-between gap-3`}>
         <div className="flex items-center gap-2 min-w-0">
           {logo ? (
-            <span className="h-6 w-6 rounded bg-white flex items-center justify-center p-0.5 flex-shrink-0">
+            <span className="h-6 w-6 rounded bg-card flex items-center justify-center p-0.5 flex-shrink-0">
               <img src={logo} alt="" aria-hidden className="h-full w-full object-contain" />
             </span>
           ) : (
@@ -127,13 +127,13 @@ const ModuleCard = ({ card }: Props) => {
         </span>
       </div>
       {card.status === "completed" && card.completedVia === "in_person" && (
-        <div className="px-4 pt-2 -mb-1 bg-white">
+        <div className="px-4 pt-2 -mb-1 bg-card">
           <span className="text-[11px] italic text-muted-foreground">Completed in person</span>
         </div>
       )}
 
       {/* Body */}
-      <div className={`p-5 flex-1 flex flex-col gap-3 ${isAttendedPending ? "bg-[#FFF9EF]" : "bg-white"}`}>
+      <div className={`p-5 flex-1 flex flex-col gap-3 ${isAttendedPending ? "bg-[#FFF9EF]" : "bg-card"}`}>
         <div className="flex-1">
           <h3 className="font-display font-bold text-[15px] text-b4-strong leading-tight">
             {card.name}

@@ -32,7 +32,7 @@ const LeaderPreviewCards = () => {
     body: string;
   }) => (
     <div
-      className="bg-white rounded-2xl border border-b4-line p-5 flex flex-col"
+      className="bg-card rounded-2xl border border-b4-line p-5 flex flex-col"
       style={{ borderLeft: `4px solid ${accent}` }}
     >
       <h3 className="font-bold text-b4-strong text-base">{title}</h3>

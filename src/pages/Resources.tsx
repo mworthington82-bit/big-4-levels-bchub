@@ -229,7 +229,7 @@ const Resources = () => {
                   active ? 'border-b4-flame' : 'border-border hover:border-border/70'
                 }`}
               >
-                <div className="h-5 w-5 rounded bg-white p-0.5 flex items-center justify-center shrink-0">
+                <div className="h-5 w-5 rounded bg-card p-0.5 flex items-center justify-center shrink-0">
                   {tool.logo
                     ? <img src={tool.logo} alt="" className="h-full w-full object-contain" />
                     : <span className="w-3 h-3 rounded-full bg-b4-flame" />}
@@ -535,7 +535,7 @@ const Resources = () => {
                     className="group block w-full text-left rounded-2xl overflow-hidden border-2 border-border bg-card shadow-sm hover:shadow-[var(--shadow-hover)] hover:-translate-y-0.5 transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
                   >
                     <div className="px-3 py-2.5 flex items-center justify-between" style={{ backgroundColor: tool.color }}>
-                      <div className="h-7 w-7 rounded bg-white/95 p-1 flex items-center justify-center">
+                      <div className="h-7 w-7 rounded bg-card/95 p-1 flex items-center justify-center">
                         <img src={tool.logo} alt="" className="h-full w-full object-contain" />
                       </div>
                       <span className="text-[10px] font-bold uppercase tracking-wider text-white/90">PDF</span>

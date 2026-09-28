@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Upload, Link, Loader2, CheckCircle, Glasses, Target } from "lucide-react";
+import { Upload, Link, CheckCircle, Glasses, Target } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 
@@ -393,8 +393,7 @@ const ImmersiveSessionForm = ({ sessionNumber, onSuccess, userId, existingSessio
           >
             {loading || uploading ? (
               <>
-                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                {uploading ? 'Uploading files...' : 'Submitting...'}
+                {uploading ? 'Uploading files…' : 'Submitting…'}
               </>
             ) : (
               'Submit Session'

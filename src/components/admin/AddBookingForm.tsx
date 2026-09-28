@@ -375,12 +375,12 @@ const AddBookingForm = () => {
   };
 
   return (
-    <section className="bg-white border border-slate-200 rounded-2xl p-6">
+    <section className="bg-card border border-border rounded-2xl p-6">
       <header className="mb-4 flex items-center gap-2">
         <Calendar className="w-5 h-5 text-b4-strong" />
         <h2 className="text-xl font-semibold text-b4-strong">Training bookings</h2>
       </header>
-      <p className="text-sm text-slate-600 mb-4">
+      <p className="text-sm text-muted-foreground mb-4">
         Posts a session to the Bookings page for staff currently at the chosen level who have not
         yet evidenced that tool at that level. Mark a session as full to disable the booking link,
         or upload an attendance CSV after the session to auto-complete the pre-quiz activity for
@@ -423,19 +423,19 @@ const AddBookingForm = () => {
       </form>
 
       <div className="mt-8">
-        <h3 className="text-sm font-semibold text-slate-700 mb-3">Current bookings</h3>
+        <h3 className="text-sm font-semibold text-foreground mb-3">Current bookings</h3>
         {bookings.length === 0 ? (
-          <p className="text-sm text-slate-500">No training sessions posted yet.</p>
+          <p className="text-sm text-muted-foreground">No training sessions posted yet.</p>
         ) : (
-          <ul className="divide-y divide-slate-200 border border-slate-200 rounded-lg">
+          <ul className="divide-y divide-slate-200 border border-border rounded-lg">
             {bookings.map((b) => (
               <li key={b.id} className="flex flex-col gap-2 p-3 sm:flex-row sm:items-center sm:justify-between">
                 <div className="min-w-0 flex-1">
                   <p className="font-medium truncate">{b.name}</p>
-                  <p className="text-xs text-slate-500 capitalize">
+                  <p className="text-xs text-muted-foreground capitalize">
                     {TOOL_OPTIONS.find((t) => t.value === b.tool)?.label ?? b.tool} · {b.level}
                     {b.is_full && <span className="ml-2 text-red-600 font-semibold">FULL</span>}
-                    {b.is_visible === false && <span className="ml-2 text-slate-500 font-semibold">HIDDEN</span>}
+                    {b.is_visible === false && <span className="ml-2 text-muted-foreground font-semibold">HIDDEN</span>}
                   </p>
                   <a href={b.booking_url} target="_blank" rel="noopener noreferrer" className="text-xs text-blue-700 hover:underline truncate block max-w-full">
                     {b.booking_url}
@@ -522,15 +522,15 @@ const AddBookingForm = () => {
                   the quiz themselves to be evidenced.
                 </p>
                 {pending && (
-                  <div className="max-h-48 overflow-y-auto border border-slate-200 rounded-md p-2 text-xs">
+                  <div className="max-h-48 overflow-y-auto border border-border rounded-md p-2 text-xs">
                     {pending.rows.map((r, i) => (
-                      <div key={i} className="py-0.5 border-b border-slate-100 last:border-0">
-                        <span className="font-medium">{r.name || "(no name)"}</span> · <span className="text-slate-600">{r.email}</span>
+                      <div key={i} className="py-0.5 border-b border-border last:border-0">
+                        <span className="font-medium">{r.name || "(no name)"}</span> · <span className="text-muted-foreground">{r.email}</span>
                       </div>
                     ))}
                   </div>
                 )}
-                <p className="text-xs text-slate-500">
+                <p className="text-xs text-muted-foreground">
                   Any reflections in the CSV will be saved to the Reflection Wall on this admin page.
                 </p>
               </div>

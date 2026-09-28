@@ -133,13 +133,13 @@ const ModuleQuiz = ({ questions, onComplete, onBackToPathway }: Props) => {
           let cls =
             "w-full text-left px-5 py-4 rounded-xl border-2 transition-colors flex items-start gap-3";
           if (!revealed) {
-            cls += " border-b4-line bg-white hover:border-[#185FA5] hover:bg-[#F5F9FE]";
+            cls += " border-b4-line bg-card hover:border-[#185FA5] hover:bg-[#F5F9FE]";
           } else if (isRight) {
             cls += " border-[#7BA84D] bg-[#EAF3DE]";
           } else if (isSel) {
             cls += " border-[#D97706] bg-b4-flame-soft";
           } else {
-            cls += " border-b4-line bg-white opacity-60";
+            cls += " border-b4-line bg-card opacity-60";
           }
           return (
             <button

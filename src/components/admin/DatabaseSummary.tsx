@@ -123,7 +123,7 @@ const DatabaseSummary = ({ refreshKey }: { refreshKey: number }) => {
       </div>
       <div
         ref={exportRef}
-        className="bg-white rounded-xl border border-slate-200 overflow-hidden"
+        className="bg-card rounded-xl border border-border overflow-hidden"
       >
         <div className="bg-b4-deep text-white px-6 py-5 relative">
           <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-b4-flame" />
@@ -144,7 +144,7 @@ const DatabaseSummary = ({ refreshKey }: { refreshKey: number }) => {
 
 
       <div className="mb-6">
-        <div className="text-xs uppercase tracking-wide text-slate-500">Total staff</div>
+        <div className="text-xs uppercase tracking-wide text-muted-foreground">Total staff</div>
         <div className="text-3xl font-bold text-b4-strong">{s.total}</div>
       </div>
 
@@ -152,7 +152,7 @@ const DatabaseSummary = ({ refreshKey }: { refreshKey: number }) => {
       <h3 className="text-sm font-semibold text-b4-strong mb-2">
         Staff on each level (current)
       </h3>
-      <p className="text-xs text-slate-500 mb-3">
+      <p className="text-xs text-muted-foreground mb-3">
         Reflects in-platform progression: anyone who has finished Explorer is counted as
         Practitioner, anyone who has finished Practitioner (including the Immersive Room) is
         counted as Leader.
@@ -173,17 +173,17 @@ const DatabaseSummary = ({ refreshKey }: { refreshKey: number }) => {
       <h3 className="text-sm font-semibold text-b4-strong mb-2">
         Staff who have gained an additional level
       </h3>
-      <p className="text-xs text-slate-500 mb-3">
+      <p className="text-xs text-muted-foreground mb-3">
         Started at one level on the CSV and have since unlocked a higher one on the platform.
       </p>
       {s.progressed.length === 0 ? (
-        <div className="text-sm text-slate-500 italic mb-6">
+        <div className="text-sm text-muted-foreground italic mb-6">
           No staff have progressed beyond their starting level yet.
         </div>
       ) : (
-        <div className="border border-slate-200 rounded-lg overflow-hidden mb-6">
+        <div className="border border-border rounded-lg overflow-hidden mb-6">
           <table className="w-full text-sm">
-            <thead className="bg-slate-50 text-slate-600">
+            <thead className="bg-b4-wash text-muted-foreground">
               <tr>
                 <th className="text-left px-3 py-2 font-medium">Name</th>
                 <th className="text-left px-3 py-2 font-medium">Email</th>
@@ -193,9 +193,9 @@ const DatabaseSummary = ({ refreshKey }: { refreshKey: number }) => {
             </thead>
             <tbody>
               {s.progressed.map((r) => (
-                <tr key={r.email} className="border-t border-slate-100">
-                  <td className="px-3 py-2 text-slate-800">{r.name ?? "—"}</td>
-                  <td className="px-3 py-2 text-slate-600">{r.email}</td>
+                <tr key={r.email} className="border-t border-border">
+                  <td className="px-3 py-2 text-foreground">{r.name ?? "—"}</td>
+                  <td className="px-3 py-2 text-muted-foreground">{r.email}</td>
                   <td className="px-3 py-2">
                     <span className={`inline-block rounded px-2 py-0.5 text-xs ${levelTint[r.assigned_level]}`}>
                       {r.assigned_level}
@@ -219,9 +219,9 @@ const DatabaseSummary = ({ refreshKey }: { refreshKey: number }) => {
           {EXPECTED_DEPARTMENTS.map((d) => (
             <li
               key={d}
-              className="flex justify-between border-b border-slate-100 py-1.5 last:border-0"
+              className="flex justify-between border-b border-border py-1.5 last:border-0"
             >
-              <span className="text-slate-700">{d}</span>
+              <span className="text-foreground">{d}</span>
               <span className="font-mono font-semibold text-b4-strong">
                 {s.byDept[d] ?? 0}
               </span>

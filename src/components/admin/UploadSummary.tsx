@@ -54,7 +54,7 @@ const UploadSummary = ({
         </div>
       )}
 
-      <div className="bg-white rounded-xl border border-slate-200 p-6 grid sm:grid-cols-2 lg:grid-cols-5 gap-4">
+      <div className="bg-card rounded-xl border border-border p-6 grid sm:grid-cols-2 lg:grid-cols-5 gap-4">
         <Stat label="Total in CSV" value={totalInCsv} />
         <Stat label="Removed by cleaning" value={removedTotal} />
         <Stat label="New staff added" value={added} highlight />
@@ -68,12 +68,12 @@ const UploadSummary = ({
         Only emails ending in <code>@bradfordcollege.ac.uk</code> are accepted.
       </div>
 
-      <div className="bg-white rounded-xl border border-slate-200 p-6">
+      <div className="bg-card rounded-xl border border-border p-6">
         <h3 className="font-semibold text-b4-strong mb-3">Cleaning breakdown</h3>
         <ul className="text-sm space-y-1.5">
           {(Object.keys(RULE_LABELS) as (keyof RemovalStats)[]).map((k) => (
-            <li key={k} className="flex justify-between border-b border-slate-100 py-1.5 last:border-0">
-              <span className="text-slate-600">{RULE_LABELS[k]}</span>
+            <li key={k} className="flex justify-between border-b border-border py-1.5 last:border-0">
+              <span className="text-muted-foreground">{RULE_LABELS[k]}</span>
               <span className="font-mono font-semibold text-b4-strong">
                 {removalStats[k]}
               </span>
@@ -83,11 +83,11 @@ const UploadSummary = ({
       </div>
 
       {skippedInvalidEmails.length > 0 && (
-        <details className="bg-white rounded-xl border border-red-200 p-6">
+        <details className="bg-card rounded-xl border border-red-200 p-6">
           <summary className="font-semibold text-red-700 cursor-pointer">
             Invalid emails skipped ({skippedInvalidEmails.length}) — not @bradfordcollege.ac.uk
           </summary>
-          <ul className="text-sm space-y-1 mt-3 max-h-64 overflow-auto font-mono text-slate-700">
+          <ul className="text-sm space-y-1 mt-3 max-h-64 overflow-auto font-mono text-foreground">
             {skippedInvalidEmails.map((e, i) => (
               <li key={i}>{e || "(empty)"}</li>
             ))}
@@ -96,11 +96,11 @@ const UploadSummary = ({
       )}
 
       {skippedExistingEmails.length > 0 && (
-        <details className="bg-white rounded-xl border border-slate-200 p-6">
-          <summary className="font-semibold text-slate-700 cursor-pointer">
+        <details className="bg-card rounded-xl border border-border p-6">
+          <summary className="font-semibold text-foreground cursor-pointer">
             Already on system, left unchanged ({skippedExistingEmails.length})
           </summary>
-          <ul className="text-sm space-y-1 mt-3 max-h-64 overflow-auto font-mono text-slate-600">
+          <ul className="text-sm space-y-1 mt-3 max-h-64 overflow-auto font-mono text-muted-foreground">
             {skippedExistingEmails.map((e, i) => (
               <li key={i}>{e}</li>
             ))}
@@ -109,15 +109,15 @@ const UploadSummary = ({
       )}
 
       {warnings.length > 0 && (
-        <div className="bg-white rounded-xl border border-slate-200 p-6">
+        <div className="bg-card rounded-xl border border-border p-6">
           <h3 className="font-semibold text-b4-strong mb-3">
             Warnings ({warnings.length})
           </h3>
           <ul className="text-sm space-y-2 max-h-96 overflow-auto">
             {warnings.map((w, i) => (
-              <li key={i} className="border-b border-slate-100 pb-2 last:border-0">
-                <div className="font-medium text-slate-800">{w.type}</div>
-                <div className="text-slate-600">
+              <li key={i} className="border-b border-border pb-2 last:border-0">
+                <div className="font-medium text-foreground">{w.type}</div>
+                <div className="text-muted-foreground">
                   {w.name}
                   {w.detail ? ` — ${w.detail}` : ""}
                 </div>
@@ -132,7 +132,7 @@ const UploadSummary = ({
 
 const Stat = ({ label, value, highlight }: { label: string; value: number; highlight?: boolean }) => (
   <div>
-    <div className="text-xs uppercase tracking-wide text-slate-500">{label}</div>
+    <div className="text-xs uppercase tracking-wide text-muted-foreground">{label}</div>
     <div className={`text-2xl font-bold ${highlight ? "text-green-700" : "text-b4-strong"}`}>{value}</div>
   </div>
 );

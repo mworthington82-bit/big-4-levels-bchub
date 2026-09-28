@@ -81,7 +81,7 @@ const QuickCard = ({ Icon, title, desc, to, accent }: { Icon: any; title: string
   return (
     <button
       onClick={() => navigate(to)}
-      className={`text-left bg-white rounded-2xl border border-border border-l-4 ${accent} p-5 flex items-start gap-4 hover:shadow-md transition-shadow`}
+      className={`text-left bg-card rounded-2xl border border-border border-l-4 ${accent} p-5 flex items-start gap-4 hover:shadow-md transition-shadow`}
     >
       <div className="w-10 h-10 rounded-xl bg-b4-wash flex items-center justify-center flex-shrink-0">
         <Icon size={22} stroke={1.75} className="text-b4-strong" />
@@ -104,23 +104,23 @@ const JourneySkeleton = () => (
     <div className="min-h-full bg-background" aria-busy="true" aria-label="Loading your journey">
       <div className="container mx-auto px-4 py-8 md:py-10 max-w-6xl space-y-8">
         <section className="bg-card rounded-3xl border border-border p-6 md:p-8">
-          <div className="h-3 w-24 bg-muted rounded mb-3 animate-pulse" />
-          <div className="h-6 w-32 bg-muted rounded-full mb-4 animate-pulse" />
+          <div className="h-3 w-24 bg-muted rounded mb-3 tw-skeleton" />
+          <div className="h-6 w-32 bg-muted rounded-full mb-4 tw-skeleton" />
           <div className="space-y-2 max-w-3xl">
-            <div className="h-4 bg-muted rounded w-full animate-pulse" />
-            <div className="h-4 bg-muted rounded w-5/6 animate-pulse" />
+            <div className="h-4 bg-muted rounded w-full tw-skeleton" />
+            <div className="h-4 bg-muted rounded w-5/6 tw-skeleton" />
           </div>
         </section>
         <section className="space-y-4">
-          <div className="h-5 w-40 bg-muted rounded animate-pulse" />
+          <div className="h-5 w-40 bg-muted rounded tw-skeleton" />
           <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
             {[0,1,2,3,4,5].map((i) => (
-              <div key={i} className="bg-card rounded-xl border border-border h-48 animate-pulse" />
+              <div key={i} className="bg-card rounded-xl border border-border h-48 tw-skeleton" />
             ))}
           </div>
         </section>
         <section>
-          <div className="h-1.5 w-full rounded-full bg-muted animate-pulse" />
+          <div className="h-1.5 w-full rounded-full bg-muted tw-skeleton" />
         </section>
       </div>
     </div>
@@ -187,7 +187,7 @@ const Journey = () => {
         )}
         {/* Zone 1 — Light greeting card matching /resources */}
         <section className="container mx-auto px-4 pt-8 md:pt-10 max-w-6xl">
-          <div className="bg-white rounded-2xl border border-border shadow-sm p-6 md:p-8">
+          <div className="bg-card rounded-2xl border border-border shadow-sm p-6 md:p-8">
             <p
               className="mb-3 text-b4-strong inline-flex items-center gap-2"
               style={{ fontSize: "22px", fontWeight: 500 }}

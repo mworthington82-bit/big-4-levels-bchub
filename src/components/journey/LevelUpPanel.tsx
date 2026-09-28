@@ -65,7 +65,7 @@ const LevelUpPanel = ({ cards, level }: Props) => {
   if (items.length === 0) {
     const next = level === "Explorer" ? "Practitioner" : "Leader";
     return (
-      <section className="bg-white rounded-2xl border border-[#CDE3B8] shadow-sm p-6 md:p-7">
+      <section className="bg-card rounded-2xl border border-[#CDE3B8] shadow-sm p-6 md:p-7">
         <div className="flex items-start gap-4">
           <span className="h-11 w-11 rounded-xl bg-[#EAF3DE] flex items-center justify-center flex-shrink-0">
             <IconTrophy size={22} stroke={1.75} className="text-[#3B6D11]" />
@@ -94,7 +94,7 @@ const LevelUpPanel = ({ cards, level }: Props) => {
   }
 
   return (
-    <section className="bg-white rounded-2xl border border-border shadow-sm p-6 md:p-7">
+    <section className="bg-card rounded-2xl border border-border shadow-sm p-6 md:p-7">
       <h2 className="font-display font-bold text-b4-strong text-lg md:text-xl">
         To level up, you need to...
       </h2>

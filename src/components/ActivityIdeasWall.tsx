@@ -20,14 +20,14 @@ const LEAD_BADGE: Record<string, string> = {
 };
 
 const RATING_BADGE: Record<string, string> = {
-  explorer: "bg-slate-200 text-slate-800 border-slate-300",
+  explorer: "bg-b4-wash-3 text-foreground border-b4-line",
   developing: "bg-blue-100 text-blue-800 border-blue-300",
   strong: "bg-amber-100 text-amber-800 border-amber-300",
   exemplary: "bg-yellow-100 text-yellow-800 border-yellow-300",
 };
 
 const BLOOMS_BADGE: Record<string, string> = {
-  remember: "bg-slate-200 text-slate-800 border-slate-300",
+  remember: "bg-b4-wash-3 text-foreground border-b4-line",
   understand: "bg-sky-100 text-sky-900 border-sky-300",
   apply: "bg-amber-100 text-amber-900 border-amber-300",
   analyse: "bg-orange-200 text-orange-900 border-orange-400",

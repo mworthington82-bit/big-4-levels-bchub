@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Loader2, Mail, Lock, User } from "lucide-react";
+import { Mail, Lock, User } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 
@@ -157,8 +157,7 @@ const AuthDialog = ({ open, onOpenChange }: AuthDialogProps) => {
               >
                 {loading ? (
                   <>
-                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                    Signing in...
+                    Signing in…
                   </>
                 ) : (
                   'Sign In'
@@ -231,8 +230,7 @@ const AuthDialog = ({ open, onOpenChange }: AuthDialogProps) => {
               >
                 {loading ? (
                   <>
-                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                    Creating account...
+                    Creating account…
                   </>
                 ) : (
                   'Create Account'

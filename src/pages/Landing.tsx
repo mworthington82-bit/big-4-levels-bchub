@@ -17,7 +17,8 @@ import { useStaffProfile } from "@/hooks/useStaffProfile";
 import { useIsDemoUser } from "@/lib/demoAccess";
 import { MAINTENANCE_MODE, isAllowedDuringMaintenance } from "@/lib/maintenanceMode";
 
-import bradfordLogo from "@/assets/bradford-college-logo.png";
+import B4Brand from "@/components/B4Brand";
+import { ThreadWorksFooter } from "@/components/threadworks";
 import teamsLogo from "@/assets/teams-logo.png";
 import canvaLogo from "@/assets/canva-logo.jpg";
 import edpuzzleLogo from "@/assets/edpuzzle-logo.png";
@@ -177,7 +178,7 @@ const Landing = () => {
       <header className="border-b border-border bg-card shadow-sm">
         <div className="container mx-auto px-4 py-6">
           <div className="flex items-center justify-between">
-            <img src={bradfordLogo} alt="Bradford College logo" className="h-12 object-contain" />
+            <B4Brand to="/" />
             {email && <SignOutButton />}
           </div>
 
@@ -187,7 +188,7 @@ const Landing = () => {
       <main>
         {/* Dark Hero Section */}
         <section className="relative bg-b4-deep overflow-hidden">
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_hsl(39_90%_56%_/_0.15)_0%,_transparent_70%)]" />
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_hsl(22_86%_51%_/_0.16)_0%,_transparent_70%)]" />
           
           <div className="container mx-auto px-4 py-16 md:py-24 relative z-10">
             <div className="max-w-3xl mx-auto text-center">
@@ -196,7 +197,7 @@ const Landing = () => {
               </div>
 
               <h1 className="font-display text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6 animate-fade-in leading-tight">
-                The Big 4: <span className="text-b4-flame-text">Level Up</span>
+                The Big 4: <span className="text-b4-flame">Level Up</span>
               </h1>
 
               <StudentQuoteCarousel />
@@ -205,7 +206,7 @@ const Landing = () => {
               <div className="flex flex-wrap justify-center gap-3 mt-10 animate-fade-in" style={{ animationDelay: '200ms' }}>
                 {heroApps.map((app) => (
                   <div key={app.name} className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/15 backdrop-blur-sm border border-white/10">
-                    <img src={app.logo} alt={app.name} className="h-6 w-6 rounded-md object-contain bg-white/90 p-0.5" />
+                    <img src={app.logo} alt={app.name} className="h-6 w-6 rounded-md object-contain bg-card/90 p-0.5" />
                     <span className="text-sm font-medium text-white">{app.name}</span>
                   </div>
                 ))}
@@ -306,21 +307,21 @@ const Landing = () => {
                         <div className="flex items-start gap-2">
                           <img src={emblemExplorer} alt="Explorer" className="h-5 w-5 mt-0.5 flex-shrink-0" />
                           <div>
-                            <span className="text-xs font-semibold text-b4-flame-text">Explorer</span>
+                            <span className="text-xs font-semibold text-explorer">Explorer</span>
                             <p className="text-xs text-muted-foreground leading-relaxed">{toolLevelInfo[chip.key].explorer}</p>
                           </div>
                         </div>
                         <div className="flex items-start gap-2">
                           <img src={emblemPractitioner} alt="Practitioner" className="h-5 w-5 mt-0.5 flex-shrink-0" />
                           <div>
-                            <span className="text-xs font-semibold text-[#16a085]">Practitioner</span>
+                            <span className="text-xs font-semibold text-practitioner">Practitioner</span>
                             <p className="text-xs text-muted-foreground leading-relaxed">{toolLevelInfo[chip.key].practitioner}</p>
                           </div>
                         </div>
                         <div className="flex items-start gap-2">
                           <img src={emblemLeader} alt="Leader" className="h-5 w-5 mt-0.5 flex-shrink-0" />
                           <div>
-                            <span className="text-xs font-semibold text-[#2E86DE]">Leader</span>
+                            <span className="text-xs font-semibold text-leader">Leader</span>
                             <p className="text-xs text-muted-foreground leading-relaxed">{toolLevelInfo[chip.key].leader}</p>
                           </div>
                         </div>
@@ -341,12 +342,7 @@ const Landing = () => {
 
         </div>
       </main>
-      <footer className="border-t border-border bg-card mt-12">
-        <div className="container mx-auto px-4 py-6 flex flex-col md:flex-row items-center justify-between gap-3 text-sm text-muted-foreground">
-          <span>© {new Date().getFullYear()} Bradford College — The Big 4: Level Up</span>
-          <a href="/privacy" className="hover:text-foreground underline-offset-4 hover:underline font-medium">Privacy Notice</a>
-        </div>
-      </footer>
+      <div className="mt-12"><ThreadWorksFooter /></div>
     </div>
 
 

@@ -118,13 +118,13 @@ const KnowledgeCheckUpload = () => {
     <section className="space-y-4">
       <header>
         <h2 className="text-xl font-bold text-b4-strong">Knowledge check results</h2>
-        <p className="text-sm text-slate-600">
+        <p className="text-sm text-muted-foreground">
           Choose the module, upload the results spreadsheet, tick who passed, then submit. Ticked
           staff have that module marked as fully completed.
         </p>
       </header>
 
-      <div className="bg-white rounded-xl border border-slate-200 p-6 space-y-5">
+      <div className="bg-card rounded-xl border border-border p-6 space-y-5">
         <div className="grid sm:grid-cols-[280px_1fr] gap-4 items-end">
           <div>
             <Label htmlFor="kc-module">Module</Label>
@@ -146,7 +146,7 @@ const KnowledgeCheckUpload = () => {
               className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg font-semibold cursor-pointer ${
                 moduleId
                   ? "bg-b4-flame text-b4-on-flame hover:brightness-95"
-                  : "bg-slate-200 text-slate-500 pointer-events-none"
+                  : "bg-b4-wash-3 text-muted-foreground pointer-events-none"
               }`}
             >
               <FileSpreadsheet className="w-4 h-4" />
@@ -162,11 +162,11 @@ const KnowledgeCheckUpload = () => {
                 }}
               />
             </label>
-            {fileName && <p className="text-xs text-slate-500 mt-1">{fileName}</p>}
+            {fileName && <p className="text-xs text-muted-foreground mt-1">{fileName}</p>}
           </div>
         </div>
 
-        {busy && <p className="text-sm text-slate-500">Working…</p>}
+        {busy && <p className="text-sm text-muted-foreground">Working…</p>}
 
         {error && (
           <div className="flex items-start gap-2 text-sm text-red-800 bg-red-50 border border-red-200 rounded-lg p-3">
@@ -208,7 +208,7 @@ const KnowledgeCheckUpload = () => {
 
         {rows.length > 0 && (
           <>
-            <div className="border border-slate-200 rounded-lg overflow-hidden">
+            <div className="border border-border rounded-lg overflow-hidden">
               <table className="w-full text-sm">
                 <thead className="bg-b4-wash text-b4-strong">
                   <tr>
@@ -240,7 +240,7 @@ const KnowledgeCheckUpload = () => {
                           className={`text-xs font-semibold px-2 py-0.5 rounded-full ${
                             r.passed
                               ? "bg-green-100 text-green-800"
-                              : "bg-slate-100 text-slate-600"
+                              : "bg-muted text-muted-foreground"
                           }`}
                         >
                           {r.passed ? "Passed" : "Not passed"}

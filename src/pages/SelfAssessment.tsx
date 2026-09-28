@@ -6,7 +6,7 @@ import { ArrowRight, Target, Lightbulb, ExternalLink } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import NavigationButtons from "@/components/NavigationButtons";
 import AssessmentIntroDialog from "@/components/dialogs/AssessmentIntroDialog";
-import bradfordLogo from "@/assets/bradford-college-logo.jpg";
+import B4Brand from "@/components/B4Brand";
 import flairImage from "@/assets/self-assessment-flair.png";
 
 const SelfAssessment = () => {
@@ -23,8 +23,8 @@ const SelfAssessment = () => {
       <header className="border-b border-border bg-card shadow-sm">
         <div className="container mx-auto px-4 py-6">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-            <img src={bradfordLogo} alt="Bradford College logo" className="h-12 object-contain cursor-pointer" onClick={() => navigate("/")} />
-            <h1 className="font-display text-xl text-muted-foreground md:text-3xl font-bold text-left my-0 py-0">The Big 4: Level Up</h1>
+            <B4Brand to="/" />
+            <p className="sr-only">The Big 4: Level Up</p>
           </div>
         </div>
       </header>

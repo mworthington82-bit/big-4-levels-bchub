@@ -26,7 +26,7 @@ const NavigationButtons = ({ onBack, showBack = true }: NavigationButtonsProps) 
         variant="outline"
         size="sm"
         onClick={() => navigate("/")}
-        className="bg-white/90 backdrop-blur-sm shadow-md hover:bg-white"
+        className="bg-card/90 backdrop-blur-sm shadow-md hover:bg-card"
       >
         <Home className="h-4 w-4 mr-1" />
         Home
@@ -36,7 +36,7 @@ const NavigationButtons = ({ onBack, showBack = true }: NavigationButtonsProps) 
           variant="outline"
           size="sm"
           onClick={handleBack}
-          className="bg-white/90 backdrop-blur-sm shadow-md hover:bg-white"
+          className="bg-card/90 backdrop-blur-sm shadow-md hover:bg-card"
         >
           <ArrowLeft className="h-4 w-4 mr-1" />
           Back

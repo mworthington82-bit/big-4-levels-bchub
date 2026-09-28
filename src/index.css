@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400&family=Carlito:wght@400;700&family=OpenDyslexic:wght@400;700&display=swap');
+/* Fonts load from index.html (Space Grotesk, Fraunces, Carlito, OpenDyslexic) */
 @import './styles/threadworks-motion.css';
 @import './styles/weaving-loader.css';
 
@@ -406,3 +406,13 @@ html[data-reduce-motion] .tw-skeleton {
   animation: none !important;
   opacity: 1 !important;
 }
+
+/* Logos that must flip with the theme (the college logo exists in black and white) */
+.b4-on-light { display: block; }
+.b4-on-dark { display: none; }
+[data-background-mode="dark"] .b4-on-light,
+[data-background-mode="high-contrast"] .b4-on-light,
+.dark .b4-on-light { display: none; }
+[data-background-mode="dark"] .b4-on-dark,
+[data-background-mode="high-contrast"] .b4-on-dark,
+.dark .b4-on-dark { display: block; }

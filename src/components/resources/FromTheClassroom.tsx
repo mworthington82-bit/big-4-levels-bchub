@@ -44,7 +44,7 @@ const FromTheClassroom = () => {
         {posts.map((p) => (
           <article
             key={p.id}
-            className="bg-white rounded-xl border border-b4-line overflow-hidden flex flex-col"
+            className="bg-card rounded-xl border border-b4-line overflow-hidden flex flex-col"
           >
             <div className="h-1" style={{ backgroundColor: TOOL_COLOUR[p.tool] ?? "hsl(var(--b4-deep))" }} />
             <div className="p-4 flex-1 flex flex-col gap-2">

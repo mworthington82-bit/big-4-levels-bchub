@@ -139,12 +139,12 @@ const TrainingSessions = () => {
   };
 
   return (
-    <section className="bg-white border border-slate-200 rounded-2xl p-6">
+    <section className="bg-card border border-border rounded-2xl p-6">
       <header className="mb-4 flex items-center gap-2">
         <Calendar className="w-5 h-5 text-b4-strong" />
         <h2 className="text-xl font-semibold text-b4-strong">Training Sessions</h2>
       </header>
-      <p className="text-sm text-slate-600 mb-4">
+      <p className="text-sm text-muted-foreground mb-4">
         Create an in-person session and give attendees the bypass password. Staff on the
         matching module will see an "I completed in-person training" button on Step 2.
       </p>
@@ -188,11 +188,11 @@ const TrainingSessions = () => {
       </form>
 
       <div className="mt-8">
-        <h3 className="text-sm font-semibold text-slate-700 mb-3">Existing sessions</h3>
+        <h3 className="text-sm font-semibold text-foreground mb-3">Existing sessions</h3>
         {sessions.length === 0 ? (
-          <p className="text-sm text-slate-500">No training sessions yet.</p>
+          <p className="text-sm text-muted-foreground">No training sessions yet.</p>
         ) : (
-          <div className="border border-slate-200 rounded-lg overflow-x-auto">
+          <div className="border border-border rounded-lg overflow-x-auto">
             <Table>
               <TableHeader>
                 <TableRow>
@@ -212,7 +212,7 @@ const TrainingSessions = () => {
                     <TableCell>{s.session_date ?? "—"}</TableCell>
                     <TableCell>
                       <div className="flex items-center gap-2">
-                        <code className="font-mono text-xs bg-slate-100 px-2 py-1 rounded">{s.bypass_password}</code>
+                        <code className="font-mono text-xs bg-muted px-2 py-1 rounded">{s.bypass_password}</code>
                         <Button size="icon" variant="ghost" onClick={() => copyPw(s.bypass_password)} aria-label="Copy password">
                           <Copy className="w-4 h-4" />
                         </Button>

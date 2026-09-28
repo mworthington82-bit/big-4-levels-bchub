@@ -3,7 +3,7 @@ import { Home } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import ActivityPlanner from "@/components/ActivityPlanner";
 import { usePageTitle } from "@/lib/usePageTitle";
-import bradfordLogo from "@/assets/bradford-college-logo.jpg";
+import B4Brand from "@/components/B4Brand";
 
 const Planner = () => {
   usePageTitle("Activity Planner");
@@ -14,12 +14,7 @@ const Planner = () => {
       <header className="border-b border-border bg-card shadow-sm sticky top-0 z-10">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between gap-4">
           <div className="flex items-center gap-4">
-            <img
-              src={bradfordLogo}
-              alt="Bradford College logo"
-              className="h-10 object-contain cursor-pointer"
-              onClick={() => navigate("/home")}
-            />
+            <B4Brand to="/home" showCollege={false} />
             <h1 className="font-display text-xl md:text-2xl font-bold text-foreground">
               Activity Planner
             </h1>

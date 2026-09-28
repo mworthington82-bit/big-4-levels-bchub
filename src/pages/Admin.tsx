@@ -151,7 +151,7 @@ const Admin = () => {
       <div className="container mx-auto px-4 py-10 max-w-6xl space-y-8">
         <header>
           <h1 className="text-3xl font-bold text-b4-strong">Admin · CSV upload</h1>
-          <p className="text-slate-600 mt-1">
+          <p className="text-muted-foreground mt-1">
             Upload the latest self-assessment export. Cleaning, level
             calculation, and database writes run automatically.
           </p>
@@ -194,7 +194,7 @@ const Admin = () => {
             <h2 className="text-2xl font-bold text-b4-ink" style={{ fontFamily: "Fraunces, serif" }}>
               CPD bookings
             </h2>
-            <p className="text-slate-600 text-sm mt-1">
+            <p className="text-muted-foreground text-sm mt-1">
               Use the <strong>Bookings</strong> button next to each training session below to upload that session's booking list (CSV or Excel). The dashboard aggregates engagement and shows a per-department breakdown.
             </p>
           </header>

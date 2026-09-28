@@ -32,7 +32,7 @@ const ModulePlaceholder = () => {
             <IconArrowLeft size={16} stroke={2} />
             Back to My Journey
           </button>
-          <div className="bg-white rounded-2xl border border-b4-line p-8 md:p-12 text-center">
+          <div className="bg-card rounded-2xl border border-b4-line p-8 md:p-12 text-center">
             <h1 className="font-bold text-b4-strong text-2xl md:text-3xl mb-3">{title}</h1>
             <p className="text-b4-muted text-base">
               This module is coming soon — content is being built.

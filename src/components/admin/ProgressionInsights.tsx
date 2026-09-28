@@ -13,6 +13,7 @@ import {
 import { Download } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { downloadNodeAsPng } from "@/lib/exportPng";
+import { WeavingLoader } from "@/components/threadworks";
 
 const INK = "hsl(var(--b4-ink))";
 const GOLD = "hsl(var(--b4-flame))";
@@ -214,18 +215,18 @@ const ProgressionInsights = ({ refreshKey = 0 }: { refreshKey?: number } = {}) =
           >
             Progression insights
           </h2>
-          <p className="text-slate-600 text-sm mt-1">
+          <p className="text-muted-foreground text-sm mt-1">
             Which departments are engaging with Big 4 and moving up levels.
           </p>
         </div>
         <div className="flex items-center gap-2">
-          <div className="inline-flex rounded-lg border border-slate-200 overflow-hidden text-xs">
+          <div className="inline-flex rounded-lg border border-border overflow-hidden text-xs">
             {(["month", "30d", "all"] as Range[]).map((r) => (
               <button
                 key={r}
                 onClick={() => setRange(r)}
                 className={`px-3 py-1.5 font-medium ${
-                  range === r ? "bg-b4-deep text-white" : "bg-white text-slate-600 hover:bg-slate-50"
+                  range === r ? "bg-b4-deep text-white" : "bg-card text-muted-foreground hover:bg-b4-wash"
                 }`}
               >
                 {r === "month" ? "This month" : r === "30d" ? "Last 30 days" : "All time"}
@@ -243,7 +244,7 @@ const ProgressionInsights = ({ refreshKey = 0 }: { refreshKey?: number } = {}) =
         </div>
       </header>
 
-      <div ref={exportRef} className="bg-white rounded-xl border border-slate-200 overflow-hidden">
+      <div ref={exportRef} className="bg-card rounded-xl border border-border overflow-hidden">
         <div className="bg-b4-deep text-white px-6 py-5 relative">
           <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-b4-flame" />
           <h3 className="text-xl font-semibold" style={{ fontFamily: "Fraunces, serif" }}>
@@ -261,7 +262,7 @@ const ProgressionInsights = ({ refreshKey = 0 }: { refreshKey?: number } = {}) =
 
         <div className="p-6 space-y-6">
           {loading ? (
-            <p className="text-slate-500 text-sm">Loading…</p>
+            <WeavingLoader variant="inline" label="Working out progression…" />
           ) : (
             <>
               <div className="grid sm:grid-cols-4 gap-3">
@@ -280,7 +281,7 @@ const ProgressionInsights = ({ refreshKey = 0 }: { refreshKey?: number } = {}) =
                   Level-ups per department · {rangeLabel}
                 </h4>
                 {stats.chartData.length === 0 ? (
-                  <p className="text-sm text-slate-500 border border-dashed border-slate-200 rounded-lg p-6 text-center">
+                  <p className="text-sm text-muted-foreground border border-dashed border-border rounded-lg p-6 text-center">
                     No level-ups recorded in this window yet.
                   </p>
                 ) : (
@@ -307,9 +308,9 @@ const ProgressionInsights = ({ refreshKey = 0 }: { refreshKey?: number } = {}) =
                 <h4 className="text-sm font-semibold text-b4-ink mb-2">
                   Department engagement matrix
                 </h4>
-                <div className="border border-slate-200 rounded-lg overflow-x-auto">
+                <div className="border border-border rounded-lg overflow-x-auto">
                   <table className="w-full text-sm min-w-[720px]">
-                    <thead className="bg-slate-50 text-slate-600">
+                    <thead className="bg-b4-wash text-muted-foreground">
                       <tr>
                         <th className="text-left px-3 py-2 font-medium">Department</th>
                         <th className="text-right px-3 py-2 font-medium">Staff</th>
@@ -322,20 +323,20 @@ const ProgressionInsights = ({ refreshKey = 0 }: { refreshKey?: number } = {}) =
                     </thead>
                     <tbody>
                       {stats.deptMatrix.map((d) => (
-                        <tr key={d.department} className="border-t border-slate-100">
-                          <td className="px-3 py-2 text-slate-800">{d.department}</td>
+                        <tr key={d.department} className="border-t border-border">
+                          <td className="px-3 py-2 text-foreground">{d.department}</td>
                           <td className="px-3 py-2 text-right font-mono text-b4-ink">{d.total}</td>
                           <td className="px-3 py-2 text-right text-b4-ink">
                             <span className="font-semibold">{d.engagedPct}%</span>
-                            <span className="text-slate-400 text-xs"> ({d.engagedCount})</span>
+                            <span className="text-muted-foreground/80 text-xs"> ({d.engagedCount})</span>
                           </td>
                           <td className="px-3 py-2 text-right text-b4-ink">
                             <span className="font-semibold">{d.pracPct}%</span>
-                            <span className="text-slate-400 text-xs"> ({d.pracCount})</span>
+                            <span className="text-muted-foreground/80 text-xs"> ({d.pracCount})</span>
                           </td>
                           <td className="px-3 py-2 text-right text-b4-ink">
                             <span className="font-semibold">{d.leaderPct}%</span>
-                            <span className="text-slate-400 text-xs"> ({d.leaderCount})</span>
+                            <span className="text-muted-foreground/80 text-xs"> ({d.leaderCount})</span>
                           </td>
                           <td className="px-3 py-2 text-right font-mono text-b4-ink">{d.modulesInRange}</td>
                           <td className="px-3 py-2 text-right font-mono text-b4-ink">{d.bookingsInRange}</td>
@@ -344,7 +345,7 @@ const ProgressionInsights = ({ refreshKey = 0 }: { refreshKey?: number } = {}) =
                     </tbody>
                   </table>
                 </div>
-                <p className="text-xs text-slate-500 mt-2">
+                <p className="text-xs text-muted-foreground mt-2">
                   Engaged = at least one module completed. Practitioner+ and Leader use current unlock status.
                 </p>
               </div>
@@ -357,10 +358,10 @@ const ProgressionInsights = ({ refreshKey = 0 }: { refreshKey?: number } = {}) =
 };
 
 const StatCard = ({ label, value, hint }: { label: string; value: string | number; hint?: string }) => (
-  <div className="rounded-lg border border-slate-200 p-3 bg-slate-50">
-    <div className="text-xs uppercase tracking-wide text-slate-500">{label}</div>
+  <div className="rounded-lg border border-border p-3 bg-b4-wash">
+    <div className="text-xs uppercase tracking-wide text-muted-foreground">{label}</div>
     <div className="text-2xl font-bold text-b4-ink mt-1">{value}</div>
-    {hint && <div className="text-[11px] text-slate-500 mt-0.5">{hint}</div>}
+    {hint && <div className="text-[11px] text-muted-foreground mt-0.5">{hint}</div>}
   </div>
 );
 

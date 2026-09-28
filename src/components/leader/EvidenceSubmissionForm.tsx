@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Upload, Link, FileText, Loader2, CheckCircle } from "lucide-react";
+import { Upload, Link, FileText, CheckCircle } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 
@@ -372,8 +372,7 @@ const EvidenceSubmissionForm = ({ tool, toolDisplayName, onSuccess, userId }: Ev
           >
             {loading || uploading ? (
               <>
-                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                {uploading ? 'Uploading...' : 'Submitting...'}
+                {uploading ? 'Uploading…' : 'Submitting…'}
               </>
             ) : (
               'Submit Evidence'

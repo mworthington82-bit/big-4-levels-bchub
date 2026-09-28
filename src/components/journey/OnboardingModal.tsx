@@ -168,7 +168,7 @@ const OnboardingModal = ({ profile, email, onClose }: Props) => {
             disabled={saving}
             className="w-full mt-7 bg-b4-deep hover:bg-b4-deep-hover disabled:opacity-70 text-white font-bold text-[15px] rounded-lg py-[14px] transition-colors"
           >
-            {saving ? "Loading…" : "Go to my pathway"}
+            {saving ? "Opening your pathway…" : "Go to my pathway"}
           </button>
 
           <p className="text-[11px] text-[#9AA3B0] text-center mt-3">

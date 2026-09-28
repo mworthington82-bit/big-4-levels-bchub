@@ -132,11 +132,11 @@ const BookingsDashboard = ({ refreshKey }: { refreshKey: number }) => {
 
   if (stats.totalBookings === 0) {
     return (
-      <div className="bg-white rounded-xl border border-slate-200 p-6">
+      <div className="bg-card rounded-xl border border-border p-6">
         <h2 className="text-lg font-semibold text-b4-ink mb-2">
           CPD bookings · Overview
         </h2>
-        <p className="text-sm text-slate-600">
+        <p className="text-sm text-muted-foreground">
           No bookings uploaded yet. Upload a CSV above to see the dashboard.
         </p>
       </div>
@@ -160,7 +160,7 @@ const BookingsDashboard = ({ refreshKey }: { refreshKey: number }) => {
 
       <div
         ref={exportRef}
-        className="bg-white rounded-xl border border-slate-200 overflow-hidden"
+        className="bg-card rounded-xl border border-border overflow-hidden"
       >
         {/* Branded header */}
         <div className="bg-b4-deep text-white px-6 py-5 relative">
@@ -202,13 +202,13 @@ const BookingsDashboard = ({ refreshKey }: { refreshKey: number }) => {
                   ? "Bookings per department (volume)"
                   : "Unique staff engaged per department (reach)"}
               </h3>
-              <div className="inline-flex rounded-lg border border-slate-200 overflow-hidden text-xs">
+              <div className="inline-flex rounded-lg border border-border overflow-hidden text-xs">
                 <button
                   onClick={() => setChartMetric("totalBookings")}
                   className={`px-3 py-1.5 font-medium ${
                     chartMetric === "totalBookings"
                       ? "bg-b4-deep text-white"
-                      : "bg-white text-slate-600 hover:bg-slate-50"
+                      : "bg-card text-muted-foreground hover:bg-b4-wash"
                   }`}
                 >
                   Total bookings
@@ -218,7 +218,7 @@ const BookingsDashboard = ({ refreshKey }: { refreshKey: number }) => {
                   className={`px-3 py-1.5 font-medium ${
                     chartMetric === "uniquePeople"
                       ? "bg-b4-deep text-white"
-                      : "bg-white text-slate-600 hover:bg-slate-50"
+                      : "bg-card text-muted-foreground hover:bg-b4-wash"
                   }`}
                 >
                   Unique staff
@@ -275,9 +275,9 @@ const BookingsDashboard = ({ refreshKey }: { refreshKey: number }) => {
             <h3 className="text-sm font-semibold text-b4-ink mb-2">
               Department breakdown
             </h3>
-            <div className="border border-slate-200 rounded-lg overflow-hidden">
+            <div className="border border-border rounded-lg overflow-hidden">
               <table className="w-full text-sm">
-                <thead className="bg-slate-50 text-slate-600">
+                <thead className="bg-b4-wash text-muted-foreground">
                   <tr>
                     <th className="text-left px-3 py-2 font-medium">Department</th>
                     <th className="text-right px-3 py-2 font-medium">
@@ -293,18 +293,18 @@ const BookingsDashboard = ({ refreshKey }: { refreshKey: number }) => {
                 </thead>
                 <tbody>
                   {stats.deptStats.map((d) => (
-                    <tr key={d.department} className="border-t border-slate-100">
-                      <td className="px-3 py-2 text-slate-800">{d.department}</td>
+                    <tr key={d.department} className="border-t border-border">
+                      <td className="px-3 py-2 text-foreground">{d.department}</td>
                       <td className="px-3 py-2 text-right font-mono text-b4-ink">
                         {d.uniquePeople}
                         {d.deptStaff > 0 && (
-                          <span className="text-slate-400"> / {d.deptStaff}</span>
+                          <span className="text-muted-foreground/80"> / {d.deptStaff}</span>
                         )}
                       </td>
                       <td className="px-3 py-2 text-right font-mono font-semibold text-b4-ink">
                         {d.totalBookings}
                       </td>
-                      <td className="px-3 py-2 text-right text-slate-600">
+                      <td className="px-3 py-2 text-right text-muted-foreground">
                         {d.deptStaff > 0 ? `${d.pct}%` : "—"}
                       </td>
                     </tr>
@@ -328,10 +328,10 @@ const StatCard = ({
   value: string | number;
   hint?: string;
 }) => (
-  <div className="rounded-lg border border-slate-200 p-3 bg-slate-50">
-    <div className="text-xs uppercase tracking-wide text-slate-500">{label}</div>
+  <div className="rounded-lg border border-border p-3 bg-b4-wash">
+    <div className="text-xs uppercase tracking-wide text-muted-foreground">{label}</div>
     <div className="text-2xl font-bold text-b4-ink mt-1">{value}</div>
-    {hint && <div className="text-[11px] text-slate-500 mt-0.5">{hint}</div>}
+    {hint && <div className="text-[11px] text-muted-foreground mt-0.5">{hint}</div>}
   </div>
 );
 

@@ -27,7 +27,7 @@ const CookieBanner = () => {
       <p className="text-sm leading-relaxed">
         This site uses only essential cookies for session management. No marketing
         or analytics cookies are set. See our{" "}
-        <a href="/privacy" className="underline text-b4-flame-text font-semibold">Privacy Notice</a>.
+        <a href="/privacy" className="underline text-b4-flame font-semibold">Privacy Notice</a>.
       </p>
       <div className="mt-3 flex justify-end">
         <button

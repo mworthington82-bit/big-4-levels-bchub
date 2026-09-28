@@ -40,7 +40,7 @@ const StatusPill = ({ status }: { status: ModuleCardSpec["status"] }) => {
       </span>
     );
   return (
-    <span className="inline-flex items-center gap-1 text-xs font-semibold text-slate-500 bg-slate-100 px-2 py-0.5 rounded-full">
+    <span className="inline-flex items-center gap-1 text-xs font-semibold text-muted-foreground bg-muted px-2 py-0.5 rounded-full">
       <Circle className="w-3 h-3" /> To do
     </span>
   );
@@ -108,18 +108,18 @@ const StaffJourneySearch = () => {
   const level = selected ? normaliseLevel(selected.assigned_level) : null;
 
   return (
-    <div className="bg-white rounded-xl border border-slate-200 p-6">
+    <div className="bg-card rounded-xl border border-border p-6">
       <div className="flex items-center justify-between mb-4">
         <div>
           <h2 className="text-lg font-semibold text-b4-strong">Staff journey search</h2>
-          <p className="text-sm text-slate-500">
+          <p className="text-sm text-muted-foreground">
             Search by name or email to see where someone is on their pathway.
           </p>
         </div>
       </div>
 
       <div className="relative mb-4">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground/80" />
         <Input
           value={query}
           onChange={(e) => setQuery(e.target.value)}
@@ -130,17 +130,17 @@ const StaffJourneySearch = () => {
 
       {!selected && (
         <>
-          {loading && <div className="text-sm text-slate-500">Searching...</div>}
+          {loading && <div className="text-sm text-muted-foreground">Searching...</div>}
           {!loading && query.trim().length >= 2 && rows.length === 0 && (
-            <div className="text-sm text-slate-500">No matching staff found.</div>
+            <div className="text-sm text-muted-foreground">No matching staff found.</div>
           )}
           {rows.length > 0 && (
-            <ul className="divide-y divide-slate-100 border border-slate-200 rounded-lg overflow-hidden">
+            <ul className="divide-y divide-slate-100 border border-border rounded-lg overflow-hidden">
               {rows.map((r) => (
                 <li key={r.email}>
                   <button
                     onClick={() => setSelected(r)}
-                    className="w-full flex items-center justify-between gap-3 px-4 py-3 text-left hover:bg-slate-50"
+                    className="w-full flex items-center justify-between gap-3 px-4 py-3 text-left hover:bg-b4-wash"
                   >
                     <div className="flex items-center gap-3 min-w-0">
                       <div className="w-8 h-8 rounded-full bg-b4-deep/10 flex items-center justify-center flex-shrink-0">
@@ -150,12 +150,12 @@ const StaffJourneySearch = () => {
                         <div className="font-medium text-b4-strong truncate">
                           {r.name ?? "(no name)"}
                         </div>
-                        <div className="text-xs text-slate-500 truncate">
+                        <div className="text-xs text-muted-foreground truncate">
                           {r.email} · {r.department ?? "—"}
                         </div>
                       </div>
                     </div>
-                    <span className="text-xs font-semibold text-slate-700 bg-slate-100 px-2 py-0.5 rounded-full flex-shrink-0">
+                    <span className="text-xs font-semibold text-foreground bg-muted px-2 py-0.5 rounded-full flex-shrink-0">
                       {r.assigned_level ?? "Unassigned"}
                     </span>
                   </button>
@@ -181,7 +181,7 @@ const StaffJourneySearch = () => {
                 <div className="text-lg font-semibold text-b4-strong">
                   {selected.name ?? "(no name)"}
                 </div>
-                <div className="text-sm text-slate-600">
+                <div className="text-sm text-muted-foreground">
                   {selected.email} · {selected.department ?? "—"}
                 </div>
               </div>
@@ -218,11 +218,11 @@ const StaffJourneySearch = () => {
                 />
               ))}
             </div>
-            <div className="text-[11px] text-slate-500 mt-3">
+            <div className="text-[11px] text-muted-foreground mt-3">
               Onboarding seen: {selected.onboarding_shown ? "Yes" : "No"} · Leader unlocked:{" "}
               {selected.leader_unlocked ? "Yes" : "No"}
             </div>
-            <div className="text-[11px] text-slate-500 mt-3">
+            <div className="text-[11px] text-muted-foreground mt-3">
               CSV uploaded:{" "}
               {selected.data_uploaded_at
                 ? new Date(selected.data_uploaded_at).toLocaleString("en-GB")
@@ -245,7 +245,7 @@ const StaffJourneySearch = () => {
             </Section>
           )}
           {level === "Leader" && (
-            <div className="text-sm text-slate-600 bg-amber-50 border border-amber-200 rounded-lg p-4">
+            <div className="text-sm text-muted-foreground bg-amber-50 border border-amber-200 rounded-lg p-4">
               This staff member is at Leader level. Their evidence and immersive sessions
               live in the Leader Hub.
             </div>
@@ -257,8 +257,8 @@ const StaffJourneySearch = () => {
 };
 
 const Stat = ({ label, value }: { label: string; value: string }) => (
-  <div className="bg-white rounded-md px-3 py-2 border border-slate-200">
-    <div className="text-[10px] uppercase tracking-wide text-slate-500">{label}</div>
+  <div className="bg-card rounded-md px-3 py-2 border border-border">
+    <div className="text-[10px] uppercase tracking-wide text-muted-foreground">{label}</div>
     <div className="text-sm font-semibold text-b4-strong">{value}</div>
   </div>
 );
@@ -279,16 +279,16 @@ const ModuleList = ({
 }) => {
   const byId = new Map(completions.map((c) => [c.module_id, c]));
   return (
-    <ul className="border border-slate-200 rounded-lg divide-y divide-slate-100">
+    <ul className="border border-border rounded-lg divide-y divide-slate-100">
       {cards.map((c) => {
         const completion = byId.get(c.id);
         return (
           <li key={c.id} className="flex items-center justify-between px-4 py-3 gap-3">
             <div className="min-w-0">
               <div className="font-medium text-b4-strong text-sm">{c.name}</div>
-              <div className="text-xs text-slate-500 truncate">{c.description}</div>
+              <div className="text-xs text-muted-foreground truncate">{c.description}</div>
               {completion && (
-                <div className="text-[11px] text-slate-500 mt-1">
+                <div className="text-[11px] text-muted-foreground mt-1">
                   Completed{" "}
                   {new Date(completion.completed_at).toLocaleString("en-GB")}
                   {!completion.quiz_passed && " (quiz not passed)"}

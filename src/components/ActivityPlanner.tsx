@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Sparkles, Lightbulb, Loader2, Download, RefreshCw, Share2, CheckCircle2, AlertCircle, Info, HelpCircle, ClipboardCheck, Brain } from "lucide-react";
+import { Sparkles, Lightbulb, Download, RefreshCw, Share2, CheckCircle2, AlertCircle, Info, HelpCircle, ClipboardCheck, Brain } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
@@ -9,6 +9,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { WeavingLoader } from "@/components/threadworks";
 import {
   downloadPlanAsWord,
   type ActivityPlan,
@@ -52,7 +53,7 @@ const LEAD_DOT: Record<string, string> = {
 };
 
 const RATING_BADGE: Record<string, string> = {
-  explorer: "bg-slate-200 text-slate-800 border-slate-300",
+  explorer: "bg-b4-wash-3 text-foreground border-b4-line",
   developing: "bg-blue-100 text-blue-800 border-blue-300",
   strong: "bg-amber-100 text-amber-800 border-amber-300",
   exemplary: "bg-yellow-100 text-yellow-800 border-yellow-300",
@@ -60,7 +61,7 @@ const RATING_BADGE: Record<string, string> = {
 
 // Bloom's badges — cool-to-warm progression
 const BLOOMS_BADGE: Record<string, string> = {
-  remember: "bg-slate-200 text-slate-800 border-slate-300",
+  remember: "bg-b4-wash-3 text-foreground border-b4-line",
   understand: "bg-sky-100 text-sky-900 border-sky-300",
   apply: "bg-amber-100 text-amber-900 border-amber-300",
   analyse: "bg-orange-200 text-orange-900 border-orange-400",
@@ -166,7 +167,7 @@ const ActivityPlanner = () => {
   return (
     <div className="bg-card rounded-2xl border border-border shadow-[var(--shadow-card)] overflow-hidden">
       {/* Hero */}
-      <div className="relative bg-gradient-to-br from-teal-600 via-teal-700 to-blue-800 p-6 md:p-8 text-white">
+      <div className="relative bg-gradient-to-br from-b4-deep via-b4-deep-hover to-b4-flame-ink p-6 md:p-8 text-white">
         <div className="absolute top-4 right-4 flex items-center gap-1.5 bg-white/15 backdrop-blur px-3 py-1 rounded-full border border-white/30">
           <Sparkles className="w-3.5 h-3.5" aria-hidden="true" />
           <span className="text-[11px] font-semibold tracking-wide uppercase">AI-Powered</span>
@@ -225,7 +226,7 @@ const ActivityPlanner = () => {
                       htmlFor={`lead-${opt.value}`}
                       className={`flex items-start gap-3 p-3 rounded-xl border cursor-pointer transition-colors ${
                         leadChoice === opt.value
-                          ? "border-teal-600 bg-teal-50 dark:bg-teal-950/30"
+                          ? "border-b4-flame bg-b4-flame-soft"
                           : "border-border bg-background hover:bg-muted/40"
                       }`}
                     >
@@ -233,13 +234,13 @@ const ActivityPlanner = () => {
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 mb-0.5">
                           {isNotSure ? (
-                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-200 text-slate-700 border border-slate-300">
+                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-b4-wash-3 text-foreground border border-b4-line">
                               <HelpCircle className="w-3 h-3" aria-hidden="true" />
                               Not sure
                             </span>
                           ) : (
                             <span className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-bold ${LEAD_BADGE[opt.value]}`}>
-                              <span className="inline-block w-1.5 h-1.5 rounded-full bg-white/90" aria-hidden="true" />
+                              <span className="inline-block w-1.5 h-1.5 rounded-full bg-card/90" aria-hidden="true" />
                               {opt.label}
                             </span>
                           )}
@@ -293,9 +294,23 @@ const ActivityPlanner = () => {
               )}
             </div>
 
-            <Button onClick={handleSubmit} disabled={!canSubmit} size="lg" className="w-full md:w-auto bg-teal-700 hover:bg-teal-800 text-white">
-              {loading ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" />Planning your activity...</> : <><Sparkles className="w-4 h-4 mr-2" />Find my activity</>}
+            <Button onClick={handleSubmit} disabled={!canSubmit} size="lg" className="w-full md:w-auto">
+              {loading ? <>Planning your activity…</> : <><Sparkles className="w-4 h-4 mr-2" />Find my activity</>}
             </Button>
+
+            {loading && (
+              <WeavingLoader
+                variant="full"
+                title="Planning your activity"
+                stages={[
+                  "Reading your activity…",
+                  "Matching it to the Big 4 tools…",
+                  "Writing the set-up steps…",
+                  "Adding inclusion tips…",
+                  "Tying it off…",
+                ]}
+              />
+            )}
 
             <AiDisclaimerNote />
 
@@ -338,11 +353,11 @@ const PlanResult = ({ plan, shared, onReset, onDownload }: { plan: ActivityPlan;
         <div className="flex items-center gap-2 mb-3 flex-wrap">
           <span className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">LEAD stage</span>
           <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-sm font-bold ${LEAD_BADGE[leadKey]}`} id="lead-confirmed">
-            <span className={`inline-block w-2 h-2 rounded-full bg-white/90`} aria-hidden="true" />
+            <span className={`inline-block w-2 h-2 rounded-full bg-card/90`} aria-hidden="true" />
             {LEAD_LABELS[leadKey]} — {LEAD_DESCRIPTIONS[leadKey]}
           </span>
           {plan.lead_was_suggested && (
-            <span className="text-[10px] font-semibold uppercase tracking-wide px-2 py-0.5 rounded-full bg-slate-200 text-slate-700">
+            <span className="text-[10px] font-semibold uppercase tracking-wide px-2 py-0.5 rounded-full bg-b4-wash-3 text-foreground">
               AI-suggested
             </span>
           )}
@@ -399,7 +414,7 @@ const PlanResult = ({ plan, shared, onReset, onDownload }: { plan: ActivityPlan;
         <ol className="space-y-2.5">
           {plan.setup_steps.map((step, i) => (
             <li key={i} className="flex gap-3">
-              <span className="shrink-0 w-7 h-7 rounded-full bg-teal-700 text-white text-sm font-bold flex items-center justify-center">{i + 1}</span>
+              <span className="shrink-0 w-7 h-7 rounded-full bg-b4-deep text-white text-sm font-bold flex items-center justify-center">{i + 1}</span>
               <p className="text-sm text-foreground leading-relaxed pt-0.5">{step}</p>
             </li>
           ))}
@@ -486,7 +501,7 @@ const PlanResult = ({ plan, shared, onReset, onDownload }: { plan: ActivityPlan;
         <Button onClick={onReset} variant="outline">
           <RefreshCw className="w-4 h-4 mr-2" />Try another activity
         </Button>
-        <Button onClick={onDownload} className="bg-teal-700 hover:bg-teal-800 text-white">
+        <Button onClick={onDownload}>
           <Download className="w-4 h-4 mr-2" />Download as Word
         </Button>
         {shared && (

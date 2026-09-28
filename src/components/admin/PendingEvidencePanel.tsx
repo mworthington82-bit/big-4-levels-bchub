@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { formatDateUK } from "@/lib/leaderHub";
+import { WeavingLoader } from "@/components/threadworks";
 
 type PendingPost = {
   id: string;
@@ -45,13 +46,13 @@ const PendingEvidencePanel = () => {
     <section className="space-y-4">
       <h2 className="text-xl font-bold text-b4-strong">Pending evidence posts</h2>
       {loading ? (
-        <p className="text-sm text-b4-muted">Loading…</p>
+        <WeavingLoader variant="inline" label="Finding pending evidence…" />
       ) : posts.length === 0 ? (
-        <div className="bg-white rounded-xl border border-b4-line p-6 text-center text-b4-muted">
+        <div className="bg-card rounded-xl border border-b4-line p-6 text-center text-b4-muted">
           No posts awaiting review.
         </div>
       ) : (
-        <div className="bg-white rounded-xl border border-b4-line overflow-x-auto">
+        <div className="bg-card rounded-xl border border-b4-line overflow-x-auto">
           <table className="w-full text-sm">
             <thead className="bg-b4-wash text-b4-strong text-left">
               <tr>

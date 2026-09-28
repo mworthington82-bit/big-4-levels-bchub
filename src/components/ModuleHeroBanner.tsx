@@ -81,11 +81,11 @@ const ModuleHeroBanner = ({ tool, level, brandColor, duration = '~15 min' }: Mod
 
         {/* Right logos */}
         <div className="hidden md:flex items-center gap-3 flex-shrink-0 ml-6">
-          <div className="h-16 w-16 rounded-xl bg-white p-2.5 shadow-lg">
+          <div className="h-16 w-16 rounded-xl bg-card p-2.5 shadow-lg">
             <img src={logoMap[tool]} alt={`${names.full} logo`} className="h-full w-full object-contain" />
           </div>
           {tool === 'teams' && (
-            <div className="h-16 w-16 rounded-xl bg-white p-2.5 shadow-lg">
+            <div className="h-16 w-16 rounded-xl bg-card p-2.5 shadow-lg">
               <img src={formsLogo} alt="MS Forms logo" className="h-full w-full object-contain" />
             </div>
           )}

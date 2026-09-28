@@ -366,7 +366,7 @@ const CheatSheetButton = ({ toolId, className, children }: CheatSheetButtonProps
       {trigger}
 
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto p-0 gap-0 bg-white">
+        <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto p-0 gap-0 bg-card">
           <DialogHeader className="sr-only">
             <DialogTitle>{content.tool} — Quick Reference Guide</DialogTitle>
             <DialogDescription>

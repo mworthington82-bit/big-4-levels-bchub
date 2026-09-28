@@ -90,7 +90,7 @@ const ActivityPlanner = () => {
   return (
     <div
       id="activity-planner"
-      className="relative bg-white rounded-2xl shadow-sm overflow-hidden"
+      className="relative bg-card rounded-2xl shadow-sm overflow-hidden"
       style={{ borderLeft: "4px solid hsl(var(--b4-flame))" }}
     >
       <div className="p-6 md:p-8">
@@ -120,7 +120,7 @@ const ActivityPlanner = () => {
             value={challenge}
             onChange={(e) => setChallenge(e.target.value)}
             placeholder="e.g. ESOL learners, low confidence with technology, mixed ability group, SEND support"
-            className="mt-1 w-full rounded-lg border border-b4-line bg-white px-3 py-2.5 text-sm text-b4-strong focus:border-[#185FA5] focus:outline-none focus:ring-2 focus:ring-[#185FA5]/20"
+            className="mt-1 w-full rounded-lg border border-b4-line bg-card px-3 py-2.5 text-sm text-b4-strong focus:border-[#185FA5] focus:outline-none focus:ring-2 focus:ring-[#185FA5]/20"
           />
         </label>
 
@@ -133,7 +133,7 @@ const ActivityPlanner = () => {
         </button>
 
         {loading && (
-          <div className="mt-6 animate-pulse">
+          <div className="mt-6 tw-skeleton">
             <div className="h-3 bg-b4-wash-2 rounded w-2/3 mb-2" />
             <div className="h-3 bg-b4-wash-2 rounded w-5/6 mb-2" />
             <div className="h-3 bg-b4-wash-2 rounded w-3/4" />
@@ -184,7 +184,7 @@ const Select = ({
     <select
       value={value}
       onChange={(e) => onChange(e.target.value)}
-      className="mt-1 w-full rounded-lg border border-b4-line bg-white px-3 py-2.5 text-sm text-b4-strong focus:border-[#185FA5] focus:outline-none focus:ring-2 focus:ring-[#185FA5]/20"
+      className="mt-1 w-full rounded-lg border border-b4-line bg-card px-3 py-2.5 text-sm text-b4-strong focus:border-[#185FA5] focus:outline-none focus:ring-2 focus:ring-[#185FA5]/20"
     >
       <option value="">Choose…</option>
       {options.map((o) => (
@@ -217,7 +217,7 @@ const ResourceCard = ({
   };
   const lvl = LEVEL_PILL[r.level];
   return (
-    <div className="bg-white rounded-xl border border-b4-line overflow-hidden flex flex-col">
+    <div className="bg-card rounded-xl border border-b4-line overflow-hidden flex flex-col">
       <div className="h-1" style={{ backgroundColor: TOOL_BAR[r.tool] }} />
       <button
         type="button"
@@ -385,7 +385,7 @@ const Resources = () => {
           {tab === "ideas" ? (
             <>
               {/* Filter bar */}
-              <section className="bg-white rounded-xl border border-b4-line p-4">
+              <section className="bg-card rounded-xl border border-b4-line p-4">
                 <div className="grid gap-3 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
                   <Select
                     label="Tool" value={filters.tool}
@@ -417,11 +417,11 @@ const Resources = () => {
               {loading ? (
                 <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3" aria-busy="true" aria-label="Loading resources">
                   {[0,1,2,3,4,5].map((i) => (
-                    <div key={i} className="bg-white rounded-xl border border-b4-line h-56 animate-pulse" />
+                    <div key={i} className="bg-card rounded-xl border border-b4-line h-56 tw-skeleton" />
                   ))}
                 </div>
               ) : filtered.length === 0 ? (
-                <div className="bg-white rounded-xl border border-b4-line p-8 text-center">
+                <div className="bg-card rounded-xl border border-b4-line p-8 text-center">
                   <p className="text-b4-strong font-semibold">No resources match your filters yet — check back soon as we add more.</p>
                   {hasActiveFilters && (
                     <button
@@ -448,7 +448,7 @@ const Resources = () => {
                     <div className="flex justify-center mt-6">
                       <button
                         onClick={() => setVisibleCount((c) => c + 12)}
-                        className="inline-flex items-center min-h-11 px-6 py-2.5 rounded-full bg-white border border-b4-line text-sm font-semibold text-b4-strong hover:bg-b4-wash focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#185FA5]"
+                        className="inline-flex items-center min-h-11 px-6 py-2.5 rounded-full bg-card border border-b4-line text-sm font-semibold text-b4-strong hover:bg-b4-wash focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#185FA5]"
                       >
                         Load more ({filtered.length - visibleCount} remaining)
                       </button>
@@ -464,11 +464,11 @@ const Resources = () => {
               {loading ? (
                 <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3" aria-busy="true" aria-label="Loading bookmarks">
                   {[0,1,2].map((i) => (
-                    <div key={i} className="bg-white rounded-xl border border-b4-line h-56 animate-pulse" />
+                    <div key={i} className="bg-card rounded-xl border border-b4-line h-56 tw-skeleton" />
                   ))}
                 </div>
               ) : bookmarkedList.length === 0 ? (
-                <div className="bg-white rounded-xl border border-b4-line p-10 text-center">
+                <div className="bg-card rounded-xl border border-b4-line p-10 text-center">
                   <h3 className="font-bold text-b4-strong text-lg">You have not saved anything yet.</h3>
                   <p className="text-sm text-b4-muted mt-2">
                     Browse the Ideas Wall and tap the bookmark icon on any resource to save it here.

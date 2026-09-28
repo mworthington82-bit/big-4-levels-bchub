@@ -127,13 +127,13 @@ const WelcomeCompletionModal = ({ profile }: Props) => {
       aria-labelledby="welcome-modal-heading"
     >
       <div
-        className="relative bg-white shadow-2xl flex flex-col w-[92%] sm:w-full overflow-hidden"
+        className="relative bg-card shadow-2xl flex flex-col w-[92%] sm:w-full overflow-hidden"
         style={{ maxWidth: 820, borderRadius: 20, maxHeight: "92vh" }}
       >
         <button
           type="button"
           onClick={() => setOpen(false)}
-          className="absolute right-4 top-4 z-10 inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/95 text-b4-strong shadow-sm hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-b4-flame"
+          className="absolute right-4 top-4 z-10 inline-flex h-10 w-10 items-center justify-center rounded-full bg-card/95 text-b4-strong shadow-sm hover:bg-card focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-b4-flame"
           aria-label="Close welcome message"
         >
           ×
@@ -185,11 +185,11 @@ const WelcomeCompletionModal = ({ profile }: Props) => {
               YOUR PERSONALISED SUMMARY
             </p>
             {loadingAi ? (
-              <div className="space-y-2 animate-pulse" aria-label="Loading summary">
-                <div className="h-4 rounded bg-slate-200 w-full" />
-                <div className="h-4 rounded bg-slate-200 w-11/12" />
-                <div className="h-4 rounded bg-slate-200 w-10/12" />
-                <div className="h-4 rounded bg-slate-200 w-9/12" />
+              <div className="space-y-2 tw-skeleton" aria-busy="true" aria-label="Writing your summary">
+                <div className="h-4 rounded bg-muted w-full" />
+                <div className="h-4 rounded bg-muted w-11/12" />
+                <div className="h-4 rounded bg-muted w-10/12" />
+                <div className="h-4 rounded bg-muted w-9/12" />
               </div>
             ) : (
               <p style={{ color: "#222", fontSize: 17, lineHeight: 1.65 }}>{aiText}</p>

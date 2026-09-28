@@ -15,6 +15,7 @@ import {
 } from "@/lib/leaderHub";
 import { IconHeart, IconHeartFilled, IconMail } from "@tabler/icons-react";
 import emblemLeader from "@/assets/emblem-leader.svg";
+import { WeavingLoader } from "@/components/threadworks";
 
 type EvidencePost = {
   id: string;
@@ -67,7 +68,7 @@ const EvidenceCard = ({
   onToggleLike?: () => void;
   hideLike?: boolean;
 }) => (
-  <article className="bg-white rounded-xl border border-b4-line overflow-hidden flex flex-col">
+  <article className="bg-card rounded-xl border border-b4-line overflow-hidden flex flex-col">
     <div className="h-1" style={{ backgroundColor: TOOL_COLOUR[post.tool] ?? "hsl(var(--b4-deep))" }} />
     <div className="p-4 flex-1 flex flex-col gap-2">
       <div className="flex items-center gap-2 flex-wrap">
@@ -174,9 +175,9 @@ const MyContributions = ({
         )}
 
         {loading ? (
-          <p className="text-sm text-b4-muted">Loading…</p>
+          <WeavingLoader variant="inline" label="Finding posts…" />
         ) : posts.length === 0 ? (
-          <div className="bg-white rounded-xl border border-dashed border-b4-line p-6 text-center">
+          <div className="bg-card rounded-xl border border-dashed border-b4-line p-6 text-center">
             <p className="text-b4-strong font-semibold">You have not shared any classroom examples yet.</p>
             <p className="text-sm text-b4-muted mt-1">
               Your experience could inspire colleagues across the college.
@@ -187,7 +188,7 @@ const MyContributions = ({
             {posts.map((p) => (
               <li
                 key={p.id}
-                className="bg-white rounded-xl border border-b4-line p-4 flex items-start gap-3"
+                className="bg-card rounded-xl border border-b4-line p-4 flex items-start gap-3"
               >
                 <div
                   className="w-1 self-stretch rounded-full"
@@ -264,7 +265,7 @@ const MyContributions = ({
             }}
           />
         ) : (
-          <div className="bg-white rounded-xl border border-b4-line p-5">
+          <div className="bg-card rounded-xl border border-b4-line p-5">
             <div className="flex flex-wrap gap-1.5 mb-3">
               {mentor.tools_offered.map((t) => (
                 <ToolPill key={t} tool={t as ToolName} small />
@@ -350,7 +351,7 @@ const EvidenceForm = ({
   };
 
   return (
-    <div className="mt-4 bg-white rounded-xl border border-b4-line p-5 space-y-4">
+    <div className="mt-4 bg-card rounded-xl border border-b4-line p-5 space-y-4">
       <Field label="Which tool?">
         <select
           value={tool}
@@ -471,7 +472,7 @@ const MentorForm = ({
   };
 
   return (
-    <div className="bg-white rounded-xl border border-b4-line p-5 space-y-4">
+    <div className="bg-card rounded-xl border border-b4-line p-5 space-y-4">
       <div>
         <p className="text-xs font-semibold text-b4-strong mb-2">
           Which tools can you support others with? (Check all that apply)
@@ -644,11 +645,11 @@ const EvidenceGalleryTab = ({ email }: { email: string | null }) => {
       {loading ? (
         <div className="grid gap-4 grid-cols-1 md:grid-cols-2" aria-busy="true" aria-label="Loading evidence gallery">
           {[0,1,2,3].map((i) => (
-            <div key={i} className="bg-white rounded-xl border border-b4-line h-48 animate-pulse" />
+            <div key={i} className="bg-card rounded-xl border border-b4-line h-48 tw-skeleton" />
           ))}
         </div>
       ) : filtered.length === 0 ? (
-        <div className="bg-white rounded-xl border border-b4-line p-8 text-center text-b4-strong font-semibold">
+        <div className="bg-card rounded-xl border border-b4-line p-8 text-center text-b4-strong font-semibold">
           No examples shared yet — Leaders who submit classroom examples will appear here.
         </div>
       ) : (
@@ -668,7 +669,7 @@ const EvidenceGalleryTab = ({ email }: { email: string | null }) => {
             <div className="flex justify-center mt-6">
               <button
                 onClick={() => setVisibleCount((c) => c + 12)}
-                className="inline-flex items-center min-h-11 px-6 py-2.5 rounded-full bg-white border border-b4-line text-sm font-semibold text-b4-strong hover:bg-b4-wash focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#185FA5]"
+                className="inline-flex items-center min-h-11 px-6 py-2.5 rounded-full bg-card border border-b4-line text-sm font-semibold text-b4-strong hover:bg-b4-wash focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#185FA5]"
               >
                 Load more ({filtered.length - visibleCount} remaining)
               </button>
@@ -722,11 +723,11 @@ const MentorDirectoryTab = () => {
       {loading ? (
         <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3" aria-busy="true" aria-label="Loading mentor directory">
           {[0,1,2].map((i) => (
-            <div key={i} className="bg-white rounded-xl border border-b4-line h-40 animate-pulse" />
+            <div key={i} className="bg-card rounded-xl border border-b4-line h-40 tw-skeleton" />
           ))}
         </div>
       ) : filtered.length === 0 ? (
-        <div className="bg-white rounded-xl border border-b4-line p-8 text-center text-b4-strong font-semibold">
+        <div className="bg-card rounded-xl border border-b4-line p-8 text-center text-b4-strong font-semibold">
           No mentors listed yet — Leaders who sign up will appear here.
         </div>
       ) : (
@@ -737,7 +738,7 @@ const MentorDirectoryTab = () => {
             return (
               <article
                 key={m.id}
-                className="bg-white rounded-xl border border-b4-line overflow-hidden flex"
+                className="bg-card rounded-xl border border-b4-line overflow-hidden flex"
               >
                 <div className="w-1 bg-[#27AE60]" />
                 <div className="p-4 flex-1 flex flex-col gap-3">
@@ -813,10 +814,10 @@ const Leader = () => {
         <div className="min-h-full bg-b4-wash" aria-busy="true" aria-label="Loading Leader Hub">
           <div className="bg-b4-deep h-32" />
           <div className="container mx-auto px-4 py-8 max-w-6xl space-y-6">
-            <div className="h-8 w-64 bg-b4-wash-3 rounded animate-pulse" />
+            <div className="h-8 w-64 bg-b4-wash-3 rounded tw-skeleton" />
             <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
               {[0,1,2,3].map((i) => (
-                <div key={i} className="bg-white rounded-xl border border-b4-line h-48 animate-pulse" />
+                <div key={i} className="bg-card rounded-xl border border-b4-line h-48 tw-skeleton" />
               ))}
             </div>
           </div>

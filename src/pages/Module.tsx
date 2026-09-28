@@ -8,7 +8,6 @@ import {
   IconCheck,
   IconClock,
   IconLock,
-  IconLoader2,
 } from "@tabler/icons-react";
 import AppShell from "@/components/AppShell";
 import PageError from "@/components/PageError";
@@ -60,7 +59,7 @@ const NotFoundCard = () => {
     <AppShell>
       <div className="min-h-full bg-b4-wash">
         <div className="container mx-auto px-4 py-12 max-w-2xl">
-          <div className="bg-white rounded-2xl border border-b4-line p-8 md:p-12 text-center">
+          <div className="bg-card rounded-2xl border border-b4-line p-8 md:p-12 text-center">
             <h1 className="font-bold text-b4-strong text-2xl md:text-3xl mb-3">
               This module is being prepared
             </h1>
@@ -248,26 +247,26 @@ const Module = () => {
     return (
       <AppShell>
         <div className="min-h-full bg-b4-wash" aria-busy="true" aria-label="Loading module">
-          <header className="bg-white border-b border-b4-line">
+          <header className="bg-card border-b border-b4-line">
             <div className="container mx-auto px-4 py-6 max-w-5xl space-y-3">
-              <div className="h-4 w-32 bg-b4-wash-3 rounded animate-pulse" />
-              <div className="h-8 w-1/2 bg-b4-wash-3 rounded animate-pulse" />
-              <div className="h-4 w-1/3 bg-b4-wash-3 rounded animate-pulse" />
+              <div className="h-4 w-32 bg-b4-wash-3 rounded tw-skeleton" />
+              <div className="h-8 w-1/2 bg-b4-wash-3 rounded tw-skeleton" />
+              <div className="h-4 w-1/3 bg-b4-wash-3 rounded tw-skeleton" />
             </div>
           </header>
           <div className="container mx-auto px-4 py-3 max-w-5xl">
             <div className="flex items-center gap-2 overflow-x-auto">
               {[0,1,2,3,4].map((i) => (
-                <div key={i} className="h-7 w-24 bg-b4-wash-3 rounded-full animate-pulse shrink-0" />
+                <div key={i} className="h-7 w-24 bg-b4-wash-3 rounded-full tw-skeleton shrink-0" />
               ))}
             </div>
           </div>
           <div className="container mx-auto px-4 pt-8 max-w-3xl">
-            <div className="bg-white rounded-2xl border border-b4-line p-6 md:p-10 space-y-3">
-              <div className="h-7 w-2/3 bg-b4-wash-3 rounded animate-pulse" />
-              <div className="h-4 w-full bg-b4-wash-3 rounded animate-pulse" />
-              <div className="h-4 w-5/6 bg-b4-wash-3 rounded animate-pulse" />
-              <div className="h-4 w-3/4 bg-b4-wash-3 rounded animate-pulse" />
+            <div className="bg-card rounded-2xl border border-b4-line p-6 md:p-10 space-y-3">
+              <div className="h-7 w-2/3 bg-b4-wash-3 rounded tw-skeleton" />
+              <div className="h-4 w-full bg-b4-wash-3 rounded tw-skeleton" />
+              <div className="h-4 w-5/6 bg-b4-wash-3 rounded tw-skeleton" />
+              <div className="h-4 w-3/4 bg-b4-wash-3 rounded tw-skeleton" />
             </div>
           </div>
         </div>
@@ -331,7 +330,7 @@ const Module = () => {
     <AppShell>
       <div className="min-h-full bg-b4-wash pb-16">
         {/* Header */}
-        <header className="bg-white border-b border-b4-line">
+        <header className="bg-card border-b border-b4-line">
           <div className="container mx-auto px-4 py-6 max-w-5xl">
             {/* Back button row — dedicated, never shares a row */}
             <div className="my-3">
@@ -417,7 +416,7 @@ const Module = () => {
 
         {/* Content card */}
         <div className="container mx-auto px-4 pt-8 max-w-3xl">
-          <div className="bg-white rounded-2xl border border-b4-line p-6 md:p-10">
+          <div className="bg-card rounded-2xl border border-b4-line p-6 md:p-10">
             {step && (
               <>
                 <h2 className="font-bold text-b4-strong text-2xl md:text-3xl mb-6">
@@ -485,7 +484,7 @@ const Module = () => {
                 {currentStep > 1 ? (
                   <button
                     onClick={handlePrev}
-                    className="inline-flex items-center gap-1.5 text-[#185FA5] font-semibold px-5 py-2.5 rounded-full hover:bg-white"
+                    className="inline-flex items-center gap-1.5 text-[#185FA5] font-semibold px-5 py-2.5 rounded-full hover:bg-card"
                   >
                     <IconArrowLeft size={16} stroke={2} />
                     Previous
@@ -513,12 +512,12 @@ const Module = () => {
                   {!bypassOpen ? (
                     <button
                       onClick={() => setBypassOpen(true)}
-                      className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 bg-white border-2 border-b4-strong text-b4-strong font-semibold px-5 py-2.5 rounded-full hover:bg-b4-wash"
+                      className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 bg-card border-2 border-b4-strong text-b4-strong font-semibold px-5 py-2.5 rounded-full hover:bg-b4-wash"
                     >
                       I completed in-person training
                     </button>
                   ) : (
-                    <div className="bg-white rounded-xl border border-b4-line p-5 space-y-3 max-w-md">
+                    <div className="bg-card rounded-xl border border-b4-line p-5 space-y-3 max-w-md">
                       <label htmlFor="bypass-pwd" className="block text-sm font-semibold text-b4-strong">
                         Enter your session password
                       </label>
@@ -536,9 +535,8 @@ const Module = () => {
                         <button
                           onClick={submitBypass}
                           disabled={bypassBusy || bypassSuccess || !bypassPwd.trim()}
-                          className="inline-flex items-center justify-center gap-1.5 bg-b4-deep hover:bg-[#162B4D] text-white font-semibold px-5 py-2.5 rounded-full disabled:opacity-50"
+                          className="inline-flex items-center justify-center gap-1.5 bg-b4-deep hover:bg-b4-deep-hover text-white font-semibold px-5 py-2.5 rounded-full disabled:opacity-50"
                         >
-                          {bypassBusy && <IconLoader2 size={14} className="animate-spin" />}
                           {bypassBusy ? "Validating…" : "Confirm attendance"}
                         </button>
                         {!bypassSuccess && (
@@ -576,7 +574,7 @@ const Module = () => {
             aria-modal="true"
             aria-labelledby="attended-dialog-title"
           >
-            <div className="bg-white rounded-2xl max-w-md w-full p-6 md:p-8 shadow-xl">
+            <div className="bg-card rounded-2xl max-w-md w-full p-6 md:p-8 shadow-xl">
               <h3
                 id="attended-dialog-title"
                 className="text-xl md:text-2xl font-bold text-b4-strong mb-3"
@@ -594,7 +592,7 @@ const Module = () => {
               <div className="flex justify-end">
                 <button
                   onClick={() => setAttendedDialogOpen(false)}
-                  className="inline-flex items-center gap-1.5 bg-b4-deep hover:bg-[#162B4D] text-white font-semibold px-5 py-2.5 rounded-full"
+                  className="inline-flex items-center gap-1.5 bg-b4-deep hover:bg-b4-deep-hover text-white font-semibold px-5 py-2.5 rounded-full"
                 >
                   Got it
                 </button>

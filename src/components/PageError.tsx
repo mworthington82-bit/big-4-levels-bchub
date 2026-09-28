@@ -7,7 +7,7 @@ interface Props {
 
 const ErrorBody = () => (
   <div className="min-h-[60vh] flex items-center justify-center px-4 py-16">
-    <div className="bg-white rounded-2xl border border-b4-line p-8 md:p-10 max-w-md text-center">
+    <div className="bg-card rounded-2xl border border-b4-line p-8 md:p-10 max-w-md text-center">
       <div className="mx-auto w-14 h-14 rounded-full bg-b4-flame-soft flex items-center justify-center mb-4">
         <IconWifiOff size={28} stroke={1.75} className="text-b4-flame-ink" aria-hidden="true" />
       </div>

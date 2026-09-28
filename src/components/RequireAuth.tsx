@@ -3,6 +3,7 @@ import { Navigate, useLocation } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { flagSessionExpired } from "@/lib/sessionExpiry";
 import { MAINTENANCE_MODE, isAllowedDuringMaintenance } from "@/lib/maintenanceMode";
+import { WeavingLoader } from "@/components/threadworks";
 
 interface RequireAuthProps {
   children: React.ReactNode;
@@ -43,7 +44,7 @@ const RequireAuth = ({ children }: RequireAuthProps) => {
   if (status === "loading") {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">
-        <div className="text-muted-foreground text-sm">Loading…</div>
+        <WeavingLoader variant="page" label="Opening your Big 4…" />
       </div>
     );
   }

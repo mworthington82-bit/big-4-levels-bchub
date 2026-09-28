@@ -29,7 +29,7 @@ const ProgressTracker = ({ currentStep, steps, onStepClick, brandColor = 'hsl(va
                 {/* Active glow ring */}
                 {isActive && (
                   <div
-                    className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[calc(50%+10px)] w-12 h-12 rounded-full opacity-30 animate-pulse"
+                    className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[calc(50%+10px)] w-12 h-12 rounded-full opacity-30"
                     style={{ backgroundColor: brandColor }}
                   />
                 )}

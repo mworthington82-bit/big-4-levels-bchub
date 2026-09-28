@@ -6,6 +6,7 @@ import { deriveEffectiveLevel } from "@/lib/progression";
 import emblemExplorer from "@/assets/emblem-explorer.svg";
 import emblemPractitioner from "@/assets/emblem-practitioner.svg";
 import emblemLeader from "@/assets/emblem-leader.svg";
+import { WeavingLoader } from "@/components/threadworks";
 
 const emblemMap: Record<string, string> = {
   Explorer: emblemExplorer,
@@ -44,7 +45,7 @@ const Profile = () => {
       <div className="min-h-[calc(100vh-64px)] bg-muted/20 py-10 px-4">
         <div className="max-w-[480px] mx-auto bg-card rounded-2xl border border-border shadow-sm p-8">
           {loading ? (
-            <p className="text-center text-muted-foreground">Loading…</p>
+            <div className="text-center"><WeavingLoader variant="inline" label="Finding your profile…" /></div>
           ) : (
             <>
               <div className="flex flex-col items-center text-center mb-6">

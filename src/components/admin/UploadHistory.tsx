@@ -25,22 +25,22 @@ const UploadHistory = ({ refreshKey }: { refreshKey: number }) => {
   }, [refreshKey]);
 
   return (
-    <details className="bg-white rounded-xl border border-slate-200 group">
+    <details className="bg-card rounded-xl border border-border group">
       <summary className="cursor-pointer list-none p-6 flex items-center justify-between gap-2">
         <h2 className="text-lg font-semibold text-b4-strong">
           Self-assessment upload history{" "}
-          <span className="text-slate-400 font-normal">({rows.length})</span>
+          <span className="text-muted-foreground/80 font-normal">({rows.length})</span>
         </h2>
-        <svg className="w-5 h-5 text-slate-400 transition-transform group-open:rotate-180" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.06l3.71-3.83a.75.75 0 111.08 1.04l-4.25 4.39a.75.75 0 01-1.08 0L5.21 8.27a.75.75 0 01.02-1.06z" clipRule="evenodd" /></svg>
+        <svg className="w-5 h-5 text-muted-foreground/80 transition-transform group-open:rotate-180" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.06l3.71-3.83a.75.75 0 111.08 1.04l-4.25 4.39a.75.75 0 01-1.08 0L5.21 8.27a.75.75 0 01.02-1.06z" clipRule="evenodd" /></svg>
       </summary>
       <div className="px-6 pb-6">
         {rows.length === 0 ? (
-          <p className="text-sm text-slate-500">No uploads yet.</p>
+          <p className="text-sm text-muted-foreground">No uploads yet.</p>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="text-left text-slate-500 border-b border-slate-200">
+                <tr className="text-left text-muted-foreground border-b border-border">
                   <th className="py-2 pr-4 font-medium">Date</th>
                   <th className="py-2 pr-4 font-medium">Records processed</th>
                   <th className="py-2 pr-4 font-medium">Added</th>
@@ -50,7 +50,7 @@ const UploadHistory = ({ refreshKey }: { refreshKey: number }) => {
               </thead>
               <tbody>
                 {rows.map((r) => (
-                  <tr key={r.id} className="border-b border-slate-100 last:border-0">
+                  <tr key={r.id} className="border-b border-border last:border-0">
                     <td className="py-2 pr-4">
                       {new Date(r.uploaded_at).toLocaleString("en-GB")}
                     </td>

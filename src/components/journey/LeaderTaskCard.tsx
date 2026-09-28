@@ -42,7 +42,7 @@ const LeaderTaskCard = () => {
       />
       <div className="pl-3">
         <h3
-          className="font-display font-bold text-b4-flame-text"
+          className="font-display font-bold text-b4-flame"
           style={{ fontSize: "20px" }}
         >
           Your next step as a Leader — required
@@ -75,7 +75,7 @@ const LeaderTaskCard = () => {
               href={p.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center bg-white text-b4-strong border border-b4-strong px-4 py-2 text-sm font-semibold hover:bg-b4-wash transition-colors"
+              className="inline-flex items-center bg-card text-b4-strong border border-b4-strong px-4 py-2 text-sm font-semibold hover:bg-b4-wash transition-colors"
               style={{ borderRadius: "10px" }}
             >
               {p.label} →
@@ -84,7 +84,7 @@ const LeaderTaskCard = () => {
         </div>
 
         <p
-          className="mt-4 font-bold text-b4-flame-text"
+          className="mt-4 font-bold text-b4-flame"
           style={{ fontSize: "13px" }}
         >
           Your contributions are visible to all Bradford College staff and
