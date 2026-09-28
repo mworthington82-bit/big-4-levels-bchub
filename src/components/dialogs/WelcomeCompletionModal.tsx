@@ -8,6 +8,7 @@ import { deriveEffectiveLevel } from "@/lib/progression";
 import emblemExplorer from "@/assets/art/rope/knot-explorer.webp";
 import emblemPractitioner from "@/assets/art/rope/knot-practitioner.webp";
 import emblemLeader from "@/assets/art/rope/knot-leader.webp";
+import StitchedCross from "@/components/StitchedCross";
 
 interface Props {
   profile: StaffProfile;
@@ -146,10 +147,10 @@ const WelcomeCompletionModal = ({ profile }: Props) => {
         <button
           type="button"
           onClick={() => setOpen(false)}
-          className="absolute right-4 top-4 z-10 inline-flex h-10 w-10 items-center justify-center rounded-full bg-card/95 text-b4-strong shadow-sm hover:bg-card focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-b4-flame"
+          className="stitch-close stitch-close--patch absolute right-4 top-6 z-10"
           aria-label="Close welcome message"
         >
-          ×
+          <StitchedCross />
         </button>
 
         {/* Gold header bar */}
