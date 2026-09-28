@@ -3,6 +3,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import AppShell from "@/components/AppShell";
 import { WeaveTransitionProvider } from "@/components/threadworks/WeaveTransition";
 
 // Auth + entry
@@ -54,12 +55,12 @@ const App = () => (
           <Route path="/admin" element={<RequireAdmin><Admin /></RequireAdmin>} />
 
           {/* Legacy — primary experience */}
-          <Route path="/self-assessment" element={<RequireAuth><SelfAssessment /></RequireAuth>} />
-          <Route path="/training" element={<RequireAuth><Training /></RequireAuth>} />
+          <Route path="/self-assessment" element={<RequireAuth><AppShell><SelfAssessment /></AppShell></RequireAuth>} />
+          <Route path="/training" element={<RequireAuth><AppShell><Training /></AppShell></RequireAuth>} />
           <Route path="/resources" element={<RequireAuth><Resources /></RequireAuth>} />
-          <Route path="/planner" element={<RequireAuth><Planner /></RequireAuth>} />
-          <Route path="/inclusion" element={<RequireAuth><Inclusion /></RequireAuth>} />
-          <Route path="/bookings" element={<RequireAuth><Bookings /></RequireAuth>} />
+          <Route path="/planner" element={<RequireAuth><AppShell><Planner /></AppShell></RequireAuth>} />
+          <Route path="/inclusion" element={<RequireAuth><AppShell><Inclusion /></AppShell></RequireAuth>} />
+          <Route path="/bookings" element={<RequireAuth><AppShell><Bookings /></AppShell></RequireAuth>} />
           <Route path="/profile" element={<RequireAuth><Profile /></RequireAuth>} />
 
           {/* New pages — kept in background under /new/* */}

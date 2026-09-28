@@ -29,7 +29,17 @@ type LevelKey = keyof typeof LEVEL_META;
 const WelcomeCompletionModal = ({ profile }: Props) => {
   const navigate = useNavigate();
   const isDemo = useIsDemoUser();
-  const [open, setOpen] = useState(true);
+  // Show once per person (it used to open on every visit to the landing page).
+  const seenKey = `b4-welcome-summary-seen:${(profile.email || "").toLowerCase()}`;
+  const [open, setOpenState] = useState(() => {
+    try { return !localStorage.getItem(seenKey); } catch { return true; }
+  });
+  const setOpen = (next: boolean) => {
+    if (!next) {
+      try { localStorage.setItem(seenKey, new Date().toISOString()); } catch { /* storage blocked */ }
+    }
+    setOpenState(next);
+  };
   const [aiText, setAiText] = useState<string | null>(null);
   const [loadingAi, setLoadingAi] = useState(true);
 
@@ -51,6 +61,7 @@ const WelcomeCompletionModal = ({ profile }: Props) => {
 
 
   useEffect(() => {
+    if (!open) return; // already seen: don't call the AI summary at all
     let cancelled = false;
     const controller = new AbortController();
     const t = setTimeout(() => controller.abort(), 12000);
@@ -96,18 +107,20 @@ const WelcomeCompletionModal = ({ profile }: Props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Block Escape key from dismissing the modal
+  // Escape closes it, like every other dialog (COGA: let users go back)
   useEffect(() => {
     if (!open) return;
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         e.preventDefault();
         e.stopPropagation();
+        try { localStorage.setItem(seenKey, new Date().toISOString()); } catch { /* storage blocked */ }
+        setOpenState(false);
       }
     };
     window.addEventListener("keydown", onKey, true);
     return () => window.removeEventListener("keydown", onKey, true);
-  }, [open]);
+  }, [open, seenKey]);
 
 
   if (!open) return null;
