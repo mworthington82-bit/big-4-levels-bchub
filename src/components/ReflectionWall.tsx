@@ -260,7 +260,7 @@ const ReflectionWall = ({ toolName, level, onComplete }: ReflectionWallProps) =>
           <Button
             onClick={handleSubmit}
             disabled={isSubmitting}
-            className="w-full bg-accent hover:bg-accent/90"
+            className="w-full bg-b4-flame hover:bg-b4-flame/90 text-b4-on-flame"
           >
             <Send className="mr-2 h-4 w-4" />
             {isSubmitting ? 'Saving...' : 'Share Reflection'}
@@ -278,7 +278,7 @@ const ReflectionWall = ({ toolName, level, onComplete }: ReflectionWallProps) =>
           
           <div className="relative">
             <div className="flex justify-center mb-6">
-              <div className="bg-accent text-accent-foreground rounded-full px-6 py-3 font-semibold text-sm shadow-lg">
+              <div className="bg-b4-flame text-b4-on-flame rounded-full px-6 py-3 font-semibold text-sm shadow-lg">
                 How will you use {toolName}?
               </div>
             </div>
@@ -331,7 +331,7 @@ const ReflectionWall = ({ toolName, level, onComplete }: ReflectionWallProps) =>
       <div className="pt-6 border-t border-border">
         <Button 
           onClick={onComplete}
-          className={`w-full ${hasSubmitted ? 'bg-accent hover:bg-accent/90' : 'bg-muted text-muted-foreground cursor-not-allowed'}`}
+          className={`w-full ${hasSubmitted ? 'bg-b4-flame hover:bg-b4-flame/90 text-b4-on-flame' : 'bg-muted text-muted-foreground cursor-not-allowed'}`}
           size="lg"
           disabled={!hasSubmitted}
         >

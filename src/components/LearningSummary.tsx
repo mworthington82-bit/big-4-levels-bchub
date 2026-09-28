@@ -186,7 +186,7 @@ const LearningSummary = ({ level, onContinue }: LearningSummaryProps) => {
         </Button>
         <Button
           onClick={onContinue}
-          className="flex-1 bg-accent hover:bg-accent/90 text-accent-foreground py-6 text-base rounded-xl font-semibold group"
+          className="flex-1 bg-b4-flame hover:bg-b4-flame/90 text-b4-on-flame py-6 text-base rounded-xl font-semibold group"
         >
           Back to Modules
           <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />

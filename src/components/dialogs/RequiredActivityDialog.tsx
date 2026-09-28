@@ -123,7 +123,7 @@ const RequiredActivityDialog = ({ tool, level }: RequiredActivityDialogProps) =>
           </div>
         )}
 
-        <Button onClick={handleClose} className="w-full bg-accent hover:bg-accent/90">
+        <Button onClick={handleClose} className="w-full bg-b4-flame hover:bg-b4-flame/90 text-b4-on-flame">
           Got it, let's go
         </Button>
       </DialogContent>

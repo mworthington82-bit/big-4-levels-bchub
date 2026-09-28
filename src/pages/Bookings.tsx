@@ -38,8 +38,8 @@ const toolColor: Record<Tool, string> = {
   canva: "bg-[#7D2AE8] text-white hover:bg-[#7D2AE8]",
   edpuzzle: "bg-[#1DA1F2] text-white hover:bg-[#1DA1F2]",
   copilot: "bg-[#0078D4] text-white hover:bg-[#0078D4]",
-  inclusion: "bg-accent text-accent-foreground hover:bg-accent",
-  immersive: "bg-accent text-accent-foreground hover:bg-accent",
+  inclusion: "bg-b4-flame text-b4-on-flame hover:bg-b4-flame",
+  immersive: "bg-b4-flame text-b4-on-flame hover:bg-b4-flame",
 };
 
 // Map (tool, level) → staff_profiles boolean column
@@ -217,7 +217,7 @@ const Bookings = () => {
                       Fully booked
                     </Button>
                   ) : (
-                    <Button asChild className="mt-auto bg-accent hover:bg-accent/90 text-accent-foreground">
+                    <Button asChild className="mt-auto bg-b4-flame hover:bg-b4-flame/90 text-b4-on-flame">
                       <a
                         href={s.booking_url}
                         target="_blank"

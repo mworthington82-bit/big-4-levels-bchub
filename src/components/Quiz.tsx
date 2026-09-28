@@ -155,7 +155,7 @@ const Quiz = ({ questions, onComplete }: QuizProps) => {
 
           <Button 
             onClick={handleNameSubmit} 
-            className="w-full bg-accent hover:bg-accent/90"
+            className="w-full bg-b4-flame hover:bg-b4-flame/90 text-b4-on-flame"
           >
             <Trophy className="mr-2 h-4 w-4" />
             Get My Certificate
@@ -201,7 +201,7 @@ const Quiz = ({ questions, onComplete }: QuizProps) => {
 
           <Button 
             onClick={() => setShowIntro(false)} 
-            className="w-full bg-accent hover:bg-accent/90"
+            className="w-full bg-b4-flame hover:bg-b4-flame/90 text-b4-on-flame"
           >
             Start Quiz
           </Button>
@@ -236,7 +236,7 @@ const Quiz = ({ questions, onComplete }: QuizProps) => {
 
           <Button 
             onClick={handleRetake} 
-            className="w-full bg-accent hover:bg-accent/90"
+            className="w-full bg-b4-flame hover:bg-b4-flame/90 text-b4-on-flame"
           >
             <RefreshCw className="mr-2 h-4 w-4" />
             Retake Quiz
@@ -328,12 +328,12 @@ const Quiz = ({ questions, onComplete }: QuizProps) => {
             <Button
               onClick={handleNext}
               disabled={selectedAnswers[currentQuestion] === undefined}
-              className="bg-accent hover:bg-accent/90"
+              className="bg-b4-flame hover:bg-b4-flame/90 text-b4-on-flame"
             >
               Submit Answer
             </Button>
           ) : (
-            <Button onClick={handleContinue} className="bg-accent hover:bg-accent/90">
+            <Button onClick={handleContinue} className="bg-b4-flame hover:bg-b4-flame/90 text-b4-on-flame">
               {isLastQuestion ? (
                 <>
                   <Trophy className="mr-2 h-4 w-4" />

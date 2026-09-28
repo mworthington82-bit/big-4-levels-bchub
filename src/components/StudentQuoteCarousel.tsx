@@ -5,7 +5,7 @@ import fabricPc from "@/assets/art/fabric-pc.webp";
 
 const quotes = [
   "Technology makes learning more engaging and practical. Digital skills help us collaborate, stay organised and build skills we'll actually use in the future.",
-  "Using VR for body swaps was fun and engaging — I feel like I learnt a lot more than I would have going through a PowerPoint in lesson.",
+  "Using VR for body swaps was fun and engaging, I feel like I learnt a lot more than I would have going through a PowerPoint in lesson.",
   "Digital skills are essential for students because they prepare us for real-life learning, work, and independence.",
   "When teachers show us videos related to the topic, we understand better. They show us how to do things — not just tell us.",
   "It personalises learning, fosters collaboration and engagement, and frees up the tutor to facilitate deeper learning.",
@@ -45,7 +45,18 @@ const quadMatrix = (q: number[][], w: number, h: number) => {
   return `matrix3d(${a / w},${d / w},0,${g / w},${b / h},${e / h},0,${hh / h},0,0,1,0,${c},${f},0,1)`;
 };
 
-const StudentQuoteCarousel = ({ className = "max-w-[640px] mx-auto mt-8" }: { className?: string }) => {
+export const StudentVoicesCaption = ({ className = "" }: { className?: string }) => (
+  <div className={`text-left ${className}`}>
+    <p className="uppercase text-b4-flame font-semibold tracking-wide" style={{ fontSize: 12 }}>
+      How students see digital learning
+    </p>
+    <p className="mt-1 max-w-[60ch] leading-snug text-white/70" style={{ fontSize: 15 }}>
+      We asked Bradford College students why digital innovation matters to them. Here's what they said, in their own words.
+    </p>
+  </div>
+);
+
+const StudentQuoteCarousel = ({ className = "max-w-[640px] mx-auto mt-8", showCaption = true }: { className?: string; showCaption?: boolean }) => {
   const boxRef = useRef<HTMLDivElement>(null);
   const [transform, setTransform] = useState<string>("none");
   const [flat, setFlat] = useState({ w: 300, h: 262 });
@@ -80,14 +91,9 @@ const StudentQuoteCarousel = ({ className = "max-w-[640px] mx-auto mt-8" }: { cl
 
   return (
     <div className={`text-left ${className}`}>
-      <p className="uppercase text-b4-flame font-semibold tracking-wide" style={{ fontSize: 12 }}>
-        How students see digital learning
-      </p>
-      <p className="text-white/60 mt-1 leading-snug" style={{ fontSize: 14 }}>
-        We asked Bradford College students why digital innovation matters to them. Here's what they said, in their own words.
-      </p>
+      {showCaption && <StudentVoicesCaption />}
 
-      <div ref={boxRef} className="student-pc relative mx-auto mt-4 w-full max-w-[620px] aspect-[900/927]">
+      <div ref={boxRef} className="student-pc relative mx-auto mt-4 w-full max-w-[720px] aspect-[900/927]">
         <img src={fabricPc} alt="" className="absolute inset-0 h-full w-full select-none" draggable={false} />
         {/* The quotes, laid out flat then projected onto the angled grey screen */}
         <div

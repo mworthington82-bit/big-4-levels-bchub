@@ -184,7 +184,7 @@ const ToolEvidenceSection = ({
                 Post your evidence — a resource, screenshot, video walkthrough, or reflection — on the {toolDisplayName} Leader Padlet to evidence your practice and inspire colleagues.
               </p>
               <a href={PADLET_LINKS[tool]} target="_blank" rel="noopener noreferrer" className="inline-block">
-                <Button size="lg" className="bg-accent hover:bg-accent/90 text-accent-foreground font-semibold gap-2 px-8 py-6 text-base shadow-lg">
+                <Button size="lg" className="bg-b4-flame hover:bg-b4-flame/90 text-b4-on-flame font-semibold gap-2 px-8 py-6 text-base shadow-lg">
                   <ExternalLink className="w-5 h-5" />
                   Share on {toolDisplayName} Padlet
                 </Button>

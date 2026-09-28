@@ -69,7 +69,7 @@ const Badge = ({ level, toolName, score, userName, onRestart, onContinueLearning
               <Button
                 onClick={onContinueLearning}
                 variant="default"
-                className="bg-accent hover:bg-accent/90"
+                className="bg-b4-flame hover:bg-b4-flame/90 text-b4-on-flame"
               >
                 <ArrowRight className="mr-2 h-4 w-4" />
                 Continue Learning
