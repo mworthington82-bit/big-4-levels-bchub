@@ -6,7 +6,6 @@ import { ArrowRight, Target, Lightbulb, ExternalLink } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import NavigationButtons from "@/components/NavigationButtons";
 import AssessmentIntroDialog from "@/components/dialogs/AssessmentIntroDialog";
-import B4Brand from "@/components/B4Brand";
 import flairImage from "@/assets/self-assessment-flair.png";
 
 const SelfAssessment = () => {
@@ -20,14 +19,6 @@ const SelfAssessment = () => {
     <div className="min-h-screen">
       <AssessmentIntroDialog />
       <NavigationButtons />
-      <header className="border-b border-b4-line tw-cloth shadow-card">
-        <div className="container mx-auto px-4 py-6">
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-            <B4Brand to="/" />
-            <p className="sr-only">The Big 4: Level Up</p>
-          </div>
-        </div>
-      </header>
 
       <main className="container mx-auto px-4 py-8 md:py-12">
         {/* Temporary flair intro image */}

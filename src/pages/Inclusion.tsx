@@ -3,9 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Users, ExternalLink, Lightbulb, Sparkles, BookOpen, Palette, Video, Bot, Monitor, ChevronDown, ChevronUp, Download } from "lucide-react";
 import jsPDF from "jspdf";
-import { AccessibilityPanel } from "@/components/AccessibilityPanel";
-import ResourceBankButton from "@/components/ResourceBankButton";
-import B4Brand from "@/components/B4Brand";
 
 
 const inclusionTips = [
@@ -333,19 +330,7 @@ const Inclusion = () => {
 
   return (
     <div className="min-h-screen">
-      <ResourceBankButton />
-      <AccessibilityPanel />
 
-      <header className="border-b border-b4-line tw-cloth shadow-card">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <B4Brand to="/" />
-            <Button variant="ghost" size="sm" onClick={() => navigate("/")} className="gap-2">
-              <ArrowLeft className="w-4 h-4" /> Home
-            </Button>
-          </div>
-        </div>
-      </header>
 
       {/* Hero */}
       <section className="relative bg-b4-deep overflow-hidden">

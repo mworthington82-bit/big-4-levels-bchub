@@ -3,7 +3,6 @@ import { Home } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import ActivityPlanner from "@/components/ActivityPlanner";
 import { usePageTitle } from "@/lib/usePageTitle";
-import B4Brand from "@/components/B4Brand";
 
 const Planner = () => {
   usePageTitle("Activity Planner");
@@ -11,26 +10,10 @@ const Planner = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <header className="border-b border-b4-line tw-cloth shadow-card sticky top-0 z-10">
-        <div className="container mx-auto px-4 py-4 flex items-center justify-between gap-4">
-          <div className="flex items-center gap-4">
-            <B4Brand to="/home" showCollege={false} />
-            <h1 className="font-display text-xl md:text-2xl font-bold text-foreground">
-              Activity Planner
-            </h1>
-          </div>
-          <Button
-            variant="outline"
-            onClick={() => navigate("/home")}
-            className="border-border hover:bg-accent hover:text-accent-foreground"
-          >
-            <Home className="mr-2 h-4 w-4" /> Home
-          </Button>
-        </div>
-      </header>
 
       <main className="flex-1 container mx-auto px-4 py-8">
         <div className="max-w-4xl mx-auto">
+          <h1 className="font-display text-2xl md:text-3xl font-bold text-foreground mb-2">Activity Planner</h1>
           <p className="text-muted-foreground mb-6">
             Generate inclusion-focused lesson activities tailored to your learners.
           </p>

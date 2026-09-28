@@ -8,6 +8,7 @@ import { deriveEffectiveLevel } from "@/lib/progression";
 import { useIdleLogout } from "@/hooks/useIdleLogout";
 import { getInitials } from "@/pages/Profile";
 import B4Brand from "@/components/B4Brand";
+import { AccessibilityPanel } from "@/components/AccessibilityPanel";
 import { useWeaveTo } from "@/components/threadworks/WeaveTransition";
 import { ThreadWorksFooter } from "@/components/threadworks";
 import {
@@ -26,7 +27,7 @@ const navLinkClass = ({ isActive }: { isActive: boolean }) =>
   }`;
 
 const NAV_ITEMS = [
-  { to: "/journey", label: "My Journey" },
+  { to: "/new/journey", label: "My Journey" },
   { to: "/resources", label: "Resources" },
   { to: "/planner", label: "Activity Planner" },
   { to: "/bookings", label: "Book Training" },
@@ -82,7 +83,7 @@ const AppShell = ({ children }: { children: React.ReactNode }) => {
           style={{ flexWrap: "nowrap" }}
         >
           {/* Brand lockup (left): tile, threaded wordmark, college logo */}
-          <B4Brand to="/journey" />
+          <B4Brand to="/new/journey" />
 
           {/* Center nav */}
           <nav className="hidden lg:flex items-center gap-1 mx-auto" style={{ flexWrap: "nowrap" }}>
@@ -95,6 +96,7 @@ const AppShell = ({ children }: { children: React.ReactNode }) => {
 
           {/* Right cluster: pill + avatar + sign out (never shares space with nav) */}
           <div className="flex items-center gap-2 shrink-0 ml-auto lg:ml-0" style={{ minWidth: "fit-content", flexWrap: "nowrap" }}>
+            <AccessibilityPanel inline />
             {showPill && (
               <span className="hidden md:inline-flex tw-tag shrink-0" style={{ minWidth: "fit-content" }}>
                 {pillLabel}

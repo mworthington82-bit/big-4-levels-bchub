@@ -11,7 +11,6 @@ import Quiz from "@/components/Quiz";
 import EmbeddedQuiz, { quizEmbedUrls } from "@/components/EmbeddedQuiz";
 import Badge from "@/components/Badge";
 import ReflectionWall from "@/components/ReflectionWall";
-import { AccessibilityPanel } from "@/components/AccessibilityPanel";
 import { ReadAloudButton } from "@/components/ReadAloudButton";
 import NavigationButtons from "@/components/NavigationButtons";
 import LeaderHub from "@/components/leader/LeaderHub";
@@ -20,7 +19,6 @@ import PrerequisiteChecklistDialog from "@/components/dialogs/PrerequisiteCheckl
 import LearningModulesDialog from "@/components/dialogs/LearningModulesDialog";
 import LearningObjectivesCarousel from "@/components/LearningObjectivesCarousel";
 import ImpactCarousel from "@/components/ImpactCarousel";
-import ResourceBankButton from "@/components/ResourceBankButton";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { getPathway } from "@/data/pathways";
@@ -33,7 +31,6 @@ import RequiredActivityDialog from "@/components/dialogs/RequiredActivityDialog"
 import CheatSheetButton from "@/components/CheatSheetButton";
 import LeadCallout from "@/components/LeadCallout";
 import { useIsDemoUser } from "@/lib/demoAccess";
-import B4Brand from "@/components/B4Brand";
 import heroBanner from "@/assets/hero-banner.jpg";
 import teamsIllustration from "@/assets/teams-illustration.jpg";
 import canvaIllustration from "@/assets/canva-illustration.jpg";
@@ -379,7 +376,6 @@ const Training = () => {
   if (stage === 'level-entry') {
     return (
       <div className="min-h-screen">
-        <ResourceBankButton />
         {pendingLevel &&
         <LevelConfirmationDialog
           open={showLevelConfirmation}
@@ -406,15 +402,6 @@ const Training = () => {
           }} />
         }
         <NavigationButtons showBack={false} />
-        <AccessibilityPanel />
-        <header className="border-b border-b4-line tw-cloth shadow-card">
-          <div className="container mx-auto px-4 py-6">
-            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-              <B4Brand to="/" />
-              <p className="sr-only">The Big 4: Level Up</p>
-            </div>
-          </div>
-        </header>
 
         <main className="container mx-auto px-4 py-8 md:py-12">
           <div className="max-w-3xl mx-auto">
@@ -509,7 +496,7 @@ const Training = () => {
             <div className="text-center animate-fade-in">
               <Button
                 variant="outline"
-                onClick={() => navigate("/")}
+                onClick={() => navigate("/new/journey")}
                 className="border-border hover:bg-muted hover:text-foreground px-8 py-6 text-base rounded-xl">
 
                 <Home className="mr-2 h-5 w-5" />
@@ -524,16 +511,7 @@ const Training = () => {
 
   if (stage === 'home') {
     return <div className="min-h-screen">
-        <ResourceBankButton />
         <NavigationButtons onBack={handleBack} />
-        <header className="border-b border-b4-line tw-cloth shadow-card">
-          <div className="container mx-auto px-4 py-6">
-            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-              <B4Brand to="/" />
-              <p className="sr-only">The Big 4: Level Up</p>
-            </div>
-          </div>
-        </header>
 
         <main className="container mx-auto px-4 py-8 md:py-12">
           {/* Hero Banner with Thought Bubbles */}
@@ -629,14 +607,7 @@ const Training = () => {
   }
   if (stage === 'tool-select') {
     return <div className="min-h-screen">
-        <ResourceBankButton />
         {selectedLevel && <LearningModulesDialog level={selectedLevel} />}
-        <AccessibilityPanel />
-        <header className="border-b border-b4-line tw-cloth shadow-card">
-          <div className="container mx-auto px-4 py-6">
-            <B4Brand to="/" />
-          </div>
-        </header>
 
         <main className="container mx-auto px-4 py-8 md:py-12">
           <div className="max-w-6xl mx-auto">
@@ -834,9 +805,7 @@ const Training = () => {
   }
   if (stage === 'level-select') {
     return <div className="min-h-screen">
-        <ResourceBankButton />
         <NavigationButtons onBack={handleBack} />
-        <AccessibilityPanel />
         
 
 
@@ -875,22 +844,13 @@ const Training = () => {
   if (stage === 'leader-hub') {
     return (
       <div className="min-h-screen">
-        <ResourceBankButton />
         <NavigationButtons onBack={() => {
           setStage('level-entry');
           setSelectedLevel(null);
         }} />
-        <AccessibilityPanel />
-        <header className="border-b border-b4-line tw-cloth shadow-card">
-          <div className="container mx-auto px-4 py-6">
-            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-              <B4Brand to="/" />
-              <h1 className="text-xl md:text-2xl font-bold text-foreground">
-                Leader Level – The Big 4
-              </h1>
-            </div>
-          </div>
-        </header>
+        <div className="container mx-auto px-4 pt-6">
+          <h1 className="text-xl md:text-2xl font-bold text-foreground">Leader Level – The Big 4</h1>
+        </div>
 
         <main className="container mx-auto px-4 py-8 md:py-12">
           <div className="max-w-6xl mx-auto">
@@ -906,14 +866,7 @@ const Training = () => {
 
   if (stage === 'badge') {
     return <div className="min-h-screen">
-        <ResourceBankButton />
         <NavigationButtons showBack={false} />
-        <AccessibilityPanel />
-        <header className="border-b border-b4-line tw-cloth shadow-card">
-          <div className="container mx-auto px-4 py-6">
-            <B4Brand to="/" />
-          </div>
-        </header>
         <main className="container mx-auto px-4 py-12">
           <div className="max-w-2xl mx-auto space-y-8 text-center animate-fade-in">
             <div className="space-y-4">
@@ -937,17 +890,7 @@ const Training = () => {
   if (stage === 'summary' && selectedLevel) {
     return (
       <div className="min-h-screen">
-        <ResourceBankButton />
         <NavigationButtons onBack={() => setStage('tool-select')} />
-        <AccessibilityPanel />
-        <header className="border-b border-b4-line tw-cloth shadow-card">
-          <div className="container mx-auto px-4 py-6">
-            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-              <B4Brand to="/" />
-              <p className="sr-only">The Big 4: Level Up</p>
-            </div>
-          </div>
-        </header>
         <main className="container mx-auto px-4 py-8 md:py-12">
           <LearningSummary
             level={selectedLevel}
@@ -962,21 +905,18 @@ const Training = () => {
   const sectionInfo = getSectionInfo();
 
   return <div className="min-h-screen">
-      <ResourceBankButton />
       <NavigationButtons onBack={handleBack} />
-      <AccessibilityPanel />
-      <header className="border-b border-b4-line tw-cloth shadow-card sticky top-0 z-10">
+      <div className="border-b border-b4-line bg-card/80">
         <div className="container mx-auto px-4 py-3">
-          <div className="flex items-center justify-between mb-2">
-            <B4Brand to="/" />
-            <Button variant="outline" size="sm" onClick={handleRestart} className="border-border hover:bg-accent hover:text-accent-foreground">
+          <div className="flex items-center justify-end mb-2">
+            <Button variant="outline" size="sm" onClick={() => navigate("/new/journey")} className="border-border hover:bg-accent hover:text-accent-foreground">
               <Home className="mr-2 h-4 w-4" />
-              Exit
+              Leave module
             </Button>
           </div>
           <ProgressTracker currentStep={getCurrentStep()} steps={progressSteps} brandColor={currentBrandColor} />
         </div>
-      </header>
+      </div>
 
       <main className="container mx-auto px-4 py-12">
         {stage === 'intro' && <div className="max-w-4xl mx-auto space-y-6 animate-fade-in">

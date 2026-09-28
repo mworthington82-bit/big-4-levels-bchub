@@ -6,20 +6,22 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Switch } from "@/components/ui/switch";
 import { Settings, Volume2, VolumeX } from "lucide-react";
 
-export const AccessibilityPanel = () => {
+export const AccessibilityPanel = ({ inline = false }: { inline?: boolean }) => {
   const { settings, updateSetting, isSpeaking, stopSpeaking } = useAccessibility();
 
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <Button 
-          variant="outline" 
-          size="sm" 
-          className="fixed bottom-4 right-4 z-50 shadow-lg"
-          aria-label="Open accessibility settings"
+        <Button
+          variant="outline"
+          size="sm"
+          className={inline
+            ? "min-h-[44px] rounded-full bg-card/70 px-3 shrink-0"
+            : "fixed bottom-4 right-4 z-50 shadow-lg"}
+          aria-label="Accessibility settings"
         >
-          <Settings className="h-4 w-4 mr-2" />
-          Accessibility
+          <Settings className={inline ? "h-4 w-4 lg:mr-2" : "h-4 w-4 mr-2"} aria-hidden="true" />
+          <span className={inline ? "hidden lg:inline" : ""}>Accessibility</span>
         </Button>
       </SheetTrigger>
       <SheetContent className="overflow-y-auto">
