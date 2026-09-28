@@ -87,10 +87,7 @@ const AppShell = ({ children }: { children: React.ReactNode }) => {
           {/* Right cluster: pill + avatar + sign out (never shares space with nav) */}
           <div className="flex items-center gap-2 shrink-0 ml-auto lg:ml-0" style={{ minWidth: "fit-content", flexWrap: "nowrap" }}>
             {showPill && (
-              <span
-                className="hidden md:inline-flex items-center px-3 py-1.5 rounded-full border border-border text-xs font-semibold bg-b4-wash whitespace-nowrap shrink-0"
-                style={{ minWidth: "fit-content" }}
-              >
+              <span className="hidden md:inline-flex tw-tag shrink-0" style={{ minWidth: "fit-content" }}>
                 {pillLabel}
               </span>
             )}
@@ -137,9 +134,7 @@ const AppShell = ({ children }: { children: React.ReactNode }) => {
 
         {showPill && (
           <div className="md:hidden flex justify-center pb-3 px-4">
-            <span className="inline-flex items-center px-3 py-1.5 rounded-full border border-border text-xs font-semibold bg-b4-wash whitespace-nowrap">
-              {pillLabel}
-            </span>
+            <span className="tw-tag">{pillLabel}</span>
           </div>
         )}
 

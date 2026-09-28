@@ -2,6 +2,7 @@
 @import './styles/threadworks-motion.css';
 @import './styles/weaving-loader.css';
 @import './styles/threadworks-cloth.css';
+@import './styles/threadworks-tag.css';
 
 @tailwind base;
 @tailwind components;
@@ -442,3 +443,6 @@ img[src*="rope-"] {
   object-fit: contain;
   filter: drop-shadow(0 8px 10px rgba(42, 33, 24, 0.18));
 }
+
+/* Swing tag image (Canva kraft tag). Resolved by Vite from the CSS url(). */
+:root { --tw-tag-img: url("./assets/art/tags/kraft-tag-h.webp"); }

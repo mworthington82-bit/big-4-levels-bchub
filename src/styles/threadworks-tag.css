@@ -1,0 +1,64 @@
+/* ThreadWorks swing tag — a soft, real-material label (kit v4, Tier 2).
+   The card, brass eyelet and cotton string are a photographed Canva render
+   (assets/objects/kraft-tag/kraft-tag-h.webp, 334x120, transparent). The text is
+   live HTML on top, so it stays readable, translatable and zoomable.
+
+   9-slice: the left 90px (string, eyelet, chamfer) never stretches; the plain
+   kraft body stretches to the words; 4px right edge is kept crisp.
+
+   Use it where the UI wants warmth: stage/level labels, small "sets" of things,
+   a status label. Not for buttons that do things, and not for dense tables.
+   Ink on kraft #D9C7A3 = 9.52:1. Copy the image next to your CSS and set
+   --tw-tag-img to its URL (bundlers: set it inline from an import). */
+.tw-tag {
+  --tw-tag-h: 34px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-height: var(--tw-tag-h);
+  box-sizing: border-box;
+  border-style: solid;
+  border-color: transparent;
+  border-width: 0 4px 0 calc(var(--tw-tag-h) * 0.75);
+  border-image-source: var(--tw-tag-img);
+  border-image-slice: 0 4 0 90 fill;
+  border-image-width: 0 4px 0 calc(var(--tw-tag-h) * 0.75);
+  border-image-repeat: stretch;
+  padding: 0 0.85rem 0 0.2rem;
+  color: #2a2118;
+  font-weight: 600;
+  font-size: 0.8125rem;
+  line-height: 1.1;
+  white-space: nowrap;
+  filter: drop-shadow(0 2px 2px rgba(42, 33, 24, 0.14)) drop-shadow(0 6px 10px rgba(42, 33, 24, 0.1));
+  /* hung, not placed: a hair off level, alternating in a set */
+  transform: rotate(var(--tw-tag-tilt, 0deg));
+  transform-origin: left center;
+}
+.tw-tag--lg { --tw-tag-h: 44px; font-size: 0.9375rem; padding-right: 1.1rem; }
+.tw-tag-set > .tw-tag:nth-child(odd)  { --tw-tag-tilt: -1.2deg; }
+.tw-tag-set > .tw-tag:nth-child(even) { --tw-tag-tilt: 1deg; }
+
+/* a sewn "button" for a letter or number on the tag */
+.tw-tag__knot {
+  display: inline-grid;
+  place-items: center;
+  width: 1.35em;
+  height: 1.35em;
+  border-radius: 999px;
+  color: #fff;
+  font-size: 0.85em;
+  font-weight: 700;
+  box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+}
+
+/* A tag that is a link/button still needs a visible focus ring */
+a.tw-tag:focus-visible,
+button.tw-tag:focus-visible {
+  outline: 2px solid #2a2118;
+  outline-offset: 3px;
+}
+@media (prefers-reduced-motion: no-preference) {
+  a.tw-tag, button.tw-tag { transition: transform 220ms cubic-bezier(0.22, 1, 0.36, 1); }
+  a.tw-tag:hover, button.tw-tag:hover { transform: rotate(0deg) translateY(-1px); }
+}

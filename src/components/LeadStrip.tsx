@@ -1,10 +1,12 @@
 import { useNavigate } from "react-router-dom";
+import { SwingTag, TagKnot } from "@/components/SwingTag";
 
 const stages = [
-  { letter: "L", label: "Launch", bg: "bg-green-600" },
-  { letter: "E", label: "Establish", bg: "bg-blue-600" },
-  { letter: "A", label: "Apply", bg: "bg-amber-500" },
-  { letter: "D", label: "Demonstrate", bg: "bg-purple-600" },
+  // Knot colours are the LEAD stage colours, darkened so white letters clear AA
+  { letter: "L", label: "Launch", bg: "bg-green-700" },
+  { letter: "E", label: "Establish", bg: "bg-blue-700" },
+  { letter: "A", label: "Apply", bg: "bg-amber-700" },
+  { letter: "D", label: "Demonstrate", bg: "bg-purple-700" },
 ];
 
 const LeadStrip = () => {
@@ -16,15 +18,12 @@ const LeadStrip = () => {
       className="w-full max-w-4xl mx-auto block bg-card border border-border rounded-2xl px-4 py-3 md:px-6 md:py-4 shadow-sm hover:shadow-[var(--shadow-hover)] transition-all duration-300 text-left"
       aria-label="Open the LEAD model guide in Resources"
     >
-      <div className="flex flex-wrap items-center justify-center gap-2 md:gap-3 mb-2">
+      <div className="tw-tag-set flex flex-wrap items-center justify-center gap-x-4 gap-y-3 md:gap-x-6 mb-3 pt-1">
         {stages.map((s) => (
-          <span
-            key={s.letter}
-            className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs md:text-sm font-bold text-white ${s.bg}`}
-          >
-            <span className="font-mono">{s.letter}</span>
-            <span>— {s.label}</span>
-          </span>
+          <SwingTag key={s.letter}>
+            <TagKnot className={s.bg}>{s.letter}</TagKnot>
+            <span>{s.label}</span>
+          </SwingTag>
         ))}
       </div>
       <p className="text-center text-xs md:text-sm text-muted-foreground">
