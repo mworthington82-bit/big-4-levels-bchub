@@ -673,6 +673,10 @@ html[data-reduce-motion] .s2d__progress span { opacity: 1; }
   .pill-95--press:active:not(:disabled) { transform: translate(2px, 2px); box-shadow: 1px 1px 0 hsl(var(--press)); }
   /* on the dark brown hero / panels the ink shadow would vanish: use burnt orange */
   .bg-b4-deep .pill-95--press, .pill-95--press.bg-b4-deep { --press: 17 75% 30%; }
+  /* the open "What you'll learn" details should not jump about while reading */
+  details.pill-95--press[open]:hover { transform: none; box-shadow: 3px 3px 0 hsl(var(--press)); }
+  /* big square panel: the same hard shadow at panel scale */
+  .fw-panel { border-radius: 4px; box-shadow: 6px 6px 0 hsl(var(--b4-flame-ink)); }
   .bg-b4-deep .pill-95--press:not(.bg-b4-flame) { --press: 0 0% 100% / 0.28; }
 }
 @media (prefers-reduced-motion: reduce) {
