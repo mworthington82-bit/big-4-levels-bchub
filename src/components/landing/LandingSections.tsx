@@ -75,7 +75,7 @@ export const ToolsSection = () => (
         <li key={t.name} className="flex flex-col items-center">
           {/* The disk: name printed on the red band, the line written on the stitched label */}
           <FabricFloppy title={t.name} line={t.line} logo={t.logo} tilt={[-2, 1.5, -1, 2][i]} />
-          <details className="group mt-4 w-full max-w-[300px] rounded-2xl bg-b4-deep px-4 py-3 text-white shadow-card">
+          <details className="group mt-4 w-full max-w-[300px] rounded-[4px] bg-b4-deep px-4 py-3 text-white pill-95 pill-95--press">
             <summary className="flex min-h-[40px] cursor-pointer list-none items-center justify-between font-semibold text-white">
               What you'll learn
               <span className="text-xl leading-none transition-transform group-open:rotate-45" aria-hidden="true">+</span>
@@ -106,12 +106,12 @@ const STEPS = [
 ];
 
 export const SignOffSteps = () => (
-  <section aria-labelledby="steps-heading" className="rounded-3xl bg-b4-deep p-6 text-white md:p-10">
+  <section aria-labelledby="steps-heading" className="fw-panel bg-b4-deep p-6 text-white md:p-10">
     <h2 id="steps-heading" className="font-display text-3xl md:text-4xl font-bold">How it works</h2>
     <ol className="mt-6 grid gap-4 md:grid-cols-4">
       {STEPS.map((s, i) => (
-        <li key={s.title} className="rounded-2xl bg-white/[0.06] p-5 ring-1 ring-white/10">
-          <span className="grid h-10 w-10 place-items-center rounded-full bg-b4-flame font-bold text-b4-on-flame" aria-hidden="true">
+        <li key={s.title} className="rounded-[4px] bg-white/[0.06] p-5 ring-1 ring-white/10">
+          <span className="grid h-10 w-10 place-items-center rounded-[4px] border-2 border-b4-on-flame bg-b4-flame font-bold text-b4-on-flame" aria-hidden="true">
             {i + 1}
           </span>
           <h3 className="mt-3 font-display text-lg font-bold">{s.title}</h3>
