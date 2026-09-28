@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { CheckCircle, Circle, Trophy, Target } from "lucide-react";
-import emblemExplorer from "@/assets/emblem-explorer.svg";
-import emblemPractitioner from "@/assets/emblem-practitioner.svg";
-import emblemLeader from "@/assets/emblem-leader.svg";
+import emblemExplorer from "@/assets/art/rope/knot-explorer.webp";
+import emblemPractitioner from "@/assets/art/rope/knot-practitioner.webp";
+import emblemLeader from "@/assets/art/rope/knot-leader.webp";
 
 const TOOLS = [
   { id: "teams", name: "MS Teams" },
@@ -13,7 +13,7 @@ const TOOLS = [
 ];
 
 const LEVELS = [
-  { id: "explorer", name: "Explorer", emblem: emblemExplorer, color: "#F5A623" },
+  { id: "explorer", name: "Explorer", emblem: emblemExplorer, color: "hsl(var(--explorer))" },
   { id: "practitioner", name: "Practitioner", emblem: emblemPractitioner, color: "#5B5FC7" },
   { id: "leader", name: "Leader", emblem: emblemLeader, color: "#22C55E" },
 ];

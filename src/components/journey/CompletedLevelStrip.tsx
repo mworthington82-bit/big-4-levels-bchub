@@ -3,8 +3,8 @@ import { IconChevronDown } from "@tabler/icons-react";
 import ModuleCard from "@/components/journey/ModuleCard";
 import { buildExplorerCards, buildPractitionerCards } from "@/lib/journey";
 import type { StaffProfile } from "@/hooks/useStaffProfile";
-import emblemExplorer from "@/assets/emblem-explorer.svg";
-import emblemPractitioner from "@/assets/emblem-practitioner.svg";
+import emblemExplorer from "@/assets/art/rope/knot-explorer.webp";
+import emblemPractitioner from "@/assets/art/rope/knot-practitioner.webp";
 
 interface Props {
   profile: StaffProfile;

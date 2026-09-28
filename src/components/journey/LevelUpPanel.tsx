@@ -65,13 +65,13 @@ const LevelUpPanel = ({ cards, level }: Props) => {
   if (items.length === 0) {
     const next = level === "Explorer" ? "Practitioner" : "Leader";
     return (
-      <section className="bg-white rounded-2xl border border-[#CDE3B8] shadow-sm p-6 md:p-7">
+      <section className="bg-card rounded-2xl border border-[#CDE3B8] shadow-sm p-6 md:p-7">
         <div className="flex items-start gap-4">
           <span className="h-11 w-11 rounded-xl bg-[#EAF3DE] flex items-center justify-center flex-shrink-0">
             <IconTrophy size={22} stroke={1.75} className="text-[#3B6D11]" />
           </span>
           <div>
-            <h2 className="font-display font-bold text-[#1F3864] text-lg md:text-xl">
+            <h2 className="font-display font-bold text-b4-strong text-lg md:text-xl">
               Congratulations — you have completed everything at {level} level
             </h2>
             <p className="text-sm text-muted-foreground mt-1.5 max-w-2xl">
@@ -82,7 +82,7 @@ const LevelUpPanel = ({ cards, level }: Props) => {
             <button
               type="button"
               onClick={() => navigate(next === "Leader" ? "/new/leader" : "/bookings")}
-              className="mt-4 inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-[#1F3864] text-white text-sm font-semibold"
+              className="mt-4 inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-b4-deep text-white text-sm font-semibold"
             >
               {next === "Leader" ? "Explore Leader level" : "See Practitioner sessions"}
               <IconArrowRight size={15} stroke={2.25} />
@@ -94,8 +94,8 @@ const LevelUpPanel = ({ cards, level }: Props) => {
   }
 
   return (
-    <section className="bg-white rounded-2xl border border-border shadow-sm p-6 md:p-7">
-      <h2 className="font-display font-bold text-[#1F3864] text-lg md:text-xl">
+    <section className="bg-card rounded-2xl border border-border shadow-sm p-6 md:p-7">
+      <h2 className="font-display font-bold text-b4-strong text-lg md:text-xl">
         To level up, you need to...
       </h2>
       <ul className="mt-4 space-y-3">
@@ -103,10 +103,10 @@ const LevelUpPanel = ({ cards, level }: Props) => {
           <li
             key={item.key}
             className={`flex flex-col sm:flex-row sm:items-center gap-3 rounded-xl border p-3.5 ${
-              item.amber ? "border-[#F5A623] bg-[#FFF9EF]" : "border-border bg-[#F4F6FB]"
+              item.amber ? "border-b4-flame bg-[#FFF9EF]" : "border-border bg-b4-wash"
             }`}
           >
-            <span className="flex-1 text-sm text-[#1F3864] inline-flex items-start gap-2">
+            <span className="flex-1 text-sm text-b4-strong inline-flex items-start gap-2">
               {item.amber && (
                 <IconAlertTriangle size={16} stroke={2} className="text-[#B37400] mt-0.5 flex-shrink-0" />
               )}
@@ -116,7 +116,7 @@ const LevelUpPanel = ({ cards, level }: Props) => {
               type="button"
               onClick={() => navigate(item.to)}
               className={`inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-xs font-semibold flex-shrink-0 ${
-                item.amber ? "bg-[#B37400] text-white" : "bg-[#1F3864] text-white"
+                item.amber ? "bg-[#B37400] text-white" : "bg-b4-deep text-white"
               }`}
             >
               {item.cta}

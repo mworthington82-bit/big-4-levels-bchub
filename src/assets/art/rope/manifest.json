@@ -1,0 +1,55 @@
+{
+  "material": "rope & knots (Big 4)",
+  "shadow": "apply --tw-shadow-object in CSS; none baked",
+  "objects": [
+    {
+      "name": "knot-explorer",
+      "w": 640,
+      "h": 308,
+      "use": "Explorer level emblem (always with the word 'Explorer')",
+      "source": "Canva DAHWeTyR7d0 (Big 4 Rope Objects \u2014 export sheet), rope matched to tile big4.png"
+    },
+    {
+      "name": "knot-practitioner",
+      "w": 401,
+      "h": 640,
+      "use": "Practitioner level emblem (always with the word 'Practitioner')",
+      "source": "Canva DAHWeTyR7d0 page 8, rope matched to tile big4.png"
+    },
+    {
+      "name": "knot-leader",
+      "w": 640,
+      "h": 243,
+      "use": "Leader level emblem (always with the word 'Leader')",
+      "source": "Canva DAHWeTyR7d0 (Big 4 Rope Objects \u2014 export sheet), rope matched to tile big4.png"
+    },
+    {
+      "name": "rope-coil",
+      "w": 640,
+      "h": 630,
+      "use": "Empty states",
+      "source": "Canva DAHWeTyR7d0 (Big 4 Rope Objects \u2014 export sheet), rope matched to tile big4.png"
+    },
+    {
+      "name": "rope-strand",
+      "w": 1200,
+      "h": 113,
+      "use": "Section divider / under a page heading",
+      "source": "Canva DAHWeTyR7d0 (Big 4 Rope Objects \u2014 export sheet), rope matched to tile big4.png"
+    },
+    {
+      "name": "rope-frayed",
+      "w": 960,
+      "h": 345,
+      "use": "404 and not-yet pages",
+      "source": "Canva DAHWeTyR7d0 (Big 4 Rope Objects \u2014 export sheet), rope matched to tile big4.png"
+    },
+    {
+      "name": "rope-loop",
+      "w": 960,
+      "h": 659,
+      "use": "Drawn around one key stat or badge; once per page",
+      "source": "Canva DAHWeTyR7d0 (Big 4 Rope Objects \u2014 export sheet), rope matched to tile big4.png"
+    }
+  ]
+}

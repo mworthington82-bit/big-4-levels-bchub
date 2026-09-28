@@ -1,4 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=Carlito:wght@400;700&family=OpenDyslexic:wght@400;700&display=swap');
+/* Fonts load from index.html (Space Grotesk, Fraunces, Carlito, OpenDyslexic) */
+@import './styles/threadworks-motion.css';
+@import './styles/weaving-loader.css';
+@import './styles/threadworks-cloth.css';
+@import './styles/threadworks-tag.css';
+@import './styles/level-line.css';
 
 @tailwind base;
 @tailwind components;
@@ -9,44 +14,64 @@ All colors MUST be HSL.
 */
 
 @layer base {
+  /* ThreadWorks v4 re-skin (Sep 2026): paper + ink + Big 4 orange.
+     Values & contrast: threadworks-family-identity/references/per-tool/big4.md */
   :root {
-    --background: 220 36% 97%;
-    --foreground: 218 53% 26%;
+    --background: 41 42% 91%;          /* paper #F2ECDF */
+    --foreground: 30 27% 13%;          /* ink #2A2118 */
 
-    --card: 0 0% 100%;
-    --card-foreground: 218 53% 26%;
+    --card: 40 53% 97%;                /* warm white #FBF8F2 */
+    --card-foreground: 30 27% 13%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 218 53% 26%;
+    --popover: 40 53% 97%;
+    --popover-foreground: 30 27% 13%;
 
-    --primary: 218 53% 26%;
+    --primary: 17 89% 38%;             /* #B53A0B, white text 5.87:1 */
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 39 90% 56%;
-    --secondary-foreground: 218 53% 26%;
+    --secondary: 25 87% 94%;           /* orange-tinted surface #FDEEE3 */
+    --secondary-foreground: 30 27% 13%;
 
-    --muted: 220 36% 97%;
-    --muted-foreground: 218 20% 45%;
+    --muted: 38 37% 88%;               /* #ECE4D6 */
+    --muted-foreground: 32 15% 36%;    /* #6B5E4F, 5.34:1 on paper */
 
-    --accent: 39 90% 56%;
-    --accent-foreground: 218 53% 26%;
+    --accent: 25 87% 94%;
+    --accent-foreground: 30 27% 13%;
 
-    --destructive: 0 84% 60%;
+    --destructive: 0 72% 45%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 218 20% 88%;
-    --input: 218 20% 88%;
-    --ring: 39 90% 56%;
+    --border: 39 33% 83%;              /* #E2D8C6 */
+    --input: 39 33% 83%;
+    --ring: 17 89% 38%;
 
     --radius: 1rem;
-    
-    --gradient-primary: linear-gradient(135deg, hsl(39 90% 56%), hsl(39 90% 66%));
-    --gradient-hero: linear-gradient(135deg, hsl(240 24% 15%), hsl(240 16% 24%));
-    --gradient-card: linear-gradient(to bottom, hsl(0 0% 100%), hsl(40 14% 97%));
-    --shadow-card: 0 4px 10px hsl(0 0% 0% / 0.05);
-    --shadow-hover: 0 8px 30px -4px hsl(39 90% 56% / 0.25);
-    --shadow-lift: 0 12px 40px -8px hsl(0 0% 0% / 0.12);
-    
+
+    /* Big 4 role tokens (replace the old hard-coded navy/amber) */
+    --b4-strong: 30 27% 13%;           /* headings and strong text (was #1F3864) */
+    --b4-ink: 30 27% 13%;              /* body ink (was #1C1C2E) */
+    --b4-deep: 30 27% 13%;             /* dark surfaces carrying light text */
+    --b4-deep-hover: 24 23% 21%;
+    --b4-flame: 22 86% 51%;            /* orange fill #EE6415, ink on it 4.87:1 */
+    --b4-on-flame: 30 27% 13%;         /* text on a flame fill: always ink */
+    --b4-flame-text: 17 89% 38%;       /* orange text #B53A0B, 4.99:1 on paper */
+    --b4-flame-ink: 15 79% 34%;        /* #9A3412 */
+    --b4-flame-soft: 25 87% 94%;       /* #FDEEE3 */
+    --b4-line: 38 31% 81%;             /* #DDD2BF */
+    --b4-muted: 32 15% 36%;            /* #6B5E4F */
+    --b4-wash: 41 42% 91%;             /* #F2ECDF */
+    --b4-wash-2: 39 35% 87%;           /* #EAE2D3 */
+    --b4-wash-3: 37 33% 84%;           /* #E4DACA */
+    --b4-navy: 218 53% 26%;            /* the old Big 4 navy, kept as a support colour only */
+
+    --gradient-primary: linear-gradient(135deg, hsl(22 86% 51%), hsl(27 96% 61%));
+    --gradient-hero: linear-gradient(135deg, hsl(30 27% 13%), hsl(24 23% 21%));
+    --gradient-card: linear-gradient(to bottom, hsl(40 53% 97%), hsl(41 42% 93%));
+    --shadow-card: 0 1px 2px rgba(42, 33, 24, 0.1), 0 4px 14px rgba(42, 33, 24, 0.08);
+    --shadow-hover: 0 2px 4px rgba(42, 33, 24, 0.14), 0 12px 28px rgba(42, 33, 24, 0.18);
+    --shadow-lift: 0 20px 50px rgba(42, 33, 24, 0.22);
+
+    /* Product colours (Teams, Canva, Edpuzzle, Copilot) belong to their makers: unchanged */
     --tool-teams: 239 44% 56%;
     --tool-teams-bg: 240 100% 97%;
     --tool-canva: 268 76% 54%;
@@ -61,67 +86,93 @@ All colors MUST be HSL.
     --inclusion-light: 280 65% 65%;
     --inclusion-bg: 280 60% 96%;
 
-    --gold: 39 90% 56%;
-    --gold-dark: 33 76% 43%;
-    --gold-light: 40 100% 96%;
-    --ink: 240 24% 15%;
-    --ink-mid: 240 12% 38%;
-    --ink-soft: 240 8% 62%;
-    --surface: 40 14% 97%;
+    /* "gold" now means the Big 4 orange family */
+    --gold: 22 86% 51%;
+    --gold-dark: 17 89% 38%;
+    --gold-light: 25 87% 94%;
+    --ink: 30 27% 13%;
+    --ink-mid: 32 15% 36%;
+    --ink-soft: 34 12% 55%;
+    --surface: 40 53% 97%;
 
-    --explorer: 39 90% 56%;
-    --explorer-bg: 40 100% 96%;
-    --practitioner: 239 44% 56%;
-    --practitioner-bg: 240 100% 97%;
-    --leader: 152 70% 38%;
-    --leader-bg: 152 60% 95%;
+    /* Levels: semantic, re-tuned to sit with orange */
+    --explorer: 32 81% 29%;            /* ochre #854D0E, 5.82:1 on paper */
+    --explorer-bg: 48 96% 89%;
+    --practitioner: 245 58% 51%;       /* #4338CA, 6.71:1 */
+    --practitioner-bg: 226 100% 97%;
+    --leader: 163 94% 24%;             /* #047857, 4.66:1 */
+    --leader-bg: 152 81% 96%;
 
-    --sidebar-background: 40 14% 97%;
-    --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 240 5.9% 10%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 240 4.8% 95.9%;
-    --sidebar-accent-foreground: 240 5.9% 10%;
-    --sidebar-border: 0 0% 89%;
-    --sidebar-ring: 39 90% 56%;
+    --sidebar-background: 40 53% 97%;
+    --sidebar-foreground: 30 27% 13%;
+    --sidebar-primary: 17 89% 38%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 38 37% 88%;
+    --sidebar-accent-foreground: 30 27% 13%;
+    --sidebar-border: 39 33% 83%;
+    --sidebar-ring: 17 89% 38%;
+
+    /* ThreadWorks cloth in the Big 4 dye: pale apricot, hub linen weave */
+    --tw-cloth: #F6E3D3;
+
+    /* ThreadWorks loader wears the Tool thread on paper */
+    --tw-loader-thread: #C2410C;
+    --tw-loader-track: hsl(38 31% 81%);
+    --tw-loader-card: hsl(40 53% 97%);
   }
 
-  .dark {
-    --background: 240 24% 10%;
-    --foreground: 0 0% 98%;
+  /* Dark: both the shadcn class and the accessibility panel's "Dark" mode */
+  .dark,
+  [data-background-mode="dark"] {
+    --background: 27 24% 9%;           /* #1C1611 */
+    --foreground: 41 42% 91%;
 
-    --card: 240 24% 15%;
-    --card-foreground: 0 0% 98%;
+    --card: 28 26% 11%;                /* #241C15 */
+    --card-foreground: 41 42% 91%;
+    --popover: 28 26% 11%;
+    --popover-foreground: 41 42% 91%;
 
-    --popover: 240 24% 10%;
-    --popover-foreground: 0 0% 98%;
+    --primary: 27 96% 61%;             /* #FB923C with ink text 6.98:1 */
+    --primary-foreground: 30 27% 13%;
 
-    --primary: 0 0% 100%;
-    --primary-foreground: 240 24% 15%;
+    --secondary: 24 47% 15%;
+    --secondary-foreground: 41 42% 91%;
 
-    --secondary: 39 90% 56%;
-    --secondary-foreground: 240 24% 15%;
+    --muted: 30 24% 15%;
+    --muted-foreground: 36 18% 66%;    /* #B8AB98, 7.44:1 */
 
-    --muted: 240 20% 18%;
-    --muted-foreground: 0 0% 65%;
+    --accent: 24 47% 15%;
+    --accent-foreground: 41 42% 91%;
 
-    --accent: 39 90% 56%;
-    --accent-foreground: 240 24% 15%;
-
-    --destructive: 0 63% 31%;
+    --destructive: 0 63% 45%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 240 20% 18%;
-    --input: 240 20% 18%;
-    --ring: 39 90% 56%;
-    
-    --gradient-primary: linear-gradient(135deg, hsl(39 90% 56%), hsl(39 90% 66%));
-    --gradient-hero: linear-gradient(135deg, hsl(240 24% 10%), hsl(39 90% 56%));
-    --gradient-card: linear-gradient(to bottom, hsl(240 24% 15%), hsl(240 24% 12%));
-    --shadow-card: 0 4px 20px -2px hsl(39 90% 56% / 0.2);
-    --shadow-hover: 0 8px 30px -4px hsl(39 90% 56% / 0.3);
-    --shadow-lift: 0 12px 40px -8px hsl(39 90% 56% / 0.25);
-    
+    --border: 29 22% 19%;
+    --input: 29 22% 19%;
+    --ring: 27 96% 61%;
+
+    --b4-strong: 41 42% 91%;
+    --b4-ink: 40 37% 89%;
+    --b4-deep: 29 29% 15%;             /* #33271C */
+    --b4-deep-hover: 27 24% 22%;
+    --b4-flame: 22 86% 51%;
+    --b4-on-flame: 30 27% 13%;
+    --b4-flame-text: 27 96% 61%;
+    --b4-flame-ink: 31 97% 72%;
+    --b4-flame-soft: 24 47% 15%;
+    --b4-line: 29 22% 19%;
+    --b4-muted: 36 18% 66%;
+    --b4-wash: 28 26% 11%;
+    --b4-wash-2: 30 24% 15%;
+    --b4-wash-3: 30 24% 18%;
+
+    --gradient-primary: linear-gradient(135deg, hsl(22 86% 51%), hsl(27 96% 61%));
+    --gradient-hero: linear-gradient(135deg, hsl(27 24% 9%), hsl(29 29% 15%));
+    --gradient-card: linear-gradient(to bottom, hsl(28 26% 11%), hsl(27 24% 9%));
+    --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.3), 0 4px 14px rgba(0, 0, 0, 0.25);
+    --shadow-hover: 0 2px 4px rgba(0, 0, 0, 0.35), 0 12px 28px rgba(0, 0, 0, 0.35);
+    --shadow-lift: 0 20px 50px rgba(0, 0, 0, 0.45);
+
     --tool-teams: 239 44% 65%;
     --tool-teams-bg: 240 50% 20%;
     --tool-canva: 268 76% 64%;
@@ -131,29 +182,36 @@ All colors MUST be HSL.
     --tool-copilot: 207 100% 55%;
     --tool-copilot-bg: 207 50% 20%;
 
-    --gold: 39 90% 56%;
-    --gold-dark: 33 76% 53%;
-    --gold-light: 39 40% 18%;
-    --ink: 240 24% 85%;
-    --ink-mid: 240 12% 65%;
-    --ink-soft: 240 8% 50%;
-    --surface: 240 24% 12%;
+    --gold: 22 86% 51%;
+    --gold-dark: 27 96% 61%;
+    --gold-light: 24 47% 15%;
+    --ink: 40 37% 89%;
+    --ink-mid: 36 18% 66%;
+    --ink-soft: 34 12% 50%;
+    --surface: 28 26% 11%;
 
-    --explorer: 39 90% 56%;
-    --explorer-bg: 39 40% 18%;
-    --practitioner: 239 44% 65%;
-    --practitioner-bg: 240 50% 20%;
-    --leader: 152 70% 45%;
-    --leader-bg: 152 40% 18%;
+    --explorer: 48 96% 53%;
+    --explorer-bg: 43 56% 16%;
+    --practitioner: 230 94% 82%;
+    --practitioner-bg: 232 32% 22%;
+    --leader: 158 64% 52%;
+    --leader-bg: 156 48% 14%;
 
-    --sidebar-background: 240 24% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 39 90% 56%;
+    --sidebar-background: 27 24% 9%;
+    --sidebar-foreground: 41 42% 91%;
+    --sidebar-primary: 27 96% 61%;
+    --sidebar-primary-foreground: 30 27% 13%;
+    --sidebar-accent: 30 24% 15%;
+    --sidebar-accent-foreground: 41 42% 91%;
+    --sidebar-border: 29 22% 19%;
+    --sidebar-ring: 27 96% 61%;
+
+    --tw-cloth: #2A1D14;
+    --tw-cloth-shadow: rgba(0, 0, 0, 0.18);
+    --tw-cloth-light: rgba(255, 255, 255, 0.035);
+    --tw-loader-thread: #FB923C;
+    --tw-loader-track: hsl(29 22% 19%);
+    --tw-loader-card: hsl(28 26% 11%);
   }
 }
 
@@ -162,14 +220,25 @@ All colors MUST be HSL.
     @apply border-border;
   }
 
+  /* The page ground is ThreadWorks cloth (hub linen weave) in the Big 4 dye;
+     cards and panels rest on it in warm white. */
   body {
-    @apply bg-background text-foreground;
-    font-family: Calibri, 'Carlito', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    @apply text-foreground font-sans antialiased;
+    background-color: var(--tw-cloth);
+    background-image:
+      linear-gradient(90deg, var(--tw-cloth-shadow, rgba(42, 33, 24, 0.06)) 0 1px, var(--tw-cloth-light, rgba(255, 255, 255, 0.1)) 1px 2px, transparent 2px),
+      linear-gradient(180deg, transparent 0 3px, var(--tw-cloth-shadow, rgba(42, 33, 24, 0.06)) 3px 4px, var(--tw-cloth-light, rgba(255, 255, 255, 0.1)) 4px 5px, transparent 5px);
+    background-size: 6px 6px;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-family: Calibri, 'Carlito', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-family: "Space Grotesk", Calibri, Carlito, system-ui, sans-serif;
     font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+
+  .prose {
+    font-family: "Fraunces", Georgia, serif;
   }
 }
 
@@ -219,20 +288,6 @@ All colors MUST be HSL.
 }
 
 /* Accessibility: Background Modes */
-[data-background-mode="dark"] {
-  --background: 220 13% 10%;
-  --foreground: 0 0% 95%;
-  --card: 220 13% 15%;
-  --card-foreground: 0 0% 95%;
-  --popover: 220 13% 15%;
-  --popover-foreground: 0 0% 95%;
-  --muted: 220 13% 25%;
-  --muted-foreground: 0 0% 70%;
-  --accent: 211 100% 45%;
-  --accent-foreground: 0 0% 100%;
-  --border: 220 13% 25%;
-}
-
 [data-background-mode="high-contrast"] {
   --background: 0 0% 0%;
   --foreground: 0 0% 100%;
@@ -247,6 +302,26 @@ All colors MUST be HSL.
   --border: 0 0% 100%;
   --primary: 0 0% 100%;
   --primary-foreground: 0 0% 0%;
+  --b4-strong: 0 0% 100%;
+  --b4-ink: 0 0% 100%;
+  --b4-deep: 0 0% 0%;
+  --b4-deep-hover: 0 0% 15%;
+  --b4-flame: 48 100% 50%;
+  --b4-on-flame: 0 0% 0%;
+  --b4-flame-text: 48 100% 50%;
+  --b4-flame-ink: 48 100% 50%;
+  --b4-flame-soft: 0 0% 10%;
+  --b4-line: 0 0% 100%;
+  --b4-muted: 0 0% 100%;
+  --b4-wash: 0 0% 0%;
+  --b4-wash-2: 0 0% 10%;
+  --b4-wash-3: 0 0% 15%;
+  --tw-cloth: #000000;
+  --tw-cloth-shadow: transparent;
+  --tw-cloth-light: transparent;
+  --tw-loader-thread: #FFD400;
+  --tw-loader-track: #666666;
+  --tw-loader-card: #111111;
 }
 
 [data-background-mode="high-contrast"] * {
@@ -315,12 +390,14 @@ All colors MUST be HSL.
 /* Visible focus indicator on common interactive elements.
    Uses :where() for zero specificity so per-component focus styles still win. */
 :where(button, a, [role="button"], input, select, textarea, summary):focus-visible {
-  outline: 2px solid #1F3864;
+  outline: 2px solid hsl(var(--b4-strong));
   outline-offset: 2px;
-  box-shadow: 0 0 0 4px rgba(245, 166, 35, 0.35);
+  box-shadow: 0 0 0 4px hsl(var(--b4-flame) / 0.35);
 }
 
-/* Honour the user's reduced-motion preference */
+/* Reduced-motion contract (ThreadWorks kit v4, Tier 1): the OS setting OR the
+   in-app "Reduce Motion" switch. Nothing moves; the loader thread renders drawn
+   and still (weaving-loader.css) and its words still advance. */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -330,8 +407,43 @@ All colors MUST be HSL.
     transition-duration: 0.001ms !important;
     scroll-behavior: auto !important;
   }
-  .animate-pulse {
+  .animate-pulse, .tw-skeleton {
     animation: none !important;
     opacity: 1 !important;
   }
 }
+html[data-reduce-motion] *,
+html[data-reduce-motion] *::before,
+html[data-reduce-motion] *::after {
+  animation-duration: 0.001ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.001ms !important;
+  scroll-behavior: auto !important;
+}
+html[data-reduce-motion] .animate-pulse,
+html[data-reduce-motion] .tw-skeleton {
+  animation: none !important;
+  opacity: 1 !important;
+}
+
+/* Logos that must flip with the theme (the college logo exists in black and white) */
+.b4-on-light { display: block; }
+.b4-on-dark { display: none; }
+[data-background-mode="dark"] .b4-on-light,
+[data-background-mode="high-contrast"] .b4-on-light,
+.dark .b4-on-light { display: none; }
+[data-background-mode="dark"] .b4-on-dark,
+[data-background-mode="high-contrast"] .b4-on-dark,
+.dark .b4-on-dark { display: block; }
+
+/* Rope objects (ThreadWorks v4 object library, Big 4 material). They're wide
+   photos, so they fit inside whatever box an emblem slot gives them, and cast
+   the family object shadow rather than a baked one. */
+img[src*="knot-"],
+img[src*="rope-"] {
+  object-fit: contain;
+  filter: drop-shadow(0 8px 10px rgba(42, 33, 24, 0.18));
+}
+
+/* Swing tag image (Canva kraft tag). Resolved by Vite from the CSS url(). */
+:root { --tw-tag-img: url("./assets/art/tags/kraft-tag-h.webp"); }

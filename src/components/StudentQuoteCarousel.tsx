@@ -33,7 +33,7 @@ const StudentQuoteCarousel = () => {
   return (
     <div className="max-w-[640px] mx-auto mt-8 text-left">
       {/* Context label */}
-      <p className="uppercase text-[#F5A623] font-semibold tracking-wide" style={{ fontSize: 12 }}>
+      <p className="uppercase text-b4-flame font-semibold tracking-wide" style={{ fontSize: 12 }}>
         How students see digital learning
       </p>
       <p className="text-white/50 mt-1 leading-snug" style={{ fontSize: 14 }}>
@@ -65,7 +65,7 @@ const StudentQuoteCarousel = () => {
 
       {/* Attribution row */}
       <div className="flex items-center justify-between mt-3 flex-wrap gap-2">
-        <span className="uppercase text-[#F5A623] font-semibold tracking-[0.1em]" style={{ fontSize: 12 }}>
+        <span className="uppercase text-b4-flame font-semibold tracking-[0.1em]" style={{ fontSize: 12 }}>
           Bradford College Student
         </span>
 
@@ -81,7 +81,7 @@ const StudentQuoteCarousel = () => {
                 style={{
                   width: i === current ? 10 : 7,
                   height: i === current ? 10 : 7,
-                  background: i === current ? "#F5A623" : "rgba(255,255,255,0.3)",
+                  background: i === current ? "hsl(var(--b4-flame))" : "rgba(255,255,255,0.3)",
                 }}
               />
             ))}

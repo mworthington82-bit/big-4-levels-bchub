@@ -76,12 +76,12 @@ const BulkPanel = () => {
   };
 
   return (
-    <div className="bg-white rounded-xl border border-slate-200 p-6 space-y-4">
+    <div className="bg-card rounded-xl border border-border p-6 space-y-4">
       <div>
-        <h3 className="text-base font-semibold text-[#1F3864]">
+        <h3 className="text-base font-semibold text-b4-strong">
           Option A — Bulk completion by session
         </h3>
-        <p className="text-sm text-slate-500">
+        <p className="text-sm text-muted-foreground">
           Paste a list of staff emails who attended a Big 4 Day session and mark them all as
           having completed that module.
         </p>
@@ -126,18 +126,18 @@ const BulkPanel = () => {
       )}
 
       {result && (
-        <div className="text-sm bg-[#F4F6FB] border border-slate-200 rounded-lg p-4 space-y-2">
-          <div className="font-semibold text-[#1F3864]">
+        <div className="text-sm bg-b4-wash border border-border rounded-lg p-4 space-y-2">
+          <div className="font-semibold text-b4-strong">
             {result.marked} staff marked complete. {result.notFound.length} emails not found in
             the system.
           </div>
           {result.notFound.length > 0 && (
             <details>
-              <summary className="cursor-pointer text-slate-600">
+              <summary className="cursor-pointer text-muted-foreground">
                 Show {result.notFound.length} unmatched email
                 {result.notFound.length === 1 ? "" : "s"}
               </summary>
-              <ul className="mt-2 list-disc pl-5 text-slate-600 font-mono text-xs">
+              <ul className="mt-2 list-disc pl-5 text-muted-foreground font-mono text-xs">
                 {result.notFound.map((e) => (
                   <li key={e}>{e}</li>
                 ))}
@@ -217,12 +217,12 @@ const IndividualPanel = () => {
   const moduleCards = useMemo(() => MODULES, []);
 
   return (
-    <div className="bg-white rounded-xl border border-slate-200 p-6 space-y-4">
+    <div className="bg-card rounded-xl border border-border p-6 space-y-4">
       <div>
-        <h3 className="text-base font-semibold text-[#1F3864]">
+        <h3 className="text-base font-semibold text-b4-strong">
           Option B — Individual staff completion
         </h3>
-        <p className="text-sm text-slate-500">
+        <p className="text-sm text-muted-foreground">
           Search a member of staff and mark a single module as complete.
         </p>
       </div>
@@ -230,7 +230,7 @@ const IndividualPanel = () => {
       {!selected ? (
         <>
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground/80" />
             <Input
               value={query}
               onChange={(e) => setQuery(e.target.value)}
@@ -238,32 +238,32 @@ const IndividualPanel = () => {
               className="pl-9"
             />
           </div>
-          {loading && <div className="text-sm text-slate-500">Searching…</div>}
+          {loading && <div className="text-sm text-muted-foreground">Searching…</div>}
           {!loading && query.trim().length >= 2 && rows.length === 0 && (
-            <div className="text-sm text-slate-500">No matching staff found.</div>
+            <div className="text-sm text-muted-foreground">No matching staff found.</div>
           )}
           {rows.length > 0 && (
-            <ul className="divide-y divide-slate-100 border border-slate-200 rounded-lg overflow-hidden">
+            <ul className="divide-y divide-slate-100 border border-border rounded-lg overflow-hidden">
               {rows.map((r) => (
                 <li key={r.email}>
                   <button
                     onClick={() => selectStaff(r)}
-                    className="w-full flex items-center justify-between gap-3 px-4 py-3 text-left hover:bg-slate-50"
+                    className="w-full flex items-center justify-between gap-3 px-4 py-3 text-left hover:bg-b4-wash"
                   >
                     <div className="flex items-center gap-3 min-w-0">
-                      <div className="w-8 h-8 rounded-full bg-[#1F3864]/10 flex items-center justify-center flex-shrink-0">
-                        <UserIcon className="w-4 h-4 text-[#1F3864]" />
+                      <div className="w-8 h-8 rounded-full bg-b4-deep/10 flex items-center justify-center flex-shrink-0">
+                        <UserIcon className="w-4 h-4 text-b4-strong" />
                       </div>
                       <div className="min-w-0">
-                        <div className="font-medium text-[#1F3864] truncate">
+                        <div className="font-medium text-b4-strong truncate">
                           {r.name ?? "(no name)"}
                         </div>
-                        <div className="text-xs text-slate-500 truncate">
+                        <div className="text-xs text-muted-foreground truncate">
                           {r.email} · {r.department ?? "—"}
                         </div>
                       </div>
                     </div>
-                    <span className="text-xs font-semibold text-slate-700 bg-slate-100 px-2 py-0.5 rounded-full flex-shrink-0">
+                    <span className="text-xs font-semibold text-foreground bg-muted px-2 py-0.5 rounded-full flex-shrink-0">
                       {r.assigned_level ?? "Unassigned"}
                     </span>
                   </button>
@@ -279,16 +279,16 @@ const IndividualPanel = () => {
               setSelected(null);
               setCompletedIds([]);
             }}
-            className="text-sm text-[#1F3864] underline"
+            className="text-sm text-b4-strong underline"
           >
             ← Back to search
           </button>
 
-          <div className="bg-[#F4F6FB] rounded-lg p-4">
-            <div className="font-semibold text-[#1F3864]">
+          <div className="bg-b4-wash rounded-lg p-4">
+            <div className="font-semibold text-b4-strong">
               {selected.name ?? "(no name)"}
             </div>
-            <div className="text-sm text-slate-600">
+            <div className="text-sm text-muted-foreground">
               {selected.email} · {selected.department ?? "—"} ·{" "}
               {selected.assigned_level ?? "Unassigned"}
             </div>
@@ -300,10 +300,10 @@ const IndividualPanel = () => {
               return (
                 <div
                   key={m.id}
-                  className="flex items-center justify-between gap-3 border border-slate-200 rounded-lg px-4 py-3"
+                  className="flex items-center justify-between gap-3 border border-border rounded-lg px-4 py-3"
                 >
                   <div className="min-w-0">
-                    <div className="text-sm font-medium text-[#1F3864]">{m.label}</div>
+                    <div className="text-sm font-medium text-b4-strong">{m.label}</div>
                     {done && (
                       <div className="text-xs text-green-700 inline-flex items-center gap-1 mt-0.5">
                         <CheckCircle2 className="w-3 h-3" /> Complete
@@ -332,10 +332,10 @@ const MarkSessionsComplete = () => {
   return (
     <section className="space-y-4">
       <header>
-        <h2 className="text-xl font-bold text-[#1F3864]">
+        <h2 className="text-xl font-bold text-b4-strong">
           Mark sessions complete — Big 4 Day
         </h2>
-        <p className="text-sm text-slate-600">
+        <p className="text-sm text-muted-foreground">
           Use Option A to mark a whole session in one go, or Option B to update an
           individual member of staff.
         </p>

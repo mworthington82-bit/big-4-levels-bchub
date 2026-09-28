@@ -33,7 +33,7 @@ import RequiredActivityDialog from "@/components/dialogs/RequiredActivityDialog"
 import CheatSheetButton from "@/components/CheatSheetButton";
 import LeadCallout from "@/components/LeadCallout";
 import { useIsDemoUser } from "@/lib/demoAccess";
-import bradfordLogo from "@/assets/bradford-college-logo.jpg";
+import B4Brand from "@/components/B4Brand";
 import heroBanner from "@/assets/hero-banner.jpg";
 import teamsIllustration from "@/assets/teams-illustration.jpg";
 import canvaIllustration from "@/assets/canva-illustration.jpg";
@@ -46,9 +46,9 @@ import edpuzzleLogo from "@/assets/edpuzzle-logo.png";
 import copilotLogo from "@/assets/copilot-logo.png";
 
 import formsLogo from "@/assets/forms-logo.jpg";
-import emblemExplorer from "@/assets/emblem-explorer.svg";
-import emblemPractitioner from "@/assets/emblem-practitioner.svg";
-import emblemLeader from "@/assets/emblem-leader.svg";
+import emblemExplorer from "@/assets/art/rope/knot-explorer.webp";
+import emblemPractitioner from "@/assets/art/rope/knot-practitioner.webp";
+import emblemLeader from "@/assets/art/rope/knot-leader.webp";
 type Stage = 'level-entry' | 'home' | 'tool-select' | 'level-select' | 'intro' | 'learning' | 'benefits' | 'reflection' | 'quiz' | 'summary' | 'badge' | 'leader-hub';
 
 const Training = () => {
@@ -308,7 +308,7 @@ const Training = () => {
     edpuzzle: '#1DA1F2',
     copilot: '#0078D4'
   };
-  const currentBrandColor = selectedTool ? brandColors[selectedTool] : '#F5A623';
+  const currentBrandColor = selectedTool ? brandColors[selectedTool] : 'hsl(var(--b4-flame))';
   const levelDurationOverrides: Record<string, Record<string, string>> = {
     canva: { explorer: '~30 min', practitioner: '~75 min' }
   };
@@ -378,7 +378,7 @@ const Training = () => {
   // Level Entry Page
   if (stage === 'level-entry') {
     return (
-      <div className="min-h-screen bg-background">
+      <div className="min-h-screen">
         <ResourceBankButton />
         {pendingLevel &&
         <LevelConfirmationDialog
@@ -407,11 +407,11 @@ const Training = () => {
         }
         <NavigationButtons showBack={false} />
         <AccessibilityPanel />
-        <header className="border-b border-border bg-card shadow-sm">
+        <header className="border-b border-b4-line tw-cloth shadow-card">
           <div className="container mx-auto px-4 py-6">
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-              <img src={bradfordLogo} alt="Bradford College logo" className="h-12 object-contain cursor-pointer" onClick={() => navigate("/")} />
-              <h1 className="font-display text-xl text-muted-foreground md:text-3xl font-bold text-left my-0 py-0">The Big 4: Level Up</h1>
+              <B4Brand to="/" />
+              <p className="sr-only">The Big 4: Level Up</p>
             </div>
           </div>
         </header>
@@ -429,7 +429,7 @@ const Training = () => {
             </div>
 
             {/* Gold reassurance note */}
-            <div className="bg-[#F5A623]/10 border border-[#F5A623]/30 rounded-xl px-5 py-3 mb-4 text-center animate-fade-in">
+            <div className="bg-b4-flame/10 border border-b4-flame/30 rounded-xl px-5 py-3 mb-4 text-center animate-fade-in">
               <p className="text-sm text-foreground">
                 <span className="font-semibold">Not sure which level?</span> Your self-assessment result will have indicated Explorer, Practitioner, or Leader.
               </p>
@@ -447,7 +447,7 @@ const Training = () => {
               </p>
               <p className="text-sm text-muted-foreground">
                 To query your level assignment, contact the Learning Innovation team at{" "}
-                <a href="mailto:m.worthington@bradfordcollege.ac.uk" className="text-[#1F3864] font-semibold underline">
+                <a href="mailto:m.worthington@bradfordcollege.ac.uk" className="text-b4-strong font-semibold underline">
                   m.worthington@bradfordcollege.ac.uk
                 </a>.
               </p>
@@ -458,18 +458,18 @@ const Training = () => {
             <div className="space-y-3 mb-8 animate-fade-in">
               {/* Explorer */}
               <div
-                className="group flex items-center gap-4 md:gap-6 bg-card rounded-2xl border-2 border-border hover:border-t-4 hover:border-t-[#F5A623] cursor-pointer transition-all duration-300 hover:shadow-[var(--shadow-hover)] p-5"
+                className="group flex items-center gap-4 md:gap-6 bg-card rounded-2xl border-2 border-border hover:border-t-4 hover:border-t-b4-flame cursor-pointer transition-all duration-300 hover:shadow-[var(--shadow-hover)] p-5"
                 onClick={() => handleLevelEntry('explorer')}>
 
                 <img src={emblemExplorer} alt="Explorer emblem" className="h-12 w-12 flex-shrink-0" />
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-3 mb-1">
                     <h3 className="font-display text-xl font-bold text-foreground">Explorer</h3>
-                    <span className="text-xs font-semibold px-3 py-1 rounded-full bg-[#F5A623]/15 text-[#B8860B]">Beginner</span>
+                    <span className="text-xs font-semibold px-3 py-1 rounded-full bg-b4-flame/15 text-[#B8860B]">Beginner</span>
                   </div>
                   <p className="text-sm text-muted-foreground">Discover and build confidence with core digital tools</p>
                 </div>
-                <ArrowRight className="h-5 w-5 text-muted-foreground group-hover:text-[#F5A623] group-hover:translate-x-1 transition-all flex-shrink-0" />
+                <ArrowRight className="h-5 w-5 text-muted-foreground group-hover:text-b4-flame-text group-hover:translate-x-1 transition-all flex-shrink-0" />
               </div>
 
               {/* Practitioner */}
@@ -523,14 +523,14 @@ const Training = () => {
   }
 
   if (stage === 'home') {
-    return <div className="min-h-screen bg-background">
+    return <div className="min-h-screen">
         <ResourceBankButton />
         <NavigationButtons onBack={handleBack} />
-        <header className="border-b border-border bg-card shadow-sm">
+        <header className="border-b border-b4-line tw-cloth shadow-card">
           <div className="container mx-auto px-4 py-6">
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-              <img src={bradfordLogo} alt="Bradford College logo" className="h-12 object-contain cursor-pointer" onClick={() => navigate("/")} />
-              <h1 className="font-display text-xl text-muted-foreground md:text-3xl font-bold text-left my-0 py-0">The Big 4: Level Up</h1>
+              <B4Brand to="/" />
+              <p className="sr-only">The Big 4: Level Up</p>
             </div>
           </div>
         </header>
@@ -541,42 +541,42 @@ const Training = () => {
             <img src={heroBanner} alt="Diverse educators collaborating with modern technology" className="w-full h-48 md:h-72 object-cover" />
             <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/40 to-transparent flex items-center justify-center">
               <div className="text-center text-white px-4">
-                <Sparkles className="w-12 h-12 mx-auto mb-4 animate-pulse" />
+                <Sparkles className="w-12 h-12 mx-auto mb-4" />
                 <h2 className="text-3xl font-bold mb-2 drop-shadow-lg text-slate-50 px-0 md:text-7xl">Transform Your Teaching</h2>
               </div>
             </div>
             
             {/* Thought Bubbles */}
-            <div className="hidden lg:block absolute top-4 left-4 bg-white/95 backdrop-blur-sm rounded-2xl px-4 py-3 shadow-lg max-w-[200px] animate-fade-in" style={{
+            <div className="hidden lg:block absolute top-4 left-4 bg-card/95 backdrop-blur-sm rounded-2xl px-4 py-3 shadow-lg max-w-[200px] animate-fade-in" style={{
             animationDelay: '300ms'
           }}>
-              <p className="text-sm text-gray-700 italic">"I don't have time to learn new tech..."</p>
-              <div className="absolute -bottom-2 left-6 w-4 h-4 bg-white/95 rotate-45"></div>
+              <p className="text-sm text-foreground italic">"I don't have time to learn new tech..."</p>
+              <div className="absolute -bottom-2 left-6 w-4 h-4 bg-card/95 rotate-45"></div>
             </div>
             
-            <div className="hidden lg:block absolute top-20 right-8 bg-white/95 backdrop-blur-sm rounded-2xl px-4 py-3 shadow-lg max-w-[220px] animate-fade-in" style={{
+            <div className="hidden lg:block absolute top-20 right-8 bg-card/95 backdrop-blur-sm rounded-2xl px-4 py-3 shadow-lg max-w-[220px] animate-fade-in" style={{
             animationDelay: '500ms'
           }}>
-              <p className="text-sm text-gray-700 italic">"My students know more than me!"</p>
-              <div className="absolute -bottom-2 right-8 w-4 h-4 bg-white/95 rotate-45"></div>
+              <p className="text-sm text-foreground italic">"My students know more than me!"</p>
+              <div className="absolute -bottom-2 right-8 w-4 h-4 bg-card/95 rotate-45"></div>
             </div>
             
-            <div className="hidden md:block lg:hidden absolute top-2 right-4 bg-white/95 backdrop-blur-sm rounded-2xl px-3 py-2 shadow-lg max-w-[180px] animate-fade-in" style={{
+            <div className="hidden md:block lg:hidden absolute top-2 right-4 bg-card/95 backdrop-blur-sm rounded-2xl px-3 py-2 shadow-lg max-w-[180px] animate-fade-in" style={{
             animationDelay: '400ms'
           }}>
-              <p className="text-xs text-gray-700 italic">"Is this really worth it?"</p>
-              <div className="absolute -bottom-1.5 right-6 w-3 h-3 bg-white/95 rotate-45"></div>
+              <p className="text-xs text-foreground italic">"Is this really worth it?"</p>
+              <div className="absolute -bottom-1.5 right-6 w-3 h-3 bg-card/95 rotate-45"></div>
             </div>
             
             <div style={{
             animationDelay: '700ms'
-          }} className="hidden lg:block absolute bottom-8 left-12 bg-white/95 backdrop-blur-sm rounded-2xl px-4 py-3 shadow-lg max-w-[240px] animate-fade-in my-0">
-              <p className="text-sm text-gray-700 italic">"What if I make a mistake in front of my class?"</p>
-              <div className="absolute -bottom-2 left-10 w-4 h-4 bg-white/95 rotate-45"></div>
+          }} className="hidden lg:block absolute bottom-8 left-12 bg-card/95 backdrop-blur-sm rounded-2xl px-4 py-3 shadow-lg max-w-[240px] animate-fade-in my-0">
+              <p className="text-sm text-foreground italic">"What if I make a mistake in front of my class?"</p>
+              <div className="absolute -bottom-2 left-10 w-4 h-4 bg-card/95 rotate-45"></div>
             </div>
           </div>
 
-          <Alert className="max-w-4xl mx-auto mb-12 border-accent animate-fade-in bg-slate-50">
+          <Alert className="max-w-4xl mx-auto mb-12 border-accent animate-fade-in bg-b4-wash">
             <Lightbulb className="h-5 w-5 text-accent" />
             <AlertDescription className="text-base">
               <strong>Before we begin:</strong> You can adjust your reading experience using the accessibility settings button in the bottom right corner. 
@@ -628,13 +628,13 @@ const Training = () => {
       </div>;
   }
   if (stage === 'tool-select') {
-    return <div className="min-h-screen bg-muted/20">
+    return <div className="min-h-screen">
         <ResourceBankButton />
         {selectedLevel && <LearningModulesDialog level={selectedLevel} />}
         <AccessibilityPanel />
-        <header className="border-b border-border bg-card shadow-sm">
+        <header className="border-b border-b4-line tw-cloth shadow-card">
           <div className="container mx-auto px-4 py-6">
-            <img src={bradfordLogo} alt="Bradford College logo" className="h-12 object-contain cursor-pointer" onClick={() => navigate("/")} />
+            <B4Brand to="/" />
           </div>
         </header>
 
@@ -801,15 +801,15 @@ const Training = () => {
             {/* My Learning Summary - always accessible */}
             {selectedLevel && selectedLevel !== 'leader' &&
           <div
-            className="mb-10 animate-fade-in rounded-2xl border-2 border-[#F5A623] bg-[#F5A623]/5 cursor-pointer hover:shadow-[var(--shadow-hover)] transition-all duration-300"
+            className="mb-10 animate-fade-in rounded-2xl border-2 border-b4-flame bg-b4-flame/5 cursor-pointer hover:shadow-[var(--shadow-hover)] transition-all duration-300"
             onClick={() => setStage('summary')}>
 
                 <div className="flex items-center gap-4 md:gap-6 p-6">
-                  <BookOpen className="text-[#F5A623] flex-shrink-0 h-8 w-8" />
+                  <BookOpen className="text-b4-flame-text flex-shrink-0 h-8 w-8" />
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-3 mb-1">
                       <h3 className="font-display text-xl font-bold text-foreground">My Learning Summary</h3>
-                      <span className="text-xs font-semibold px-3 py-1 rounded-full bg-[#F5A623]/15 text-[#B8860B]">
+                      <span className="text-xs font-semibold px-3 py-1 rounded-full bg-b4-flame/15 text-[#B8860B]">
                         {completedTools.size}/4 modules complete
                       </span>
                     </div>
@@ -817,7 +817,7 @@ const Training = () => {
                       Review what you've learned and plan your next steps
                     </p>
                   </div>
-                  <ArrowRight className="h-5 w-5 text-[#F5A623] flex-shrink-0" />
+                  <ArrowRight className="h-5 w-5 text-b4-flame-text flex-shrink-0" />
                 </div>
               </div>
           }
@@ -833,7 +833,7 @@ const Training = () => {
       </div>;
   }
   if (stage === 'level-select') {
-    return <div className="min-h-screen bg-background">
+    return <div className="min-h-screen">
         <ResourceBankButton />
         <NavigationButtons onBack={handleBack} />
         <AccessibilityPanel />
@@ -874,17 +874,17 @@ const Training = () => {
   // Leader Hub - The Big 4 Evidence & Sharing Space
   if (stage === 'leader-hub') {
     return (
-      <div className="min-h-screen bg-muted/20">
+      <div className="min-h-screen">
         <ResourceBankButton />
         <NavigationButtons onBack={() => {
           setStage('level-entry');
           setSelectedLevel(null);
         }} />
         <AccessibilityPanel />
-        <header className="border-b border-border bg-card shadow-sm">
+        <header className="border-b border-b4-line tw-cloth shadow-card">
           <div className="container mx-auto px-4 py-6">
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-              <img src={bradfordLogo} alt="Bradford College logo" className="h-12 object-contain cursor-pointer" onClick={() => navigate("/")} />
+              <B4Brand to="/" />
               <h1 className="text-xl md:text-2xl font-bold text-foreground">
                 Leader Level – The Big 4
               </h1>
@@ -905,13 +905,13 @@ const Training = () => {
   }
 
   if (stage === 'badge') {
-    return <div className="min-h-screen bg-background">
+    return <div className="min-h-screen">
         <ResourceBankButton />
         <NavigationButtons showBack={false} />
         <AccessibilityPanel />
-        <header className="border-b border-border bg-card shadow-sm">
+        <header className="border-b border-b4-line tw-cloth shadow-card">
           <div className="container mx-auto px-4 py-6">
-            <img src={bradfordLogo} alt="Bradford College logo" className="h-12 object-contain cursor-pointer" onClick={() => navigate("/")} />
+            <B4Brand to="/" />
           </div>
         </header>
         <main className="container mx-auto px-4 py-12">
@@ -936,15 +936,15 @@ const Training = () => {
   // Summary as standalone page (accessed from tool-select after all modules complete)
   if (stage === 'summary' && selectedLevel) {
     return (
-      <div className="min-h-screen bg-background">
+      <div className="min-h-screen">
         <ResourceBankButton />
         <NavigationButtons onBack={() => setStage('tool-select')} />
         <AccessibilityPanel />
-        <header className="border-b border-border bg-card shadow-sm">
+        <header className="border-b border-b4-line tw-cloth shadow-card">
           <div className="container mx-auto px-4 py-6">
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-              <img src={bradfordLogo} alt="Bradford College logo" className="h-12 object-contain cursor-pointer" onClick={() => navigate("/")} />
-              <h1 className="font-display text-xl text-muted-foreground md:text-3xl font-bold text-left my-0 py-0">The Big 4: Level Up</h1>
+              <B4Brand to="/" />
+              <p className="sr-only">The Big 4: Level Up</p>
             </div>
           </div>
         </header>
@@ -961,14 +961,14 @@ const Training = () => {
   if (!pathway) return null;
   const sectionInfo = getSectionInfo();
 
-  return <div className="min-h-screen bg-background">
+  return <div className="min-h-screen">
       <ResourceBankButton />
       <NavigationButtons onBack={handleBack} />
       <AccessibilityPanel />
-      <header className="border-b border-border bg-card shadow-sm sticky top-0 z-10">
+      <header className="border-b border-b4-line tw-cloth shadow-card sticky top-0 z-10">
         <div className="container mx-auto px-4 py-3">
           <div className="flex items-center justify-between mb-2">
-            <img src={bradfordLogo} alt="Bradford College logo" className="h-10 object-contain cursor-pointer" onClick={() => navigate("/")} />
+            <B4Brand to="/" />
             <Button variant="outline" size="sm" onClick={handleRestart} className="border-border hover:bg-accent hover:text-accent-foreground">
               <Home className="mr-2 h-4 w-4" />
               Exit

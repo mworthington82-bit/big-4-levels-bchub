@@ -8,7 +8,6 @@ import {
   IconCheck,
   IconClock,
   IconLock,
-  IconLoader2,
 } from "@tabler/icons-react";
 import AppShell from "@/components/AppShell";
 import PageError from "@/components/PageError";
@@ -50,7 +49,7 @@ const STEP_LABELS = ["Intro", "Learn", "Outcomes", "Reflect", "Assess"];
 
 const LEVEL_PILL: Record<string, string> = {
   Explorer: "bg-[#E6F1FB] text-[#185FA5]",
-  Practitioner: "bg-[#FEF6E8] text-[#92501C]",
+  Practitioner: "bg-b4-flame-soft text-[#92501C]",
   Leader: "bg-[#EAF3DE] text-[#5A7D2A]",
 };
 
@@ -58,13 +57,13 @@ const NotFoundCard = () => {
   const navigate = useNavigate();
   return (
     <AppShell>
-      <div className="min-h-full bg-[#F4F6FB]">
+      <div className="min-h-full">
         <div className="container mx-auto px-4 py-12 max-w-2xl">
-          <div className="bg-white rounded-2xl border border-[#D0D7E2] p-8 md:p-12 text-center">
-            <h1 className="font-bold text-[#1F3864] text-2xl md:text-3xl mb-3">
+          <div className="bg-card rounded-2xl border border-b4-line p-8 md:p-12 text-center">
+            <h1 className="font-bold text-b4-strong text-2xl md:text-3xl mb-3">
               This module is being prepared
             </h1>
-            <p className="text-[#5F6B7D] text-base mb-6">
+            <p className="text-b4-muted text-base mb-6">
               Please check back soon — content is on its way.
             </p>
             <button
@@ -247,27 +246,27 @@ const Module = () => {
   if (loading) {
     return (
       <AppShell>
-        <div className="min-h-full bg-[#F4F6FB]" aria-busy="true" aria-label="Loading module">
-          <header className="bg-white border-b border-[#D0D7E2]">
+        <div className="min-h-full" aria-busy="true" aria-label="Loading module">
+          <header className="bg-card border-b border-b4-line">
             <div className="container mx-auto px-4 py-6 max-w-5xl space-y-3">
-              <div className="h-4 w-32 bg-[#E5E9F0] rounded animate-pulse" />
-              <div className="h-8 w-1/2 bg-[#E5E9F0] rounded animate-pulse" />
-              <div className="h-4 w-1/3 bg-[#E5E9F0] rounded animate-pulse" />
+              <div className="h-4 w-32 bg-b4-wash-3 rounded tw-skeleton" />
+              <div className="h-8 w-1/2 bg-b4-wash-3 rounded tw-skeleton" />
+              <div className="h-4 w-1/3 bg-b4-wash-3 rounded tw-skeleton" />
             </div>
           </header>
           <div className="container mx-auto px-4 py-3 max-w-5xl">
             <div className="flex items-center gap-2 overflow-x-auto">
               {[0,1,2,3,4].map((i) => (
-                <div key={i} className="h-7 w-24 bg-[#E5E9F0] rounded-full animate-pulse shrink-0" />
+                <div key={i} className="h-7 w-24 bg-b4-wash-3 rounded-full tw-skeleton shrink-0" />
               ))}
             </div>
           </div>
           <div className="container mx-auto px-4 pt-8 max-w-3xl">
-            <div className="bg-white rounded-2xl border border-[#D0D7E2] p-6 md:p-10 space-y-3">
-              <div className="h-7 w-2/3 bg-[#E5E9F0] rounded animate-pulse" />
-              <div className="h-4 w-full bg-[#E5E9F0] rounded animate-pulse" />
-              <div className="h-4 w-5/6 bg-[#E5E9F0] rounded animate-pulse" />
-              <div className="h-4 w-3/4 bg-[#E5E9F0] rounded animate-pulse" />
+            <div className="bg-card rounded-2xl border border-b4-line p-6 md:p-10 space-y-3">
+              <div className="h-7 w-2/3 bg-b4-wash-3 rounded tw-skeleton" />
+              <div className="h-4 w-full bg-b4-wash-3 rounded tw-skeleton" />
+              <div className="h-4 w-5/6 bg-b4-wash-3 rounded tw-skeleton" />
+              <div className="h-4 w-3/4 bg-b4-wash-3 rounded tw-skeleton" />
             </div>
           </div>
         </div>
@@ -329,9 +328,9 @@ const Module = () => {
 
   return (
     <AppShell>
-      <div className="min-h-full bg-[#F4F6FB] pb-16">
+      <div className="min-h-full pb-16">
         {/* Header */}
-        <header className="bg-white border-b border-[#D0D7E2]">
+        <header className="bg-card border-b border-b4-line">
           <div className="container mx-auto px-4 py-6 max-w-5xl">
             {/* Back button row — dedicated, never shares a row */}
             <div className="my-3">
@@ -345,7 +344,7 @@ const Module = () => {
             </div>
             <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
               <div className="flex-1 text-center sm:text-left">
-                <h1 className="font-bold text-[#1F3864] text-2xl md:text-3xl">
+                <h1 className="font-bold text-b4-strong text-2xl md:text-3xl">
                   {module.tool_name}
                 </h1>
                 <div className="mt-2 flex flex-col sm:flex-row sm:flex-wrap items-center sm:items-center gap-2 justify-center sm:justify-start">
@@ -356,16 +355,16 @@ const Module = () => {
                   >
                     {module.level}
                   </span>
-                  <span className="text-[#5F6B7D] text-sm md:text-base">
+                  <span className="text-b4-muted text-sm md:text-base">
                     {module.module_title}
                   </span>
                 </div>
                 {module.module_subtitle && (
-                  <p className="mt-1 text-[#5F6B7D] text-sm">{module.module_subtitle}</p>
+                  <p className="mt-1 text-b4-muted text-sm">{module.module_subtitle}</p>
                 )}
               </div>
               <div className="shrink-0 flex sm:block justify-center">
-                <span className="inline-flex items-center gap-1.5 bg-[#F4F6FB] border border-[#D0D7E2] text-[#1F3864] text-sm font-semibold px-3 py-1.5 rounded-full whitespace-nowrap">
+                <span className="inline-flex items-center gap-1.5 bg-b4-wash border border-b4-line text-b4-strong text-sm font-semibold px-3 py-1.5 rounded-full whitespace-nowrap">
                   <IconClock size={14} stroke={2} />
                   About {module.estimated_minutes} minutes
                 </span>
@@ -375,7 +374,7 @@ const Module = () => {
         </header>
 
         {/* Step navigator */}
-        <div className="sticky top-0 z-10 bg-[#F4F6FB] border-b border-[#D0D7E2]">
+        <div className="sticky top-0 z-10 bg-b4-wash border-b border-b4-line">
           <div className="container mx-auto px-4 py-3 max-w-5xl">
             <div className="flex items-center gap-2 overflow-x-auto">
               {STEP_LABELS.map((label, i) => {
@@ -385,10 +384,10 @@ const Module = () => {
                 const isComplete = visited.has(n) && !isActive;
                 let cls =
                   "shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold transition-colors ";
-                if (isActive) cls += "bg-[#1F3864] text-white";
-                else if (!unlocked) cls += "bg-[#E5E9F0] text-[#A0A8B5] cursor-not-allowed";
+                if (isActive) cls += "bg-b4-deep text-white";
+                else if (!unlocked) cls += "bg-b4-wash-3 text-[#A0A8B5] cursor-not-allowed";
                 else if (isComplete) cls += "bg-[#E6F1FB] text-[#185FA5] hover:bg-[#D7E8F8]";
-                else cls += "bg-[#E5E9F0] text-[#5F6B7D] hover:bg-[#D7DCE6]";
+                else cls += "bg-b4-wash-3 text-b4-muted hover:bg-[#D7DCE6]";
                 return (
                   <button
                     key={n}
@@ -417,10 +416,10 @@ const Module = () => {
 
         {/* Content card */}
         <div className="container mx-auto px-4 pt-8 max-w-3xl">
-          <div className="bg-white rounded-2xl border border-[#D0D7E2] p-6 md:p-10">
+          <div className="bg-card rounded-2xl border border-b4-line p-6 md:p-10">
             {step && (
               <>
-                <h2 className="font-bold text-[#1F3864] text-2xl md:text-3xl mb-6">
+                <h2 className="font-bold text-b4-strong text-2xl md:text-3xl mb-6">
                   {step.step_title}
                 </h2>
 
@@ -429,7 +428,7 @@ const Module = () => {
                     <EmbeddedQuiz
                       tool={embedKeyFor(moduleId).split("-")[0]}
                       level={embedKeyFor(moduleId).split("-")[1]}
-                      brandColor={BRAND_COLOUR[embedKeyFor(moduleId).split("-")[0]] ?? "#1F3864"}
+                      brandColor={BRAND_COLOUR[embedKeyFor(moduleId).split("-")[0]] ?? "hsl(var(--b4-deep))"}
                       onComplete={() => {
                         writeCompletion();
                         navigate("/journey");
@@ -444,7 +443,7 @@ const Module = () => {
                   )
                 ) : (
                   <>
-                    <div className="prose prose-slate max-w-none prose-headings:text-[#1F3864] prose-headings:font-bold prose-strong:text-[#1F3864] prose-a:text-[#185FA5] prose-li:text-[#1F3864] prose-p:text-[#1F3864]">
+                    <div className="prose prose-slate max-w-none prose-headings:text-b4-strong prose-headings:font-bold prose-strong:text-b4-strong prose-a:text-[#185FA5] prose-li:text-b4-strong prose-p:text-b4-strong">
                       <ReactMarkdown remarkPlugins={[remarkGfm]}>
                         {step.step_content ?? ""}
                       </ReactMarkdown>
@@ -457,9 +456,9 @@ const Module = () => {
                           onChange={(e) => setReflectText(e.target.value)}
                           rows={6}
                           placeholder="Write your reflections here…"
-                          className="w-full rounded-xl border-2 border-[#D0D7E2] focus:border-[#185FA5] focus:outline-none bg-[#F4F6FB] p-4 text-[#1F3864] text-sm"
+                          className="w-full rounded-xl border-2 border-b4-line focus:border-[#185FA5] focus:outline-none bg-b4-wash p-4 text-b4-strong text-sm"
                         />
-                        <p className="mt-2 text-xs italic text-[#5F6B7D]">
+                        <p className="mt-2 text-xs italic text-b4-muted">
                           Your reflection is private and not saved.
                         </p>
                       </div>
@@ -485,7 +484,7 @@ const Module = () => {
                 {currentStep > 1 ? (
                   <button
                     onClick={handlePrev}
-                    className="inline-flex items-center gap-1.5 text-[#185FA5] font-semibold px-5 py-2.5 rounded-full hover:bg-white"
+                    className="inline-flex items-center gap-1.5 text-[#185FA5] font-semibold px-5 py-2.5 rounded-full hover:bg-card"
                   >
                     <IconArrowLeft size={16} stroke={2} />
                     Previous
@@ -505,21 +504,21 @@ const Module = () => {
               {currentStep === 2 && hasActiveSession && (
                 <div className="mt-6">
                   <div className="flex items-center gap-3 my-4">
-                    <div className="flex-1 h-px bg-[#D0D7E2]" />
-                    <span className="text-xs uppercase tracking-wide text-[#5F6B7D]">or</span>
-                    <div className="flex-1 h-px bg-[#D0D7E2]" />
+                    <div className="flex-1 h-px bg-b4-line" />
+                    <span className="text-xs uppercase tracking-wide text-b4-muted">or</span>
+                    <div className="flex-1 h-px bg-b4-line" />
                   </div>
 
                   {!bypassOpen ? (
                     <button
                       onClick={() => setBypassOpen(true)}
-                      className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 bg-white border-2 border-[#1F3864] text-[#1F3864] font-semibold px-5 py-2.5 rounded-full hover:bg-[#F4F6FB]"
+                      className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 bg-card border-2 border-b4-strong text-b4-strong font-semibold px-5 py-2.5 rounded-full hover:bg-b4-wash"
                     >
                       I completed in-person training
                     </button>
                   ) : (
-                    <div className="bg-white rounded-xl border border-[#D0D7E2] p-5 space-y-3 max-w-md">
-                      <label htmlFor="bypass-pwd" className="block text-sm font-semibold text-[#1F3864]">
+                    <div className="bg-card rounded-xl border border-b4-line p-5 space-y-3 max-w-md">
+                      <label htmlFor="bypass-pwd" className="block text-sm font-semibold text-b4-strong">
                         Enter your session password
                       </label>
                       <input
@@ -530,21 +529,20 @@ const Module = () => {
                         onChange={(e) => setBypassPwd(e.target.value)}
                         placeholder="Password given at your session"
                         disabled={bypassBusy || bypassSuccess}
-                        className="w-full rounded-lg border-2 border-[#D0D7E2] focus:border-[#185FA5] focus:outline-none p-2.5 text-[#1F3864] text-sm"
+                        className="w-full rounded-lg border-2 border-b4-line focus:border-[#185FA5] focus:outline-none p-2.5 text-b4-strong text-sm"
                       />
                       <div className="flex items-center gap-2">
                         <button
                           onClick={submitBypass}
                           disabled={bypassBusy || bypassSuccess || !bypassPwd.trim()}
-                          className="inline-flex items-center justify-center gap-1.5 bg-[#1F3864] hover:bg-[#162B4D] text-white font-semibold px-5 py-2.5 rounded-full disabled:opacity-50"
+                          className="inline-flex items-center justify-center gap-1.5 bg-b4-deep hover:bg-b4-deep-hover text-white font-semibold px-5 py-2.5 rounded-full disabled:opacity-50"
                         >
-                          {bypassBusy && <IconLoader2 size={14} className="animate-spin" />}
                           {bypassBusy ? "Validating…" : "Confirm attendance"}
                         </button>
                         {!bypassSuccess && (
                           <button
                             onClick={() => { setBypassOpen(false); setBypassPwd(""); setBypassError(null); }}
-                            className="text-sm text-[#5F6B7D] hover:underline px-2"
+                            className="text-sm text-b4-muted hover:underline px-2"
                             disabled={bypassBusy}
                           >
                             Cancel
@@ -571,30 +569,30 @@ const Module = () => {
 
         {attendedDialogOpen && (
           <div
-            className="fixed inset-0 z-50 flex items-center justify-center bg-[#1C1C2E]/60 px-4"
+            className="fixed inset-0 z-50 flex items-center justify-center bg-b4-deep/60 px-4"
             role="dialog"
             aria-modal="true"
             aria-labelledby="attended-dialog-title"
           >
-            <div className="bg-white rounded-2xl max-w-md w-full p-6 md:p-8 shadow-xl">
+            <div className="bg-card rounded-2xl max-w-md w-full p-6 md:p-8 shadow-xl">
               <h3
                 id="attended-dialog-title"
-                className="text-xl md:text-2xl font-bold text-[#1F3864] mb-3"
+                className="text-xl md:text-2xl font-bold text-b4-strong mb-3"
                 style={{ fontFamily: "Fraunces, serif" }}
               >
                 You attended the face-to-face session
               </h3>
-              <p className="text-[#1F3864] mb-2">
+              <p className="text-b4-strong mb-2">
                 Well done for attending. Your attendance is recorded.
               </p>
-              <p className="text-[#1F3864] mb-6">
+              <p className="text-b4-strong mb-6">
                 To complete this module and move up a level, please still take
                 the short end-of-module test at the end of this pathway.
               </p>
               <div className="flex justify-end">
                 <button
                   onClick={() => setAttendedDialogOpen(false)}
-                  className="inline-flex items-center gap-1.5 bg-[#1F3864] hover:bg-[#162B4D] text-white font-semibold px-5 py-2.5 rounded-full"
+                  className="inline-flex items-center gap-1.5 bg-b4-deep hover:bg-b4-deep-hover text-white font-semibold px-5 py-2.5 rounded-full"
                 >
                   Got it
                 </button>

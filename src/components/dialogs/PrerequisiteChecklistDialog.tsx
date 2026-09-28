@@ -10,8 +10,8 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { useState } from "react";
 import { Level, Tool } from "@/types/learning";
 import { AlertTriangle, ShieldCheck, ExternalLink } from "lucide-react";
-import emblemPractitioner from "@/assets/emblem-practitioner.svg";
-import emblemLeader from "@/assets/emblem-leader.svg";
+import emblemPractitioner from "@/assets/art/rope/knot-practitioner.webp";
+import emblemLeader from "@/assets/art/rope/knot-leader.webp";
 
 interface PrerequisiteChecklistDialogProps {
   open: boolean;
@@ -126,8 +126,8 @@ const PrerequisiteChecklistDialog = ({
         </DialogHeader>
 
         {config.reminder && (
-          <div className="flex items-start gap-3 bg-[#F5A623]/10 border border-[#F5A623]/30 rounded-xl px-4 py-3 my-2">
-            <AlertTriangle className="h-5 w-5 text-[#F5A623] flex-shrink-0 mt-0.5" />
+          <div className="flex items-start gap-3 bg-b4-flame/10 border border-b4-flame/30 rounded-xl px-4 py-3 my-2">
+            <AlertTriangle className="h-5 w-5 text-b4-flame-text flex-shrink-0 mt-0.5" />
             <p className="text-sm text-foreground leading-relaxed">
               {config.reminder}
             </p>

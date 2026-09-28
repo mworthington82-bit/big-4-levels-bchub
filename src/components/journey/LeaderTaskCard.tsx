@@ -32,17 +32,17 @@ const PADLET_LINKS: { label: string; url: string }[] = [
 const LeaderTaskCard = () => {
   return (
     <div
-      className="relative rounded-2xl overflow-hidden bg-[#1F3864] text-white"
+      className="relative rounded-2xl overflow-hidden bg-b4-deep text-white"
       style={{ padding: "24px" }}
     >
       <span
         aria-hidden
-        className="absolute left-0 top-0 bottom-0 bg-[#F5A623]"
+        className="absolute left-0 top-0 bottom-0 bg-b4-flame"
         style={{ width: "6px" }}
       />
       <div className="pl-3">
         <h3
-          className="font-display font-bold text-[#F5A623]"
+          className="font-display font-bold text-b4-flame"
           style={{ fontSize: "20px" }}
         >
           Your next step as a Leader — required
@@ -75,7 +75,7 @@ const LeaderTaskCard = () => {
               href={p.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center bg-white text-[#1F3864] border border-[#1F3864] px-4 py-2 text-sm font-semibold hover:bg-[#F4F6FB] transition-colors"
+              className="inline-flex items-center bg-card text-b4-strong border border-b4-strong px-4 py-2 text-sm font-semibold hover:bg-b4-wash transition-colors"
               style={{ borderRadius: "10px" }}
             >
               {p.label} →
@@ -84,7 +84,7 @@ const LeaderTaskCard = () => {
         </div>
 
         <p
-          className="mt-4 font-bold text-[#F5A623]"
+          className="mt-4 font-bold text-b4-flame"
           style={{ fontSize: "13px" }}
         >
           Your contributions are visible to all Bradford College staff and

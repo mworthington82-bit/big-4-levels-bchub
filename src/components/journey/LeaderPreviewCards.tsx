@@ -32,11 +32,11 @@ const LeaderPreviewCards = () => {
     body: string;
   }) => (
     <div
-      className="bg-white rounded-2xl border border-[#D0D7E2] p-5 flex flex-col"
+      className="bg-card rounded-2xl border border-b4-line p-5 flex flex-col"
       style={{ borderLeft: `4px solid ${accent}` }}
     >
-      <h3 className="font-bold text-[#1F3864] text-base">{title}</h3>
-      <p className="text-sm text-[#5F6B7D] mt-2 flex-1">{body}</p>
+      <h3 className="font-bold text-b4-strong text-base">{title}</h3>
+      <p className="text-sm text-b4-muted mt-2 flex-1">{body}</p>
       <button
         onClick={() => navigate("/leader")}
         className="self-start mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-[#185FA5] hover:underline"
@@ -49,7 +49,7 @@ const LeaderPreviewCards = () => {
   return (
     <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
       <Card
-        accent="#F5A623"
+        accent="hsl(var(--b4-flame))"
         title="Evidence Gallery"
         body={
           postCount && postCount > 0

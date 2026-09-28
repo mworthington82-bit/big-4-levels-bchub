@@ -17,14 +17,17 @@ import { useStaffProfile } from "@/hooks/useStaffProfile";
 import { useIsDemoUser } from "@/lib/demoAccess";
 import { MAINTENANCE_MODE, isAllowedDuringMaintenance } from "@/lib/maintenanceMode";
 
-import bradfordLogo from "@/assets/bradford-college-logo.png";
+import B4Brand from "@/components/B4Brand";
+import { SwingTag } from "@/components/SwingTag";
+import LevelLine from "@/components/LevelLine";
+import { ThreadWorksFooter } from "@/components/threadworks";
 import teamsLogo from "@/assets/teams-logo.png";
 import canvaLogo from "@/assets/canva-logo.jpg";
 import edpuzzleLogo from "@/assets/edpuzzle-logo.png";
 import copilotLogo from "@/assets/copilot-logo.png";
-import emblemExplorer from "@/assets/emblem-explorer.svg";
-import emblemPractitioner from "@/assets/emblem-practitioner.svg";
-import emblemLeader from "@/assets/emblem-leader.svg";
+import emblemExplorer from "@/assets/art/rope/knot-explorer.webp";
+import emblemPractitioner from "@/assets/art/rope/knot-practitioner.webp";
+import emblemLeader from "@/assets/art/rope/knot-leader.webp";
 
 const toolLevelInfo: Record<string, { explorer: string; practitioner: string; leader: string }> = {
   "MS Teams": {
@@ -168,16 +171,16 @@ const Landing = () => {
 
   return (
     <>
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen">
       
       <WelcomeDialog />
       <ImmersiveRequestDialog />
       {profile && !profileLoading && <WelcomeCompletionModal key={profile.email} profile={profile} />}
 
-      <header className="border-b border-border bg-card shadow-sm">
+      <header className="border-b border-b4-line tw-cloth shadow-card">
         <div className="container mx-auto px-4 py-6">
           <div className="flex items-center justify-between">
-            <img src={bradfordLogo} alt="Bradford College logo" className="h-12 object-contain" />
+            <B4Brand to="/" />
             {email && <SignOutButton />}
           </div>
 
@@ -186,8 +189,8 @@ const Landing = () => {
 
       <main>
         {/* Dark Hero Section */}
-        <section className="relative bg-[#1C1C2E] overflow-hidden">
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_hsl(39_90%_56%_/_0.15)_0%,_transparent_70%)]" />
+        <section className="relative bg-b4-deep overflow-hidden">
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_hsl(22_86%_51%_/_0.16)_0%,_transparent_70%)]" />
           
           <div className="container mx-auto px-4 py-16 md:py-24 relative z-10">
             <div className="max-w-3xl mx-auto text-center">
@@ -196,18 +199,18 @@ const Landing = () => {
               </div>
 
               <h1 className="font-display text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6 animate-fade-in leading-tight">
-                The Big 4: <span className="text-[#F5A623]">Level Up</span>
+                The Big 4: <span className="text-b4-flame">Level Up</span>
               </h1>
 
               <StudentQuoteCarousel />
 
               {/* Hoverable App logo pills */}
-              <div className="flex flex-wrap justify-center gap-3 mt-10 animate-fade-in" style={{ animationDelay: '200ms' }}>
+              <div className="tw-tag-set flex flex-wrap justify-center gap-x-5 gap-y-4 mt-10 animate-fade-in" style={{ animationDelay: '200ms' }}>
                 {heroApps.map((app) => (
-                  <div key={app.name} className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/15 backdrop-blur-sm border border-white/10">
-                    <img src={app.logo} alt={app.name} className="h-6 w-6 rounded-md object-contain bg-white/90 p-0.5" />
-                    <span className="text-sm font-medium text-white">{app.name}</span>
-                  </div>
+                  <SwingTag key={app.name} size="lg">
+                    <img src={app.logo} alt="" className="h-6 w-6 rounded-md object-contain bg-white/70 p-0.5" />
+                    <span>{app.name}</span>
+                  </SwingTag>
                 ))}
               </div>
 
@@ -217,7 +220,7 @@ const Landing = () => {
                   <button
                     onClick={handleSignIn}
                     disabled={signingIn}
-                    className="inline-flex items-center justify-center min-h-11 px-8 py-4 rounded-xl bg-[#F5A623] text-[#1F3864] font-bold text-base hover:bg-[#F5A623]/90 transition-colors disabled:opacity-60 shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white w-full sm:w-[280px]"
+                    className="inline-flex items-center justify-center min-h-11 px-8 py-4 rounded-xl bg-b4-flame text-b4-on-flame font-bold text-base hover:bg-b4-flame/90 transition-colors disabled:opacity-60 shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white w-full sm:w-[280px]"
                   >
                     {signingIn ? "Redirecting…" : "Sign in with Microsoft"}
                   </button>
@@ -241,7 +244,7 @@ const Landing = () => {
                       <>
                         <button
                           onClick={() => navigate("/new/journey")}
-                          className="inline-flex items-center justify-center min-h-11 px-8 py-4 rounded-xl bg-[#F5A623] text-[#1F3864] font-bold text-base hover:bg-[#F5A623]/90 transition-colors shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white w-full sm:w-[280px]"
+                          className="inline-flex items-center justify-center min-h-11 px-8 py-4 rounded-xl bg-b4-flame text-b4-on-flame font-bold text-base hover:bg-b4-flame/90 transition-colors shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white w-full sm:w-[280px]"
                         >
                           Go to My Journey
                         </button>
@@ -255,7 +258,7 @@ const Landing = () => {
                     ) : (
                       <button
                         onClick={() => navigate("/bookings")}
-                        className="inline-flex items-center justify-center min-h-11 px-8 py-4 rounded-xl bg-[#F5A623] text-[#1F3864] font-bold text-base hover:bg-[#F5A623]/90 transition-colors shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white w-full sm:w-[280px]"
+                        className="inline-flex items-center justify-center min-h-11 px-8 py-4 rounded-xl bg-b4-flame text-b4-on-flame font-bold text-base hover:bg-b4-flame/90 transition-colors shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white w-full sm:w-[280px]"
                       >
                         Go to my bookings
                       </button>
@@ -278,9 +281,11 @@ const Landing = () => {
             <LeadStrip />
           </div>
 
+          <LevelLine className="mb-12" />
+
           {/* Warm Welcome Card */}
           <div className="max-w-4xl mx-auto mb-12 animate-fade-in">
-            <div className="bg-card rounded-3xl shadow-[var(--shadow-card)] border-l-4 border-l-[#F5A623] border border-border p-8 md:p-10 text-left">
+            <div className="bg-card rounded-3xl shadow-[var(--shadow-card)] border-l-4 border-l-b4-flame border border-border p-8 md:p-10 text-left">
               <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground mb-4">
                 What is The Big 4?
               </h2>
@@ -306,21 +311,21 @@ const Landing = () => {
                         <div className="flex items-start gap-2">
                           <img src={emblemExplorer} alt="Explorer" className="h-5 w-5 mt-0.5 flex-shrink-0" />
                           <div>
-                            <span className="text-xs font-semibold text-[#F5A623]">Explorer</span>
+                            <span className="text-xs font-semibold text-explorer">Explorer</span>
                             <p className="text-xs text-muted-foreground leading-relaxed">{toolLevelInfo[chip.key].explorer}</p>
                           </div>
                         </div>
                         <div className="flex items-start gap-2">
                           <img src={emblemPractitioner} alt="Practitioner" className="h-5 w-5 mt-0.5 flex-shrink-0" />
                           <div>
-                            <span className="text-xs font-semibold text-[#16a085]">Practitioner</span>
+                            <span className="text-xs font-semibold text-practitioner">Practitioner</span>
                             <p className="text-xs text-muted-foreground leading-relaxed">{toolLevelInfo[chip.key].practitioner}</p>
                           </div>
                         </div>
                         <div className="flex items-start gap-2">
                           <img src={emblemLeader} alt="Leader" className="h-5 w-5 mt-0.5 flex-shrink-0" />
                           <div>
-                            <span className="text-xs font-semibold text-[#2E86DE]">Leader</span>
+                            <span className="text-xs font-semibold text-leader">Leader</span>
                             <p className="text-xs text-muted-foreground leading-relaxed">{toolLevelInfo[chip.key].leader}</p>
                           </div>
                         </div>
@@ -341,12 +346,7 @@ const Landing = () => {
 
         </div>
       </main>
-      <footer className="border-t border-border bg-card mt-12">
-        <div className="container mx-auto px-4 py-6 flex flex-col md:flex-row items-center justify-between gap-3 text-sm text-muted-foreground">
-          <span>© {new Date().getFullYear()} Bradford College — The Big 4: Level Up</span>
-          <a href="/privacy" className="hover:text-foreground underline-offset-4 hover:underline font-medium">Privacy Notice</a>
-        </div>
-      </footer>
+      <div className="mt-12"><ThreadWorksFooter /></div>
     </div>
 
 

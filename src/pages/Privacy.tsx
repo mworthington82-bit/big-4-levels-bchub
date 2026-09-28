@@ -1,17 +1,15 @@
 import { useNavigate } from "react-router-dom";
-import bradfordLogo from "@/assets/bradford-college-logo.png";
+import B4Brand from "@/components/B4Brand";
 import Footer from "@/components/Footer";
 
 const Privacy = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
-      <header className="border-b border-border bg-card shadow-sm">
+    <div className="min-h-screen flex flex-col">
+      <header className="border-b border-b4-line tw-cloth shadow-card">
         <div className="container mx-auto px-4 py-5 flex items-center justify-between">
-          <button onClick={() => navigate("/")} className="flex items-center gap-3" aria-label="Home">
-            <img src={bradfordLogo} alt="Bradford College logo" className="h-10 object-contain" />
-          </button>
+          <B4Brand to="/" />
           <h1 className="font-display text-lg md:text-2xl font-bold text-foreground">Privacy Notice</h1>
         </div>
       </header>
@@ -73,7 +71,7 @@ const Privacy = () => {
             <p className="text-muted-foreground">
               You can request access to, correction of, or deletion of your personal data
               by emailing the Bradford College Data Protection Officer at{" "}
-              <a href="mailto:dpo@bradfordcollege.ac.uk" className="text-[#1F3864] font-semibold underline">
+              <a href="mailto:dpo@bradfordcollege.ac.uk" className="text-b4-strong font-semibold underline">
                 dpo@bradfordcollege.ac.uk
               </a>.
             </p>

@@ -21,9 +21,9 @@ import canvaLogo from '@/assets/canva-logo.jpg';
 import edpuzzleLogo from '@/assets/edpuzzle-logo.png';
 import copilotLogo from '@/assets/copilot-logo.png';
 import formsLogo from '@/assets/forms-logo.jpg';
-import emblemExplorer from '@/assets/emblem-explorer.svg';
-import emblemPractitioner from '@/assets/emblem-practitioner.svg';
-import emblemLeader from '@/assets/emblem-leader.svg';
+import emblemExplorer from '@/assets/art/rope/knot-explorer.webp';
+import emblemPractitioner from '@/assets/art/rope/knot-practitioner.webp';
+import emblemLeader from '@/assets/art/rope/knot-leader.webp';
 
 type ToolFilter = 'all' | 'teams' | 'forms' | 'canva' | 'edpuzzle' | 'copilot' | 'notebook' | 'immersive';
 type LevelFilter = 'all' | 'explorer' | 'practitioner' | 'leader';
@@ -61,7 +61,7 @@ const TOOL_BUTTONS: { id: Exclude<ToolFilter, 'all'>; name: string; logo: string
 ];
 
 const LEVEL_BUTTONS: { id: Exclude<LevelFilter, 'all'>; name: string; icon: string; color: string }[] = [
-  { id: 'explorer', name: 'Explorer', icon: emblemExplorer, color: '#F5A623' },
+  { id: 'explorer', name: 'Explorer', icon: emblemExplorer, color: 'hsl(var(--explorer))' },
   { id: 'practitioner', name: 'Practitioner', icon: emblemPractitioner, color: '#16a085' },
   { id: 'leader', name: 'Leader', icon: emblemLeader, color: '#2E86DE' },
 ];
@@ -145,9 +145,9 @@ const Resources = () => {
   const PlannerCard = () => (
     <div className="bg-card rounded-xl border border-border shadow-sm overflow-hidden">
       <div className="flex">
-        <div className="w-1 bg-[#F5A623]" aria-hidden />
+        <div className="w-1 bg-b4-flame" aria-hidden />
         <div className="p-4 flex-1">
-          <span className="inline-block text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-[#F5A623] text-[#1F3864] mb-2">
+          <span className="inline-block text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-b4-flame text-b4-on-flame mb-2">
             AI-Powered
           </span>
           <h3 className="font-display text-[15px] font-bold text-foreground mb-1">Activity Planner</h3>
@@ -156,7 +156,7 @@ const Resources = () => {
           </p>
           <Button
             onClick={() => setPlannerOpen(true)}
-            className="w-full bg-[#F5A623] hover:bg-[#F5A623]/90 text-[#1F3864] font-semibold rounded-full"
+            className="w-full bg-b4-flame hover:bg-b4-flame/90 text-b4-on-flame font-semibold rounded-full"
             size="sm"
           >
             Open Planner <ChevronRight className="h-4 w-4 ml-1" />
@@ -168,9 +168,9 @@ const Resources = () => {
 
   const LeadCard = () => (
     <div ref={leadCardRef} className="bg-card rounded-xl border border-border shadow-sm overflow-hidden">
-      <div className="h-1 bg-[#1F3864]" aria-hidden />
+      <div className="h-1 bg-b4-deep" aria-hidden />
       <div className="p-4">
-        <span className="inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-[#1F3864] text-white mb-2">
+        <span className="inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-b4-deep text-white mb-2">
           <Pin className="h-3 w-3" /> Pinned
         </span>
         <h3 className="font-display text-sm font-bold text-foreground mb-1">Big 4 × LEAD Model</h3>
@@ -179,7 +179,7 @@ const Resources = () => {
         </p>
         <Button
           onClick={() => window.open('/resources/Big4_LEAD_Guide.docx', '_blank')}
-          className="w-full bg-[#1F3864] hover:bg-[#1F3864]/90 text-white font-semibold rounded-full"
+          className="w-full bg-b4-deep hover:bg-b4-deep/90 text-white font-semibold rounded-full"
           size="sm"
         >
           Open Guide <ChevronRight className="h-4 w-4 ml-1" />
@@ -195,7 +195,7 @@ const Resources = () => {
         <div className="p-4 flex-1">
           <div className="flex items-center gap-2 mb-2">
             <Heart className="h-4 w-4 text-[#5B2D8E]" />
-            <h3 className="font-display text-[15px] font-bold text-[#1F3864]">Inclusion Hub</h3>
+            <h3 className="font-display text-[15px] font-bold text-b4-strong">Inclusion Hub</h3>
           </div>
           <p className="text-[12px] text-muted-foreground leading-relaxed mb-3">
             Practical tips and guides for making the Big 4 tools work for every learner.
@@ -226,15 +226,15 @@ const Resources = () => {
                 key={tool.id}
                 onClick={() => setSelectedTool(active ? 'all' : tool.id)}
                 className={`flex items-center gap-2 px-2.5 py-1.5 rounded-lg border bg-card transition ${
-                  active ? 'border-[#F5A623]' : 'border-border hover:border-border/70'
+                  active ? 'border-b4-flame' : 'border-border hover:border-border/70'
                 }`}
               >
-                <div className="h-5 w-5 rounded bg-white p-0.5 flex items-center justify-center shrink-0">
+                <div className="h-5 w-5 rounded bg-card p-0.5 flex items-center justify-center shrink-0">
                   {tool.logo
                     ? <img src={tool.logo} alt="" className="h-full w-full object-contain" />
-                    : <span className="w-3 h-3 rounded-full bg-[#F5A623]" />}
+                    : <span className="w-3 h-3 rounded-full bg-b4-flame" />}
                 </div>
-                <span className={`text-[12px] font-medium truncate ${active ? 'text-[#F5A623]' : 'text-foreground'}`}>
+                <span className={`text-[12px] font-medium truncate ${active ? 'text-b4-flame-text' : 'text-foreground'}`}>
                   {tool.name}
                 </span>
               </button>
@@ -272,7 +272,7 @@ const Resources = () => {
       <div className="flex items-center justify-between gap-3 p-3 rounded-lg border border-border bg-card">
         <label htmlFor="fav-toggle" className="flex items-center gap-2 text-sm font-medium text-foreground cursor-pointer">
           {showBookmarksOnly
-            ? <BookmarkCheck className="h-4 w-4 text-[#F5A623]" />
+            ? <BookmarkCheck className="h-4 w-4 text-b4-flame-text" />
             : <Bookmark className="h-4 w-4 text-muted-foreground" />}
           My Favourites only
           {bookmarks.size > 0 && (
@@ -291,7 +291,7 @@ const Resources = () => {
   // ───────────────────────── Render ─────────────────────────
   return (
     <AppShell>
-    <div className="min-h-screen bg-muted/20">
+    <div className="min-h-screen">
       {/* Two-part banner: progress + Big 4 Day */}
       <div className="border-b border-border bg-card">
         <div className="container mx-auto px-4">
@@ -299,14 +299,14 @@ const Resources = () => {
             <button
               onClick={() => navigate('/journey')}
               className="text-left flex items-stretch min-h-[48px] hover:bg-muted/30 transition"
-              style={{ borderBottom: "0.5px solid #F5A623" }}
+              style={{ borderBottom: "0.5px solid hsl(var(--b4-flame))" }}
               aria-label="View your journey progress"
             >
-              <div style={{ width: 4, background: "#F5A623" }} aria-hidden />
+              <div style={{ width: 4, background: "hsl(var(--b4-flame))" }} aria-hidden />
               <div className="flex-1 flex items-center gap-3 px-3 py-2 min-w-0">
                 <span className="text-[11px] uppercase tracking-wide text-muted-foreground font-semibold shrink-0 whitespace-nowrap">Your progress</span>
                 <div className="flex-1 h-1.5 rounded-full bg-muted overflow-hidden">
-                  <div className="h-full rounded-full" style={{ width: `${bannerPct}%`, background: "#F5A623" }} />
+                  <div className="h-full rounded-full" style={{ width: `${bannerPct}%`, background: "hsl(var(--b4-flame))" }} />
                 </div>
                 <span className="text-xs font-semibold text-foreground shrink-0 whitespace-nowrap">{bannerCount} of {bannerTotal} complete</span>
               </div>
@@ -314,7 +314,7 @@ const Resources = () => {
             <button
               onClick={() => navigate('/bookings')}
               className="text-left flex items-center gap-2 px-3 py-2 min-h-[48px] hover:opacity-95 transition"
-              style={{ background: "#1F3864", color: "#fff", minWidth: "fit-content" }}
+              style={{ background: "hsl(var(--b4-deep))", color: "#fff", minWidth: "fit-content" }}
               aria-label="Book Big 4 Day"
             >
               <Calendar className="h-4 w-4 shrink-0" />
@@ -387,7 +387,7 @@ const Resources = () => {
                   </span>
                 )}
                 {showBookmarksOnly && (
-                  <span className="inline-flex items-center gap-1 px-3 py-1 bg-[#F5A623]/20 rounded-full text-xs">
+                  <span className="inline-flex items-center gap-1 px-3 py-1 bg-b4-flame/20 rounded-full text-xs">
                     Favourites
                     <button onClick={() => setShowBookmarksOnly(false)} aria-label="Clear favourites filter"><X className="h-3 w-3" /></button>
                   </span>
@@ -423,7 +423,7 @@ const Resources = () => {
                         <div className="h-6 w-6 rounded bg-muted p-0.5 flex items-center justify-center shrink-0">
                           <img src={toolLogo} alt="" className="h-full w-full object-contain" />
                         </div>
-                        <span className="text-[14px] font-bold text-[#1F3864] truncate">{resource.title}</span>
+                        <span className="text-[14px] font-bold text-b4-strong truncate">{resource.title}</span>
                       </div>
                       <div className="flex items-center gap-2 shrink-0">
                         <span className={`text-[11px] font-semibold px-2 py-0.5 rounded-full whitespace-nowrap ${badge.color}`}>{badge.label}</span>
@@ -463,7 +463,7 @@ const Resources = () => {
                               <span className="text-xs text-muted-foreground bg-muted px-2 py-1 rounded whitespace-nowrap">{resource.function}</span>
                               {resource.level && resource.level !== 'all' && (
                                 <span className={`text-xs px-2 py-1 rounded capitalize whitespace-nowrap ${
-                                  resource.level === 'explorer' ? 'bg-[#F5A623]/20 text-[#B8860B]' :
+                                  resource.level === 'explorer' ? 'bg-b4-flame/20 text-[#B8860B]' :
                                   resource.level === 'practitioner' ? 'bg-[#5B5FC7]/20 text-[#5B5FC7]' :
                                   'bg-green-500/20 text-green-700'
                                 }`}>{resource.level}</span>
@@ -535,7 +535,7 @@ const Resources = () => {
                     className="group block w-full text-left rounded-2xl overflow-hidden border-2 border-border bg-card shadow-sm hover:shadow-[var(--shadow-hover)] hover:-translate-y-0.5 transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
                   >
                     <div className="px-3 py-2.5 flex items-center justify-between" style={{ backgroundColor: tool.color }}>
-                      <div className="h-7 w-7 rounded bg-white/95 p-1 flex items-center justify-center">
+                      <div className="h-7 w-7 rounded bg-card/95 p-1 flex items-center justify-center">
                         <img src={tool.logo} alt="" className="h-full w-full object-contain" />
                       </div>
                       <span className="text-[10px] font-bold uppercase tracking-wider text-white/90">PDF</span>

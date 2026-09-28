@@ -200,7 +200,7 @@ const hexToRgb = (hex: string): [number, number, number] => {
   ];
 };
 
-const BRAND_BLUE = "#1F3864";
+const BRAND_BLUE = "#2A2118"; // ThreadWorks ink (PDF needs hex)
 const BODY_GREY = "#222222";
 
 const generateCheatSheetPDF = (content: CheatSheetContent) => {
@@ -327,7 +327,7 @@ interface CheatSheetButtonProps {
   children?: React.ReactNode;
 }
 
-const BRAND_BLUE_HEX = "#1F3864";
+const BRAND_BLUE_HEX = "#2A2118";
 
 /**
  * Renders a Preview trigger for a tool's Quick Reference cheat sheet.
@@ -366,7 +366,7 @@ const CheatSheetButton = ({ toolId, className, children }: CheatSheetButtonProps
       {trigger}
 
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto p-0 gap-0 bg-white">
+        <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto p-0 gap-0 bg-card">
           <DialogHeader className="sr-only">
             <DialogTitle>{content.tool} — Quick Reference Guide</DialogTitle>
             <DialogDescription>

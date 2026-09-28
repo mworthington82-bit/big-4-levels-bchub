@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 
 type BackgroundMode = "light" | "dark" | "high-contrast";
-type FontFamily = "arial" | "opendyslexic" | "calibri";
+type FontFamily = "default" | "arial" | "opendyslexic" | "calibri";
 type FontSize = "small" | "medium" | "large";
 
 interface AccessibilitySettings {
@@ -10,7 +10,20 @@ interface AccessibilitySettings {
   fontSize: FontSize;
   dyslexiaSpacing: boolean;
   textToSpeech: boolean;
+  reduceMotion: boolean;
+  /** Settings schema version. v2 = ThreadWorks re-skin (Sep 2026). */
+  v?: number;
 }
+
+const DEFAULTS: AccessibilitySettings = {
+  backgroundMode: "light",
+  fontFamily: "default",
+  fontSize: "medium",
+  dyslexiaSpacing: false,
+  textToSpeech: false,
+  reduceMotion: false,
+  v: 2,
+};
 
 interface AccessibilityContextType {
   settings: AccessibilitySettings;
@@ -27,22 +40,26 @@ const AccessibilityContext = createContext<AccessibilityContextType | undefined>
 
 export const AccessibilityProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [settings, setSettings] = useState<AccessibilitySettings>(() => {
-    const saved = localStorage.getItem("accessibility-settings");
-    return saved
-      ? JSON.parse(saved)
-      : {
-          backgroundMode: "light",
-          fontFamily: "arial",
-          fontSize: "medium",
-          dyslexiaSpacing: false,
-          textToSpeech: false,
-        };
+    try {
+      const saved = localStorage.getItem("accessibility-settings");
+      if (!saved) return DEFAULTS;
+      const parsed = { ...DEFAULTS, ...JSON.parse(saved) } as AccessibilitySettings;
+      // v1 saved "arial" for everyone as the silent default; move those users to the
+      // new house fonts once. Anyone choosing Arial from now on keeps it.
+      if (!parsed.v || parsed.v < 2) {
+        if (parsed.fontFamily === "arial") parsed.fontFamily = "default";
+        parsed.v = 2;
+      }
+      return parsed;
+    } catch {
+      return DEFAULTS;
+    }
   });
 
   const [isSpeaking, setIsSpeaking] = useState(false);
 
   useEffect(() => {
-    localStorage.setItem("accessibility-settings", JSON.stringify(settings));
+    try { localStorage.setItem("accessibility-settings", JSON.stringify(settings)); } catch { /* storage blocked */ }
 
     // Apply settings to document
     document.documentElement.setAttribute("data-background-mode", settings.backgroundMode);
@@ -52,6 +69,8 @@ export const AccessibilityProvider: React.FC<{ children: React.ReactNode }> = ({
       "data-dyslexia-spacing",
       settings.dyslexiaSpacing.toString()
     );
+    if (settings.reduceMotion) document.documentElement.setAttribute("data-reduce-motion", "");
+    else document.documentElement.removeAttribute("data-reduce-motion");
   }, [settings]);
 
   const updateSetting = <K extends keyof AccessibilitySettings>(

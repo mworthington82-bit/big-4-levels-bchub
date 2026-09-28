@@ -5,7 +5,7 @@ import { ArrowLeft, Users, ExternalLink, Lightbulb, Sparkles, BookOpen, Palette,
 import jsPDF from "jspdf";
 import { AccessibilityPanel } from "@/components/AccessibilityPanel";
 import ResourceBankButton from "@/components/ResourceBankButton";
-import bradfordLogo from "@/assets/bradford-college-logo.jpg";
+import B4Brand from "@/components/B4Brand";
 
 
 const inclusionTips = [
@@ -273,7 +273,7 @@ const TipCard = ({ tip, idx }: { tip: typeof inclusionTips[0]; idx: number }) =>
       className={`rounded-2xl border p-5 ${tip.color} bg-card shadow-[var(--shadow-card)] transition-all duration-300`}
     >
       <div className="flex items-center gap-2 mb-3">
-        <div className="p-1.5 rounded-lg bg-white/80">{tip.icon}</div>
+        <div className="p-1.5 rounded-lg bg-card/80">{tip.icon}</div>
         <span className="text-xs font-bold uppercase tracking-wider">{tip.tool}</span>
         <button
           onClick={(e) => {
@@ -332,14 +332,14 @@ const Inclusion = () => {
   useEffect(() => { window.scrollTo(0, 0); }, []);
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen">
       <ResourceBankButton />
       <AccessibilityPanel />
 
-      <header className="border-b border-border bg-card shadow-sm">
+      <header className="border-b border-b4-line tw-cloth shadow-card">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
-            <img src={bradfordLogo} alt="Bradford College logo" className="h-10 object-contain cursor-pointer" onClick={() => navigate("/")} />
+            <B4Brand to="/" />
             <Button variant="ghost" size="sm" onClick={() => navigate("/")} className="gap-2">
               <ArrowLeft className="w-4 h-4" /> Home
             </Button>
@@ -348,7 +348,7 @@ const Inclusion = () => {
       </header>
 
       {/* Hero */}
-      <section className="relative bg-[#1F3864] overflow-hidden">
+      <section className="relative bg-b4-deep overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_hsl(0_0%_100%_/_0.08)_0%,_transparent_60%)]" />
         <div className="container mx-auto px-4 py-14 md:py-20 relative z-10">
           <div className="max-w-3xl mx-auto text-center">

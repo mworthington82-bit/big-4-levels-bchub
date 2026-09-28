@@ -5,6 +5,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { Link, Upload, FileText, User, Calendar, MessageSquare, Users } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import CommentSection from "./CommentSection";
+import { WeavingLoader } from "@/components/threadworks";
 
 interface EvidenceItem {
   id: string;
@@ -118,8 +119,7 @@ const EvidenceGallery = ({ tool, toolDisplayName }: EvidenceGalleryProps) => {
   if (loading) {
     return (
       <div className="flex flex-col items-center justify-center py-12 gap-3">
-        <img src="/bradford-b-icon.png" alt="" className="h-10 w-10 animate-pulse" />
-        <div className="text-muted-foreground">Loading evidence...</div>
+        <WeavingLoader variant="page" label="Finding the evidence gallery…" />
       </div>
     );
   }

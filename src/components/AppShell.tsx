@@ -7,7 +7,8 @@ import { buildModuleCards, countCompleteOrEvidenced, totalForLevel } from "@/lib
 import { deriveEffectiveLevel } from "@/lib/progression";
 import { useIdleLogout } from "@/hooks/useIdleLogout";
 import { getInitials } from "@/pages/Profile";
-import bradfordLogo from "@/assets/bradford-college-logo.png";
+import B4Brand from "@/components/B4Brand";
+import { ThreadWorksFooter } from "@/components/threadworks";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -20,7 +21,7 @@ import {
 
 const navLinkClass = ({ isActive }: { isActive: boolean }) =>
   `px-3 min-h-[44px] inline-flex items-center rounded-full text-sm font-semibold transition-colors shrink-0 whitespace-nowrap ${
-    isActive ? "bg-white/15 text-white" : "text-white/80 hover:text-white hover:bg-white/10"
+    isActive ? "bg-b4-flame-soft text-b4-strong" : "text-b4-muted hover:text-b4-strong hover:bg-muted"
   }`;
 
 const NAV_ITEMS = [
@@ -65,25 +66,14 @@ const AppShell = ({ children }: { children: React.ReactNode }) => {
   const initials = getInitials(profile?.name);
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
-      <header className="bg-[#1F3864] text-white shadow-md">
+    <div className="min-h-screen flex flex-col">
+      <header className="sticky top-0 z-40 border-b border-b4-line tw-cloth text-b4-strong shadow-card">
         <div
           className="container mx-auto px-4 py-3 flex items-center gap-4 min-h-[64px]"
           style={{ flexWrap: "nowrap" }}
         >
-          {/* Logo + title (left) */}
-          <button
-            onClick={() => navigate("/journey")}
-            className="flex items-center gap-3 shrink-0 min-h-[44px]"
-            aria-label="The Big 4: Level Up — home"
-            style={{ minWidth: "fit-content" }}
-          >
-            <img src={bradfordLogo} alt="Bradford College" className="h-8 w-auto object-contain" style={{ background: "transparent" }} />
-            <span className="hidden sm:inline-block h-6 w-px" style={{ background: "rgba(255,255,255,0.2)" }} aria-hidden />
-            <span className="hidden sm:inline font-bold text-base md:text-lg whitespace-nowrap" style={{ minWidth: "fit-content" }}>
-              The Big 4: Level Up
-            </span>
-          </button>
+          {/* Brand lockup (left): tile, threaded wordmark, college logo */}
+          <B4Brand to="/journey" />
 
           {/* Center nav */}
           <nav className="hidden lg:flex items-center gap-1 mx-auto" style={{ flexWrap: "nowrap" }}>
@@ -97,10 +87,7 @@ const AppShell = ({ children }: { children: React.ReactNode }) => {
           {/* Right cluster: pill + avatar + sign out (never shares space with nav) */}
           <div className="flex items-center gap-2 shrink-0 ml-auto lg:ml-0" style={{ minWidth: "fit-content", flexWrap: "nowrap" }}>
             {showPill && (
-              <span
-                className="hidden md:inline-flex items-center px-3 py-1.5 rounded-full border border-white/30 text-xs font-semibold bg-white/5 whitespace-nowrap shrink-0"
-                style={{ minWidth: "fit-content" }}
-              >
+              <span className="hidden md:inline-flex tw-tag shrink-0" style={{ minWidth: "fit-content" }}>
                 {pillLabel}
               </span>
             )}
@@ -114,11 +101,11 @@ const AppShell = ({ children }: { children: React.ReactNode }) => {
                   width: 32,
                   height: 32,
                   borderRadius: "9999px",
-                  background: "#1F3864",
+                  background: "hsl(var(--b4-deep))",
                   color: "#fff",
                   fontSize: 12,
                   fontWeight: 500,
-                  border: "1.5px solid rgba(255,255,255,0.3)",
+                  border: "1.5px solid hsl(var(--b4-flame))",
                 }}
               >
                 {initials}
@@ -126,7 +113,7 @@ const AppShell = ({ children }: { children: React.ReactNode }) => {
             )}
             <button
               onClick={fullSignOut}
-              className="hidden md:inline-flex items-center justify-center gap-1.5 text-white/80 hover:text-white text-sm shrink-0 min-h-[44px] rounded-full hover:bg-white/10 px-2 lg:px-3"
+              className="hidden md:inline-flex items-center justify-center gap-1.5 text-b4-muted hover:text-b4-strong text-sm shrink-0 min-h-[44px] rounded-full hover:bg-muted px-2 lg:px-3"
               aria-label="Sign out"
               title="Sign out"
               style={{ minWidth: "fit-content" }}
@@ -136,7 +123,7 @@ const AppShell = ({ children }: { children: React.ReactNode }) => {
             </button>
             <button
               onClick={() => setMobileOpen((v) => !v)}
-              className="lg:hidden inline-flex items-center justify-center min-h-[44px] min-w-[44px] rounded-full hover:bg-white/10 shrink-0"
+              className="lg:hidden inline-flex items-center justify-center min-h-[44px] min-w-[44px] rounded-full hover:bg-muted shrink-0"
               aria-label={mobileOpen ? "Close menu" : "Open menu"}
               aria-expanded={mobileOpen}
             >
@@ -147,14 +134,12 @@ const AppShell = ({ children }: { children: React.ReactNode }) => {
 
         {showPill && (
           <div className="md:hidden flex justify-center pb-3 px-4">
-            <span className="inline-flex items-center px-3 py-1.5 rounded-full border border-white/30 text-xs font-semibold bg-white/5 whitespace-nowrap">
-              {pillLabel}
-            </span>
+            <span className="tw-tag">{pillLabel}</span>
           </div>
         )}
 
         {mobileOpen && (
-          <nav className="lg:hidden border-t border-white/10 px-4 pb-3 pt-2 flex flex-col gap-1">
+          <nav className="lg:hidden border-t border-border px-4 pb-3 pt-2 flex flex-col gap-1">
             {NAV_ITEMS.map((item) => (
               <NavLink
                 key={item.to}
@@ -168,13 +153,13 @@ const AppShell = ({ children }: { children: React.ReactNode }) => {
             {profile && (
               <button
                 onClick={() => { setMobileOpen(false); navigate("/profile"); }}
-                className="inline-flex items-center gap-2 px-4 min-h-[44px] rounded-full text-sm font-semibold text-white/80 hover:text-white hover:bg-white/10"
+                className="inline-flex items-center gap-2 px-4 min-h-[44px] rounded-full text-sm font-semibold text-b4-muted hover:text-b4-strong hover:bg-muted"
               >
                 <span
                   style={{
                     width: 24, height: 24, borderRadius: "9999px",
-                    background: "#1F3864", color: "#fff", fontSize: 11, fontWeight: 500,
-                    border: "1.5px solid rgba(255,255,255,0.3)",
+                    background: "hsl(var(--b4-deep))", color: "#fff", fontSize: 11, fontWeight: 500,
+                    border: "1.5px solid hsl(var(--b4-flame))",
                     display: "inline-flex", alignItems: "center", justifyContent: "center",
                   }}
                 >
@@ -185,7 +170,7 @@ const AppShell = ({ children }: { children: React.ReactNode }) => {
             )}
             <button
               onClick={fullSignOut}
-              className="inline-flex items-center gap-2 px-4 min-h-[44px] rounded-full text-sm font-semibold text-white/80 hover:text-white hover:bg-white/10"
+              className="inline-flex items-center gap-2 px-4 min-h-[44px] rounded-full text-sm font-semibold text-b4-muted hover:text-b4-strong hover:bg-muted"
             >
               <LogOut className="w-4 h-4" /> Sign out
             </button>
@@ -193,13 +178,8 @@ const AppShell = ({ children }: { children: React.ReactNode }) => {
         )}
       </header>
 
-      <main className="flex-1">{children}</main>
-      <footer className="border-t border-border bg-card">
-        <div className="container mx-auto px-4 py-5 flex flex-col md:flex-row items-center justify-between gap-3 text-xs md:text-sm text-muted-foreground">
-          <span>© {new Date().getFullYear()} Bradford College — The Big 4: Level Up</span>
-          <a href="/privacy" className="hover:text-foreground underline-offset-4 hover:underline font-medium">Privacy Notice</a>
-        </div>
-      </footer>
+      <main className="flex-1 animate-tw-rise">{children}</main>
+      <ThreadWorksFooter />
 
       <AlertDialog open={showWarning}>
         <AlertDialogContent>

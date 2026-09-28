@@ -1,4 +1,5 @@
-import { Check, Loader2 } from "lucide-react";
+import { Check } from "lucide-react";
+import { LoaderThread } from "@/components/threadworks";
 
 export type StepStatus = "pending" | "active" | "done";
 
@@ -24,15 +25,15 @@ const ProcessingStatus = ({ fileName, fileSize, steps }: Props) => {
   const pct = Math.round((done / steps.length) * 100);
 
   return (
-    <div className="bg-white rounded-xl p-6 border border-slate-200">
+    <div className="bg-card rounded-xl p-6 border border-border">
       <div className="flex items-baseline justify-between mb-3">
-        <div className="font-semibold text-[#1F3864]">{fileName}</div>
-        <div className="text-xs text-slate-500">{formatSize(fileSize)}</div>
+        <div className="font-semibold text-b4-strong">{fileName}</div>
+        <div className="text-xs text-muted-foreground">{formatSize(fileSize)}</div>
       </div>
 
-      <div className="h-2 w-full bg-slate-100 rounded-full overflow-hidden mb-4">
+      <div className="h-2 w-full bg-muted rounded-full overflow-hidden mb-4">
         <div
-          className="h-full bg-[#F5A623] transition-all"
+          className="h-full bg-b4-flame transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]"
           style={{ width: `${pct}%` }}
         />
       </div>
@@ -43,17 +44,17 @@ const ProcessingStatus = ({ fileName, fileSize, steps }: Props) => {
             {s.status === "done" ? (
               <Check className="w-4 h-4 text-green-600" />
             ) : s.status === "active" ? (
-              <Loader2 className="w-4 h-4 text-[#F5A623] animate-spin" />
+              <LoaderThread className="w-6" />
             ) : (
-              <span className="w-4 h-4 rounded-full border border-slate-300 inline-block" />
+              <span className="w-4 h-4 rounded-full border border-b4-line inline-block" />
             )}
             <span
               className={
                 s.status === "done"
-                  ? "text-slate-700"
+                  ? "text-foreground"
                   : s.status === "active"
-                  ? "text-[#1F3864] font-medium"
-                  : "text-slate-400"
+                  ? "text-b4-strong font-medium"
+                  : "text-muted-foreground/80"
               }
             >
               {s.label}

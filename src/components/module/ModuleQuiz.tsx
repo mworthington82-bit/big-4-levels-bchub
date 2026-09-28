@@ -32,7 +32,7 @@ const ModuleQuiz = ({ questions, onComplete, onBackToPathway }: Props) => {
 
   if (questions.length === 0) {
     return (
-      <div className="text-center text-[#5F6B7D]">
+      <div className="text-center text-b4-muted">
         No quiz questions found for this module yet.
       </div>
     );
@@ -48,10 +48,10 @@ const ModuleQuiz = ({ questions, onComplete, onBackToPathway }: Props) => {
         <div className="mx-auto mb-5 w-16 h-16 rounded-full bg-[#EAF3DE] flex items-center justify-center">
           <IconCheck size={36} stroke={2.5} className="text-[#5A7D2A]" />
         </div>
-        <h2 className="font-bold text-[#1F3864] text-2xl md:text-3xl mb-3">
+        <h2 className="font-bold text-b4-strong text-2xl md:text-3xl mb-3">
           Module complete — well done.
         </h2>
-        <p className="text-[#5F6B7D] mb-8">
+        <p className="text-b4-muted mb-8">
           Your completion has been saved to your pathway.
         </p>
         <button
@@ -61,8 +61,8 @@ const ModuleQuiz = ({ questions, onComplete, onBackToPathway }: Props) => {
           Back to my pathway
           <IconArrowRight size={18} stroke={2} />
         </button>
-        <div className="mt-8 pt-6 border-t border-[#EEF1F6]">
-          <p className="text-sm text-[#5F6B7D] mb-2">Looking for more ideas?</p>
+        <div className="mt-8 pt-6 border-t border-b4-wash-2">
+          <p className="text-sm text-b4-muted mb-2">Looking for more ideas?</p>
           <a
             href="/resources"
             className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#185FA5] hover:underline"
@@ -119,10 +119,10 @@ const ModuleQuiz = ({ questions, onComplete, onBackToPathway }: Props) => {
 
   return (
     <div>
-      <p className="text-sm font-semibold text-[#5F6B7D] mb-2">
+      <p className="text-sm font-semibold text-b4-muted mb-2">
         Question {index + 1} of {questions.length}
       </p>
-      <h3 className="font-bold text-[#1F3864] text-xl md:text-2xl mb-6">
+      <h3 className="font-bold text-b4-strong text-xl md:text-2xl mb-6">
         {q.question_text}
       </h3>
 
@@ -133,13 +133,13 @@ const ModuleQuiz = ({ questions, onComplete, onBackToPathway }: Props) => {
           let cls =
             "w-full text-left px-5 py-4 rounded-xl border-2 transition-colors flex items-start gap-3";
           if (!revealed) {
-            cls += " border-[#D0D7E2] bg-white hover:border-[#185FA5] hover:bg-[#F5F9FE]";
+            cls += " border-b4-line bg-card hover:border-[#185FA5] hover:bg-[#F5F9FE]";
           } else if (isRight) {
             cls += " border-[#7BA84D] bg-[#EAF3DE]";
           } else if (isSel) {
-            cls += " border-[#D97706] bg-[#FEF6E8]";
+            cls += " border-[#D97706] bg-b4-flame-soft";
           } else {
-            cls += " border-[#D0D7E2] bg-white opacity-60";
+            cls += " border-b4-line bg-card opacity-60";
           }
           return (
             <button
@@ -148,10 +148,10 @@ const ModuleQuiz = ({ questions, onComplete, onBackToPathway }: Props) => {
               disabled={revealed}
               className={cls}
             >
-              <span className="font-bold text-[#1F3864] shrink-0">
+              <span className="font-bold text-b4-strong shrink-0">
                 Option {i + 1}
               </span>
-              <span className="text-[#1F3864] flex-1">{opt.text}</span>
+              <span className="text-b4-strong flex-1">{opt.text}</span>
               {revealed && isRight && (
                 <IconCheck size={22} stroke={2.5} className="text-[#5A7D2A] shrink-0" />
               )}
@@ -168,14 +168,14 @@ const ModuleQuiz = ({ questions, onComplete, onBackToPathway }: Props) => {
           className={`rounded-xl p-5 mb-6 border-2 ${
             isCorrect
               ? "bg-[#EAF3DE] border-[#7BA84D]"
-              : "bg-[#FEF6E8] border-[#D97706]"
+              : "bg-b4-flame-soft border-[#D97706]"
           }`}
         >
           <p className={`font-bold mb-2 ${isCorrect ? "text-[#5A7D2A]" : "text-[#92501C]"}`}>
             {isCorrect ? "Correct" : "Have another think"}
           </p>
           {explanation && (
-            <p className="text-[#1F3864] text-sm leading-relaxed">{explanation}</p>
+            <p className="text-b4-strong text-sm leading-relaxed">{explanation}</p>
           )}
         </div>
       )}

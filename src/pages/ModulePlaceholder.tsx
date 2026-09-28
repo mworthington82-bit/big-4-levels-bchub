@@ -23,7 +23,7 @@ const ModulePlaceholder = () => {
 
   return (
     <AppShell>
-      <div className="min-h-full bg-[#F4F6FB]">
+      <div className="min-h-full">
         <div className="container mx-auto px-4 py-12 max-w-3xl">
           <button
             onClick={() => navigate("/journey")}
@@ -32,9 +32,9 @@ const ModulePlaceholder = () => {
             <IconArrowLeft size={16} stroke={2} />
             Back to My Journey
           </button>
-          <div className="bg-white rounded-2xl border border-[#D0D7E2] p-8 md:p-12 text-center">
-            <h1 className="font-bold text-[#1F3864] text-2xl md:text-3xl mb-3">{title}</h1>
-            <p className="text-[#5F6B7D] text-base">
+          <div className="bg-card rounded-2xl border border-b4-line p-8 md:p-12 text-center">
+            <h1 className="font-bold text-b4-strong text-2xl md:text-3xl mb-3">{title}</h1>
+            <p className="text-b4-muted text-base">
               This module is coming soon — content is being built.
             </p>
           </div>

@@ -8,9 +8,9 @@ import {
 import { Button } from "@/components/ui/button";
 import { PartyPopper, Download, ArrowRight } from "lucide-react";
 import { Level } from "@/types/learning";
-import emblemExplorer from "@/assets/emblem-explorer.svg";
-import emblemPractitioner from "@/assets/emblem-practitioner.svg";
-import emblemLeader from "@/assets/emblem-leader.svg";
+import emblemExplorer from "@/assets/art/rope/knot-explorer.webp";
+import emblemPractitioner from "@/assets/art/rope/knot-practitioner.webp";
+import emblemLeader from "@/assets/art/rope/knot-leader.webp";
 
 interface CompletionCelebrationDialogProps {
   open: boolean;

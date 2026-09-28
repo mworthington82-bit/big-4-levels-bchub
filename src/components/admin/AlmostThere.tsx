@@ -6,7 +6,7 @@ import { deriveEffectiveLevel } from "@/lib/progression";
 import { buildExplorerCards, buildPractitionerCards } from "@/lib/journey";
 import { downloadNodeAsPng } from "@/lib/exportPng";
 
-const INK = "#1C1C2E";
+const INK = "hsl(var(--b4-ink))";
 
 interface Row {
   email: string;
@@ -179,16 +179,16 @@ const AlmostThere = ({ refreshKey = 0 }: { refreshKey?: number } = {}) => {
   }) => (
     <div
       className={`rounded-2xl border p-5 ${
-        highlight ? "border-[#F5A623] bg-[#FFF8EC] shadow-sm" : "border-slate-200 bg-white"
+        highlight ? "border-b4-flame bg-[#FFF8EC] shadow-sm" : "border-border bg-card"
       }`}
     >
-      <div className="text-4xl font-bold" style={{ color: highlight ? "#B36A00" : INK }}>
+      <div className="text-4xl font-bold" style={{ color: highlight ? "hsl(var(--b4-flame-text))" : INK }}>
         {loading ? "—" : rows.length}
       </div>
       <h3 className="mt-1 font-semibold" style={{ color: INK, fontFamily: "Fraunces, serif" }}>
         {title}
       </h3>
-      <p className="text-sm text-slate-600 mt-1">{subtitle}</p>
+      <p className="text-sm text-muted-foreground mt-1">{subtitle}</p>
 
       {rows.length > 0 && (
         <>
@@ -204,7 +204,7 @@ const AlmostThere = ({ refreshKey = 0 }: { refreshKey?: number } = {}) => {
               {showEmail && (
                 <button
                   onClick={copyEmails}
-                  className="mt-3 flex items-center gap-2 rounded-lg bg-[#1C1C2E] px-3 py-2 text-sm font-medium text-white hover:opacity-90"
+                  className="mt-3 flex items-center gap-2 rounded-lg bg-b4-deep px-3 py-2 text-sm font-medium text-white hover:opacity-90"
                 >
                   {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
                   {copied ? "Copied" : "Copy all emails"}
@@ -220,7 +220,7 @@ const AlmostThere = ({ refreshKey = 0 }: { refreshKey?: number } = {}) => {
                     <div className="font-medium" style={{ color: INK }}>
                       {r.name || r.email}
                     </div>
-                    <div className="text-slate-600">
+                    <div className="text-muted-foreground">
                       {showEmail && <span>{r.email} · </span>}
                       {r.department ? `${r.department} · ` : ""}Missing: {r.missing}
                     </div>
@@ -241,7 +241,7 @@ const AlmostThere = ({ refreshKey = 0 }: { refreshKey?: number } = {}) => {
           <h2 className="text-2xl font-bold" style={{ color: INK, fontFamily: "Fraunces, serif" }}>
             Almost there
           </h2>
-          <p className="text-slate-600 text-sm mt-1">
+          <p className="text-muted-foreground text-sm mt-1">
             Staff who are one module away from their next level. A module counts as done when it is
             completed on the platform or auto-evidenced from the self-assessment; training attended
             in person still counts as outstanding until the knowledge check is passed.
@@ -250,7 +250,7 @@ const AlmostThere = ({ refreshKey = 0 }: { refreshKey?: number } = {}) => {
         <div className="flex items-center gap-2">
           <button
             onClick={handleDownloadCsv}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-[#1C1C2E] text-[#1C1C2E] font-semibold bg-white hover:bg-slate-50"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-b4-ink text-b4-ink font-semibold bg-card hover:bg-b4-wash"
           >
             <FileSpreadsheet className="w-4 h-4" />
             Download CSV
@@ -258,7 +258,7 @@ const AlmostThere = ({ refreshKey = 0 }: { refreshKey?: number } = {}) => {
           <button
             onClick={handleDownloadPng}
             disabled={exporting}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[#F5A623] text-[#1C1C2E] font-semibold hover:brightness-95 disabled:opacity-60"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-b4-flame text-b4-on-flame font-semibold hover:brightness-95 disabled:opacity-60"
           >
             <Download className="w-4 h-4" />
             {exporting ? "Preparing…" : "Download PNG"}
@@ -266,9 +266,9 @@ const AlmostThere = ({ refreshKey = 0 }: { refreshKey?: number } = {}) => {
         </div>
       </header>
 
-      <div ref={exportRef} className="bg-white rounded-xl border border-slate-200 overflow-hidden">
-        <div className="bg-[#1C1C2E] text-white px-6 py-5 relative">
-          <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-[#F5A623]" />
+      <div ref={exportRef} className="bg-card rounded-xl border border-border overflow-hidden">
+        <div className="bg-b4-deep text-white px-6 py-5 relative">
+          <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-b4-flame" />
           <h3 className="text-xl font-semibold" style={{ fontFamily: "Fraunces, serif" }}>
             Almost there
           </h3>

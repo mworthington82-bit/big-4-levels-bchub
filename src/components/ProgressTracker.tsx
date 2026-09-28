@@ -8,7 +8,7 @@ interface ProgressTrackerProps {
   brandColor?: string;
 }
 
-const ProgressTracker = ({ currentStep, steps, onStepClick, brandColor = '#F5A623' }: ProgressTrackerProps) => {
+const ProgressTracker = ({ currentStep, steps, onStepClick, brandColor = 'hsl(var(--b4-flame))' }: ProgressTrackerProps) => {
   const handleStepClick = (index: number) => {
     if (index <= currentStep && onStepClick) {
       onStepClick(index);
@@ -29,7 +29,7 @@ const ProgressTracker = ({ currentStep, steps, onStepClick, brandColor = '#F5A62
                 {/* Active glow ring */}
                 {isActive && (
                   <div
-                    className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[calc(50%+10px)] w-12 h-12 rounded-full opacity-30 animate-pulse"
+                    className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[calc(50%+10px)] w-12 h-12 rounded-full opacity-30"
                     style={{ backgroundColor: brandColor }}
                   />
                 )}

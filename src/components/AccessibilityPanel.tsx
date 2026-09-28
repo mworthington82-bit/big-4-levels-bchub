@@ -61,6 +61,10 @@ export const AccessibilityPanel = () => {
               onValueChange={(value) => updateSetting('fontFamily', value as any)}
             >
               <div className="flex items-center space-x-2">
+                <RadioGroupItem value="default" id="font-default" />
+                <Label htmlFor="font-default" className="cursor-pointer">Big 4 house fonts (default)</Label>
+              </div>
+              <div className="flex items-center space-x-2">
                 <RadioGroupItem value="arial" id="arial" />
                 <Label htmlFor="arial" className="cursor-pointer">Arial (High readability)</Label>
               </div>
@@ -107,6 +111,19 @@ export const AccessibilityPanel = () => {
               checked={settings.dyslexiaSpacing}
               onCheckedChange={(checked) => updateSetting('dyslexiaSpacing', checked)}
               aria-label="Toggle dyslexia-friendly spacing"
+            />
+          </div>
+
+          {/* Reduce Motion */}
+          <div className="flex items-center justify-between">
+            <div className="space-y-0.5">
+              <Label className="text-base font-semibold">Reduce Motion</Label>
+              <p className="text-sm text-muted-foreground">Stop animations and moving loaders</p>
+            </div>
+            <Switch
+              checked={settings.reduceMotion}
+              onCheckedChange={(checked) => updateSetting('reduceMotion', checked)}
+              aria-label="Toggle reduced motion"
             />
           </div>
 

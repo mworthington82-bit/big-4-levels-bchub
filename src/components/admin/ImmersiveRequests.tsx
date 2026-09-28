@@ -75,11 +75,11 @@ const ImmersiveRequests = ({ refreshKey }: { refreshKey?: number }) => {
   };
 
   return (
-    <section className="bg-white border border-slate-200 rounded-2xl p-6">
+    <section className="bg-card border border-border rounded-2xl p-6">
       <header className="mb-4 flex flex-wrap items-center justify-between gap-3">
         <div className="flex items-center gap-2">
-          <Sparkles className="w-5 h-5 text-[#1F3864]" />
-          <h2 className="text-xl font-semibold text-[#1F3864]">Immersive Room requests</h2>
+          <Sparkles className="w-5 h-5 text-b4-strong" />
+          <h2 className="text-xl font-semibold text-b4-strong">Immersive Room requests</h2>
         </div>
         <div className="flex gap-2">
           <Button size="sm" variant="outline" onClick={downloadCsv} disabled={rows.length === 0}>
@@ -89,41 +89,41 @@ const ImmersiveRequests = ({ refreshKey }: { refreshKey?: number }) => {
             size="sm"
             onClick={downloadPng}
             disabled={exporting || rows.length === 0}
-            className="bg-[#F5A623] hover:bg-[#F5A623]/90 text-[#1C1C2E]"
+            className="bg-b4-flame hover:bg-b4-flame/90 text-b4-on-flame"
           >
             <Download className="w-4 h-4 mr-1" /> {exporting ? "Preparing…" : "Download PNG"}
           </Button>
         </div>
       </header>
 
-      <div ref={exportRef} className="bg-white">
+      <div ref={exportRef} className="bg-card">
         <div className="grid gap-4 sm:grid-cols-2 mb-5">
-          <div className="rounded-xl border border-slate-200 bg-[#F4F6FB] p-4">
-            <p className="text-3xl font-bold text-[#1F3864]">{rows.length}</p>
-            <p className="text-sm text-slate-600">Total requests</p>
+          <div className="rounded-xl border border-border bg-b4-wash p-4">
+            <p className="text-3xl font-bold text-b4-strong">{rows.length}</p>
+            <p className="text-sm text-muted-foreground">Total requests</p>
           </div>
-          <div className="rounded-xl border border-[#F5A623]/40 bg-[#FFF9EF] p-4">
+          <div className="rounded-xl border border-b4-flame/40 bg-[#FFF9EF] p-4">
             <p className="text-3xl font-bold text-[#B37400]">{pending.length}</p>
-            <p className="text-sm text-slate-600">Still to be booked in</p>
+            <p className="text-sm text-muted-foreground">Still to be booked in</p>
           </div>
         </div>
 
         {loading ? (
-          <p className="text-sm text-slate-500">Loading requests…</p>
+          <p className="text-sm text-muted-foreground">Loading requests…</p>
         ) : rows.length === 0 ? (
-          <p className="text-sm text-slate-500">No Immersive Room requests yet.</p>
+          <p className="text-sm text-muted-foreground">No Immersive Room requests yet.</p>
         ) : (
-          <ul className="divide-y divide-slate-200 border border-slate-200 rounded-lg">
+          <ul className="divide-y divide-slate-200 border border-border rounded-lg">
             {rows.map((r) => (
               <li key={r.id} className="p-3 flex flex-wrap items-center justify-between gap-2">
                 <div className="min-w-0">
-                  <p className="font-medium text-[#1C1C2E] truncate">{r.name ?? r.email}</p>
-                  <p className="text-xs text-slate-500 truncate">
+                  <p className="font-medium text-b4-ink truncate">{r.name ?? r.email}</p>
+                  <p className="text-xs text-muted-foreground truncate">
                     {r.email}
                     {r.department ? ` · ${r.department}` : ""}
                   </p>
                 </div>
-                <span className="text-xs text-slate-500">
+                <span className="text-xs text-muted-foreground">
                   {new Date(r.created_at).toLocaleDateString("en-GB")}
                 </span>
               </li>

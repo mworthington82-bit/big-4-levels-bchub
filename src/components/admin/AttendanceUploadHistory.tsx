@@ -49,25 +49,25 @@ const AttendanceUploadHistory = ({ refreshKey }: { refreshKey: number }) => {
   }, [refreshKey]);
 
   return (
-    <details className="bg-white rounded-xl border border-slate-200 group">
+    <details className="bg-card rounded-xl border border-border group">
       <summary className="cursor-pointer list-none p-6 flex items-center justify-between gap-2">
         <div className="flex items-center gap-2">
-          <ClipboardList className="w-5 h-5 text-[#1F3864]" />
-          <h2 className="text-lg font-semibold text-[#1F3864]">
+          <ClipboardList className="w-5 h-5 text-b4-strong" />
+          <h2 className="text-lg font-semibold text-b4-strong">
             Session attendance upload history{" "}
-            <span className="text-slate-400 font-normal">({batches.length})</span>
+            <span className="text-muted-foreground/80 font-normal">({batches.length})</span>
           </h2>
         </div>
-        <ChevronDown className="w-5 h-5 text-slate-400 transition-transform group-open:rotate-180" />
+        <ChevronDown className="w-5 h-5 text-muted-foreground/80 transition-transform group-open:rotate-180" />
       </summary>
       <div className="px-6 pb-6">
         {batches.length === 0 ? (
-          <p className="text-sm text-slate-500">No attendance uploaded yet.</p>
+          <p className="text-sm text-muted-foreground">No attendance uploaded yet.</p>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="text-left text-slate-500 border-b border-slate-200">
+                <tr className="text-left text-muted-foreground border-b border-border">
                   <th className="py-2 pr-4 font-medium">Upload date</th>
                   <th className="py-2 pr-4 font-medium">Session</th>
                   <th className="py-2 pr-4 font-medium">Attendees</th>
@@ -75,7 +75,7 @@ const AttendanceUploadHistory = ({ refreshKey }: { refreshKey: number }) => {
               </thead>
               <tbody>
                 {batches.map((b) => (
-                  <tr key={`${b.day}__${b.module_id}`} className="border-b border-slate-100 last:border-0">
+                  <tr key={`${b.day}__${b.module_id}`} className="border-b border-border last:border-0">
                     <td className="py-2 pr-4">
                       {new Date(b.day).toLocaleDateString("en-GB", {
                         day: "2-digit",

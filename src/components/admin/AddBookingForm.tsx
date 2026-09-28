@@ -375,12 +375,12 @@ const AddBookingForm = () => {
   };
 
   return (
-    <section className="bg-white border border-slate-200 rounded-2xl p-6">
+    <section className="bg-card border border-border rounded-2xl p-6">
       <header className="mb-4 flex items-center gap-2">
-        <Calendar className="w-5 h-5 text-[#1F3864]" />
-        <h2 className="text-xl font-semibold text-[#1F3864]">Training bookings</h2>
+        <Calendar className="w-5 h-5 text-b4-strong" />
+        <h2 className="text-xl font-semibold text-b4-strong">Training bookings</h2>
       </header>
-      <p className="text-sm text-slate-600 mb-4">
+      <p className="text-sm text-muted-foreground mb-4">
         Posts a session to the Bookings page for staff currently at the chosen level who have not
         yet evidenced that tool at that level. Mark a session as full to disable the booking link,
         or upload an attendance CSV after the session to auto-complete the pre-quiz activity for
@@ -415,7 +415,7 @@ const AddBookingForm = () => {
           <Input id="b-url" type="url" value={url} onChange={(e) => setUrl(e.target.value)} placeholder="https://outlook.office365.com/owa/calendar/..." />
         </div>
         <div className="md:col-span-2 flex gap-2">
-          <Button type="submit" disabled={busy} className="bg-[#1F3864] hover:bg-[#1F3864]/90">
+          <Button type="submit" disabled={busy} className="bg-b4-deep hover:bg-b4-deep/90">
             {busy ? "Saving…" : editingId ? "Save changes" : "Submit training"}
           </Button>
           {editingId && <Button type="button" variant="outline" onClick={reset}>Cancel</Button>}
@@ -423,19 +423,19 @@ const AddBookingForm = () => {
       </form>
 
       <div className="mt-8">
-        <h3 className="text-sm font-semibold text-slate-700 mb-3">Current bookings</h3>
+        <h3 className="text-sm font-semibold text-foreground mb-3">Current bookings</h3>
         {bookings.length === 0 ? (
-          <p className="text-sm text-slate-500">No training sessions posted yet.</p>
+          <p className="text-sm text-muted-foreground">No training sessions posted yet.</p>
         ) : (
-          <ul className="divide-y divide-slate-200 border border-slate-200 rounded-lg">
+          <ul className="divide-y divide-slate-200 border border-border rounded-lg">
             {bookings.map((b) => (
               <li key={b.id} className="flex flex-col gap-2 p-3 sm:flex-row sm:items-center sm:justify-between">
                 <div className="min-w-0 flex-1">
                   <p className="font-medium truncate">{b.name}</p>
-                  <p className="text-xs text-slate-500 capitalize">
+                  <p className="text-xs text-muted-foreground capitalize">
                     {TOOL_OPTIONS.find((t) => t.value === b.tool)?.label ?? b.tool} · {b.level}
                     {b.is_full && <span className="ml-2 text-red-600 font-semibold">FULL</span>}
-                    {b.is_visible === false && <span className="ml-2 text-slate-500 font-semibold">HIDDEN</span>}
+                    {b.is_visible === false && <span className="ml-2 text-muted-foreground font-semibold">HIDDEN</span>}
                   </p>
                   <a href={b.booking_url} target="_blank" rel="noopener noreferrer" className="text-xs text-blue-700 hover:underline truncate block max-w-full">
                     {b.booking_url}
@@ -443,7 +443,7 @@ const AddBookingForm = () => {
                 </div>
                 <div className="flex items-center gap-3 flex-shrink-0 flex-wrap">
                   {bookingCounts[b.name] > 0 && (
-                    <span className="inline-flex items-center gap-1 rounded-full bg-[#1F3864]/10 text-[#1F3864] text-xs font-semibold px-2 py-1">
+                    <span className="inline-flex items-center gap-1 rounded-full bg-b4-deep/10 text-b4-strong text-xs font-semibold px-2 py-1">
                       <Users className="w-3 h-3" />
                       {bookingCounts[b.name]} booked
                     </span>
@@ -522,15 +522,15 @@ const AddBookingForm = () => {
                   the quiz themselves to be evidenced.
                 </p>
                 {pending && (
-                  <div className="max-h-48 overflow-y-auto border border-slate-200 rounded-md p-2 text-xs">
+                  <div className="max-h-48 overflow-y-auto border border-border rounded-md p-2 text-xs">
                     {pending.rows.map((r, i) => (
-                      <div key={i} className="py-0.5 border-b border-slate-100 last:border-0">
-                        <span className="font-medium">{r.name || "(no name)"}</span> · <span className="text-slate-600">{r.email}</span>
+                      <div key={i} className="py-0.5 border-b border-border last:border-0">
+                        <span className="font-medium">{r.name || "(no name)"}</span> · <span className="text-muted-foreground">{r.email}</span>
                       </div>
                     ))}
                   </div>
                 )}
-                <p className="text-xs text-slate-500">
+                <p className="text-xs text-muted-foreground">
                   Any reflections in the CSV will be saved to the Reflection Wall on this admin page.
                 </p>
               </div>

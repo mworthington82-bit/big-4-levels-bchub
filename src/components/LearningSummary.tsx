@@ -55,9 +55,9 @@ const LearningSummary = ({ level, onContinue }: LearningSummaryProps) => {
         </p>
       </div>
 
-      <div className="bg-[#F5A623]/10 border border-[#F5A623]/30 rounded-xl px-5 py-3 text-center no-print">
+      <div className="bg-b4-flame/10 border border-b4-flame/30 rounded-xl px-5 py-3 text-center no-print">
         <p className="text-sm text-foreground">
-          Mark each item: <span className="font-semibold text-green-600">✓ I know this</span> or <span className="font-semibold text-[#F5A623]">? I want to explore further</span>
+          Mark each item: <span className="font-semibold text-green-600">✓ I know this</span> or <span className="font-semibold text-b4-flame-text">? I want to explore further</span>
         </p>
       </div>
 
@@ -95,7 +95,7 @@ const LearningSummary = ({ level, onContinue }: LearningSummaryProps) => {
                         key={obj.id}
                         className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 ${
                           status === 'known' ? 'bg-green-50 border border-green-200' :
-                          status === 'explore' ? 'bg-[#F5A623]/10 border border-[#F5A623]/30' :
+                          status === 'explore' ? 'bg-b4-flame/10 border border-b4-flame/30' :
                           'bg-card border border-transparent hover:bg-muted/20'
                         }`}
                       >
@@ -139,8 +139,8 @@ const LearningSummary = ({ level, onContinue }: LearningSummaryProps) => {
                             onClick={() => toggleMark(obj.id, 'explore')}
                             className={`w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold transition-all ${
                               status === 'explore'
-                                ? 'bg-[#F5A623] text-white shadow-md scale-110'
-                                : 'bg-[#F5A623]/20 text-[#B8860B] hover:bg-[#F5A623]/30'
+                                ? 'bg-b4-flame text-white shadow-md scale-110'
+                                : 'bg-b4-flame/20 text-[#B8860B] hover:bg-b4-flame/30'
                             }`}
                             title="I want to explore further"
                           >

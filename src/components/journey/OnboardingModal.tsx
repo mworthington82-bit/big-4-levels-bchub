@@ -12,7 +12,7 @@ import { deriveEffectiveLevel } from "@/lib/progression";
 
 const LEVEL_STYLES = {
   Explorer: { pillBg: "bg-[#E6F1FB]", pillText: "text-[#185FA5]", dot: "bg-[#185FA5]" },
-  Practitioner: { pillBg: "bg-[#FEF6E8]", pillText: "text-[#854F0B]", dot: "bg-[#854F0B]" },
+  Practitioner: { pillBg: "bg-b4-flame-soft", pillText: "text-b4-flame-ink", dot: "bg-b4-flame-ink" },
   Leader: { pillBg: "bg-[#EAF3DE]", pillText: "text-[#3B6D11]", dot: "bg-[#3B6D11]" },
 } as const;
 
@@ -141,7 +141,7 @@ const OnboardingModal = ({ profile, email, onClose }: Props) => {
         onInteractOutside={(e) => e.preventDefault()}
         onEscapeKeyDown={(e) => e.preventDefault()}
       >
-        <div className="h-[6px] bg-[#1F3864] w-full" />
+        <div className="h-[6px] bg-b4-deep w-full" />
         <div className="p-8">
           <span
             className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold ${styles.pillBg} ${styles.pillText}`}
@@ -151,7 +151,7 @@ const OnboardingModal = ({ profile, email, onClose }: Props) => {
           </span>
 
           <DialogTitle
-            className="text-[20px] font-medium text-[#1F3864] mt-4 leading-tight"
+            className="text-[20px] font-medium text-b4-strong mt-4 leading-tight"
             style={{ fontWeight: 500 }}
           >
             {heading}
@@ -166,9 +166,9 @@ const OnboardingModal = ({ profile, email, onClose }: Props) => {
           <button
             onClick={handleCta}
             disabled={saving}
-            className="w-full mt-7 bg-[#1F3864] hover:bg-[#2A4A80] disabled:opacity-70 text-white font-bold text-[15px] rounded-lg py-[14px] transition-colors"
+            className="w-full mt-7 bg-b4-deep hover:bg-b4-deep-hover disabled:opacity-70 text-white font-bold text-[15px] rounded-lg py-[14px] transition-colors"
           >
-            {saving ? "Loading…" : "Go to my pathway"}
+            {saving ? "Opening your pathway…" : "Go to my pathway"}
           </button>
 
           <p className="text-[11px] text-[#9AA3B0] text-center mt-3">
