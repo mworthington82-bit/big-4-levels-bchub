@@ -10,19 +10,14 @@ import { useStaffProfile } from "@/hooks/useStaffProfile";
 import {
   buildModuleCards,
   countCompleteOrEvidenced,
-  formatList,
-  hasAnyPractitionerCompletion,
-  listEvidencedToolNames,
-  listToDoToolNames,
   totalForLevel,
 } from "@/lib/journey";
 import { deriveEffectiveLevel, runProgressionCheck } from "@/lib/progression";
-import ModuleCard from "@/components/journey/ModuleCard";
+import { HowItWorks, NextStepCard, TaskList } from "@/components/journey/TaskList";
 import LeaderTaskCard from "@/components/journey/LeaderTaskCard";
 import LeaderAchievementStrip from "@/components/journey/LeaderAchievementStrip";
 import RecentAttendanceBanner from "@/components/journey/RecentAttendanceBanner";
-import LevelUpPanel from "@/components/journey/LevelUpPanel";
-import { IconWand, IconCalendarEvent, IconBulb, IconArrowRight } from "@tabler/icons-react";
+import { IconWand, IconBulb, IconArrowRight } from "@tabler/icons-react";
 import emblemExplorer from "@/assets/art/rope/knot-explorer.webp";
 import emblemPractitioner from "@/assets/art/rope/knot-practitioner.webp";
 import emblemLeader from "@/assets/art/rope/knot-leader.webp";
@@ -46,34 +41,6 @@ const LEVEL_STYLES = {
   Leader: { pillBg: "bg-[hsl(var(--leader-bg))]", pillText: "text-[hsl(var(--leader))]", dot: "bg-[hsl(var(--leader))]", bar: "bg-[hsl(var(--leader))]" },
 } as const;
 
-const personalisedMessage = (
-  level: "Explorer" | "Practitioner" | "Leader",
-  evidencedNames: string[],
-  todoNames: string[],
-): string => {
-  if (level === "Leader") {
-    return "You have reached Leader level — thank you for being a digital champion at Bradford College. Your best practice is inspiring colleagues across the college.";
-  }
-  const count = evidencedNames.length;
-  if (level === "Explorer") {
-    if (count === 0)
-      return "Welcome to your Big 4 journey. Five modules are ready for you below — each one is practical, hands-on, and built around your learners. Pick whichever feels right and start when you are ready.";
-    if (count <= 2)
-      return `Great start — you are already evidencing ${formatList(evidencedNames)}. Keep the momentum going with the remaining modules below and your Practitioner pathway will unlock.`;
-    if (count === 3)
-      return `You are well on your way — ${formatList(evidencedNames)} are already evidenced. Just ${formatList(todoNames)} to go. You are closer to Practitioner than you might think.`;
-    if (count === 4)
-      return `Almost there — you have evidenced ${formatList(evidencedNames)} and that is brilliant. One module stands between you and your Practitioner pathway: ${todoNames[0]}. You've got this.`;
-    return "You have evidenced all five Explorer tools — that is a fantastic result. Your Practitioner pathway is on its way. Watch this space.";
-  }
-  // Practitioner
-  if (count === 0)
-    return "Welcome to Practitioner level — this is where things get really interesting. Six modules await, including the Immersive Room. Dive in.";
-  if (count >= 1 && count <= 4)
-    return `You are hitting Practitioner level across ${formatList(evidencedNames)} — already evidenced and ready to go. Your focus now is ${formatList(todoNames)} and the Immersive Room.`;
-  return "You have evidenced all five Practitioner tools. The Immersive Room is the final step to complete this level and unlock Leader. Nearly there.";
-};
-
 const QUICK_ACCENTS = ["border-l-[#1B4F8A]", "border-l-b4-flame", "border-l-[#1A6B3A]"];
 
 const QuickCard = ({ Icon, title, desc, to, accent }: { Icon: any; title: string; desc: string; to: string; accent: string }) => {
@@ -88,7 +55,7 @@ const QuickCard = ({ Icon, title, desc, to, accent }: { Icon: any; title: string
       </div>
       <div className="flex-1">
         <h3 className="font-display font-bold text-[15px] text-b4-strong">{title}</h3>
-        <p className="text-[12px] text-muted-foreground mt-1">{desc}</p>
+        <p className="text-sm text-muted-foreground mt-1">{desc}</p>
       </div>
       <span className="text-b4-strong text-sm font-semibold mt-1 inline-flex items-center gap-1">
         Open
@@ -130,7 +97,7 @@ const JourneySkeleton = () => (
 const Journey = () => {
   usePageTitle("My Journey");
   const navigate = useNavigate();
-  const { profile, email, loading, notFound, error, completedModuleIds, completions, attendedPendingIds, refresh } = useStaffProfile();
+  const { profile, email, loading, notFound, error, completedModuleIds, completions, attendedPendingIds, reviewPendingIds, refresh } = useStaffProfile();
   const [showOnboarding, setShowOnboarding] = useState(false);
   const progressionRan = useRef(false);
 
@@ -160,18 +127,12 @@ const Journey = () => {
   const effective = deriveEffectiveLevel(profile);
   const styles = LEVEL_STYLES[effective];
   const viaMap = new Map(completions.map((c) => [c.moduleId, c.via]));
-  const cards = buildModuleCards(profile, completedModuleIds, effective, viaMap, attendedPendingIds);
+  const cards = buildModuleCards(profile, completedModuleIds, effective, viaMap, attendedPendingIds, reviewPendingIds);
   const total = totalForLevel(effective);
   const progressCount = countCompleteOrEvidenced(cards);
   const progressPct = total ? Math.round((progressCount / total) * 100) : 0;
-  const evidencedNames = listEvidencedToolNames(profile, effective);
-  const todoNames = listToDoToolNames(profile, effective);
-  const message = personalisedMessage(effective, evidencedNames, todoNames);
+  const nextLevel = effective === "Explorer" ? "Practitioner" : "Leader";
 
-  const showExplorerMilestone =
-    effective !== "Explorer" &&
-    profile.explorer_complete === true &&
-    !hasAnyPractitionerCompletion(completedModuleIds);
   const showPractitionerMilestone =
     effective === "Leader" && profile.practitioner_complete === true;
 
@@ -185,144 +146,63 @@ const Journey = () => {
             completedModuleIds={completedModuleIds}
           />
         )}
-        {/* Zone 1 — Light greeting card matching /resources */}
-        <section className="container mx-auto px-4 pt-8 md:pt-10 max-w-6xl">
-          <div className="bg-card rounded-2xl border border-border shadow-sm p-6 md:p-8">
-            <p
-              className="mb-3 text-b4-strong inline-flex items-center gap-2"
-              style={{ fontSize: "22px", fontWeight: 500 }}
-            >
-              <img src={LEVEL_EMBLEM[effective]} alt="" aria-hidden className="h-6 w-6" />
-              {greeting()}, {effective}
+
+        <div className="container mx-auto px-4 py-8 md:py-10 max-w-5xl space-y-6">
+          {/* Where am I: one heading, one line of status, one progress bar */}
+          <header className="rounded-2xl border border-border bg-card p-6 md:p-8 shadow-sm">
+            <p className="text-base text-muted-foreground">{greeting()}</p>
+            <h1 className="mt-1 font-display text-3xl md:text-4xl font-bold text-b4-strong">My Journey</h1>
+            <p className="mt-3 inline-flex items-center gap-2 text-lg font-semibold text-b4-strong">
+              <img src={LEVEL_EMBLEM[effective]} alt="" aria-hidden className="h-7 w-7 object-contain" />
+              {effective === "Leader"
+                ? "Leader level"
+                : `${effective} level · ${progressCount} of ${total} done`}
             </p>
             {effective !== "Leader" && (
-              <span
-                className={`font-display inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold ${styles.pillBg} ${styles.pillText} mb-4`}
-              >
-                <img src={LEVEL_EMBLEM[effective]} alt="" aria-hidden className="h-3.5 w-3.5" />
-                {effective} level
-              </span>
-            )}
-            <p className="font-display text-b4-strong text-base md:text-lg leading-relaxed max-w-3xl">
-              {message}
-            </p>
-
-            {/* Progress */}
-            {(() => {
-              const fillColor =
-                effective === "Explorer"
-                  ? "hsl(var(--b4-flame))"
-                  : effective === "Practitioner"
-                  ? "#E08A00"
-                  : "#27AE60";
-              const motivation =
-                effective === "Explorer"
-                  ? "Complete all 5 to unlock Practitioner"
-                  : effective === "Practitioner"
-                  ? "Complete all 6 to unlock Leader"
-                  : "All levels complete";
-              const displayCount = effective === "Leader" ? 0 : progressCount;
-              const displayTotal = effective === "Leader" ? 0 : total;
-              const displayPct = effective === "Leader" ? 100 : progressPct;
-              return (
-                <div className="mt-6">
-                  <div className="flex justify-end mb-1.5">
-                    <span
-                      className="font-bold text-b4-strong"
-                      style={{ fontSize: "13px" }}
-                    >
-                      {effective === "Leader"
-                        ? "All complete"
-                        : `${displayCount} of ${displayTotal} complete`}
-                    </span>
-                  </div>
-                  <div
-                    className="w-full rounded-full overflow-hidden"
-                    style={{ height: "10px", backgroundColor: "hsl(var(--b4-wash-3))" }}
-                  >
-                    <div
-                      className="h-full transition-all duration-500"
-                      style={{
-                        width: `${displayPct}%`,
-                        backgroundColor: fillColor,
-                      }}
-                    />
-                  </div>
-                  <p
-                    className="mt-1.5 text-muted-foreground"
-                    style={{ fontSize: "11px" }}
-                  >
-                    {motivation}
-                  </p>
-                  {effective === "Leader" && (
-                    <div className="mt-3">
-                      <span className="font-display inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold bg-[#EAF3DE] text-[#3B6D11] border border-[#CDE3B8]">
-                        <img src={LEVEL_EMBLEM.Leader} alt="" aria-hidden className="h-3.5 w-3.5" />
-                        Leader level
-                      </span>
-                    </div>
-                  )}
+              <div className="mt-4">
+                <div
+                  className="h-3 w-full overflow-hidden rounded-full bg-b4-wash-3"
+                  role="progressbar"
+                  aria-valuemin={0}
+                  aria-valuemax={total}
+                  aria-valuenow={progressCount}
+                  aria-label={`${progressCount} of ${total} modules done`}
+                >
+                  <div className={`h-full rounded-full transition-all duration-500 ${styles.bar}`} style={{ width: `${progressPct}%` }} />
                 </div>
-              );
-            })()}
-          </div>
-        </section>
-
-
-
-        <div className="container mx-auto px-4 py-8 md:py-10 max-w-6xl space-y-8">
-          {effective !== "Leader" && <LevelUpPanel cards={cards} level={effective} />}
-
-          {/* Zone 2 — Pathway */}
-          <section id="pathway" className="space-y-4 scroll-mt-24">
-            <h2 className="font-display font-bold text-b4-strong text-lg md:text-xl">
-              {effective === "Leader" ? "Your journey" : "Your pathway"}
-            </h2>
-
-
-            {effective === "Leader" ? (
-              <LeaderAchievementStrip
-                profile={profile}
-                completedIds={completedModuleIds}
-              />
-            ) : (
-              <>
-                {showExplorerMilestone && <MilestoneBanner variant="explorer" />}
-                {showPractitionerMilestone && <MilestoneBanner variant="practitioner" />}
-
-                {effective === "Practitioner" && (
-                  <CompletedLevelStrip
-                    profile={profile}
-                    completedIds={completedModuleIds}
-                    variant="explorer"
-                  />
-                )}
-              </>
-            )}
-
-            {/* Main pathway content */}
-            {effective === "Leader" ? (
-              <LeaderTaskCard />
-            ) : (
-              <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-                {cards.map((c) => (
-                  <ModuleCard key={c.id} card={c} />
-                ))}
+                <p className="mt-2 text-sm text-muted-foreground">Finish all {total} to unlock {nextLevel}.</p>
               </div>
             )}
-          </section>
+          </header>
 
-          {/* Zone 4 — Quick access */}
+          {effective === "Leader" ? (
+            <section id="pathway" className="space-y-4 scroll-mt-24">
+              <h2 className="font-display font-bold text-b4-strong text-xl">Your journey</h2>
+              {showPractitionerMilestone && <MilestoneBanner variant="practitioner" />}
+              <LeaderAchievementStrip profile={profile} completedIds={completedModuleIds} />
+              <LeaderTaskCard />
+            </section>
+          ) : (
+            <>
+              <NextStepCard tasks={cards} level={effective} />
+              <div id="pathway" className="scroll-mt-24">
+                <TaskList tasks={cards} heading={`Your ${effective} modules`} />
+              </div>
+              {effective === "Practitioner" && (
+                <CompletedLevelStrip profile={profile} completedIds={completedModuleIds} variant="explorer" />
+              )}
+              <HowItWorks />
+            </>
+          )}
+
+          {/* Other things you can do */}
           <section>
-            <h2 className="font-display font-bold text-b4-strong text-lg md:text-xl mb-4">Quick access</h2>
-            <div className="grid gap-4 grid-cols-1 md:grid-cols-3">
-              <QuickCard accent={QUICK_ACCENTS[0]} Icon={IconWand} title="Activity Planner" desc="Generate inclusion-focused lesson ideas" to="/planner" />
-              <QuickCard accent={QUICK_ACCENTS[1]} Icon={IconCalendarEvent} title="Book Training" desc="Book your place on a training session" to="/bookings" />
-              <QuickCard accent={QUICK_ACCENTS[2]} Icon={IconBulb} title="Best Practice" desc="Ideas shared by Bradford College's Big 4 Leaders" to="/best-practice" />
+            <h2 className="font-display font-bold text-b4-strong text-xl mb-4">Other things you can do</h2>
+            <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
+              <QuickCard accent={QUICK_ACCENTS[0]} Icon={IconWand} title="Activity Planner" desc="Get lesson activity ideas for your learners" to="/planner" />
+              <QuickCard accent={QUICK_ACCENTS[2]} Icon={IconBulb} title="Best Practice" desc="Ideas shared by Big 4 Leaders" to="/best-practice" />
             </div>
           </section>
-
-
         </div>
       </div>
       {showOnboarding && profile && email && (

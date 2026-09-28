@@ -11,6 +11,7 @@ import ProgressionInsights from "@/components/admin/ProgressionInsights";
 import AlmostThere from "@/components/admin/AlmostThere";
 import StaffJourneySearch from "@/components/admin/StaffJourneySearch";
 import PendingEvidencePanel from "@/components/admin/PendingEvidencePanel";
+import CompletionReviews from "@/components/admin/CompletionReviews";
 import AddBookingForm from "@/components/admin/AddBookingForm";
 import ImmersiveRequests from "@/components/admin/ImmersiveRequests";
 import ReflectionsPanel from "@/components/admin/ReflectionsPanel";
@@ -207,6 +208,7 @@ const Admin = () => {
 
 
         <StaffJourneySearch />
+        <CompletionReviews />
         <PendingEvidencePanel />
         <AddBookingForm />
         <ImmersiveRequests refreshKey={refreshKey} />

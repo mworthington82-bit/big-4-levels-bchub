@@ -42,11 +42,13 @@ const LEVEL_EMBLEM: Record<string, string> = {
   practitioner: emblemPractitioner,
 };
 
+// Plain words, dark text on light chips (the old white-on-tint badges failed contrast)
 const STATUS_BADGE: Record<string, { cls: string; label: string; tick: boolean }> = {
-  todo: { cls: "bg-white/20 text-white border border-white/30", label: "To do", tick: false },
-  evidenced: { cls: "bg-b4-flame text-b4-on-flame", label: "Evidenced", tick: true },
-  completed: { cls: "bg-[#1A6B3A] text-white", label: "Completed", tick: true },
-  attended_pending: { cls: "bg-[#FFF1D6] text-[#8B5A00] border border-b4-flame", label: "Knowledge check due", tick: false },
+  todo: { cls: "bg-white text-[#2A2118]", label: "Not started", tick: false },
+  evidenced: { cls: "bg-white text-[#2A2118]", label: "Done", tick: true },
+  completed: { cls: "bg-white text-[#2A2118]", label: "Done", tick: true },
+  attended_pending: { cls: "bg-[#FFF1D6] text-[#7A4A00]", label: "Quiz to do", tick: false },
+  review_pending: { cls: "bg-white text-[#2A2118]", label: "Waiting for review", tick: false },
 };
 
 const LEVEL_PILL: Record<string, string> = {
@@ -56,9 +58,10 @@ const LEVEL_PILL: Record<string, string> = {
 };
 
 const DESC_OVERRIDE: Record<string, string> = {
-  evidenced: "Evidenced from your self-assessment",
-  completed: "Completed on the platform",
-  attended_pending: "Training attended — knowledge check to complete",
+  evidenced: "Covered by your self-assessment",
+  completed: "Done",
+  attended_pending: "You came to the session. The quiz is still to do.",
+  review_pending: "Sent for review. We'll tick it off soon.",
 };
 
 const TRAINING_TOOL: Record<string, string> = {
@@ -94,15 +97,15 @@ const ModuleCard = ({ card }: Props) => {
   const isImmersiveTodo = card.toolKey === "immersive" && card.status === "todo";
   const isAttendedPending = card.status === "attended_pending";
   const ctaLabel = isAttendedPending
-    ? "Take the knowledge check"
+    ? "Do the quiz"
     : card.status === "todo"
-    ? "Start module"
-    : "Revisit anytime";
+    ? "Start"
+    : "Look again";
 
   return (
     <button
       type="button"
-      onClick={() => weaveTo(destinationFor(card), isAttendedPending ? `Opening the ${toolLabel} knowledge check…` : `Opening ${toolLabel}…`)}
+      onClick={() => weaveTo(destinationFor(card), isAttendedPending ? `Opening the ${toolLabel} quiz…` : `Opening ${toolLabel}…`)}
       className={`text-left rounded-2xl overflow-hidden bg-card border shadow-sm hover:shadow-md transition-shadow focus:outline-none focus-visible:ring-2 focus-visible:ring-b4-flame flex flex-col ${
         isAttendedPending ? "border-2 border-b4-flame" : "border-border"
       }`}

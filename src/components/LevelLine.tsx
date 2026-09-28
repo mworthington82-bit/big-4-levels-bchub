@@ -12,8 +12,8 @@ import big4Tile from "@/assets/big4-tile.png";
  * (Explorer: 5 tools; Practitioner: the same 5 + the Immersive Room).
  */
 const LEVELS = [
-  { name: "Explorer", knot: knotExplorer, line: "Five modules, one per tool", tilt: -2.5 },
-  { name: "Practitioner", knot: knotPractitioner, line: "Six modules, plus the Immersive Room", tilt: 1.5 },
+  { name: "Explorer", knot: knotExplorer, line: "Four modules, one per tool", tilt: -2.5 },
+  { name: "Practitioner", knot: knotPractitioner, line: "Four modules, plus the Immersive Room", tilt: 1.5 },
   { name: "Leader", knot: knotLeader, line: "Share evidence and support colleagues", tilt: -1 },
 ];
 

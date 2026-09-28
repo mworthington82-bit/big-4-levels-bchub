@@ -52,13 +52,13 @@ const ModuleQuiz = ({ questions, onComplete, onBackToPathway }: Props) => {
           Module complete — well done.
         </h2>
         <p className="text-b4-muted mb-8">
-          Your completion has been saved to your pathway.
+          It is now ticked off on My Journey.
         </p>
         <button
           onClick={onBackToPathway}
           className="inline-flex items-center gap-2 bg-[#185FA5] hover:bg-[#13497F] text-white font-semibold px-6 py-3 rounded-full"
         >
-          Back to my pathway
+          Back to My Journey
           <IconArrowRight size={18} stroke={2} />
         </button>
         <div className="mt-8 pt-6 border-t border-b4-wash-2">

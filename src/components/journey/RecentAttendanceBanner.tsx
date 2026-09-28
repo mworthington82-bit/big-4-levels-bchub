@@ -78,7 +78,7 @@ const RecentAttendanceBanner = ({ email, profile, completedModuleIds }: Props) =
     if (level === "Explorer") {
       const todo = listToDoToolNames(profile, "Explorer");
       if (todo.length === 0) {
-        return "You've evidenced every Explorer tool — your Practitioner pathway is on its way.";
+        return "Your Explorer modules are all done. Practitioner opens next.";
       }
       return `To level up to Practitioner, you still need ${formatList(todo)}.`;
     }

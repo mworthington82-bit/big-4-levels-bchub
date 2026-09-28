@@ -22,6 +22,7 @@ import ImpactCarousel from "@/components/ImpactCarousel";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { getPathway } from "@/data/pathways";
+import SubmitForReview from "@/components/SubmitForReview";
 import { Tool, Level, LearningPathway } from "@/types/learning";
 import { ArrowRight, CheckCircle, Home, Settings, Lightbulb, Target, Star, Sparkles, Rocket, Crown, ChevronDown, BookOpen } from "lucide-react";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
@@ -872,13 +873,17 @@ const Training = () => {
             <div className="space-y-4">
               <h2 className="text-4xl font-bold text-foreground flex items-center justify-center gap-3">
                 <Star className="w-10 h-10 text-accent" />
-                Congratulations!
+                Well done
                 <Star className="w-10 h-10 text-accent" />
               </h2>
               <p className="text-xl text-muted-foreground">
-                You've successfully completed the {selectedLevel} level
+                You've finished the online part of {getToolDisplayName(selectedTool!)}.
               </p>
             </div>
+
+            {selectedTool && selectedLevel && selectedLevel !== 'leader' && (
+              <SubmitForReview tool={selectedTool} level={selectedLevel} />
+            )}
             
             <Badge level={selectedLevel!} toolName={getToolDisplayName(selectedTool!)} score={quizScore} userName={userName} onRestart={handleRestart} onContinueLearning={handleContinueLearning} />
           </div>

@@ -21,6 +21,7 @@ interface Scenario {
   body: string;
 }
 
+/** Short, plain first-visit message: what's done already, what's left, how it works. */
 const buildScenario = (
   level: LevelKey,
   evidenced: string[],
@@ -29,60 +30,25 @@ const buildScenario = (
   if (level === "Leader") {
     return {
       heading: "Welcome, Leader",
-      body: "You have reached Leader level — the highest level on The Big 4: Level Up. Thank you for being a digital champion at Bradford College. Your Leader Hub is on its way.",
+      body: "You have reached Leader level. Thank you for sharing your practice with colleagues.",
     };
   }
-
-  const count = evidenced.length;
-
-  if (level === "Explorer") {
-    if (count === 0)
-      return {
-        heading: "Welcome to The Big 4: Level Up",
-        body: "Your Explorer pathway is ready. You have five modules to work through — each one is hands-on and built around your learners. Pick any module below and start when you are ready.",
-      };
-    if (count <= 2)
-      return {
-        heading: "Welcome to The Big 4: Level Up",
-        body: `You are already showing strong confidence in ${formatList(evidenced)}. Your Explorer pathway has ${todo.length} modules left — ${formatList(todo)}. Complete those and your Practitioner pathway unlocks.`,
-      };
-    if (count === 3)
-      return {
-        heading: "Welcome — you are well on your way",
-        body: `You have already evidenced ${formatList(evidenced)} from your self-assessment. Just ${formatList(todo)} to go. Complete those two modules and your Practitioner pathway unlocks.`,
-      };
-    if (count === 4)
-      return {
-        heading: "Welcome — you are almost at Practitioner",
-        body: `You are hitting Explorer level across almost everything — ${formatList(evidenced)} are all evidenced. The one area to focus on is ${formatList(todo)}. Complete that one module and your Practitioner pathway is yours.`,
-      };
+  const how = "Learn online, do the quiz, then submit it for review. We'll tick it off on My Journey.";
+  const next = level === "Explorer" ? "Practitioner" : "Leader";
+  const left = todo.length;
+  if (evidenced.length === 0)
     return {
-      heading: "Welcome — you have evidenced everything at Explorer level",
-      body: "You have evidenced all five Explorer tools from your self-assessment. Your module cards are already ticked — your Practitioner pathway is coming very soon. Watch this space.",
+      heading: `Welcome to ${level} level`,
+      body: `You have ${left} modules to do. ${how}`,
     };
-  }
-
-  // Practitioner — todo here already includes "Immersive Room" appended by caller
-  const toolTodo = todo.filter((t) => t !== "Immersive Room");
-
-  if (count === 0)
+  if (left === 0)
     return {
-      heading: "Welcome to your Practitioner pathway",
-      body: "You have six modules to work through at Practitioner level, including the Immersive Room which is required at this level. Each module builds on what you already know — start wherever feels right.",
-    };
-  if (count <= 3)
-    return {
-      heading: "Welcome — you are already strong at Practitioner level",
-      body: `You have already evidenced ${formatList(evidenced)} at Practitioner level. Your focus now is ${formatList(toolTodo)} and the Immersive Room, which is required to complete this level.`,
-    };
-  if (count === 4)
-    return {
-      heading: "Welcome — you are almost at Leader level",
-      body: `You have evidenced ${formatList(evidenced)} at Practitioner level — that is four out of five tools. Just ${formatList(toolTodo)} and the Immersive Room stand between you and Leader.`,
+      heading: `Your ${level} modules are already done`,
+      body: `Your self-assessment covered every module. ${next} opens next.`,
     };
   return {
-    heading: "Welcome — you have evidenced everything at Practitioner level",
-    body: "You have evidenced all five Practitioner tools from your self-assessment. The Immersive Room is the only step remaining to complete your Practitioner pathway and unlock Leader.",
+    heading: `Welcome to ${level} level`,
+    body: `Your self-assessment already covers ${formatList(evidenced)}. ${left === 1 ? "One module" : `${left} modules`} to go: ${formatList(todo)}. ${how}`,
   };
 };
 
