@@ -8,6 +8,7 @@ import { deriveEffectiveLevel } from "@/lib/progression";
 import { useIdleLogout } from "@/hooks/useIdleLogout";
 import { getInitials } from "@/pages/Profile";
 import B4Brand from "@/components/B4Brand";
+import { useWeaveTo } from "@/components/threadworks/WeaveTransition";
 import { ThreadWorksFooter } from "@/components/threadworks";
 import {
   AlertDialog,
@@ -65,6 +66,14 @@ const AppShell = ({ children }: { children: React.ReactNode }) => {
 
   const initials = getInitials(profile?.name);
 
+  // Book Training opens through the weave transition (a deliberate beat)
+  const weaveTo = useWeaveTo();
+  const weaveBooking = (e: React.MouseEvent, to: string) => {
+    if (to !== "/bookings" || e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
+    e.preventDefault();
+    weaveTo("/bookings", "Opening Book Training…");
+  };
+
   return (
     <div className="min-h-screen flex flex-col">
       <header className="sticky top-0 z-40 border-b border-b4-line tw-cloth text-b4-strong shadow-card">
@@ -78,7 +87,7 @@ const AppShell = ({ children }: { children: React.ReactNode }) => {
           {/* Center nav */}
           <nav className="hidden lg:flex items-center gap-1 mx-auto" style={{ flexWrap: "nowrap" }}>
             {NAV_ITEMS.map((item) => (
-              <NavLink key={item.to} to={item.to} className={navLinkClass} style={{ minWidth: "fit-content" }}>
+              <NavLink key={item.to} to={item.to} onClick={(e) => weaveBooking(e, item.to)} className={navLinkClass} style={{ minWidth: "fit-content" }}>
                 {item.label}
               </NavLink>
             ))}
@@ -144,7 +153,7 @@ const AppShell = ({ children }: { children: React.ReactNode }) => {
               <NavLink
                 key={item.to}
                 to={item.to}
-                onClick={() => setMobileOpen(false)}
+                onClick={(e) => { setMobileOpen(false); weaveBooking(e, item.to); }}
                 className={navLinkClass}
               >
                 {item.label}

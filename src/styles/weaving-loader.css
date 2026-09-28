@@ -78,3 +78,19 @@ html[data-reduce-motion] .tw-loader,
 html[data-reduce-motion] .tw-loader__thread { animation: none; }
 html[data-reduce-motion] .tw-loader__thread { stroke-dashoffset: 0; }
 html[data-reduce-motion] .tw-loader__fill { transition: none; }
+
+/* Big 4: the weave transition overlay (components/threadworks/WeaveTransition.tsx) */
+.weave-transition {
+  position: fixed; inset: 0; z-index: 100; display: grid; place-items: center; padding: 16px;
+  background: hsl(var(--background) / 0.72);
+  backdrop-filter: blur(3px);
+  animation: tw-loader-in 250ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.weave-transition__card {
+  width: min(420px, 100%); border-radius: 20px; padding: 8px 20px;
+  background: hsl(var(--card)); border: 1px solid hsl(var(--border));
+  box-shadow: 0 20px 50px rgba(42, 33, 24, 0.22);
+}
+.weave-transition .tw-loader--page { min-height: 0; padding: 28px 0 24px; }
+.weave-transition .tw-loader--page .tw-loader__svg { width: 100%; max-width: 300px; margin-inline: auto; }
+.weave-transition .tw-loader__status { font-size: 1.05rem; font-weight: 600; color: hsl(var(--b4-strong)); }

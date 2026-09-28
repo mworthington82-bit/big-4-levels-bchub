@@ -1,5 +1,5 @@
+import { useWeaveTo } from "@/components/threadworks/WeaveTransition";
 import { IconBuildingArch, IconCheck } from "@tabler/icons-react";
-import { useNavigate } from "react-router-dom";
 import type { ModuleCardSpec } from "@/lib/journey";
 import { knowledgeCheckPath } from "@/lib/journey";
 import teamsLogo from "@/assets/teams-logo.png";
@@ -83,7 +83,7 @@ interface Props {
 }
 
 const ModuleCard = ({ card }: Props) => {
-  const navigate = useNavigate();
+  const weaveTo = useWeaveTo();
   const logo = LOGO_FOR[card.toolKey];
   const headerBg = TOOL_HEADER_BG[card.toolKey] ?? "bg-b4-deep";
   const toolLabel = TOOL_LABEL[card.toolKey] ?? card.name;
@@ -102,7 +102,7 @@ const ModuleCard = ({ card }: Props) => {
   return (
     <button
       type="button"
-      onClick={() => navigate(destinationFor(card))}
+      onClick={() => weaveTo(destinationFor(card), isAttendedPending ? `Opening the ${toolLabel} knowledge check…` : `Opening ${toolLabel}…`)}
       className={`text-left rounded-2xl overflow-hidden bg-card border shadow-sm hover:shadow-md transition-shadow focus:outline-none focus-visible:ring-2 focus-visible:ring-b4-flame flex flex-col ${
         isAttendedPending ? "border-2 border-b4-flame" : "border-border"
       }`}

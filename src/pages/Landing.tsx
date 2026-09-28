@@ -18,6 +18,7 @@ import { useIsDemoUser } from "@/lib/demoAccess";
 import { MAINTENANCE_MODE, isAllowedDuringMaintenance } from "@/lib/maintenanceMode";
 
 import B4Brand from "@/components/B4Brand";
+import { useWeaveTo } from "@/components/threadworks/WeaveTransition";
 import LevelLine from "@/components/LevelLine";
 import { ThreadWorksFooter } from "@/components/threadworks";
 import teamsLogo from "@/assets/teams-logo.png";
@@ -55,6 +56,7 @@ const isAllowedLoginEmail = (emailAddress: string) =>
   emailAddress.endsWith("@bradfordcollege.ac.uk");
 
 const Landing = () => {
+  const weaveTo = useWeaveTo();
   const navigate = useNavigate();
 
   const { toast } = useToast();
@@ -256,7 +258,7 @@ const Landing = () => {
                       </>
                     ) : (
                       <button
-                        onClick={() => navigate("/bookings")}
+                        onClick={() => weaveTo("/bookings", "Opening Book Training…")}
                         className="inline-flex items-center justify-center min-h-11 px-8 py-4 rounded-xl bg-b4-flame text-b4-on-flame font-bold text-base hover:bg-b4-flame/90 transition-colors shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white w-full sm:w-[280px]"
                       >
                         Go to my bookings
