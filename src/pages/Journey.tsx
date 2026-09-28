@@ -23,9 +23,9 @@ import LeaderAchievementStrip from "@/components/journey/LeaderAchievementStrip"
 import RecentAttendanceBanner from "@/components/journey/RecentAttendanceBanner";
 import LevelUpPanel from "@/components/journey/LevelUpPanel";
 import { IconWand, IconCalendarEvent, IconBulb, IconArrowRight } from "@tabler/icons-react";
-import emblemExplorer from "@/assets/emblem-explorer.svg";
+import emblemExplorer from "@/assets/art/rope/knot-explorer.webp";
 import emblemPractitioner from "@/assets/emblem-practitioner.svg";
-import emblemLeader from "@/assets/emblem-leader.svg";
+import emblemLeader from "@/assets/art/rope/knot-leader.webp";
 
 const LEVEL_EMBLEM = {
   Explorer: emblemExplorer,
@@ -101,7 +101,7 @@ const QuickCard = ({ Icon, title, desc, to, accent }: { Icon: any; title: string
 
 const JourneySkeleton = () => (
   <AppShell>
-    <div className="min-h-full bg-background" aria-busy="true" aria-label="Loading your journey">
+    <div className="min-h-full" aria-busy="true" aria-label="Loading your journey">
       <div className="container mx-auto px-4 py-8 md:py-10 max-w-6xl space-y-8">
         <section className="bg-card rounded-3xl border border-border p-6 md:p-8">
           <div className="h-3 w-24 bg-muted rounded mb-3 tw-skeleton" />
@@ -177,7 +177,7 @@ const Journey = () => {
 
   return (
     <AppShell>
-      <div className="min-h-full bg-b4-wash">
+      <div className="min-h-full">
         {email && (
           <RecentAttendanceBanner
             email={email}

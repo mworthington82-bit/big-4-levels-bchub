@@ -21,7 +21,7 @@ const RequireAdmin = ({ children }: { children: React.ReactNode }) => {
 
   if (status === "loading") {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-background">
+      <div className="min-h-screen flex items-center justify-center">
         <WeavingLoader variant="page" label="Checking your admin access…" />
       </div>
     );

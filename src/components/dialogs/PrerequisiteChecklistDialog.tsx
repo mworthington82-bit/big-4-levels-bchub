@@ -11,7 +11,7 @@ import { useState } from "react";
 import { Level, Tool } from "@/types/learning";
 import { AlertTriangle, ShieldCheck, ExternalLink } from "lucide-react";
 import emblemPractitioner from "@/assets/emblem-practitioner.svg";
-import emblemLeader from "@/assets/emblem-leader.svg";
+import emblemLeader from "@/assets/art/rope/knot-leader.webp";
 
 interface PrerequisiteChecklistDialogProps {
   open: boolean;

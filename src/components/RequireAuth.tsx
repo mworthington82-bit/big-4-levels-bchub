@@ -43,7 +43,7 @@ const RequireAuth = ({ children }: RequireAuthProps) => {
 
   if (status === "loading") {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-background">
+      <div className="min-h-screen flex items-center justify-center">
         <WeavingLoader variant="page" label="Opening your Big 4…" />
       </div>
     );

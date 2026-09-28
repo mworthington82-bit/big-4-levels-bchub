@@ -354,7 +354,7 @@ const Resources = () => {
 
   return (
     <AppShell>
-      <div className="min-h-full bg-b4-wash">
+      <div className="min-h-full">
         <div className="container mx-auto px-4 py-8 md:py-10 max-w-6xl space-y-8">
           {/* Header */}
           <header>

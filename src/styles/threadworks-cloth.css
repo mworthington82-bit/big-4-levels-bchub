@@ -1,0 +1,25 @@
+/* ThreadWorks cloth — the hub's woven linen as CSS (kit v4, Tier 2 "ground").
+   Ported from BradfordThreadWorks app/src/useWeaveCanvas.ts makeLinen(): a 6px
+   tile, a warp shadow thread with a highlight alongside it, the same offset down
+   for the weft, so the over-under catches light like real cloth. RAISE ports the
+   same weave (grow-your-skills styles.css "THE CLOTH").
+
+   The DYE is the host's: set --tw-cloth to the ground colour. The weave only reads
+   on a LIGHT ground (on dark tan it turns to wood grain — RAISE learned this).
+   Keep text on the cloth large or on a card; never small body text on the weave. */
+.tw-cloth {
+  background-color: var(--tw-cloth, #E7E0D2);
+  background-image:
+    /* warp (vertical): shadow thread x 0–1px, highlight x 1–2px */
+    linear-gradient(90deg,
+      var(--tw-cloth-shadow, rgba(42, 33, 24, 0.06)) 0 1px,
+      var(--tw-cloth-light, rgba(255, 255, 255, 0.1)) 1px 2px,
+      transparent 2px),
+    /* weft (horizontal): shadow y 3–4px, highlight y 4–5px */
+    linear-gradient(180deg,
+      transparent 0 3px,
+      var(--tw-cloth-shadow, rgba(42, 33, 24, 0.06)) 3px 4px,
+      var(--tw-cloth-light, rgba(255, 255, 255, 0.1)) 4px 5px,
+      transparent 5px);
+  background-size: 6px 6px;
+}

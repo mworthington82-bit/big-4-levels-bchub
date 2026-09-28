@@ -18,14 +18,15 @@ import { useIsDemoUser } from "@/lib/demoAccess";
 import { MAINTENANCE_MODE, isAllowedDuringMaintenance } from "@/lib/maintenanceMode";
 
 import B4Brand from "@/components/B4Brand";
+import RopeDivider from "@/components/RopeDivider";
 import { ThreadWorksFooter } from "@/components/threadworks";
 import teamsLogo from "@/assets/teams-logo.png";
 import canvaLogo from "@/assets/canva-logo.jpg";
 import edpuzzleLogo from "@/assets/edpuzzle-logo.png";
 import copilotLogo from "@/assets/copilot-logo.png";
-import emblemExplorer from "@/assets/emblem-explorer.svg";
+import emblemExplorer from "@/assets/art/rope/knot-explorer.webp";
 import emblemPractitioner from "@/assets/emblem-practitioner.svg";
-import emblemLeader from "@/assets/emblem-leader.svg";
+import emblemLeader from "@/assets/art/rope/knot-leader.webp";
 
 const toolLevelInfo: Record<string, { explorer: string; practitioner: string; leader: string }> = {
   "MS Teams": {
@@ -169,7 +170,7 @@ const Landing = () => {
 
   return (
     <>
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen">
       
       <WelcomeDialog />
       <ImmersiveRequestDialog />
@@ -280,6 +281,7 @@ const Landing = () => {
           </div>
 
           {/* Warm Welcome Card */}
+          <RopeDivider className="mb-10" />
           <div className="max-w-4xl mx-auto mb-12 animate-fade-in">
             <div className="bg-card rounded-3xl shadow-[var(--shadow-card)] border-l-4 border-l-b4-flame border border-border p-8 md:p-10 text-left">
               <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground mb-4">

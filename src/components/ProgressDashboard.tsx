@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { CheckCircle, Circle, Trophy, Target } from "lucide-react";
-import emblemExplorer from "@/assets/emblem-explorer.svg";
+import emblemExplorer from "@/assets/art/rope/knot-explorer.webp";
 import emblemPractitioner from "@/assets/emblem-practitioner.svg";
-import emblemLeader from "@/assets/emblem-leader.svg";
+import emblemLeader from "@/assets/art/rope/knot-leader.webp";
 
 const TOOLS = [
   { id: "teams", name: "MS Teams" },

@@ -14,7 +14,7 @@ import {
   type ToolName,
 } from "@/lib/leaderHub";
 import { IconHeart, IconHeartFilled, IconMail } from "@tabler/icons-react";
-import emblemLeader from "@/assets/emblem-leader.svg";
+import emblemLeader from "@/assets/art/rope/knot-leader.webp";
 import { WeavingLoader } from "@/components/threadworks";
 
 type EvidencePost = {
@@ -811,7 +811,7 @@ const Leader = () => {
   if (loading || !profile || !email) {
     return (
       <AppShell>
-        <div className="min-h-full bg-b4-wash" aria-busy="true" aria-label="Loading Leader Hub">
+        <div className="min-h-full" aria-busy="true" aria-label="Loading Leader Hub">
           <div className="bg-b4-deep h-32" />
           <div className="container mx-auto px-4 py-8 max-w-6xl space-y-6">
             <div className="h-8 w-64 bg-b4-wash-3 rounded tw-skeleton" />
@@ -842,7 +842,7 @@ const Leader = () => {
         }
         .input:focus { outline: none; border-color: hsl(var(--ring)); box-shadow: 0 0 0 3px hsl(var(--ring) / 0.15); }
       `}</style>
-      <div className="min-h-full bg-b4-wash">
+      <div className="min-h-full">
         {/* Header */}
         <div className="bg-b4-deep text-white">
           <div className="container mx-auto px-4 py-10 md:py-12 max-w-6xl flex items-start gap-4">

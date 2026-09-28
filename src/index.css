@@ -1,6 +1,7 @@
 /* Fonts load from index.html (Space Grotesk, Fraunces, Carlito, OpenDyslexic) */
 @import './styles/threadworks-motion.css';
 @import './styles/weaving-loader.css';
+@import './styles/threadworks-cloth.css';
 
 @tailwind base;
 @tailwind components;
@@ -109,6 +110,9 @@ All colors MUST be HSL.
     --sidebar-border: 39 33% 83%;
     --sidebar-ring: 17 89% 38%;
 
+    /* ThreadWorks cloth in the Big 4 dye: pale apricot, hub linen weave */
+    --tw-cloth: #F6E3D3;
+
     /* ThreadWorks loader wears the Tool thread on paper */
     --tw-loader-thread: #C2410C;
     --tw-loader-track: hsl(38 31% 81%);
@@ -200,6 +204,9 @@ All colors MUST be HSL.
     --sidebar-border: 29 22% 19%;
     --sidebar-ring: 27 96% 61%;
 
+    --tw-cloth: #2A1D14;
+    --tw-cloth-shadow: rgba(0, 0, 0, 0.18);
+    --tw-cloth-light: rgba(255, 255, 255, 0.035);
     --tw-loader-thread: #FB923C;
     --tw-loader-track: hsl(29 22% 19%);
     --tw-loader-card: hsl(28 26% 11%);
@@ -211,8 +218,15 @@ All colors MUST be HSL.
     @apply border-border;
   }
 
+  /* The page ground is ThreadWorks cloth (hub linen weave) in the Big 4 dye;
+     cards and panels rest on it in warm white. */
   body {
-    @apply bg-background text-foreground font-sans antialiased;
+    @apply text-foreground font-sans antialiased;
+    background-color: var(--tw-cloth);
+    background-image:
+      linear-gradient(90deg, var(--tw-cloth-shadow, rgba(42, 33, 24, 0.06)) 0 1px, var(--tw-cloth-light, rgba(255, 255, 255, 0.1)) 1px 2px, transparent 2px),
+      linear-gradient(180deg, transparent 0 3px, var(--tw-cloth-shadow, rgba(42, 33, 24, 0.06)) 3px 4px, var(--tw-cloth-light, rgba(255, 255, 255, 0.1)) 4px 5px, transparent 5px);
+    background-size: 6px 6px;
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -300,6 +314,9 @@ All colors MUST be HSL.
   --b4-wash: 0 0% 0%;
   --b4-wash-2: 0 0% 10%;
   --b4-wash-3: 0 0% 15%;
+  --tw-cloth: #000000;
+  --tw-cloth-shadow: transparent;
+  --tw-cloth-light: transparent;
   --tw-loader-thread: #FFD400;
   --tw-loader-track: #666666;
   --tw-loader-card: #111111;
@@ -416,3 +433,12 @@ html[data-reduce-motion] .tw-skeleton {
 [data-background-mode="dark"] .b4-on-dark,
 [data-background-mode="high-contrast"] .b4-on-dark,
 .dark .b4-on-dark { display: block; }
+
+/* Rope objects (ThreadWorks v4 object library, Big 4 material). They're wide
+   photos, so they fit inside whatever box an emblem slot gives them, and cast
+   the family object shadow rather than a baked one. */
+img[src*="knot-"],
+img[src*="rope-"] {
+  object-fit: contain;
+  filter: drop-shadow(0 8px 10px rgba(42, 33, 24, 0.18));
+}

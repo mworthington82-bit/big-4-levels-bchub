@@ -3,9 +3,9 @@ import { ArrowRight } from "lucide-react";
 import AppShell from "@/components/AppShell";
 import { useStaffProfile } from "@/hooks/useStaffProfile";
 import { deriveEffectiveLevel } from "@/lib/progression";
-import emblemExplorer from "@/assets/emblem-explorer.svg";
+import emblemExplorer from "@/assets/art/rope/knot-explorer.webp";
 import emblemPractitioner from "@/assets/emblem-practitioner.svg";
-import emblemLeader from "@/assets/emblem-leader.svg";
+import emblemLeader from "@/assets/art/rope/knot-leader.webp";
 import { WeavingLoader } from "@/components/threadworks";
 
 const emblemMap: Record<string, string> = {

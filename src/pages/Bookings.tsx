@@ -126,7 +126,7 @@ const Bookings = () => {
 
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen">
       <div className="max-w-5xl mx-auto px-4 py-8 md:py-12">
         <Button variant="ghost" onClick={() => navigate("/home")} className="mb-6" aria-label="Back to home">
           <ArrowLeft className="w-4 h-4 mr-2" />

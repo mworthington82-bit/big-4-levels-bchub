@@ -17,7 +17,7 @@ const SelfAssessment = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen">
       <AssessmentIntroDialog />
       <NavigationButtons />
       <header className="border-b border-border bg-card shadow-sm">

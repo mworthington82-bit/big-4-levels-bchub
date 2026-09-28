@@ -7,7 +7,7 @@ import formsLogo from "@/assets/forms-logo.jpg";
 import canvaLogo from "@/assets/canva-logo.jpg";
 import edpuzzleLogo from "@/assets/edpuzzle-logo.png";
 import copilotLogo from "@/assets/copilot-logo.png";
-import emblemExplorer from "@/assets/emblem-explorer.svg";
+import emblemExplorer from "@/assets/art/rope/knot-explorer.webp";
 import emblemPractitioner from "@/assets/emblem-practitioner.svg";
 
 const LOGO_FOR: Record<string, string | null> = {

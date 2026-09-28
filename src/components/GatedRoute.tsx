@@ -52,7 +52,7 @@ const GatedRoute = ({ children }: GatedRouteProps) => {
 
   return (
     <>
-      <div className="min-h-screen bg-background flex items-center justify-center p-6">
+      <div className="min-h-screen flex items-center justify-center p-6">
         <div className="max-w-lg w-full text-center space-y-6">
           <div
             className="mx-auto w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center cursor-default"

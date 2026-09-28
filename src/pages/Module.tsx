@@ -57,7 +57,7 @@ const NotFoundCard = () => {
   const navigate = useNavigate();
   return (
     <AppShell>
-      <div className="min-h-full bg-b4-wash">
+      <div className="min-h-full">
         <div className="container mx-auto px-4 py-12 max-w-2xl">
           <div className="bg-card rounded-2xl border border-b4-line p-8 md:p-12 text-center">
             <h1 className="font-bold text-b4-strong text-2xl md:text-3xl mb-3">
@@ -246,7 +246,7 @@ const Module = () => {
   if (loading) {
     return (
       <AppShell>
-        <div className="min-h-full bg-b4-wash" aria-busy="true" aria-label="Loading module">
+        <div className="min-h-full" aria-busy="true" aria-label="Loading module">
           <header className="bg-card border-b border-b4-line">
             <div className="container mx-auto px-4 py-6 max-w-5xl space-y-3">
               <div className="h-4 w-32 bg-b4-wash-3 rounded tw-skeleton" />
@@ -328,7 +328,7 @@ const Module = () => {
 
   return (
     <AppShell>
-      <div className="min-h-full bg-b4-wash pb-16">
+      <div className="min-h-full pb-16">
         {/* Header */}
         <header className="bg-card border-b border-b4-line">
           <div className="container mx-auto px-4 py-6 max-w-5xl">

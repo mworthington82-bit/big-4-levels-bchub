@@ -6,7 +6,7 @@ const Privacy = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
+    <div className="min-h-screen flex flex-col">
       <header className="border-b border-border bg-card shadow-sm">
         <div className="container mx-auto px-4 py-5 flex items-center justify-between">
           <B4Brand to="/" />

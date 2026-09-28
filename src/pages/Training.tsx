@@ -46,9 +46,9 @@ import edpuzzleLogo from "@/assets/edpuzzle-logo.png";
 import copilotLogo from "@/assets/copilot-logo.png";
 
 import formsLogo from "@/assets/forms-logo.jpg";
-import emblemExplorer from "@/assets/emblem-explorer.svg";
+import emblemExplorer from "@/assets/art/rope/knot-explorer.webp";
 import emblemPractitioner from "@/assets/emblem-practitioner.svg";
-import emblemLeader from "@/assets/emblem-leader.svg";
+import emblemLeader from "@/assets/art/rope/knot-leader.webp";
 type Stage = 'level-entry' | 'home' | 'tool-select' | 'level-select' | 'intro' | 'learning' | 'benefits' | 'reflection' | 'quiz' | 'summary' | 'badge' | 'leader-hub';
 
 const Training = () => {
@@ -378,7 +378,7 @@ const Training = () => {
   // Level Entry Page
   if (stage === 'level-entry') {
     return (
-      <div className="min-h-screen bg-background">
+      <div className="min-h-screen">
         <ResourceBankButton />
         {pendingLevel &&
         <LevelConfirmationDialog
@@ -523,7 +523,7 @@ const Training = () => {
   }
 
   if (stage === 'home') {
-    return <div className="min-h-screen bg-background">
+    return <div className="min-h-screen">
         <ResourceBankButton />
         <NavigationButtons onBack={handleBack} />
         <header className="border-b border-border bg-card shadow-sm">
@@ -628,7 +628,7 @@ const Training = () => {
       </div>;
   }
   if (stage === 'tool-select') {
-    return <div className="min-h-screen bg-muted/20">
+    return <div className="min-h-screen">
         <ResourceBankButton />
         {selectedLevel && <LearningModulesDialog level={selectedLevel} />}
         <AccessibilityPanel />
@@ -833,7 +833,7 @@ const Training = () => {
       </div>;
   }
   if (stage === 'level-select') {
-    return <div className="min-h-screen bg-background">
+    return <div className="min-h-screen">
         <ResourceBankButton />
         <NavigationButtons onBack={handleBack} />
         <AccessibilityPanel />
@@ -874,7 +874,7 @@ const Training = () => {
   // Leader Hub - The Big 4 Evidence & Sharing Space
   if (stage === 'leader-hub') {
     return (
-      <div className="min-h-screen bg-muted/20">
+      <div className="min-h-screen">
         <ResourceBankButton />
         <NavigationButtons onBack={() => {
           setStage('level-entry');
@@ -905,7 +905,7 @@ const Training = () => {
   }
 
   if (stage === 'badge') {
-    return <div className="min-h-screen bg-background">
+    return <div className="min-h-screen">
         <ResourceBankButton />
         <NavigationButtons showBack={false} />
         <AccessibilityPanel />
@@ -936,7 +936,7 @@ const Training = () => {
   // Summary as standalone page (accessed from tool-select after all modules complete)
   if (stage === 'summary' && selectedLevel) {
     return (
-      <div className="min-h-screen bg-background">
+      <div className="min-h-screen">
         <ResourceBankButton />
         <NavigationButtons onBack={() => setStage('tool-select')} />
         <AccessibilityPanel />
@@ -961,7 +961,7 @@ const Training = () => {
   if (!pathway) return null;
   const sectionInfo = getSectionInfo();
 
-  return <div className="min-h-screen bg-background">
+  return <div className="min-h-screen">
       <ResourceBankButton />
       <NavigationButtons onBack={handleBack} />
       <AccessibilityPanel />

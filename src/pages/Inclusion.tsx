@@ -332,7 +332,7 @@ const Inclusion = () => {
   useEffect(() => { window.scrollTo(0, 0); }, []);
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen">
       <ResourceBankButton />
       <AccessibilityPanel />
 

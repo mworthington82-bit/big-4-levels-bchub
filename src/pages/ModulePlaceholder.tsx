@@ -23,7 +23,7 @@ const ModulePlaceholder = () => {
 
   return (
     <AppShell>
-      <div className="min-h-full bg-b4-wash">
+      <div className="min-h-full">
         <div className="container mx-auto px-4 py-12 max-w-3xl">
           <button
             onClick={() => navigate("/journey")}

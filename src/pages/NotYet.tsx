@@ -8,7 +8,7 @@ const NotYet = () => {
   usePageTitle();
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
+    <div className="min-h-screen flex flex-col">
       <header className="bg-b4-deep text-white">
         <div className="container mx-auto px-4 h-16 flex items-center gap-2">
           <span className="flex items-center gap-2">

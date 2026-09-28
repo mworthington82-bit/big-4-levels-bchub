@@ -23,7 +23,7 @@ const BestPractice = () => {
   usePageTitle("Best Practice");
   return (
     <AppShell>
-      <div className="min-h-full bg-b4-wash">
+      <div className="min-h-full">
         <div className="container mx-auto px-4 py-8 md:py-10 max-w-5xl space-y-8">
           <header className="bg-card rounded-2xl border border-border shadow-sm p-6 md:p-8">
             <h1 className="font-display font-bold text-3xl md:text-4xl text-b4-strong mb-2">

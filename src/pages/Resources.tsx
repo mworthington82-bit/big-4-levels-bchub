@@ -21,9 +21,9 @@ import canvaLogo from '@/assets/canva-logo.jpg';
 import edpuzzleLogo from '@/assets/edpuzzle-logo.png';
 import copilotLogo from '@/assets/copilot-logo.png';
 import formsLogo from '@/assets/forms-logo.jpg';
-import emblemExplorer from '@/assets/emblem-explorer.svg';
+import emblemExplorer from '@/assets/art/rope/knot-explorer.webp';
 import emblemPractitioner from '@/assets/emblem-practitioner.svg';
-import emblemLeader from '@/assets/emblem-leader.svg';
+import emblemLeader from '@/assets/art/rope/knot-leader.webp';
 
 type ToolFilter = 'all' | 'teams' | 'forms' | 'canva' | 'edpuzzle' | 'copilot' | 'notebook' | 'immersive';
 type LevelFilter = 'all' | 'explorer' | 'practitioner' | 'leader';
@@ -291,7 +291,7 @@ const Resources = () => {
   // ───────────────────────── Render ─────────────────────────
   return (
     <AppShell>
-    <div className="min-h-screen bg-muted/20">
+    <div className="min-h-screen">
       {/* Two-part banner: progress + Big 4 Day */}
       <div className="border-b border-border bg-card">
         <div className="container mx-auto px-4">
