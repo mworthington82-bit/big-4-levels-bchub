@@ -3,6 +3,7 @@
 @import './styles/weaving-loader.css';
 @import './styles/threadworks-cloth.css';
 @import './styles/threadworks-tag.css';
+@import './styles/level-line.css';
 
 @tailwind base;
 @tailwind components;

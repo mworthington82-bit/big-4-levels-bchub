@@ -19,6 +19,7 @@ import { MAINTENANCE_MODE, isAllowedDuringMaintenance } from "@/lib/maintenanceM
 
 import B4Brand from "@/components/B4Brand";
 import { SwingTag } from "@/components/SwingTag";
+import LevelLine from "@/components/LevelLine";
 import { ThreadWorksFooter } from "@/components/threadworks";
 import teamsLogo from "@/assets/teams-logo.png";
 import canvaLogo from "@/assets/canva-logo.jpg";
@@ -279,6 +280,8 @@ const Landing = () => {
           <div className="mb-8 animate-fade-in">
             <LeadStrip />
           </div>
+
+          <LevelLine className="mb-12" />
 
           {/* Warm Welcome Card */}
           <div className="max-w-4xl mx-auto mb-12 animate-fade-in">
