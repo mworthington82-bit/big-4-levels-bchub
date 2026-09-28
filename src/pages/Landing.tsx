@@ -18,7 +18,6 @@ import { useIsDemoUser } from "@/lib/demoAccess";
 import { MAINTENANCE_MODE, isAllowedDuringMaintenance } from "@/lib/maintenanceMode";
 
 import B4Brand from "@/components/B4Brand";
-import { SwingTag } from "@/components/SwingTag";
 import LevelLine from "@/components/LevelLine";
 import { ThreadWorksFooter } from "@/components/threadworks";
 import teamsLogo from "@/assets/teams-logo.png";
@@ -205,12 +204,12 @@ const Landing = () => {
               <StudentQuoteCarousel />
 
               {/* Hoverable App logo pills */}
-              <div className="tw-tag-set flex flex-wrap justify-center gap-x-5 gap-y-4 mt-10 animate-fade-in" style={{ animationDelay: '200ms' }}>
+              <div className="flex flex-wrap justify-center gap-3 mt-10 animate-fade-in" style={{ animationDelay: '200ms' }}>
                 {heroApps.map((app) => (
-                  <SwingTag key={app.name} size="lg">
-                    <img src={app.logo} alt="" className="h-6 w-6 rounded-md object-contain bg-white/70 p-0.5" />
-                    <span>{app.name}</span>
-                  </SwingTag>
+                  <div key={app.name} className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/15 backdrop-blur-sm border border-white/10">
+                    <img src={app.logo} alt={app.name} className="h-6 w-6 rounded-md object-contain bg-white/90 p-0.5" />
+                    <span className="text-sm font-medium text-white">{app.name}</span>
+                  </div>
                 ))}
               </div>
 
