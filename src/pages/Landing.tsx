@@ -7,9 +7,8 @@ import { useToast } from "@/hooks/use-toast";
 import WelcomeDialog from "@/components/dialogs/WelcomeDialog";
 import ImmersiveRequestDialog from "@/components/dialogs/ImmersiveRequestDialog";
 import WelcomeCompletionModal from "@/components/dialogs/WelcomeCompletionModal";
-import StudentQuoteCarousel from "@/components/StudentQuoteCarousel";
+import StudentQuoteCarousel, { StudentVoicesCaption } from "@/components/StudentQuoteCarousel";
 
-import LeadStrip from "@/components/LeadStrip";
 import SignOutButton from "@/components/SignOutButton";
 import { AccessibilityPanel } from "@/components/AccessibilityPanel";
 import OnboardingModal from "@/components/journey/OnboardingModal";
@@ -19,7 +18,6 @@ import { MAINTENANCE_MODE, isAllowedDuringMaintenance } from "@/lib/maintenanceM
 
 import B4Brand from "@/components/B4Brand";
 import { useWeaveTo } from "@/components/threadworks/WeaveTransition";
-import LevelLine from "@/components/LevelLine";
 import { ToolsSection, SignOffSteps } from "@/components/landing/LandingSections";
 import { ThreadWorksFooter } from "@/components/threadworks";
 import teamsLogo from "@/assets/teams-logo.png";
@@ -195,40 +193,47 @@ const Landing = () => {
       <main>
         {/* Hero: one headline, then the fabric PC (student voices) beside sign-in */}
         <section className="relative bg-b4-deep overflow-hidden">
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_30%_60%,_hsl(22_86%_51%_/_0.16)_0%,_transparent_60%)]" />
-          <div className="container mx-auto px-4 py-12 md:py-16 relative z-10 max-w-7xl">
+          <div className="relative z-10 mx-auto w-full max-w-[1440px] px-4 py-8 md:px-8 md:py-11 min-[1100px]:px-16">
             <div className="text-center">
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 border border-white/20 mb-5 animate-fade-in">
-                <span className="text-sm text-white/90 font-medium">Welcome to The Big 4: Level Up</span>
-              </div>
-              <h1 className="font-display text-5xl md:text-7xl lg:text-8xl font-bold text-white animate-fade-in leading-[1.02] tracking-tight">
+              <p className="mb-3 text-xs font-semibold uppercase tracking-[0.14em] text-white/70 animate-fade-in">LDI Digital Skills Programme</p>
+              <h1 className="font-display text-5xl md:text-7xl min-[1600px]:text-8xl font-bold text-white animate-fade-in leading-[1.02] tracking-tight">
                 The Big 4: <span className="text-b4-flame">Level Up</span>
               </h1>
             </div>
 
-            <div className="mt-8 grid items-center gap-10 lg:mt-12 lg:grid-cols-[1.2fr_0.8fr]">
-              <StudentQuoteCarousel className="w-full" />
+            <div className="mt-6 grid gap-y-6 lg:mt-9 min-[1100px]:grid-cols-[minmax(0,58fr)_minmax(0,42fr)] min-[1100px]:gap-x-24">
+              <StudentVoicesCaption className="min-[1100px]:col-start-1" />
 
-              <div className="rounded-3xl bg-white/[0.06] p-6 text-left ring-1 ring-white/10 md:p-8 animate-fade-in" style={{ animationDelay: "150ms" }}>
-                <h2 className="font-display text-2xl md:text-3xl font-bold text-white">Build your digital confidence</h2>
-                <p className="mt-3 text-lg leading-relaxed text-white/80">
+              {/* The PC, grounded on a soft orange glow */}
+              <div className="relative min-[1100px]:col-start-1 min-[1100px]:row-start-2">
+                <div
+                  aria-hidden="true"
+                  className="pointer-events-none absolute left-1/2 top-[45%] h-[90%] w-[90%] -translate-x-1/2 -translate-y-1/2 rounded-full"
+                  style={{ background: "radial-gradient(closest-side, hsl(22 86% 51% / 0.22), transparent)" }}
+                />
+                <StudentQuoteCarousel className="relative w-full" showCaption={false} />
+              </div>
+
+              <div className="w-full max-w-[560px] justify-self-center self-center rounded-3xl bg-white/[0.06] p-7 text-left ring-1 ring-white/10 sm:p-12 min-[1100px]:col-start-2 min-[1100px]:row-start-2 min-[1100px]:justify-self-stretch min-[1100px]:max-w-none animate-fade-in" style={{ animationDelay: "150ms" }}>
+                <h2 className="font-display text-[34px] sm:text-[40px] font-bold leading-[1.1] text-white">Build your digital confidence</h2>
+                <p className="mt-4 text-lg leading-[1.6] text-white/85">
                   Four tools you use every day, learned at your own level, with training sessions and support from the LDI team.
                 </p>
-                <ul className="mt-5 grid grid-cols-2 gap-3">
+                <ul className="mt-6 grid grid-cols-2 gap-3">
                   {heroApps.map((app) => (
-                    <li key={app.name} className="flex items-center gap-2 text-white">
-                      <img src={app.logo} alt="" className="h-8 w-8 rounded-lg bg-white p-1 object-contain" />
-                      <span className="font-semibold">{app.name}</span>
+                    <li key={app.name} className="flex items-center gap-3 rounded-xl border border-white/15 bg-white/[0.04] p-4 text-white">
+                      <img src={app.logo} alt="" className="h-8 w-8 shrink-0 rounded-lg bg-white p-1 object-contain" />
+                      <span className="text-[17px] font-semibold leading-tight">{app.name}</span>
                     </li>
                   ))}
                 </ul>
 
                 {!email && (
-                  <div className="mt-7 flex flex-col gap-3">
+                  <div className="mt-8 flex flex-col gap-4">
                     <button
                       onClick={handleSignIn}
                       disabled={signingIn}
-                      className="inline-flex min-h-[52px] items-center justify-center rounded-xl bg-b4-flame px-8 text-lg font-bold text-b4-on-flame shadow-lg transition-colors hover:bg-b4-flame/90 disabled:opacity-60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+                      className="inline-flex h-14 w-full items-center justify-center rounded-xl bg-b4-flame px-8 text-[17px] font-bold text-b4-on-flame shadow-lg transition-colors hover:bg-b4-flame/90 disabled:opacity-60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
                     >
                       {signingIn ? "Redirecting…" : "Sign in with Microsoft"}
                     </button>
@@ -236,11 +241,11 @@ const Landing = () => {
                       href="https://bradfordcollege-handsmisconducttraining.my.canva.site/final-24-03the-big-4-tools"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex min-h-[52px] items-center justify-center rounded-xl border-2 border-white/40 px-8 text-lg font-bold text-white transition-colors hover:border-white/60 hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+                      className="inline-flex h-14 w-full items-center justify-center rounded-xl border-2 border-white/40 px-8 text-[17px] font-bold text-white transition-colors hover:border-white/60 hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
                     >
                       Take the self-assessment
                     </a>
-                    <p className="text-sm text-white/65">Use your Bradford College Microsoft account. New here? Start with the self-assessment.</p>
+                    <p className="text-sm text-white/80">Use your Bradford College Microsoft account. New here? Start with the self-assessment.</p>
                   </div>
                 )}
 
@@ -248,18 +253,18 @@ const Landing = () => {
                 const lower = (email || "").toLowerCase();
                 const fullAccess = !MAINTENANCE_MODE || isAllowedDuringMaintenance(lower);
                 return (
-                  <div className="mt-7 flex flex-col gap-3 animate-fade-in" style={{ animationDelay: '300ms' }}>
+                  <div className="mt-8 flex flex-col gap-4 animate-fade-in" style={{ animationDelay: '300ms' }}>
                     {fullAccess ? (
                       <>
                         <button
                           onClick={() => navigate("/new/journey")}
-                          className="inline-flex items-center justify-center min-h-11 px-8 py-4 rounded-xl bg-b4-flame text-b4-on-flame font-bold text-base hover:bg-b4-flame/90 transition-colors shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white w-full"
+                          className="inline-flex h-14 items-center justify-center px-8 rounded-xl bg-b4-flame text-b4-on-flame font-bold text-[17px] hover:bg-b4-flame/90 transition-colors shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white w-full"
                         >
                           Go to My Journey
                         </button>
                         <button
                           onClick={() => navigate("/planner")}
-                          className="inline-flex items-center justify-center min-h-11 px-8 py-4 rounded-xl bg-transparent text-white font-bold text-base border-2 border-white/40 hover:bg-white/10 hover:border-white/60 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white w-full"
+                          className="inline-flex h-14 items-center justify-center px-8 rounded-xl bg-transparent text-white font-bold text-[17px] border-2 border-white/40 hover:bg-white/10 hover:border-white/60 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white w-full"
                         >
                           Open Activity Planner
                         </button>
@@ -267,7 +272,7 @@ const Landing = () => {
                     ) : (
                       <button
                         onClick={() => weaveTo("/bookings", "Opening Book Training…")}
-                        className="inline-flex items-center justify-center min-h-11 px-8 py-4 rounded-xl bg-b4-flame text-b4-on-flame font-bold text-base hover:bg-b4-flame/90 transition-colors shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white w-full"
+                        className="inline-flex h-14 items-center justify-center px-8 rounded-xl bg-b4-flame text-b4-on-flame font-bold text-[17px] hover:bg-b4-flame/90 transition-colors shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white w-full"
                       >
                         Go to my bookings
                       </button>
@@ -280,14 +285,10 @@ const Landing = () => {
           </div>
         </section>
 
-        {/* Below the hero: levels, tools, how it works, LEAD */}
+        {/* Below the hero: the four tools, then how it works */}
         <div className="container mx-auto max-w-6xl px-4 py-12 md:py-16 space-y-16">
-          <LevelLine />
           <ToolsSection />
           <SignOffSteps />
-          <div className="animate-fade-in">
-            <LeadStrip />
-          </div>
         </div>
       </main>
       <ThreadWorksFooter />

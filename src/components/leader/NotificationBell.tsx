@@ -104,7 +104,7 @@ const NotificationBell = ({ onViewEvidence }: NotificationBellProps) => {
         <Button variant="outline" size="sm" className="relative">
           <Bell className="w-4 h-4" />
           {unreadCount > 0 && (
-            <span className="absolute -top-1 -right-1 w-5 h-5 bg-accent text-accent-foreground text-xs rounded-full flex items-center justify-center">
+            <span className="absolute -top-1 -right-1 w-5 h-5 bg-b4-flame text-b4-on-flame text-xs rounded-full flex items-center justify-center">
               {unreadCount > 9 ? '9+' : unreadCount}
             </span>
           )}
@@ -165,7 +165,7 @@ const NotificationBell = ({ onViewEvidence }: NotificationBellProps) => {
                     </Button>
                   </div>
                   {!notification.is_read && (
-                    <div className="w-2 h-2 bg-accent rounded-full absolute right-3 top-3" />
+                    <div className="w-2 h-2 bg-b4-flame rounded-full absolute right-3 top-3" />
                   )}
                 </div>
               ))}

@@ -10,6 +10,7 @@ import {
 } from 'lucide-react';
 import { resources, searchResources, toolDisplayNames, Resource } from '@/data/resources';
 import CheatSheetButton from '@/components/CheatSheetButton';
+import FabricFloppy from '@/components/FabricFloppy';
 import ActivityPlanner from '@/components/ActivityPlanner';
 import AppShell from '@/components/AppShell';
 import { useStaffProfile } from '@/hooks/useStaffProfile';
@@ -521,35 +522,24 @@ const Resources = () => {
                   Downloadable one-page guides for each of the Big 4 tools
                 </p>
               </div>
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
+              {/* Each cheat sheet is a fabric floppy disk: click to save the one-page PDF */}
+              <div className="grid grid-cols-2 gap-x-4 gap-y-6 sm:grid-cols-3 lg:grid-cols-5">
                 {[
-                  { id: 'teams', name: 'MS Teams', logo: teamsLogo, color: '#5B5FC7' },
-                  { id: 'forms', name: 'MS Forms', logo: formsLogo, color: '#5B5FC7' },
-                  { id: 'canva', name: 'Canva', logo: canvaLogo, color: '#7D2AE8' },
-                  { id: 'edpuzzle', name: 'Edpuzzle', logo: edpuzzleLogo, color: '#1DA1F2' },
-                  { id: 'copilot', name: 'Copilot', logo: copilotLogo, color: '#0078D4' },
-                ].map((tool) => (
+                  { id: 'teams', name: 'MS Teams', logo: teamsLogo },
+                  { id: 'forms', name: 'MS Forms', logo: formsLogo },
+                  { id: 'canva', name: 'Canva', logo: canvaLogo },
+                  { id: 'edpuzzle', name: 'Edpuzzle', logo: edpuzzleLogo },
+                  { id: 'copilot', name: 'Copilot', logo: copilotLogo },
+                ].map((tool, i) => (
                   <CheatSheetButton
                     key={tool.id}
                     toolId={tool.id}
-                    className="group block w-full text-left rounded-2xl overflow-hidden border-2 border-border bg-card shadow-sm hover:shadow-[var(--shadow-hover)] hover:-translate-y-0.5 transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+                    className="group flex w-full flex-col items-center rounded-2xl p-1 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
                   >
-                    <div className="px-3 py-2.5 flex items-center justify-between" style={{ backgroundColor: tool.color }}>
-                      <div className="h-7 w-7 rounded bg-card/95 p-1 flex items-center justify-center">
-                        <img src={tool.logo} alt="" className="h-full w-full object-contain" />
-                      </div>
-                      <span className="text-[10px] font-bold uppercase tracking-wider text-white/90">PDF</span>
-                    </div>
-                    <div className="p-3">
-                      <h3 className="font-display text-sm font-bold text-foreground leading-tight mb-0.5">{tool.name}</h3>
-                      <p className="text-[11px] text-muted-foreground mb-3">Quick Reference</p>
-                      <div
-                        className="inline-flex items-center gap-1.5 text-xs font-semibold rounded-full px-3 py-1.5 text-white group-hover:brightness-110 transition"
-                        style={{ backgroundColor: tool.color }}
-                      >
-                        <Download className="h-3 w-3" /> Download
-                      </div>
-                    </div>
+                    <FabricFloppy title={tool.name} line="Quick reference, one page" logo={tool.logo} tilt={[-2, 1.5, -1, 2, -1.5][i]} />
+                    <span className="mt-3 inline-flex items-center gap-1.5 rounded-full bg-b4-deep px-3 py-1.5 text-sm font-semibold text-white group-hover:bg-b4-deep-hover">
+                      <Download className="h-4 w-4" aria-hidden="true" /> Download PDF
+                    </span>
                   </CheatSheetButton>
                 ))}
               </div>

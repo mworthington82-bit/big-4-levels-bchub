@@ -67,7 +67,7 @@ const CompletionCelebrationDialog = ({
           {/* Big Download Button */}
           <Button
             onClick={onDownload}
-            className="w-full bg-accent hover:bg-accent/90 py-8 text-xl font-bold shadow-lg hover:shadow-xl transition-all"
+            className="w-full bg-b4-flame hover:bg-b4-flame/90 text-b4-on-flame py-8 text-xl font-bold shadow-lg hover:shadow-xl transition-all"
             size="lg"
           >
             <Download className="mr-3 h-6 w-6" />

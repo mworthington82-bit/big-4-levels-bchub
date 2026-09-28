@@ -598,7 +598,7 @@ const Training = () => {
           </div>
 
           <div className="text-center animate-fade-in">
-            <Button size="lg" onClick={() => setStage('tool-select')} className="bg-accent hover:bg-accent/90 text-accent-foreground px-10 py-7 text-lg rounded-full shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-hover)] transition-all duration-300 hover:scale-105 font-semibold group">
+            <Button size="lg" onClick={() => setStage('tool-select')} className="bg-b4-flame hover:bg-b4-flame/90 text-b4-on-flame px-10 py-7 text-lg rounded-full shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-hover)] transition-all duration-300 hover:scale-105 font-semibold group">
               Begin Your Journey
               <ArrowRight className="ml-2 h-6 w-6 group-hover:translate-x-1 transition-transform" />
             </Button>

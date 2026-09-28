@@ -73,7 +73,7 @@ const ProgressDashboard = () => {
           </div>
           <div className="h-2 bg-muted rounded-full overflow-hidden">
             <div
-              className="h-full bg-accent rounded-full transition-all duration-500"
+              className="h-full bg-b4-flame rounded-full transition-all duration-500"
               style={{ width: `${progressPercent}%` }}
             />
           </div>

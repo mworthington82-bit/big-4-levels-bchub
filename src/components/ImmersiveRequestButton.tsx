@@ -24,7 +24,7 @@ const ImmersiveRequestButton = ({ requested, submitting, onRequest, className }:
 
   return (
     <Button
-      className={`bg-accent hover:bg-accent/90 text-accent-foreground ${className ?? ""}`}
+      className={`bg-b4-flame hover:bg-b4-flame/90 text-b4-on-flame ${className ?? ""}`}
       disabled={submitting}
       onClick={async () => {
         const res = await onRequest();

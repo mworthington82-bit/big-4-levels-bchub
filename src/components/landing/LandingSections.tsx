@@ -5,7 +5,7 @@ import copilotLogo from "@/assets/copilot-logo.png";
 import knotExplorer from "@/assets/art/rope/knot-explorer.webp";
 import knotPractitioner from "@/assets/art/rope/knot-practitioner.webp";
 import knotLeader from "@/assets/art/rope/knot-leader.webp";
-import fabricFloppy from "@/assets/art/fabric-floppy.webp";
+import FabricFloppy from "@/components/FabricFloppy";
 
 /**
  * Landing, below the hero: one story in the ThreadWorks crafted style.
@@ -74,16 +74,9 @@ export const ToolsSection = () => (
       {TOOLS.map((t, i) => (
         <li key={t.name} className="flex flex-col items-center">
           {/* The disk: name printed on the red band, the line written on the stitched label */}
-          <div className="floppy" style={{ ["--tilt" as string]: `${[-2, 1.5, -1, 2][i]}deg` }}>
-            <img src={fabricFloppy} alt="" className="floppy__img" draggable={false} />
-            <div className="floppy__band">
-              <img src={t.logo} alt="" className="floppy__logo" />
-              <h3 className="floppy__name">{t.name}</h3>
-            </div>
-            <p className="floppy__label">{t.line}</p>
-          </div>
-          <details className="group mt-4 w-full max-w-[300px] rounded-2xl border border-border bg-card px-4 py-3 shadow-card">
-            <summary className="flex min-h-[40px] cursor-pointer list-none items-center justify-between font-semibold text-b4-strong">
+          <FabricFloppy title={t.name} line={t.line} logo={t.logo} tilt={[-2, 1.5, -1, 2][i]} />
+          <details className="group mt-4 w-full max-w-[300px] rounded-2xl bg-b4-deep px-4 py-3 text-white shadow-card">
+            <summary className="flex min-h-[40px] cursor-pointer list-none items-center justify-between font-semibold text-white">
               What you'll learn
               <span className="text-xl leading-none transition-transform group-open:rotate-45" aria-hidden="true">+</span>
             </summary>
@@ -91,7 +84,7 @@ export const ToolsSection = () => (
               {LEVEL_ROWS.map((l) => (
                 <li key={l.key} className="flex items-start gap-3">
                   <img src={l.knot} alt="" className="mt-0.5 h-7 w-9 shrink-0" />
-                  <p className="text-sm text-b4-strong">
+                  <p className="text-sm text-white/90">
                     <span className="font-bold">{l.label}: </span>
                     {t.levels[l.key]}
                   </p>

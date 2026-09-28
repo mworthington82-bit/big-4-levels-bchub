@@ -207,7 +207,7 @@ const CommentSection = ({ evidenceId, evidenceOwnerId, evidenceTitle }: CommentS
               <Button
                 onClick={handleSubmitComment}
                 disabled={loading || !newComment.trim()}
-                className="bg-accent hover:bg-accent/90 text-accent-foreground"
+                className="bg-b4-flame hover:bg-b4-flame/90 text-b4-on-flame"
               >
                 <Send className="w-4 h-4" />
               </Button>

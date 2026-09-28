@@ -367,7 +367,7 @@ const EvidenceSubmissionForm = ({ tool, toolDisplayName, onSuccess, userId }: Ev
 
           <Button 
             type="submit" 
-            className="w-full bg-accent hover:bg-accent/90 text-accent-foreground"
+            className="w-full bg-b4-flame hover:bg-b4-flame/90 text-b4-on-flame"
             disabled={loading || uploading}
           >
             {loading || uploading ? (

@@ -503,3 +503,9 @@ html[data-reduce-motion] .student-pc__roll { animation: none; }
   font-size: 5.1cqw; line-height: 7.83cqw; color: #3a2414;
 }
 @media (prefers-reduced-motion: reduce) { .floppy, .floppy:hover { transition: none; transform: rotate(var(--tilt, 0deg)); } }
+
+/* Hero PC: on wide screens keep the whole PC above the fold (header + title +
+   caption take ~340px), at the largest size that fits, never below 420px. */
+@media (min-width: 1100px) {
+  .student-pc { max-width: max(420px, min(720px, calc((100vh - 400px) * 0.97))); }
+}
