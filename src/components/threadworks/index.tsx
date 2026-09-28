@@ -79,7 +79,7 @@ export function Big4Tile({ size = 40, className = "" }: { size?: number; classNa
 /** The one shared footer: privacy, the fixed ThreadWorks strip and The Front Door. */
 export function ThreadWorksFooter() {
   return (
-    <footer className="border-t border-border bg-card" data-cms-skip>
+    <footer className="border-t border-b4-line tw-cloth" data-cms-skip>
       <div className="container mx-auto flex flex-col gap-3 px-4 py-6 text-sm text-muted-foreground md:flex-row md:items-center md:justify-between">
         <div className="flex flex-col gap-1">
           <p className="m-0">

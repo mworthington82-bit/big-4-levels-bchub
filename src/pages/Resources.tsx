@@ -22,7 +22,7 @@ import edpuzzleLogo from '@/assets/edpuzzle-logo.png';
 import copilotLogo from '@/assets/copilot-logo.png';
 import formsLogo from '@/assets/forms-logo.jpg';
 import emblemExplorer from '@/assets/art/rope/knot-explorer.webp';
-import emblemPractitioner from '@/assets/emblem-practitioner.svg';
+import emblemPractitioner from '@/assets/art/rope/knot-practitioner.webp';
 import emblemLeader from '@/assets/art/rope/knot-leader.webp';
 
 type ToolFilter = 'all' | 'teams' | 'forms' | 'canva' | 'edpuzzle' | 'copilot' | 'notebook' | 'immersive';

@@ -336,7 +336,7 @@ const Inclusion = () => {
       <ResourceBankButton />
       <AccessibilityPanel />
 
-      <header className="border-b border-border bg-card shadow-sm">
+      <header className="border-b border-b4-line tw-cloth shadow-card">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <B4Brand to="/" />

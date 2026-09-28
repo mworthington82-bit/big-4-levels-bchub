@@ -25,7 +25,7 @@ import canvaLogo from "@/assets/canva-logo.jpg";
 import edpuzzleLogo from "@/assets/edpuzzle-logo.png";
 import copilotLogo from "@/assets/copilot-logo.png";
 import emblemExplorer from "@/assets/art/rope/knot-explorer.webp";
-import emblemPractitioner from "@/assets/emblem-practitioner.svg";
+import emblemPractitioner from "@/assets/art/rope/knot-practitioner.webp";
 import emblemLeader from "@/assets/art/rope/knot-leader.webp";
 
 const toolLevelInfo: Record<string, { explorer: string; practitioner: string; leader: string }> = {
@@ -176,7 +176,7 @@ const Landing = () => {
       <ImmersiveRequestDialog />
       {profile && !profileLoading && <WelcomeCompletionModal key={profile.email} profile={profile} />}
 
-      <header className="border-b border-border bg-card shadow-sm">
+      <header className="border-b border-b4-line tw-cloth shadow-card">
         <div className="container mx-auto px-4 py-6">
           <div className="flex items-center justify-between">
             <B4Brand to="/" />

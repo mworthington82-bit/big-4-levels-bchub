@@ -47,7 +47,7 @@ import copilotLogo from "@/assets/copilot-logo.png";
 
 import formsLogo from "@/assets/forms-logo.jpg";
 import emblemExplorer from "@/assets/art/rope/knot-explorer.webp";
-import emblemPractitioner from "@/assets/emblem-practitioner.svg";
+import emblemPractitioner from "@/assets/art/rope/knot-practitioner.webp";
 import emblemLeader from "@/assets/art/rope/knot-leader.webp";
 type Stage = 'level-entry' | 'home' | 'tool-select' | 'level-select' | 'intro' | 'learning' | 'benefits' | 'reflection' | 'quiz' | 'summary' | 'badge' | 'leader-hub';
 
@@ -407,7 +407,7 @@ const Training = () => {
         }
         <NavigationButtons showBack={false} />
         <AccessibilityPanel />
-        <header className="border-b border-border bg-card shadow-sm">
+        <header className="border-b border-b4-line tw-cloth shadow-card">
           <div className="container mx-auto px-4 py-6">
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
               <B4Brand to="/" />
@@ -526,7 +526,7 @@ const Training = () => {
     return <div className="min-h-screen">
         <ResourceBankButton />
         <NavigationButtons onBack={handleBack} />
-        <header className="border-b border-border bg-card shadow-sm">
+        <header className="border-b border-b4-line tw-cloth shadow-card">
           <div className="container mx-auto px-4 py-6">
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
               <B4Brand to="/" />
@@ -632,7 +632,7 @@ const Training = () => {
         <ResourceBankButton />
         {selectedLevel && <LearningModulesDialog level={selectedLevel} />}
         <AccessibilityPanel />
-        <header className="border-b border-border bg-card shadow-sm">
+        <header className="border-b border-b4-line tw-cloth shadow-card">
           <div className="container mx-auto px-4 py-6">
             <B4Brand to="/" />
           </div>
@@ -881,7 +881,7 @@ const Training = () => {
           setSelectedLevel(null);
         }} />
         <AccessibilityPanel />
-        <header className="border-b border-border bg-card shadow-sm">
+        <header className="border-b border-b4-line tw-cloth shadow-card">
           <div className="container mx-auto px-4 py-6">
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
               <B4Brand to="/" />
@@ -909,7 +909,7 @@ const Training = () => {
         <ResourceBankButton />
         <NavigationButtons showBack={false} />
         <AccessibilityPanel />
-        <header className="border-b border-border bg-card shadow-sm">
+        <header className="border-b border-b4-line tw-cloth shadow-card">
           <div className="container mx-auto px-4 py-6">
             <B4Brand to="/" />
           </div>
@@ -940,7 +940,7 @@ const Training = () => {
         <ResourceBankButton />
         <NavigationButtons onBack={() => setStage('tool-select')} />
         <AccessibilityPanel />
-        <header className="border-b border-border bg-card shadow-sm">
+        <header className="border-b border-b4-line tw-cloth shadow-card">
           <div className="container mx-auto px-4 py-6">
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
               <B4Brand to="/" />
@@ -965,7 +965,7 @@ const Training = () => {
       <ResourceBankButton />
       <NavigationButtons onBack={handleBack} />
       <AccessibilityPanel />
-      <header className="border-b border-border bg-card shadow-sm sticky top-0 z-10">
+      <header className="border-b border-b4-line tw-cloth shadow-card sticky top-0 z-10">
         <div className="container mx-auto px-4 py-3">
           <div className="flex items-center justify-between mb-2">
             <B4Brand to="/" />

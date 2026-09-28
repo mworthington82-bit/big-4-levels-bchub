@@ -24,7 +24,7 @@ import RecentAttendanceBanner from "@/components/journey/RecentAttendanceBanner"
 import LevelUpPanel from "@/components/journey/LevelUpPanel";
 import { IconWand, IconCalendarEvent, IconBulb, IconArrowRight } from "@tabler/icons-react";
 import emblemExplorer from "@/assets/art/rope/knot-explorer.webp";
-import emblemPractitioner from "@/assets/emblem-practitioner.svg";
+import emblemPractitioner from "@/assets/art/rope/knot-practitioner.webp";
 import emblemLeader from "@/assets/art/rope/knot-leader.webp";
 
 const LEVEL_EMBLEM = {

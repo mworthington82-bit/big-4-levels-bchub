@@ -10,7 +10,7 @@ import { GraduationCap, ClipboardCheck } from "lucide-react";
 import { Level } from "@/types/learning";
 import bradfordBIcon from "@/assets/bradford-b-icon.png";
 import emblemExplorer from "@/assets/art/rope/knot-explorer.webp";
-import emblemPractitioner from "@/assets/emblem-practitioner.svg";
+import emblemPractitioner from "@/assets/art/rope/knot-practitioner.webp";
 import emblemLeader from "@/assets/art/rope/knot-leader.webp";
 
 interface LevelConfirmationDialogProps {

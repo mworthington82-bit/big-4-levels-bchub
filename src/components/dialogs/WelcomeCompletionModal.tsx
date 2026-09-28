@@ -6,7 +6,7 @@ import { useIsDemoUser } from "@/lib/demoAccess";
 import type { StaffProfile } from "@/hooks/useStaffProfile";
 import { deriveEffectiveLevel } from "@/lib/progression";
 import emblemExplorer from "@/assets/art/rope/knot-explorer.webp";
-import emblemPractitioner from "@/assets/emblem-practitioner.svg";
+import emblemPractitioner from "@/assets/art/rope/knot-practitioner.webp";
 import emblemLeader from "@/assets/art/rope/knot-leader.webp";
 
 interface Props {

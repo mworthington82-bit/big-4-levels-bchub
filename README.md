@@ -71,3 +71,18 @@ Yes, you can!
 To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
 
 Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+
+## Bradford ThreadWorks family (kit v4)
+
+This site is part of the Bradford ThreadWorks suite and follows the `threadworks-family-identity` kit **v4**.
+
+- **Front Door URL:** `https://bradfordthreadworks.lovable.app/`. This is the single constant `HUB_URL` in `src/components/threadworks/index.tsx`.
+- **Tier 1 marks:**
+  - Tile favicon (`public/favicon.ico`, `public/brand/`)
+  - The Common Thread (Tool variant, `#C2410C` on paper) under the wordmark in `B4Brand`
+  - "The Front Door" and the footer strip, in `ThreadWorksFooter`
+  - The Weaving Loader on every wait (`WeavingLoader`: page, inline or full)
+  - The reduced-motion contract, covering both the OS setting and the in-app "Reduce Motion" switch
+- **Palette:** the host's own re-skin to paper, ink and Big 4 orange. The role tokens are `--b4-*` in `src/index.css`, and the rationale and contrast figures are in the kit's `references/per-tool/big4.md`.
+- **Ground:** ThreadWorks cloth (the hub's linen weave) in the Big 4 apricot `#F6E3D3`, on the page, header and footer. The Landing hero stays dark ink.
+- **Objects:** rope and knots made in Canva (design `DAHWeTyR7d0`), stored in `src/assets/art/rope/` with a `manifest.json`.

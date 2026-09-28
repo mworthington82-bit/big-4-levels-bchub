@@ -20,7 +20,7 @@ const SelfAssessment = () => {
     <div className="min-h-screen">
       <AssessmentIntroDialog />
       <NavigationButtons />
-      <header className="border-b border-border bg-card shadow-sm">
+      <header className="border-b border-b4-line tw-cloth shadow-card">
         <div className="container mx-auto px-4 py-6">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <B4Brand to="/" />

@@ -10,7 +10,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { useState } from "react";
 import { Level, Tool } from "@/types/learning";
 import { AlertTriangle, ShieldCheck, ExternalLink } from "lucide-react";
-import emblemPractitioner from "@/assets/emblem-practitioner.svg";
+import emblemPractitioner from "@/assets/art/rope/knot-practitioner.webp";
 import emblemLeader from "@/assets/art/rope/knot-leader.webp";
 
 interface PrerequisiteChecklistDialogProps {

@@ -67,7 +67,7 @@ const AppShell = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <header className="sticky top-0 z-40 border-b border-border bg-card/95 text-b4-strong shadow-card backdrop-blur supports-[backdrop-filter]:bg-card/85">
+      <header className="sticky top-0 z-40 border-b border-b4-line tw-cloth text-b4-strong shadow-card">
         <div
           className="container mx-auto px-4 py-3 flex items-center gap-4 min-h-[64px]"
           style={{ flexWrap: "nowrap" }}

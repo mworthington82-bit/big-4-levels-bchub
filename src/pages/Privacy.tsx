@@ -7,7 +7,7 @@ const Privacy = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <header className="border-b border-border bg-card shadow-sm">
+      <header className="border-b border-b4-line tw-cloth shadow-card">
         <div className="container mx-auto px-4 py-5 flex items-center justify-between">
           <B4Brand to="/" />
           <h1 className="font-display text-lg md:text-2xl font-bold text-foreground">Privacy Notice</h1>

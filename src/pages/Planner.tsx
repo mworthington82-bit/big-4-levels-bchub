@@ -11,7 +11,7 @@ const Planner = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <header className="border-b border-border bg-card shadow-sm sticky top-0 z-10">
+      <header className="border-b border-b4-line tw-cloth shadow-card sticky top-0 z-10">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between gap-4">
           <div className="flex items-center gap-4">
             <B4Brand to="/home" showCollege={false} />

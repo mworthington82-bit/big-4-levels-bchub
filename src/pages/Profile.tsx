@@ -4,7 +4,7 @@ import AppShell from "@/components/AppShell";
 import { useStaffProfile } from "@/hooks/useStaffProfile";
 import { deriveEffectiveLevel } from "@/lib/progression";
 import emblemExplorer from "@/assets/art/rope/knot-explorer.webp";
-import emblemPractitioner from "@/assets/emblem-practitioner.svg";
+import emblemPractitioner from "@/assets/art/rope/knot-practitioner.webp";
 import emblemLeader from "@/assets/art/rope/knot-leader.webp";
 import { WeavingLoader } from "@/components/threadworks";
 

@@ -1,6 +1,6 @@
 import { IconAward } from "@tabler/icons-react";
 import emblemExplorer from "@/assets/art/rope/knot-explorer.webp";
-import emblemPractitioner from "@/assets/emblem-practitioner.svg";
+import emblemPractitioner from "@/assets/art/rope/knot-practitioner.webp";
 
 interface Props {
   variant: "explorer" | "practitioner";

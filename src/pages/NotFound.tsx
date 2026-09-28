@@ -13,7 +13,7 @@ const NotFound = () => {
 
   return (
     <div className="flex min-h-screen flex-col">
-      <header className="border-b border-border bg-card/95 shadow-card">
+      <header className="border-b border-b4-line tw-cloth shadow-card">
         <div className="container mx-auto px-4 py-3">
           <B4Brand to="/" />
         </div>
