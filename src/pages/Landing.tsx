@@ -12,6 +12,7 @@ import StudentQuoteCarousel from "@/components/StudentQuoteCarousel";
 import StaffSpotlight from "@/components/StaffSpotlight";
 import LeadStrip from "@/components/LeadStrip";
 import SignOutButton from "@/components/SignOutButton";
+import { AccessibilityPanel } from "@/components/AccessibilityPanel";
 import OnboardingModal from "@/components/journey/OnboardingModal";
 import { useStaffProfile } from "@/hooks/useStaffProfile";
 import { useIsDemoUser } from "@/lib/demoAccess";
@@ -182,7 +183,10 @@ const Landing = () => {
         <div className="container mx-auto px-4 py-6">
           <div className="flex items-center justify-between">
             <B4Brand to="/" />
-            {email && <SignOutButton />}
+            <div className="flex items-center gap-2">
+              <AccessibilityPanel inline />
+              {email && <SignOutButton />}
+            </div>
           </div>
 
         </div>

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { supabase } from "@/integrations/supabase/client";
 import type { StaffProfile } from "@/hooks/useStaffProfile";
@@ -104,18 +104,6 @@ const OnboardingModal = ({ profile, email, onClose }: Props) => {
 
   const { heading, body } = buildScenario(level, evidenced, todo);
 
-  // Block Escape key
-  useEffect(() => {
-    const handler = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        e.preventDefault();
-        e.stopPropagation();
-      }
-    };
-    window.addEventListener("keydown", handler, true);
-    return () => window.removeEventListener("keydown", handler, true);
-  }, []);
-
   const handleCta = async () => {
     setSaving(true);
     const writeOnce = () =>
@@ -134,13 +122,8 @@ const OnboardingModal = ({ profile, email, onClose }: Props) => {
   };
 
   return (
-    <Dialog open={open}>
-      <DialogContent
-        className="max-w-[520px] p-0 overflow-hidden border-0 [&>button]:hidden"
-        onPointerDownOutside={(e) => e.preventDefault()}
-        onInteractOutside={(e) => e.preventDefault()}
-        onEscapeKeyDown={(e) => e.preventDefault()}
-      >
+    <Dialog open={open} onOpenChange={(next) => { if (!next && !saving) handleCta(); }}>
+      <DialogContent className="max-w-[520px] p-0 overflow-hidden border-0">
         <div className="h-[6px] bg-b4-deep w-full" />
         <div className="p-8">
           <span
@@ -157,7 +140,7 @@ const OnboardingModal = ({ profile, email, onClose }: Props) => {
             {heading}
           </DialogTitle>
           <DialogDescription
-            className="text-[15px] text-[#444444] mt-3"
+            className="text-[15px] text-muted-foreground mt-3"
             style={{ lineHeight: 1.7 }}
           >
             {body}
@@ -168,10 +151,10 @@ const OnboardingModal = ({ profile, email, onClose }: Props) => {
             disabled={saving}
             className="w-full mt-7 bg-b4-deep hover:bg-b4-deep-hover disabled:opacity-70 text-white font-bold text-[15px] rounded-lg py-[14px] transition-colors"
           >
-            {saving ? "Opening your pathway…" : "Go to my pathway"}
+            {saving ? "Opening your modules…" : "See my modules"}
           </button>
 
-          <p className="text-[11px] text-[#9AA3B0] text-center mt-3">
+          <p className="text-xs text-muted-foreground text-center mt-3">
             Bradford College · The Big 4: Level Up
           </p>
         </div>

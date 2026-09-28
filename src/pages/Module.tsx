@@ -241,6 +241,13 @@ const Module = () => {
     [steps, currentStep],
   );
 
+  // Hooks must run before any early return (it previously sat after them and
+  // crashed the page when loading finished).
+  const maxUnlocked = useMemo(() => {
+    const m = Math.max(...Array.from(visited));
+    return Math.min(5, m + 1);
+  }, [visited]);
+
   if (errored) return <PageError />;
 
   if (loading) {
@@ -277,11 +284,6 @@ const Module = () => {
   if (!module || !module.is_published || steps.length === 0) {
     return <NotFoundCard />;
   }
-
-  const maxUnlocked = useMemo(() => {
-    const m = Math.max(...Array.from(visited));
-    return Math.min(5, m + 1);
-  }, [visited]);
 
   const isStepUnlocked = (n: number) => n <= maxUnlocked;
 
