@@ -447,3 +447,29 @@ img[src*="rope-"] {
 
 /* Swing tag image (Canva kraft tag). Resolved by Vite from the CSS url(). */
 :root { --tw-tag-img: url("./assets/art/tags/kraft-tag-h.webp"); }
+
+/* Student voices scrolling inside the fabric PC's screen (StudentQuoteCarousel).
+   The flat screen is projected onto the angled grey screen with matrix3d; the
+   text is ink on the grey felt, fading in and out at the top and bottom edges. */
+.student-pc__screen {
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 14%, #000 86%, transparent 100%);
+          mask-image: linear-gradient(to bottom, transparent 0, #000 14%, #000 86%, transparent 100%);
+  pointer-events: none;
+}
+.student-pc__roll { animation: student-pc-roll 70s linear infinite; }
+.student-pc:hover .student-pc__roll,
+.student-pc__roll.is-paused { animation-play-state: paused; }
+@keyframes student-pc-roll { from { transform: translateY(0); } to { transform: translateY(-50%); } }
+.student-pc__list { list-style: none; margin: 0; padding: 44px 20px 0; display: grid; gap: 40px; }
+.student-pc__quote {
+  font-family: "Fraunces", Georgia, serif; font-style: italic;
+  font-size: 23px; line-height: 1.3; color: #23201b;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.25);
+}
+.student-pc__mark { font-size: 1.6em; line-height: 0; margin-right: 2px; vertical-align: -0.28em; color: #9A3412; }
+.student-pc__who {
+  display: block; margin-top: 10px; font-family: "Space Grotesk", system-ui, sans-serif; font-style: normal;
+  font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #9A3412;
+}
+@media (prefers-reduced-motion: reduce) { .student-pc__roll { animation: none; } }
+html[data-reduce-motion] .student-pc__roll { animation: none; }
