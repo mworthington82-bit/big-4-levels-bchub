@@ -183,7 +183,7 @@ Deno.serve(async (req) => {
       }
       marked = knownRows.length;
 
-      // Face-to-face attendance sets the tool's *_evidenced flag (that's what
+      // Tool attendance no longer sets *_evidenced (that now means signed off).
       // "attended in person" means). It does NOT set quiz_passed except for
       // the Immersive Room, which has no quiz. Progression flags then follow
       // from the same computeProgression() the preview uses.
