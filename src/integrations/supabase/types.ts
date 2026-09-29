@@ -1426,7 +1426,16 @@ export type Database = {
       }
       is_admin: { Args: never; Returns: boolean }
       is_leader: { Args: never; Returns: boolean }
+      module_done_for: {
+        Args: { _email: string; _module_id: string }
+        Returns: boolean
+      }
+      progression_core: { Args: { _email: string }; Returns: Json }
       recalc_progression: { Args: never; Returns: Json }
+      set_module_progress: {
+        Args: { _email: string; _module_id: string }
+        Returns: undefined
+      }
     }
     Enums: {
       evidence_type: "video_link" | "file_upload" | "case_study"
