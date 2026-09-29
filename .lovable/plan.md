@@ -63,10 +63,16 @@ Removed:
 - The `reflections` and `session_reflections` tables are not used.
 - The Immersive Room and Leader are unchanged.
 
-## For your governance decision (reported after the build, nothing changed)
-- Row counts for `quiz_questions`, `module_completions` (split by `quiz_passed` true/false), `reflections` and `session_reflections`.
-- Whether the admin uploads still write `quiz_passed`. They do today: Knowledge check results and manual Immersive Room attendance use `admin_mark_module_complete`, and attendance uploads write `quiz_passed=false`. Unless you say otherwise, I'll leave the database function as it is and flag it.
+## Confirmed changes
+- **Existing sign-offs:** the assess step checks the module's `*_evidenced` flag first. If it's true, the module shows as signed off and the two buttons aren't shown as outstanding. Staff already completed from Canva results stay signed off.
+- **No duplicates:** each button is disabled while it's submitting. `big4-mark-quiz` and `big4-submit-reflection` check the status flow before posting. If that module's quiz or reflection is already recorded, they skip the post, return success and run the sign-off check.
+- **Admin uploads:**
+  - The "Knowledge check results" upload is hidden for these ten modules.
+  - `admin_mark_module_complete` and the attendance upload (the `bulk-attendance-upload` function and the client write path) are updated. They only set the `*_evidenced` flag and progression, and no longer write `quiz_passed` at all, true or false.
+  - Existing `quiz_passed` data is not deleted.
+- **Confidence scale:** placeholder labels. The file and constant name will be in the final report.
 
-## Questions to confirm
-1. Should the admin "Knowledge check results" CSV upload stay, as a manual override that marks a module evidenced? Or should it be hidden now that the new check replaces Canva?
-2. Staff who already have the module completed from earlier Canva results: keep them signed off as they are? (I plan to keep them.)
+## Report after the build
+- Row counts for `quiz_questions`, `module_completions` (split by `quiz_passed` true/false), `reflections` and `session_reflections`.
+- Confirmation that nothing writes `quiz_passed` any more.
+- Where the confidence placeholder lives: `src/data/big4Checks.ts`, `CONFIDENCE_SCALE_LABELS`.
