@@ -26,15 +26,15 @@ export const BARRIER_OPTIONS = [
 export const NOTHING = "Nothing at the moment";
 
 /**
- * PLACEHOLDER: replace these with the exact wording from the entry self-assessment
- * so entry and exit confidence can be compared. Index 0 = rating 1 ... index 4 = rating 5.
+ * Confidence scale labels, matching the entry self-assessment wording so entry
+ * and exit confidence can be compared. Index 0 = rating 1 ... index 4 = rating 5.
  */
 export const CONFIDENCE_SCALE_LABELS = [
-  "1 - PLACEHOLDER (lowest)",
-  "2 - PLACEHOLDER",
-  "3 - PLACEHOLDER",
-  "4 - PLACEHOLDER",
-  "5 - PLACEHOLDER (highest)",
+  "1 - I haven't tried this yet",
+  "2 - I'd need help to do this",
+  "3 - I can do this with a guide",
+  "4 - I can do this on my own",
+  "5 - I could show a colleague how",
 ] as const;
 
 export const MIN_WORDS = 15;
