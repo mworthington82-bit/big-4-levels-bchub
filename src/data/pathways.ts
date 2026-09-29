@@ -1,4 +1,4 @@
-import { LearningPathway, QuizQuestion } from '@/types/learning';
+import { LearningPathway } from '@/types/learning';
 
 // Quiz questions for MS Teams & Forms - Explorer
 

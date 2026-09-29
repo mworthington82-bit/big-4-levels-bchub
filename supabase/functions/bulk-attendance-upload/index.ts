@@ -105,13 +105,15 @@ Deno.serve(async (req) => {
     // Load existing completions for known emails
     const { data: existingComps } = await admin
       .from("module_completions")
-      .select("staff_email,module_id,quiz_passed")
+      .select("staff_email,module_id,quiz_passed,completed_via")
       .in("staff_email", emails);
     const completedByEmail = new Map<string, Set<string>>();
     for (const c of existingComps ?? []) {
       const e = String(c.staff_email).toLowerCase();
       if (!completedByEmail.has(e)) completedByEmail.set(e, new Set());
-      if (c.quiz_passed) completedByEmail.get(e)!.add(c.module_id);
+      const done = c.completed_via === "signed_off" ||
+        (c.module_id === "immersive_practitioner" && (c.completed_via === "in_person" || c.quiz_passed));
+      if (done) completedByEmail.get(e)!.add(c.module_id);
     }
 
     // Compute progression preview
@@ -165,12 +167,14 @@ Deno.serve(async (req) => {
       const upsertMap = new Map<string, any>();
       for (const r of knownRows) {
         const key = `${r.email}::${r.module_id}`;
-        const isImmersive = r.module_id === "immersive_practitioner";
+        // Progress only: quiz_passed is never written. Immersive attendance
+        // (completed_via = in_person) counts as done; tool attendance does not.
+        const already = completedByEmail.get(r.email)?.has(r.module_id);
+        if (already) continue; // never downgrade a signed-off module
         upsertMap.set(key, {
           staff_email: r.email,
           module_id: r.module_id,
           completed_at: r.attended_at ?? new Date().toISOString(),
-          quiz_passed: isImmersive,
           completed_via: "in_person",
         });
       }
@@ -178,6 +182,7 @@ Deno.serve(async (req) => {
       const { error: mcErr, count } = await admin
         .from("module_completions")
         .upsert(upserts, { onConflict: "staff_email,module_id", count: "exact" });
+      // (upserts may be empty if everyone was already signed off)
       if (mcErr) throw mcErr;
       marked = count ?? knownRows.length;
 

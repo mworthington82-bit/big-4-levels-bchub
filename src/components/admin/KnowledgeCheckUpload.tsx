@@ -15,7 +15,10 @@ import { AlertCircle, CheckCircle2, ClipboardCopy, FileSpreadsheet } from "lucid
 import { MODULE_LABEL, type ModuleId } from "@/lib/bulkAttendance";
 import { parseKnowledgeCheckFile, type KnowledgeCheckRow } from "@/lib/knowledgeCheckResults";
 
-const MODULE_IDS = Object.keys(MODULE_LABEL) as ModuleId[];
+import { isBig4Module } from "@/data/big4Checks";
+
+// The ten tool modules now sign off through the in-platform knowledge check + reflection.
+const MODULE_IDS = (Object.keys(MODULE_LABEL) as ModuleId[]).filter((id) => !isBig4Module(id));
 
 interface MatchedRow extends KnowledgeCheckRow {
   matched: boolean;
