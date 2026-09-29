@@ -1395,6 +1395,7 @@ export type Database = {
         Args: { _emails: string[]; _module_id: string }
         Returns: Json
       }
+      admin_progression_for: { Args: { _email: string }; Returns: Json }
       admin_upsert_staff: {
         Args: { payload: Json }
         Returns: {
