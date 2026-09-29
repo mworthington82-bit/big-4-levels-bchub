@@ -1,3 +1,4 @@
+import { isDoneCompletion } from "@/lib/moduleDone";
 import { useEffect, useMemo, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -181,10 +182,10 @@ const IndividualPanel = () => {
   const loadCompletions = async (email: string) => {
     const { data } = await supabase
       .from("module_completions")
-      .select("module_id,quiz_passed")
+      .select("module_id,quiz_passed,completed_via")
       .ilike("staff_email", email);
     setCompletedIds(
-      ((data as any[]) ?? []).filter((c) => c.quiz_passed).map((c) => c.module_id),
+      ((data as any[]) ?? []).filter((c) => isDoneCompletion(c)).map((c) => c.module_id),
     );
   };
 

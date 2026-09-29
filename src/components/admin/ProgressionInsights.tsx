@@ -1,3 +1,4 @@
+import { isDoneCompletion } from "@/lib/moduleDone";
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
   Bar,
@@ -117,7 +118,7 @@ const ProgressionInsights = ({ refreshKey = 0 }: { refreshKey?: number } = {}) =
 
     // Modules completed (quiz passed) in range
     const modulesCompletedInRange = completions.filter(
-      (c) => c.quiz_passed && inRange(c.completed_at),
+      (c) => isDoneCompletion(c) && inRange(c.completed_at),
     );
     const f2fAttendancesInRange = completions.filter(
       (c) => c.completed_via === "in_person" && inRange(c.completed_at),
@@ -135,7 +136,7 @@ const ProgressionInsights = ({ refreshKey = 0 }: { refreshKey?: number } = {}) =
     }
     const completionsByEmail = new Map<string, Set<string>>();
     for (const c of completions) {
-      if (!c.quiz_passed) continue;
+      if (!isDoneCompletion(c)) continue;
       const e = c.staff_email.toLowerCase();
       if (!completionsByEmail.has(e)) completionsByEmail.set(e, new Set());
       completionsByEmail.get(e)!.add(c.module_id);

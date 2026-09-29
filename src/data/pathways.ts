@@ -1,516 +1,20 @@
 import { LearningPathway, QuizQuestion } from '@/types/learning';
 
 // Quiz questions for MS Teams & Forms - Explorer
-const teamsExplorerQuiz: QuizQuestion[] = [
-  {
-    id: 'te1',
-    question: 'What is the main purpose of using MS Teams announcements in your class team?',
-    options: [
-      'To replace all other forms of communication',
-      'To send important reminders and updates to all students',
-      'To grade student assignments',
-      'To create interactive videos'
-    ],
-    correctAnswer: 1,
-    explanation: 'Announcements are ideal for sharing important information with the entire class efficiently.'
-  },
-  {
-    id: 'te2',
-    question: 'In MS Forms, what is the benefit of creating a simple quiz for your students?',
-    options: [
-      'It can only be used for summative assessment',
-      'It provides instant feedback and helps check understanding quickly',
-      'It replaces all paper-based work',
-      'It is only useful for Maths subjects'
-    ],
-    correctAnswer: 1,
-    explanation: 'Forms quizzes provide immediate feedback and allow quick checks for learning.'
-  },
-  {
-    id: 'te3',
-    question: 'How does organising content with Classwork in Teams support teaching and learning?',
-    options: [
-      'It keeps resources organised and easy for students to find',
-      'It automatically marks all work',
-      'It creates lesson plans',
-      'It only works for online lessons'
-    ],
-    correctAnswer: 0,
-    explanation: 'Classwork helps structure and organise resources, making navigation easier for students.'
-  },
-  {
-    id: 'te4',
-    question: 'Which of these is an example of using MS Teams to support accessibility?',
-    options: [
-      'Only sharing resources via email',
-      'Using the immersive reader and live captions features',
-      'Limiting file types to PDFs only',
-      'Removing all visual content'
-    ],
-    correctAnswer: 1,
-    explanation: 'Immersive reader and live captions are powerful accessibility tools built into Teams.'
-  },
-  {
-    id: 'te5',
-    question: 'What is one way MS Forms can support formative assessment?',
-    options: [
-      'By providing end-of-year exam results only',
-      'By giving quick feedback on student understanding during a lesson',
-      'By replacing all written assessments',
-      'By grading students automatically without teacher input'
-    ],
-    correctAnswer: 1,
-    explanation: 'Forms is excellent for quick formative checks that inform teaching decisions in real-time.'
-  }
-];
 
 // Quiz questions for MS Teams & Forms - Practitioner
-const teamsPractitionerQuiz: QuizQuestion[] = [
-  {
-    id: 'tp1',
-    question: 'What is the main advantage of using Breakout Rooms in MS Teams for teaching?',
-    options: [
-      'They replace the need for whole-class instruction',
-      'They enable small group collaboration and discussion during online or hybrid lessons',
-      'They only work for revision sessions',
-      'They prevent students from asking questions'
-    ],
-    correctAnswer: 1,
-    explanation: 'Breakout Rooms facilitate collaborative learning by allowing students to work in smaller groups before returning to the main session.'
-  },
-  {
-    id: 'tp2',
-    question: 'How does using Rubrics in Teams Assignments benefit both teachers and students?',
-    options: [
-      'They only work for written essays',
-      'They provide clear success criteria and enable consistent, transparent feedback',
-      'They automatically grade all work',
-      'They replace the need for written feedback'
-    ],
-    correctAnswer: 1,
-    explanation: 'Rubrics make expectations clear and ensure consistent assessment standards whilst saving marking time.'
-  },
-  {
-    id: 'tp3',
-    question: 'What is the main advantage of using structured channels in Teams?',
-    options: [
-      'Only storing files for the teacher',
-      'Organised spaces for different topics, resources, and discussions',
-      'Replacing all paper-based work',
-      'Only for online lessons'
-    ],
-    correctAnswer: 1,
-    explanation: 'Structured channels help organise your Team with dedicated spaces for different topics, making it easier for students to find resources and engage in focused discussions.'
-  },
-  {
-    id: 'tp4',
-    question: 'What is the key benefit of using branching in MS Forms quizzes?',
-    options: [
-      'It makes quizzes shorter',
-      'It creates personalised pathways based on student responses, enabling adaptive assessment',
-      'It only works for multiple choice questions',
-      'It prevents students from going back to previous questions'
-    ],
-    correctAnswer: 1,
-    explanation: 'Branching creates adaptive assessments that respond to individual student answers, providing differentiated feedback and pathways.'
-  },
-  {
-    id: 'tp5',
-    question: 'How can you use Forms response analytics to improve your teaching?',
-    options: [
-      'Analytics are only useful for summative assessment',
-      'By identifying common misconceptions and adjusting your teaching in response',
-      'By sharing all student scores publicly',
-      'Analytics only show completion rates'
-    ],
-    correctAnswer: 1,
-    explanation: 'Response analytics reveal patterns in student understanding, allowing you to address gaps and adapt your teaching responsively.'
-  }
-];
 
 // Quiz questions for Canva Code - Explorer
-const canvaExplorerQuiz: QuizQuestion[] = [
-  {
-    id: 'ce1',
-    question: 'What is Canva Code primarily used for in education?',
-    options: [
-      'Writing programming assignments for students',
-      'Creating interactive and personalised lesson activities within Canva',
-      'Building college websites',
-      'Replacing all other design tools'
-    ],
-    correctAnswer: 1,
-    explanation: 'Canva Code lets you add interactivity to your Canva designs, turning static resources into engaging, personalised activities for students.'
-  },
-  {
-    id: 'ce2',
-    question: 'How does Canva Code help personalise learning for students?',
-    options: [
-      'It automatically creates individual timetables',
-      'You write a prompt describing what your students need — their topic, gaps in learning, and preferences — and the activity is tailored specifically to them',
-      'It removes the need for teacher involvement',
-      'It only works for one subject area'
-    ],
-    correctAnswer: 1,
-    explanation: 'With Canva Code, you write a prompt where you discuss what your students really need — the topic you\'re covering, gaps in learning, and more — and the activity will be tailored to their specific needs.'
-  },
-  {
-    id: 'ce3',
-    question: 'What type of interactive element can you add using Canva Code?',
-    options: [
-      'Only static text boxes',
-      'Clickable buttons, input fields, timers, and animated feedback',
-      'Only pre-made templates',
-      'Audio recordings only'
-    ],
-    correctAnswer: 1,
-    explanation: 'Canva Code supports a range of interactive elements that make activities more engaging and game-like.'
-  },
-  {
-    id: 'ce4',
-    question: 'What is a good first activity to create with Canva Code?',
-    options: [
-      'A full online course',
-      'A simple interactive starter activity such as a quiz wheel or name-based welcome screen',
-      'A printable worksheet',
-      'A video lesson'
-    ],
-    correctAnswer: 1,
-    explanation: 'Starting with a simple interactive starter helps you learn the basics of Canva Code before building more complex activities.'
-  },
-  {
-    id: 'ce5',
-    question: 'How do you share a Canva Code activity with students?',
-    options: [
-      'Email the raw code to each student',
-      'Share via a Canva link or QR code so students can interact with it on any device',
-      'Print the code on paper',
-      'Students must install special software'
-    ],
-    correctAnswer: 1,
-    explanation: 'Canva Code activities are shared just like any Canva design — via link or QR code — making them easy to access on any device.'
-  }
-];
 
 // Quiz questions for Edpuzzle - Explorer
-const edpuzzleExplorerQuiz: QuizQuestion[] = [
-  {
-    id: 'ee1',
-    question: 'What is the main benefit of using Edpuzzle in teaching?',
-    options: [
-      'It replaces all face-to-face teaching',
-      'It turns passive video watching into active learning with embedded questions',
-      'It only works for science subjects',
-      'It removes the need for teacher feedback'
-    ],
-    correctAnswer: 1,
-    explanation: 'Edpuzzle transforms videos into interactive learning experiences with embedded checks for understanding.'
-  },
-  {
-    id: 'ee2',
-    question: 'How can Edpuzzle support independent learning?',
-    options: [
-      'Students must watch with the teacher',
-      'Students can access videos at their own pace, rewatching as needed',
-      'Videos can only be watched once',
-      'It prevents students from pausing'
-    ],
-    correctAnswer: 1,
-    explanation: 'Edpuzzle allows self-paced learning with the ability to pause, rewind, and review.'
-  },
-  {
-    id: 'ee3',
-    question: 'What insight does Edpuzzle provide to teachers?',
-    options: [
-      'No tracking information',
-      'Analytics showing which students watched and how they answered questions',
-      'Only final grades',
-      'Student email addresses'
-    ],
-    correctAnswer: 1,
-    explanation: 'Edpuzzle provides valuable analytics on engagement and understanding.'
-  },
-  {
-    id: 'ee4',
-    question: 'How does Edpuzzle support adaptive teaching and learning?',
-    options: [
-      'All students must watch identical content',
-      'Teachers can assign different videos to different students based on need',
-      'It prevents any customisation',
-      'Only works with one learning style'
-    ],
-    correctAnswer: 1,
-    explanation: 'Different videos or video segments can be assigned to support adaptive teaching and learning approaches.'
-  },
-  {
-    id: 'ee5',
-    question: 'What is one way to use Edpuzzle following the LEAD model?',
-    options: [
-      'Only for homework',
-      'As a Launch activity to introduce new concepts with embedded questions',
-      'Never in lessons',
-      'Only for revision'
-    ],
-    correctAnswer: 1,
-    explanation: 'Edpuzzle works excellently in the Launch phase to engage students with new content.'
-  }
-];
 
 // Quiz questions for Microsoft Copilot - Explorer
-const copilotExplorerQuiz: QuizQuestion[] = [
-  {
-    id: 'co1',
-    question: 'What is Microsoft Copilot designed to help teachers with?',
-    options: [
-      'Replace teachers entirely',
-      'Save time by generating lesson plans, resources, and quiz questions using AI',
-      'Only write emails',
-      'Grade all student work automatically'
-    ],
-    correctAnswer: 1,
-    explanation: 'Copilot is a time-saving tool that assists with planning and resource creation.'
-  },
-  {
-    id: 'co2',
-    question: 'What makes a good prompt when using Copilot?',
-    options: [
-      'Very vague instructions',
-      'Clear, specific instructions with context about subject and level',
-      'Single word requests',
-      'Always asking the same question'
-    ],
-    correctAnswer: 1,
-    explanation: 'Specific, contextualised prompts produce better, more relevant results.'
-  },
-  {
-    id: 'co3',
-    question: 'How should staff use AI-generated content from Copilot?',
-    options: [
-      'Copy and paste without reviewing',
-      'Review, adapt, and personalise to fit students and context',
-      'Never edit the output',
-      'Only share with other staff'
-    ],
-    correctAnswer: 1,
-    explanation: 'AI is a starting point - professional judgement is essential to adapt content appropriately.'
-  },
-  {
-    id: 'co4',
-    question: 'What is one way Copilot can support lesson planning?',
-    options: [
-      'It teaches the lesson for you',
-      'It can generate learning objectives, activities, and differentiation ideas',
-      'It only creates worksheets',
-      'It replaces schemes of work'
-    ],
-    correctAnswer: 1,
-    explanation: 'Copilot can assist with various aspects of planning, saving valuable preparation time.'
-  },
-  {
-    id: 'co5',
-    question: 'Why is it important to reference sources when Copilot summarises information?',
-    options: [
-      'References are not needed',
-      'To ensure accuracy and model good academic practice for students',
-      'Only for research papers',
-      'Copilot always provides perfect information'
-    ],
-    correctAnswer: 1,
-    explanation: 'Checking sources ensures accuracy and demonstrates professional standards.'
-  }
-];
 
 // Quiz questions for Canva - Practitioner
-const canvaPractitionerQuiz: QuizQuestion[] = [
-  {
-    id: 'cp1',
-    question: 'What is the main advantage of creating original designs from scratch in Canva rather than only using templates?',
-    options: [
-      'Original designs take less time to create',
-      'You can fully tailor materials to your specific curriculum and learner needs',
-      'Templates are not available at Practitioner level',
-      'Original designs are automatically accessible'
-    ],
-    correctAnswer: 1,
-    explanation: 'Creating from scratch allows complete customisation to match your curriculum, learning objectives, and specific student needs.'
-  },
-  {
-    id: 'cp2',
-    question: 'What is the benefit of using Canva templates to create teaching materials?',
-    options: [
-      'Templates cannot be customised',
-      'They provide a professional starting point that you can tailor to your subject and students',
-      'They replace the need for any other digital tools',
-      'Templates are only used for posters'
-    ],
-    correctAnswer: 1,
-    explanation: 'Canva templates give you a polished, professional foundation that you can quickly customise with your own content, branding, and subject-specific materials.'
-  },
-  {
-    id: 'cp3',
-    question: 'What is a key consideration when adapting Canva resources for accessibility?',
-    options: [
-      'Use as many fonts as possible for variety',
-      'Ensure sufficient colour contrast, clear fonts, and alternative text for images',
-      'Accessibility only applies to printed materials',
-      'All Canva templates are automatically accessible'
-    ],
-    correctAnswer: 1,
-    explanation: 'Accessible design includes proper contrast, readable fonts, alt text, and considering diverse learner needs.'
-  },
-  {
-    id: 'cp4',
-    question: 'How does creating differentiated Canva resources support inclusive teaching?',
-    options: [
-      'All students receive identical materials regardless of need',
-      'You can create multiple versions with varied complexity, scaffolding, or visual support',
-      'Differentiation is only needed for written work',
-      'Canva cannot be used for differentiated resources'
-    ],
-    correctAnswer: 1,
-    explanation: 'Canva makes it easy to duplicate and adapt designs for different learner needs and ability levels.'
-  },
-  {
-    id: 'cp5',
-    question: 'What makes an interactive Canva activity effective for learning?',
-    options: [
-      'Using as many animations as possible',
-      'Clear learning objectives, appropriate challenge level, and meaningful feedback opportunities',
-      'Making activities as long as possible',
-      'Only using text-based content'
-    ],
-    correctAnswer: 1,
-    explanation: 'Effective interactive activities are purposeful, appropriately challenging, and support learning goals.'
-  }
-];
 
 // Quiz questions for Edpuzzle - Practitioner
-const edpuzzlePractitionerQuiz: QuizQuestion[] = [
-  {
-    id: 'ep1',
-    question: 'What is the main benefit of adding your own voiceover to an Edpuzzle video?',
-    options: [
-      'It makes videos longer',
-      'You can personalise explanations and add context specific to your students',
-      'Voiceovers are required for all videos',
-      'It removes the need for embedded questions'
-    ],
-    correctAnswer: 1,
-    explanation: 'Custom voiceovers allow you to adapt content, add subject-specific explanations, and connect with your students personally.'
-  },
-  {
-    id: 'ep2',
-    question: 'How can Edpuzzle analytics inform your teaching decisions?',
-    options: [
-      'Analytics only show completion rates',
-      'They reveal which concepts students struggle with, allowing targeted intervention',
-      'Analytics are only useful for grading',
-      'They automatically adjust lesson plans'
-    ],
-    correctAnswer: 1,
-    explanation: 'Detailed analytics show where students pause, rewatch, or answer incorrectly, highlighting areas needing additional teaching.'
-  },
-  {
-    id: 'ep3',
-    question: 'What is the advantage of integrating Edpuzzle with MS Teams?',
-    options: [
-      'It replaces Teams entirely',
-      'Students can access video assignments within their familiar learning environment',
-      'Integration removes tracking capabilities',
-      'It only works for live lessons'
-    ],
-    correctAnswer: 1,
-    explanation: 'Integration creates a seamless workflow where students find interactive videos within their regular class resources.'
-  },
-  {
-    id: 'ep4',
-    question: 'How can adding notes to specific moments in an Edpuzzle video support learning?',
-    options: [
-      'Notes replace all questions',
-      'They provide additional context, key vocabulary, or signposting without requiring a response',
-      'Notes are only visible to teachers',
-      'They skip sections of the video'
-    ],
-    correctAnswer: 1,
-    explanation: 'Notes allow you to highlight important information, explain terminology, or guide attention without interrupting flow.'
-  },
-  {
-    id: 'ep5',
-    question: 'What is a best practice for creating effective embedded questions in Edpuzzle?',
-    options: [
-      'Add as many questions as possible',
-      'Place questions at key learning moments to check understanding of concepts just covered',
-      'Only use multiple choice questions',
-      'Questions should all appear at the end'
-    ],
-    correctAnswer: 1,
-    explanation: 'Strategic question placement ensures students actively process information at critical points in the video.'
-  }
-];
 
 // Quiz questions for Microsoft Copilot - Practitioner
-const copilotPractitionerQuiz: QuizQuestion[] = [
-  {
-    id: 'cop1',
-    question: 'What makes an "advanced prompt" more effective than a basic prompt?',
-    options: [
-      'It uses more words',
-      'It includes specific context, audience, format requirements, and desired outcomes',
-      'Advanced prompts are shorter',
-      'They always produce perfect results first time'
-    ],
-    correctAnswer: 1,
-    explanation: 'Detailed prompts with context about level, subject, format, and purpose produce more relevant, usable outputs.'
-  },
-  {
-    id: 'cop2',
-    question: 'How can Copilot support differentiation in resource creation?',
-    options: [
-      'It only creates one version of any resource',
-      'You can prompt for multiple versions at different levels (foundation, core, higher) in one request',
-      'Differentiation must be done manually afterwards',
-      'Copilot cannot adjust reading levels'
-    ],
-    correctAnswer: 1,
-    explanation: 'Copilot can generate differentiated versions simultaneously, saving significant time on creating tiered resources.'
-  },
-  {
-    id: 'cop3',
-    question: 'What is a Microsoft Copilot Agent designed to do?',
-    options: [
-      'Replace teachers in the classroom',
-      'Provide a customised AI assistant trained on specific content or processes you define',
-      'Only answer general knowledge questions',
-      'Agents cannot be created by teachers'
-    ],
-    correctAnswer: 1,
-    explanation: 'Copilot Agents can be customised with your own instructions and knowledge to serve specific teaching purposes.'
-  },
-  {
-    id: 'cop4',
-    question: 'Why is it important to review and adapt AI-generated content before using it with students?',
-    options: [
-      'AI content is always perfect',
-      'To ensure accuracy, appropriateness for your context, and alignment with your teaching approach',
-      'Review is only needed for assessments',
-      'Students prefer unedited AI content'
-    ],
-    correctAnswer: 1,
-    explanation: 'Professional judgement is essential - AI provides a starting point that needs teacher expertise to refine and contextualise.'
-  },
-  {
-    id: 'cop5',
-    question: 'What is a responsible practice when using Copilot for teaching resources?',
-    options: [
-      'Share AI-generated content as your own work',
-      'Check facts, verify sources, and be transparent about AI assistance where appropriate',
-      'Never edit AI outputs',
-      'Use AI for all assessment marking without review'
-    ],
-    correctAnswer: 1,
-    explanation: 'Responsible AI use includes verification, fact-checking, and maintaining professional standards and transparency.'
-  }
-];
 
 export const learningPathways: Record<string, LearningPathway> = {
   'teams-explorer': {
@@ -556,7 +60,7 @@ export const learningPathways: Record<string, LearningPathway> = {
         'Stronger evidence of formative assessment practice'
       ]
     },
-    quiz: teamsExplorerQuiz
+    quiz: [] /* knowledge checks now run through the module sign-off */
   },
 
   'teams-practitioner': {
@@ -603,7 +107,7 @@ export const learningPathways: Record<string, LearningPathway> = {
         'Evidence-based teaching informed by analytics'
       ]
     },
-    quiz: teamsPractitionerQuiz
+    quiz: [] /* knowledge checks now run through the module sign-off */
   },
   
   'canva-explorer': {
@@ -650,7 +154,7 @@ export const learningPathways: Record<string, LearningPathway> = {
         'Demonstrates commitment to personalised learning approaches'
       ]
     },
-    quiz: canvaExplorerQuiz
+    quiz: [] /* knowledge checks now run through the module sign-off */
   },
 
   'edpuzzle-explorer': {
@@ -697,7 +201,7 @@ export const learningPathways: Record<string, LearningPathway> = {
         'Provide evidence of formative assessment practice'
       ]
     },
-    quiz: edpuzzleExplorerQuiz
+    quiz: [] /* knowledge checks now run through the module sign-off */
   },
 
   'copilot-explorer': {
@@ -743,7 +247,7 @@ export const learningPathways: Record<string, LearningPathway> = {
         'Embracing AI to work smarter, not harder'
       ]
     },
-    quiz: copilotExplorerQuiz
+    quiz: [] /* knowledge checks now run through the module sign-off */
   },
 
   'canva-practitioner': {
@@ -790,7 +294,7 @@ export const learningPathways: Record<string, LearningPathway> = {
         'Consistent visual identity in teaching and learning materials'
       ]
     },
-    quiz: canvaPractitionerQuiz
+    quiz: [] /* knowledge checks now run through the module sign-off */
   },
 
   'edpuzzle-practitioner': {
@@ -837,7 +341,7 @@ export const learningPathways: Record<string, LearningPathway> = {
         'Evidence of responsive, analytics-driven teaching approaches'
       ]
     },
-    quiz: edpuzzlePractitionerQuiz
+    quiz: [] /* knowledge checks now run through the module sign-off */
   },
 
   'copilot-practitioner': {
@@ -884,7 +388,7 @@ export const learningPathways: Record<string, LearningPathway> = {
         'Students developing AI literacy for future employment'
       ]
     },
-    quiz: copilotPractitionerQuiz
+    quiz: [] /* knowledge checks now run through the module sign-off */
   },
 
   'edpuzzle-leader': {

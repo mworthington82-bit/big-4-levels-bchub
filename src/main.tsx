@@ -16,6 +16,15 @@ if (!sessionStorage.getItem(TAB_FLAG)) {
 }
 sessionStorage.setItem(TAB_FLAG, "1");
 
+// Quiz results and reflection flags must never live in browser storage.
+try {
+  for (const k of Object.keys(localStorage)) {
+    if (k.startsWith("quiz_passed_") || k.startsWith("submitted_reflection_")) localStorage.removeItem(k);
+  }
+} catch {
+  /* storage unavailable */
+}
+
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <AccessibilityProvider>

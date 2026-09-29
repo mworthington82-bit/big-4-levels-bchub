@@ -1,3 +1,4 @@
+import { isDoneCompletion } from "@/lib/moduleDone";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { ChevronDown, Copy, Check, Download, FileSpreadsheet } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
@@ -26,7 +27,7 @@ const COLUMNS = [
 
 const AlmostThere = ({ refreshKey = 0 }: { refreshKey?: number } = {}) => {
   const [staff, setStaff] = useState<any[]>([]);
-  const [completions, setCompletions] = useState<{ staff_email: string; module_id: string; quiz_passed: boolean | null }[]>([]);
+  const [completions, setCompletions] = useState<{ staff_email: string; module_id: string; quiz_passed: boolean | null; completed_via?: string | null }[]>([]);
   const [loading, setLoading] = useState(true);
   const [open, setOpen] = useState<Record<string, boolean>>({});
   const [copied, setCopied] = useState(false);
@@ -38,7 +39,7 @@ const AlmostThere = ({ refreshKey = 0 }: { refreshKey?: number } = {}) => {
       setLoading(true);
       const [{ data: s }, { data: c }] = await Promise.all([
         supabase.from("staff_profiles").select(COLUMNS),
-        supabase.from("module_completions").select("staff_email,module_id,quiz_passed"),
+        supabase.from("module_completions").select("staff_email,module_id,quiz_passed,completed_via"),
       ]);
       setStaff((s as any[]) ?? []);
       setCompletions((c as any[]) ?? []);
@@ -51,7 +52,7 @@ const AlmostThere = ({ refreshKey = 0 }: { refreshKey?: number } = {}) => {
     // is still outstanding.
     const passedByEmail = new Map<string, string[]>();
     for (const c of completions) {
-      if (c.quiz_passed !== true) continue;
+      if (!isDoneCompletion(c)) continue;
       const e = c.staff_email.toLowerCase();
       if (!passedByEmail.has(e)) passedByEmail.set(e, []);
       passedByEmail.get(e)!.push(c.module_id);

@@ -1,3 +1,4 @@
+import { isDoneCompletion } from "@/lib/moduleDone";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { IconSend, IconCheck } from "@tabler/icons-react";
@@ -36,12 +37,12 @@ const SubmitForReview = ({ tool, level }: { tool: string; level: string }) => {
       if (!e) return setState("error");
       const { data } = await supabase
         .from("module_completions")
-        .select("module_id, quiz_passed")
+        .select("module_id, quiz_passed, completed_via")
         .ilike("staff_email", e)
         .in("module_id", ids);
       if (cancelled) return;
       const rows = data ?? [];
-      if (rows.length === ids.length && rows.every((r) => r.quiz_passed)) setState("already_done");
+      if (rows.length === ids.length && rows.every((r: any) => isDoneCompletion(r))) setState("already_done");
       else if (rows.length === ids.length) setState("already_waiting");
       else setState("ready");
     })();
@@ -60,7 +61,7 @@ const SubmitForReview = ({ tool, level }: { tool: string; level: string }) => {
     const have = new Set((existing ?? []).map((r) => r.module_id));
     const rows = ids
       .filter((id) => !have.has(id))
-      .map((module_id) => ({ staff_email: email, module_id, completed_via: "quiz", quiz_passed: false }));
+      .map((module_id) => ({ staff_email: email, module_id, completed_via: "quiz" }));
     if (!rows.length) return true;
     const { error } = await supabase.from("module_completions").insert(rows);
     if (error && error.code !== "23505") {
