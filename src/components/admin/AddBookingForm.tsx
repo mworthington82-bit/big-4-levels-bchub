@@ -334,7 +334,6 @@ const AddBookingForm = () => {
     const inserts = rows.map((r) => ({
       staff_email: r.email,
       module_id: moduleId,
-      quiz_passed: true,
       completed_at: new Date().toISOString(),
     }));
     const { error } = await supabase

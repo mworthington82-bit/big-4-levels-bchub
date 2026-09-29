@@ -22,6 +22,13 @@
       "when": 1790691644032,
       "tag": "0002_restrict_module_done_for",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1790691833770,
+      "tag": "0003_set_module_progress_marks_signed_off",
+      "breakpoints": true
     }
   ]
 }

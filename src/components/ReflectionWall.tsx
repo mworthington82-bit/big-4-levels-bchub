@@ -78,10 +78,6 @@ const ReflectionWall = ({ toolName, level, onComplete }: ReflectionWallProps) =>
   useEffect(() => {
     fetchReflections();
     // Check if user already submitted for this tool+level
-    const submitted = localStorage.getItem(`submitted_reflection_${toolName}_${level}`);
-    if (submitted) {
-      setHasSubmitted(true);
-    }
   }, [toolName, level, fetchReflections]);
 
   const handleSubmit = async () => {
@@ -124,7 +120,6 @@ const ReflectionWall = ({ toolName, level, onComplete }: ReflectionWallProps) =>
       return;
     }
 
-    localStorage.setItem(`submitted_reflection_${toolName}_${level}`, 'true');
     setHasSubmitted(true);
     setNewReflection("");
     setDepartment("");

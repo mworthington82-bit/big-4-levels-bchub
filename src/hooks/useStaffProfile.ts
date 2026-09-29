@@ -1,3 +1,4 @@
+import { isDoneCompletion } from "@/lib/moduleDone";
 import { useCallback, useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { isDemoEmail } from "@/lib/demoAccess";
@@ -99,22 +100,22 @@ export const useStaffProfile = () => {
             .from("module_completions")
             .select("module_id,quiz_passed,completed_via")
             .ilike("staff_email", email);
-          const passed = (comps ?? []).filter((c: any) => c.quiz_passed === true);
+          const passed = (comps ?? []).filter((c: any) => isDoneCompletion(c));
           completedModuleIds = passed.map((c: any) => c.module_id as string);
           completions = passed.map((c: any) => ({
             moduleId: c.module_id as string,
             via: ((c.completed_via as string) === "in_person" ? "in_person" : "quiz") as "quiz" | "in_person",
           }));
           attendedPendingIds = (comps ?? [])
-            .filter((c: any) => c.quiz_passed !== true && c.completed_via === "in_person")
+            .filter((c: any) => !isDoneCompletion(c) && c.completed_via === "in_person")
             .map((c: any) => c.module_id as string)
             .filter((id: string) => !completedModuleIds.includes(id));
           reviewPendingIds = (comps ?? [])
-            .filter((c: any) => c.quiz_passed !== true && c.completed_via === "quiz")
+            .filter((c: any) => !isDoneCompletion(c) && c.completed_via === "quiz")
             .map((c: any) => c.module_id as string)
             .filter((id: string) => !completedModuleIds.includes(id));
           attendanceClaimIds = (comps ?? [])
-            .filter((c: any) => c.quiz_passed !== true && c.completed_via === "attendance_claim")
+            .filter((c: any) => !isDoneCompletion(c) && c.completed_via === "attendance_claim")
             .map((c: any) => c.module_id as string);
         } catch {
           completedModuleIds = [];

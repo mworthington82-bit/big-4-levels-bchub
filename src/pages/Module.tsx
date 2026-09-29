@@ -14,17 +14,8 @@ import PageError from "@/components/PageError";
 import { usePageTitle } from "@/lib/usePageTitle";
 import { supabase } from "@/integrations/supabase/client";
 import ModuleQuiz, { QuizQuestion } from "@/components/module/ModuleQuiz";
-import EmbeddedQuiz, { quizEmbedUrls } from "@/components/EmbeddedQuiz";
-
-/** Canva Code knowledge checks are keyed tool-level (e.g. "canva-explorer"). */
-const embedKeyFor = (moduleId?: string) => (moduleId ?? "").replace("_", "-");
-const BRAND_COLOUR: Record<string, string> = {
-  teams: "#5B5FC7",
-  forms: "#5B5FC7",
-  canva: "#7D2AE8",
-  edpuzzle: "#1DA1F2",
-  copilot: "#0078D4",
-};
+import Big4SignOff from "@/components/module/Big4SignOff";
+import { isBig4Module } from "@/data/big4Checks";
 
 interface ModuleRow {
   module_id: string;
@@ -122,11 +113,13 @@ const Module = () => {
             .select("*")
             .eq("module_id", moduleId)
             .order("step_number", { ascending: true }),
-          supabase
-            .from("quiz_questions")
-            .select("id,module_id,question_order,question_text,option_a,option_b,option_c,option_d")
-            .eq("module_id", moduleId)
-            .order("question_order", { ascending: true }),
+          isBig4Module(moduleId)
+            ? Promise.resolve({ data: [], error: null })
+            : supabase
+                .from("quiz_questions")
+                .select("id,module_id,question_order,question_text,option_a,option_b,option_c,option_d")
+                .eq("module_id", moduleId)
+                .order("question_order", { ascending: true }),
         ]);
 
         if (cancelled) return;
@@ -147,12 +140,12 @@ const Module = () => {
         if (userEmail && moduleId && moduleId !== "immersive_practitioner") {
           const { data: mc } = await supabase
             .from("module_completions")
-            .select("quiz_passed,completed_via")
+            .select("completed_via")
             .ilike("staff_email", userEmail)
             .eq("module_id", moduleId)
             .maybeSingle();
           const row = mc as any;
-          if (row && row.quiz_passed === false && row.completed_via === "in_person") {
+          if (row && row.completed_via === "in_person") {
             // Attended in person: allow deep-linking straight to the knowledge check.
             if (wantsAssess) {
               setVisited(new Set([1, 2, 3, 4, 5]));
@@ -315,7 +308,6 @@ const Module = () => {
         {
           staff_email: email.toLowerCase(),
           module_id: moduleId,
-          quiz_passed: true,
           completed_at: new Date().toISOString(),
         },
         { onConflict: "staff_email,module_id" },
@@ -426,16 +418,8 @@ const Module = () => {
                 </h2>
 
                 {step.step_type === "assess" ? (
-                  questions.length === 0 && quizEmbedUrls[embedKeyFor(moduleId)] ? (
-                    <EmbeddedQuiz
-                      tool={embedKeyFor(moduleId).split("-")[0]}
-                      level={embedKeyFor(moduleId).split("-")[1]}
-                      brandColor={BRAND_COLOUR[embedKeyFor(moduleId).split("-")[0]] ?? "hsl(var(--b4-deep))"}
-                      onComplete={() => {
-                        writeCompletion();
-                        navigate("/journey");
-                      }}
-                    />
+                  isBig4Module(moduleId) ? (
+                    <Big4SignOff moduleId={moduleId} onBack={() => navigate("/journey")} />
                   ) : (
                     <ModuleQuiz
                       questions={questions}

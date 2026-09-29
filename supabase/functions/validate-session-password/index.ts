@@ -62,18 +62,9 @@ Deno.serve(async (req) => {
       return json({ success: false, error: "Incorrect password" }, 200);
     }
 
-    const { error: upErr } = await admin
-      .from("module_completions")
-      .upsert(
-        {
-          staff_email: staffEmail,
-          module_id: moduleId,
-          completed_at: new Date().toISOString(),
-          quiz_passed: true,
-          completed_via: "in_person",
-        },
-        { onConflict: "staff_email,module_id" }
-      );
+    // Progress only (never quiz_passed): sets the module's progress and runs level-up logic.
+    const { error: upErr } = await admin.rpc("set_module_progress", { _email: staffEmail, _module_id: moduleId });
+    if (!upErr) await admin.rpc("progression_core", { _email: staffEmail });
 
     if (upErr) {
       console.error("upsert completion failed", upErr);

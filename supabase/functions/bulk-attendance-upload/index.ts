@@ -105,13 +105,15 @@ Deno.serve(async (req) => {
     // Load existing completions for known emails
     const { data: existingComps } = await admin
       .from("module_completions")
-      .select("staff_email,module_id,quiz_passed")
+      .select("staff_email,module_id,quiz_passed,completed_via")
       .in("staff_email", emails);
     const completedByEmail = new Map<string, Set<string>>();
     for (const c of existingComps ?? []) {
       const e = String(c.staff_email).toLowerCase();
       if (!completedByEmail.has(e)) completedByEmail.set(e, new Set());
-      if (c.quiz_passed) completedByEmail.get(e)!.add(c.module_id);
+      const done = c.completed_via === "signed_off" ||
+        (c.module_id === "immersive_practitioner" && (c.completed_via === "in_person" || c.quiz_passed));
+      if (done) completedByEmail.get(e)!.add(c.module_id);
     }
 
     // Compute progression preview
@@ -134,12 +136,8 @@ Deno.serve(async (req) => {
       const completed = new Set(completedByEmail.get(email) ?? []);
       const profileWork = { ...p };
       for (const r of rs) {
-        completed.add(r.module_id);
-        const meta = MODULE_LABEL[r.module_id];
-        if (meta && meta.tool !== "immersive") {
-          const flag = `${meta.tool}_${meta.level}_evidenced`;
-          if (flag in profileWork) profileWork[flag] = true;
-        }
+        if (r.module_id === "immersive_practitioner") completed.add(r.module_id);
+        // Tool attendance is not sign-off: the knowledge check + reflection are still needed.
       }
       const before = {
         practitioner_unlocked: !!p.practitioner_unlocked,
@@ -165,37 +163,33 @@ Deno.serve(async (req) => {
       const upsertMap = new Map<string, any>();
       for (const r of knownRows) {
         const key = `${r.email}::${r.module_id}`;
-        const isImmersive = r.module_id === "immersive_practitioner";
+        // Progress only: quiz_passed is never written. Immersive attendance
+        // (completed_via = in_person) counts as done; tool attendance does not.
+        const already = completedByEmail.get(r.email)?.has(r.module_id);
+        if (already) continue; // never downgrade a signed-off module
         upsertMap.set(key, {
           staff_email: r.email,
           module_id: r.module_id,
           completed_at: r.attended_at ?? new Date().toISOString(),
-          quiz_passed: isImmersive,
           completed_via: "in_person",
         });
       }
       const upserts = Array.from(upsertMap.values());
-      const { error: mcErr, count } = await admin
-        .from("module_completions")
-        .upsert(upserts, { onConflict: "staff_email,module_id", count: "exact" });
-      if (mcErr) throw mcErr;
-      marked = count ?? knownRows.length;
+      if (upserts.length > 0) {
+        const { error: mcErr } = await admin
+          .from("module_completions")
+          .upsert(upserts, { onConflict: "staff_email,module_id" });
+        if (mcErr) throw mcErr;
+      }
+      marked = knownRows.length;
 
-      // Face-to-face attendance sets the tool's *_evidenced flag (that's what
-      // "attended in person" means). It does NOT set quiz_passed except for
-      // the Immersive Room, which has no quiz. Progression flags then follow
-      // from the same computeProgression() the preview uses.
+      // Tool attendance no longer sets *_evidenced (that now means signed off).
       for (const [email, rs] of rowsByEmail) {
         const p = profileByEmail.get(email);
         const completed = new Set(completedByEmail.get(email) ?? []);
         const profileWork: any = { ...p };
         for (const r of rs) {
-          completed.add(r.module_id);
-          const meta = MODULE_LABEL[r.module_id];
-          if (meta && meta.tool !== "immersive") {
-            const flag = `${meta.tool}_${meta.level}_evidenced`;
-            profileWork[flag] = true;
-          }
+          if (r.module_id === "immersive_practitioner") completed.add(r.module_id);
         }
         const prog = computeProgression(profileWork, completed);
         const patch: Record<string, any> = {};
@@ -220,7 +214,7 @@ Deno.serve(async (req) => {
             .from("staff_profiles")
             .update(patch)
             .ilike("email", email);
-          if (upErr) console.error("[bulk] profile update error", upErr, email);
+          if (upErr) console.error("[bulk] profile update error");
 
           // Log progression transitions for the dashboard.
           const events: any[] = [];
@@ -232,7 +226,7 @@ Deno.serve(async (req) => {
             const { error: evErr } = await admin
               .from("progression_events")
               .upsert(events, { onConflict: "staff_email,event" });
-            if (evErr) console.error("[bulk] progression_events upsert error", evErr, email);
+            if (evErr) console.error("[bulk] progression_events upsert error");
           }
         }
       }

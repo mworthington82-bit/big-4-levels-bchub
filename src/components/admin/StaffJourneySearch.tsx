@@ -1,3 +1,4 @@
+import { isDoneCompletion } from "@/lib/moduleDone";
 import { useEffect, useMemo, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Input } from "@/components/ui/input";
@@ -87,12 +88,12 @@ const StaffJourneySearch = () => {
     (async () => {
       const { data } = await supabase
         .from("module_completions")
-        .select("module_id,completed_at,quiz_passed")
+        .select("module_id,completed_at,quiz_passed,completed_via")
         .ilike("staff_email", selected.email)
         .order("completed_at", { ascending: false });
       const all = (data as any[]) ?? [];
       setCompletions(all);
-      setCompletedIds(all.filter((c) => c.quiz_passed === true).map((c) => c.module_id));
+      setCompletedIds(all.filter((c) => isDoneCompletion(c)).map((c) => c.module_id));
     })();
   }, [selected]);
 
@@ -291,7 +292,7 @@ const ModuleList = ({
                 <div className="text-[11px] text-muted-foreground mt-1">
                   Completed{" "}
                   {new Date(completion.completed_at).toLocaleString("en-GB")}
-                  {!completion.quiz_passed && " (quiz not passed)"}
+                  {!isDoneCompletion(completion as any) && " (not yet signed off)"}
                 </div>
               )}
             </div>

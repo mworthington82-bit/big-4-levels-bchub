@@ -21,7 +21,7 @@ export const claimAttendance = async (partIds: string[]): Promise<ClaimResult> =
   const have = new Set((existing ?? []).map((r) => r.module_id));
   const rows = partIds
     .filter((id) => !have.has(id))
-    .map((module_id) => ({ staff_email: email, module_id, completed_via: "attendance_claim", quiz_passed: false }));
+    .map((module_id) => ({ staff_email: email, module_id, completed_via: "attendance_claim" }));
   if (!rows.length) return "sent";
   const { error } = await supabase.from("module_completions").insert(rows);
   if (!error || error.code === "23505") return "sent";
