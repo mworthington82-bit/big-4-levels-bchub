@@ -1,0 +1,1 @@
+REVOKE EXECUTE ON FUNCTION public.module_done_for(text, text) FROM authenticated;

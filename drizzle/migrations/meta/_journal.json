@@ -15,6 +15,13 @@
       "when": 1790691626977,
       "tag": "0001_progress_without_quiz_passed",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1790691644032,
+      "tag": "0002_restrict_module_done_for",
+      "breakpoints": true
     }
   ]
 }
