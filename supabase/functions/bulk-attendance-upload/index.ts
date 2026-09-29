@@ -184,9 +184,6 @@ Deno.serve(async (req) => {
       marked = knownRows.length;
 
       // Tool attendance no longer sets *_evidenced (that now means signed off).
-      // "attended in person" means). It does NOT set quiz_passed except for
-      // the Immersive Room, which has no quiz. Progression flags then follow
-      // from the same computeProgression() the preview uses.
       for (const [email, rs] of rowsByEmail) {
         const p = profileByEmail.get(email);
         const completed = new Set(completedByEmail.get(email) ?? []);
