@@ -2,7 +2,7 @@
 // Never log request bodies, answers, reflection text, names or emails.
 import { createClient } from "npm:@supabase/supabase-js@2";
 
-const ALLOWED_ORIGINS = ["https://big-4-levels-bchub.lovable.app", "https://bradfordbig4.online"];
+const ALLOWED_ORIGINS = ["https://big-4-levels-bchub.lovable.app", "https://bradfordbig4.online", "https://www.bradfordbig4.online"];
 
 export function corsFor(req: Request): Record<string, string> {
   const origin = req.headers.get("Origin") ?? "";
