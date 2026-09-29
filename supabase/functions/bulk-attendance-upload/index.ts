@@ -136,12 +136,8 @@ Deno.serve(async (req) => {
       const completed = new Set(completedByEmail.get(email) ?? []);
       const profileWork = { ...p };
       for (const r of rs) {
-        completed.add(r.module_id);
-        const meta = MODULE_LABEL[r.module_id];
-        if (meta && meta.tool !== "immersive") {
-          const flag = `${meta.tool}_${meta.level}_evidenced`;
-          if (flag in profileWork) profileWork[flag] = true;
-        }
+        if (r.module_id === "immersive_practitioner") completed.add(r.module_id);
+        // Tool attendance is not sign-off: the knowledge check + reflection are still needed.
       }
       const before = {
         practitioner_unlocked: !!p.practitioner_unlocked,
@@ -179,12 +175,13 @@ Deno.serve(async (req) => {
         });
       }
       const upserts = Array.from(upsertMap.values());
-      const { error: mcErr, count } = await admin
-        .from("module_completions")
-        .upsert(upserts, { onConflict: "staff_email,module_id", count: "exact" });
-      // (upserts may be empty if everyone was already signed off)
-      if (mcErr) throw mcErr;
-      marked = count ?? knownRows.length;
+      if (upserts.length > 0) {
+        const { error: mcErr } = await admin
+          .from("module_completions")
+          .upsert(upserts, { onConflict: "staff_email,module_id" });
+        if (mcErr) throw mcErr;
+      }
+      marked = knownRows.length;
 
       // Face-to-face attendance sets the tool's *_evidenced flag (that's what
       // "attended in person" means). It does NOT set quiz_passed except for
@@ -195,12 +192,7 @@ Deno.serve(async (req) => {
         const completed = new Set(completedByEmail.get(email) ?? []);
         const profileWork: any = { ...p };
         for (const r of rs) {
-          completed.add(r.module_id);
-          const meta = MODULE_LABEL[r.module_id];
-          if (meta && meta.tool !== "immersive") {
-            const flag = `${meta.tool}_${meta.level}_evidenced`;
-            profileWork[flag] = true;
-          }
+          if (r.module_id === "immersive_practitioner") completed.add(r.module_id);
         }
         const prog = computeProgression(profileWork, completed);
         const patch: Record<string, any> = {};
@@ -225,7 +217,7 @@ Deno.serve(async (req) => {
             .from("staff_profiles")
             .update(patch)
             .ilike("email", email);
-          if (upErr) console.error("[bulk] profile update error", upErr, email);
+          if (upErr) console.error("[bulk] profile update error");
 
           // Log progression transitions for the dashboard.
           const events: any[] = [];
@@ -237,7 +229,7 @@ Deno.serve(async (req) => {
             const { error: evErr } = await admin
               .from("progression_events")
               .upsert(events, { onConflict: "staff_email,event" });
-            if (evErr) console.error("[bulk] progression_events upsert error", evErr, email);
+            if (evErr) console.error("[bulk] progression_events upsert error");
           }
         }
       }
