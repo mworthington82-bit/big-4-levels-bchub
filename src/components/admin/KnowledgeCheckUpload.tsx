@@ -32,6 +32,9 @@ const KnowledgeCheckUpload = () => {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [done, setDone] = useState<number | null>(null);
+  const [results, setResults] = useState<
+    { email: string; name: string; department: string; before: string; after: string; outstanding: string[] }[]
+  >([]);
 
   const unmatched = useMemo(() => rows.filter((r) => !r.matched), [rows]);
   const tickedEmails = useMemo(
@@ -46,6 +49,7 @@ const KnowledgeCheckUpload = () => {
     setInvalidRows([]);
     setError(null);
     setDone(null);
+    setResults([]);
   };
 
   const handleFile = async (file: File) => {
@@ -97,7 +101,7 @@ const KnowledgeCheckUpload = () => {
     if (!moduleId || tickedEmails.length === 0) return;
     setBusy(true);
     setError(null);
-    const { error: rpcErr } = await supabase.rpc("admin_mark_module_complete" as any, {
+    const { data, error: rpcErr } = await supabase.rpc("admin_mark_module_complete" as any, {
       _emails: tickedEmails,
       _module_id: moduleId,
     });
@@ -107,12 +111,28 @@ const KnowledgeCheckUpload = () => {
       toast({ title: "Could not save", description: rpcErr.message, variant: "destructive" });
       return;
     }
+    const byEmail = new Map(rows.map((r) => [r.email, r]));
+    const res = (((data as any)?.results ?? []) as any[]).map((x) => {
+      const r = byEmail.get(x.email);
+      return {
+        email: x.email as string,
+        name: r?.staffName || r?.name || x.email,
+        department: r?.staffDepartment || r?.department || "",
+        before: String(x.level_before ?? ""),
+        after: String(x.level_after ?? ""),
+        outstanding: (x.outstanding ?? []) as string[],
+      };
+    });
+    setResults(res);
     setDone(tickedEmails.length);
     window.dispatchEvent(new CustomEvent("attendance-updated"));
     setRows([]);
     setTicked({});
     setFileName(null);
   };
+
+  const cap = (s: string) => (s ? s[0].toUpperCase() + s.slice(1) : "—");
+  const LEVEL_RANK: Record<string, number> = { explorer: 1, practitioner: 2, leader: 3 };
 
   return (
     <section className="space-y-4">
@@ -179,6 +199,52 @@ const KnowledgeCheckUpload = () => {
           <div className="flex items-start gap-2 text-sm text-green-800 bg-green-50 border border-green-200 rounded-lg p-3">
             <CheckCircle2 className="w-4 h-4 mt-0.5" />
             <span>{done} staff marked as having completed this module.</span>
+          </div>
+        )}
+
+        {results.length > 0 && (
+          <div className="border border-border rounded-lg overflow-hidden">
+            <table className="w-full text-sm">
+              <thead className="bg-b4-wash text-b4-strong">
+                <tr>
+                  <th className="text-left px-3 py-2">Name</th>
+                  <th className="text-left px-3 py-2">Department</th>
+                  <th className="text-left px-3 py-2">Level</th>
+                  <th className="text-left px-3 py-2">Level up / still outstanding</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-100">
+                {results.map((r) => {
+                  const movedUp = (LEVEL_RANK[r.after] ?? 0) > (LEVEL_RANK[r.before] ?? 0);
+                  return (
+                    <tr key={r.email}>
+                      <td className="px-3 py-2">
+                        <div>{r.name}</div>
+                        <div className="font-mono text-xs text-muted-foreground">{r.email}</div>
+                      </td>
+                      <td className="px-3 py-2">{r.department || "—"}</td>
+                      <td className="px-3 py-2">{cap(r.after)}</td>
+                      <td className="px-3 py-2">
+                        {movedUp ? (
+                          <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-green-100 text-green-800">
+                            Moved up: {cap(r.before)} to {cap(r.after)}
+                          </span>
+                        ) : r.outstanding.length === 0 ? (
+                          <span className="text-xs text-muted-foreground">Nothing outstanding</span>
+                        ) : (
+                          <span className="text-xs">
+                            {r.outstanding.length} outstanding:{" "}
+                            {r.outstanding
+                              .map((m) => MODULE_LABEL[m as ModuleId] ?? m)
+                              .join(", ")}
+                          </span>
+                        )}
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
           </div>
         )}
 
