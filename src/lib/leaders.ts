@@ -50,15 +50,8 @@ export interface LeaderCard {
   created_at: string;
 }
 
-/** Public share link: a small server page with Open Graph tags that forwards to the board. */
-export const cardShareUrl = (id: string) =>
-  `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/leader-card?id=${id}`;
-
-export const teamsShareHref = (url: string, text: string) =>
-  `https://teams.microsoft.com/share?href=${encodeURIComponent(url)}&msgText=${encodeURIComponent(text)}&preview=true`;
-
-export const shareMessage = (c: Pick<LeaderCard, "name" | "tool" | "implementation">, url: string) =>
-  `${c.name} has completed their Big 4 journey and is now a Big 4 Leader. Their one thing to try with ${toolLabel(c.tool)}: ${c.implementation} See it here: ${url}`;
+/** Go Digital Teams channel link. Empty until the college provides it; the button shows disabled. */
+export const GO_DIGITAL_URL = "";
 
 /** photo_url holds a path in the private leader-photos bucket; turn paths into viewable links. */
 export const signPhotos = async (paths: string[]): Promise<Record<string, string>> => {

@@ -6,7 +6,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 import { usePageTitle } from "@/lib/usePageTitle";
 import { AUDIENCES, BOARD_URL_TEXT, LEADER_TOOLS, LeaderCard, getSessionEmail, signPhotos, completedLabel, fetchCompletionDates } from "@/lib/leaders";
-import { Avatar, CrtMonitor, CompletionMark, DownloadCardButton } from "@/components/leaders/LeaderPieces";
+import { Avatar, CrtMonitor, CompletionMark } from "@/components/leaders/LeaderPieces";
+import { MyCardShareButton } from "@/components/leaders/ShareCardPanel";
 
 type Reaction = { card_id: string; staff_email: string };
 
@@ -152,7 +153,7 @@ const LeadersBoard = () => {
                     </div>
                     {isMine && (
                       <div className="mt-3">
-                        <DownloadCardButton card={{ name: c.name, department: c.department ?? "", tool: c.tool, intent: c.intent, implementation: c.implementation, impact: c.impact, audiences: c.audiences ?? [], photo, completed }} />
+                        <MyCardShareButton email={c.staff_email} />
                       </div>
                     )}
                   </li>
