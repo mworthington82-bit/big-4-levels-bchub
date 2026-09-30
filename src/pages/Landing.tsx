@@ -202,7 +202,7 @@ const Landing = () => {
       <main>
         {/* Hero: one headline, then the fabric PC (student voices) beside sign-in */}
         <section className="relative bg-b4-deep overflow-hidden">
-          <div className="relative z-10 mx-auto w-full max-w-[1440px] px-4 py-8 md:px-8 md:py-11 min-[1100px]:px-16">
+          <div className="relative z-10 mx-auto w-full max-w-[1440px] px-4 py-6 md:px-8 md:py-8 min-[1100px]:px-16">
             <div className="text-center">
               <p className="mb-3 text-xs font-semibold uppercase tracking-[0.14em] text-white/70 animate-fade-in">LDI Digital Skills Programme</p>
               <h1 className="font-display text-5xl md:text-7xl min-[1600px]:text-8xl font-bold text-white animate-fade-in leading-[1.02] tracking-tight">
@@ -210,7 +210,7 @@ const Landing = () => {
               </h1>
             </div>
 
-            <div className="mt-6 grid gap-y-6 lg:mt-9 min-[1100px]:grid-cols-[minmax(0,58fr)_minmax(0,42fr)] min-[1100px]:gap-x-24">
+            <div className="mt-5 grid gap-y-5 lg:mt-6 min-[1100px]:grid-cols-[minmax(0,58fr)_minmax(0,42fr)] min-[1100px]:gap-x-24">
               <StudentVoicesCaption className="min-[1100px]:col-start-1" />
 
               {/* The PC, grounded on a soft orange glow */}
@@ -233,7 +233,7 @@ const Landing = () => {
                 <a
                   href="/leaders"
                   onClick={(e) => { e.preventDefault(); navigate("/leaders"); }}
-                  className="home-leaders-strip mt-4"
+                  className="home-leaders-strip mt-3"
                   aria-label="See our Big 4 Leaders: what colleagues recommend"
                 >
                   <LeadersStripIcon />
@@ -248,7 +248,7 @@ const Landing = () => {
                   <ArrowRight className="home-leaders-strip__arrow h-5 w-5" aria-hidden="true" />
                 </a>
 
-                <ul className="mt-5 grid grid-cols-2 gap-2.5">
+                <ul className="mt-4 grid grid-cols-2 gap-2.5">
                   {heroApps.map((app) => (
                     <li key={app.name} className="flex items-center gap-3 rounded-xl border border-white/15 bg-white/[0.04] p-3 text-white">
                       <img src={app.logo} alt="" className="h-8 w-8 shrink-0 rounded-lg bg-white p-1 object-contain" />
@@ -258,11 +258,11 @@ const Landing = () => {
                 </ul>
 
                 {!email && (
-                  <div className="mt-5 flex flex-col gap-3">
+                  <div className="mt-4 flex flex-col gap-2">
                     <button
                       onClick={handleSignIn}
                       disabled={signingIn}
-                      className="inline-flex h-14 w-full items-center justify-center rounded-[4px] bg-b4-flame px-8 text-[17px] font-bold text-b4-on-flame transition-colors hover:bg-b4-flame/90 disabled:opacity-60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white pill-95 pill-95--press"
+                      className="inline-flex h-12 w-full items-center justify-center rounded-[4px] bg-b4-flame px-8 text-[17px] font-bold text-b4-on-flame transition-colors hover:bg-b4-flame/90 disabled:opacity-60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white pill-95 pill-95--press"
                     >
                       {signingIn ? "Redirecting…" : "Sign in with Microsoft"}
                     </button>
@@ -270,7 +270,7 @@ const Landing = () => {
                       href="https://bradfordcollege-handsmisconducttraining.my.canva.site/final-24-03the-big-4-tools"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex h-14 w-full items-center justify-center rounded-[4px] border-2 border-white/40 px-8 text-[17px] font-bold text-white transition-colors hover:border-white/60 hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white pill-95 pill-95--press"
+                      className="inline-flex h-12 w-full items-center justify-center rounded-[4px] border-2 border-white/40 px-8 text-[17px] font-bold text-white transition-colors hover:border-white/60 hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white pill-95 pill-95--press"
                     >
                       Take the self-assessment
                     </a>
@@ -282,18 +282,18 @@ const Landing = () => {
                 const lower = (email || "").toLowerCase();
                 const fullAccess = !MAINTENANCE_MODE || isAllowedDuringMaintenance(lower);
                 return (
-                  <div className="mt-5 flex flex-col gap-3 animate-fade-in" style={{ animationDelay: '300ms' }}>
+                  <div className="mt-4 flex flex-col gap-2 animate-fade-in" style={{ animationDelay: '300ms' }}>
                     {fullAccess ? (
                       <>
                         <button
                           onClick={() => navigate("/new/journey")}
-                          className="inline-flex h-14 items-center justify-center px-8 rounded-[4px] bg-b4-flame text-b4-on-flame font-bold text-[17px] hover:bg-b4-flame/90 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white w-full pill-95 pill-95--press"
+                          className="inline-flex h-12 items-center justify-center px-8 rounded-[4px] bg-b4-flame text-b4-on-flame font-bold text-[17px] hover:bg-b4-flame/90 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white w-full pill-95 pill-95--press"
                         >
                           Go to My Journey
                         </button>
                         <button
                           onClick={() => navigate("/planner")}
-                          className="inline-flex h-14 items-center justify-center px-8 rounded-[4px] bg-transparent text-white font-bold text-[17px] border-2 border-white/40 hover:bg-white/10 hover:border-white/60 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white w-full pill-95 pill-95--press"
+                          className="inline-flex h-12 items-center justify-center px-8 rounded-[4px] bg-transparent text-white font-bold text-[17px] border-2 border-white/40 hover:bg-white/10 hover:border-white/60 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white w-full pill-95 pill-95--press"
                         >
                           Open Activity Planner
                         </button>
@@ -301,7 +301,7 @@ const Landing = () => {
                     ) : (
                       <button
                         onClick={() => weaveTo("/bookings", "Opening Book Training…")}
-                        className="inline-flex h-14 items-center justify-center px-8 rounded-[4px] bg-b4-flame text-b4-on-flame font-bold text-[17px] hover:bg-b4-flame/90 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white w-full pill-95 pill-95--press"
+                        className="inline-flex h-12 items-center justify-center px-8 rounded-[4px] bg-b4-flame text-b4-on-flame font-bold text-[17px] hover:bg-b4-flame/90 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white w-full pill-95 pill-95--press"
                       >
                         Go to my bookings
                       </button>

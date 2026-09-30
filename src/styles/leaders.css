@@ -27,7 +27,7 @@
   display: flex;
   align-items: center;
   gap: 14px;
-  padding: 12px 16px;
+  padding: 10px 16px;
   border: 3px dashed hsl(var(--lb-orange) / 0.75);
   border-radius: 8px;
   background: hsl(var(--lb-panel) / 0.9);
