@@ -7,6 +7,7 @@ import emblemExplorer from "@/assets/art/rope/knot-explorer.webp";
 import emblemPractitioner from "@/assets/art/rope/knot-practitioner.webp";
 import emblemLeader from "@/assets/art/rope/knot-leader.webp";
 import { WeavingLoader } from "@/components/threadworks";
+import LeaderBoardToggle from "@/components/leaders/LeaderBoardToggle";
 
 const emblemMap: Record<string, string> = {
   Explorer: emblemExplorer,
@@ -85,6 +86,8 @@ const Profile = () => {
                   <dd className="text-sm font-semibold text-foreground">{formatDate(profile?.data_uploaded_at)}</dd>
                 </div>
               </dl>
+
+              <LeaderBoardToggle />
 
               <button
                 onClick={() => navigate("/journey")}

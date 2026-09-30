@@ -20,6 +20,7 @@ import MarkSessionsComplete from "@/components/admin/MarkSessionsComplete";
 import TrainingSessions from "@/components/admin/TrainingSessions";
 import BulkAttendanceUpload from "@/components/admin/BulkAttendanceUpload";
 import KnowledgeCheckUpload from "@/components/admin/KnowledgeCheckUpload";
+import LeaderSignOff from "@/components/admin/LeaderSignOff";
 import AttendanceUploadHistory from "@/components/admin/AttendanceUploadHistory";
 import { usePageTitle } from "@/lib/usePageTitle";
 import {
@@ -213,6 +214,7 @@ const Admin = () => {
         <PendingEvidencePanel />
         <AddBookingForm />
         <ImmersiveRequests refreshKey={refreshKey} />
+        <LeaderSignOff />
         <ManualImmersiveAttendance />
         <ReflectionsPanel />
         <BulkAttendanceUpload />

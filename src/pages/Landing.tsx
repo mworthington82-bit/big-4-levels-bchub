@@ -268,6 +268,12 @@ const Landing = () => {
                         >
                           Open Activity Planner
                         </button>
+                        <button
+                          onClick={() => navigate("/leaders")}
+                          className="inline-flex h-14 items-center justify-center px-8 rounded-[4px] bg-transparent text-white font-bold text-[17px] border-2 border-dashed border-b4-flame hover:bg-white/10 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white w-full pill-95 pill-95--press"
+                        >
+                          See our Leaders
+                        </button>
                       </>
                     ) : (
                       <button

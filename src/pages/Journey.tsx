@@ -15,7 +15,7 @@ import {
 import { deriveEffectiveLevel, runProgressionCheck } from "@/lib/progression";
 import { HowItWorks, NextStepCard, TaskList } from "@/components/journey/TaskList";
 import SinceLastVisit from "@/components/journey/SinceLastVisit";
-import LeaderTaskCard from "@/components/journey/LeaderTaskCard";
+import LeaderSharingTracker from "@/components/leaders/LeaderSharingTracker";
 import LeaderAchievementStrip from "@/components/journey/LeaderAchievementStrip";
 import RecentAttendanceBanner from "@/components/journey/RecentAttendanceBanner";
 import { IconWand, IconBulb, IconArrowRight } from "@tabler/icons-react";
@@ -181,7 +181,7 @@ const Journey = () => {
               <h2 className="font-display font-bold text-b4-strong text-xl">Your journey</h2>
               {showPractitionerMilestone && <MilestoneBanner variant="practitioner" />}
               <LeaderAchievementStrip profile={profile} completedIds={completedModuleIds} />
-              <LeaderTaskCard />
+              {email && <LeaderSharingTracker email={email} />}
             </section>
           ) : (
             <>
