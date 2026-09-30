@@ -6,9 +6,10 @@ import { toast } from "@/hooks/use-toast";
 import { useStaffProfile } from "@/hooks/useStaffProfile";
 import { usePageTitle } from "@/lib/usePageTitle";
 import {
-  AUDIENCES, LEADER_TOOLS, LeaderCard, cardShareUrl, shareMessage, signPhotos, teamsShareHref,
+  AUDIENCES, LEADER_TOOLS, LeaderCard, signPhotos,
 } from "@/lib/leaders";
-import { CardPreview, DownloadCardButton } from "@/components/leaders/LeaderPieces";
+import { CardPreview } from "@/components/leaders/LeaderPieces";
+import { ShareCardPanel } from "@/components/leaders/ShareCardPanel";
 
 const MAX = 140;
 
@@ -31,6 +32,7 @@ const LeaderCardBuilder = () => {
   const [photoFile, setPhotoFile] = useState<File | null>(null);
   const [busy, setBusy] = useState(false);
   const [completed, setCompleted] = useState<string | null>(null);
+  const [savedId, setSavedId] = useState<string | null>(null);
 
   useEffect(() => {
     if (!email) return;
@@ -73,14 +75,12 @@ const LeaderCardBuilder = () => {
     setPhotoPreview(URL.createObjectURL(f));
   };
 
-  const save = async (shareToTeams: boolean) => {
+  const save = async () => {
     if (!email) return;
     if (!form.name.trim() || !form.intent.trim() || !form.implementation.trim() || !form.impact.trim()) {
       toast({ title: "Almost there", description: "Fill in your name and all three answers.", variant: "destructive" });
       return;
     }
-    // Open the Teams window straight away so the browser doesn't block it.
-    const teamsWin = shareToTeams ? window.open("about:blank", "_blank") : null;
     setBusy(true);
     try {
       let path = photoPath;
@@ -107,14 +107,13 @@ const LeaderCardBuilder = () => {
         : await supabase.from("leader_cards").insert({ ...row, published: true }).select().single();
       if (res.error) throw res.error;
       const card = res.data as LeaderCard;
-      if (teamsWin) {
-        const url = cardShareUrl(card.id);
-        teamsWin.location.href = teamsShareHref(url, shareMessage(card, url));
-      }
+      setExisting(card);
+      setPhotoPath(path);
+      setPhotoFile(null);
+      setSavedId(card.id);
       toast({ title: "Your card is on the board" });
-      navigate(`/leaders?card=${card.id}`);
+      window.scrollTo({ top: 0, behavior: "smooth" });
     } catch (e: any) {
-      teamsWin?.close();
       toast({ title: "Could not save your card", description: e.message, variant: "destructive" });
     } finally {
       setBusy(false);
@@ -145,6 +144,13 @@ const LeaderCardBuilder = () => {
         <div className="max-w-6xl mx-auto">
           <h1 className="font-display text-3xl md:text-4xl font-bold">{existing ? "Edit your Leaders card" : "Create your Leaders card"}</h1>
           <p className="mt-2 lb-muted">Your card goes on the Big 4 Leaders board for colleagues to see. You can remove it at any time from your profile.</p>
+
+          {savedId && (
+            <div className="mt-6 max-w-2xl">
+              <ShareCardPanel card={{ ...form, audiences, photo: photoPreview, completed }} />
+              <button type="button" className="mt-3 underline underline-offset-4 font-semibold min-h-[44px]" onClick={() => navigate(`/leaders?card=${savedId}`)}>See your card on the board</button>
+            </div>
+          )}
 
           <div className="mt-8 grid gap-8 lg:grid-cols-2 items-start">
             <form className="space-y-5" onSubmit={(e) => e.preventDefault()}>
@@ -206,18 +212,13 @@ const LeaderCardBuilder = () => {
               </div>
 
               <div className="flex flex-wrap gap-3 pt-2">
-                <button type="button" className="lb-btn" disabled={busy} onClick={() => save(true)}>Share to Go Digital</button>
-                <button type="button" className="lb-btn lb-btn--ghost" disabled={busy} onClick={() => save(false)}>Add to the board only</button>
+                <button type="button" className="lb-btn" disabled={busy} onClick={save}>Add to the board</button>
               </div>
-              <p className="text-xs lb-muted">Share to Go Digital opens Microsoft Teams with a message ready. You choose the channel and press send yourself.</p>
             </form>
 
             <div className="lg:sticky lg:top-24">
               <p className="text-sm font-semibold mb-2">Live preview</p>
               <CardPreview {...form} audiences={audiences} photo={photoPreview} completed={completed} />
-              <div className="mt-4">
-                <DownloadCardButton card={{ ...form, audiences, photo: photoPreview, completed }} />
-              </div>
             </div>
           </div>
         </div>

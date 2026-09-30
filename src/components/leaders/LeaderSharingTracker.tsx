@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 import { LEADER_TOOLS, LeaderShare, LeaderToolKey } from "@/lib/leaders";
 import { Floppy } from "./LeaderPieces";
+import { MyCardShareButton } from "@/components/leaders/ShareCardPanel";
 import CelebrationModal from "./CelebrationModal";
 
 // Existing college Padlets (restored from the previous Leader panel).
@@ -138,9 +139,12 @@ const LeaderSharingTracker = ({ email }: { email: string }) => {
       )}
 
       {savedCount >= 6 && (
-        <button type="button" className="lb-btn mt-6" onClick={() => navigate("/leaders/card")}>
-          Create or edit your Leaders card
-        </button>
+        <div className="mt-6 flex flex-wrap gap-3">
+          <button type="button" className="lb-btn" onClick={() => navigate("/leaders/card")}>
+            Create or edit your Leaders card
+          </button>
+          <MyCardShareButton email={email} />
+        </div>
       )}
 
       {celebrate && (
