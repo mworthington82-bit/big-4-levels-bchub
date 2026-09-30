@@ -81,11 +81,11 @@ const LeadersBoard = () => {
   return (
     <AppShell>
       <div className="lb-page min-h-full">
-        <section className="lb-panel lb-hero px-4 py-12 md:py-16">
-          <div className="max-w-6xl mx-auto">
-            <p className="lb-mono text-xs font-bold" style={{ color: "hsl(var(--lb-orange))" }}>THE BIG 4 · LEVEL UP</p>
-            <h1 className="mt-2 font-display text-4xl md:text-6xl font-bold">Our Big 4 Leaders</h1>
-            <p className="mt-4 max-w-3xl text-lg leading-relaxed opacity-90">
+        <section className="lb-panel lb-hero px-4 py-12 md:py-16" aria-labelledby="leaders-heading">
+          <div className="lb-hero__content max-w-6xl mx-auto">
+            <p className="lb-mono lb-hero__eyebrow text-xs font-bold">THE BIG 4 · LEVEL UP</p>
+            <h1 id="leaders-heading" className="mt-2 font-display text-4xl md:text-6xl font-bold">Our Big 4 Leaders</h1>
+            <p className="mt-4 max-w-3xl text-lg leading-relaxed">
               Everyone here has finished the whole Big 4 journey, all four tools and the Immersive Room. Then they did the part nobody has to do: they shared what worked, so the rest of us can use it.
             </p>
             <p className="mt-3 max-w-3xl text-base opacity-90">
