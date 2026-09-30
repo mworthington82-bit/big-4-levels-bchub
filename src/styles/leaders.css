@@ -118,3 +118,32 @@ a.lb-floppy:focus-visible { outline: 3px solid hsl(var(--lb-cream)); outline-off
 .lb-dialog { border: 6px solid hsl(var(--lb-deep)); background: hsl(var(--lb-cream)); border-radius: 6px; box-shadow: 6px 6px 0 hsl(var(--lb-ink)); }
 .lb-dialog__bar { background: hsl(var(--lb-deep)); color: hsl(var(--lb-paper)); display: flex; align-items: center; justify-content: space-between; padding: 4px 4px 8px 8px; }
 .lb-dialog__close { width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; background: hsl(var(--lb-cream)); color: hsl(var(--lb-ink)); border-radius: 2px; font-weight: 700; }
+
+/* Celebratory card additions */
+.lb-level-title { color: hsl(var(--lb-orange)); font-weight: 800; font-size: 1.05rem; letter-spacing: .02em; line-height: 1.1; }
+.lb-level-title--onlight { color: hsl(var(--lb-deep)); }
+.lb-complete { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.lb-complete__row { display: inline-flex; gap: 4px; }
+.lb-complete__disk { width: 22px !important; height: 22px !important; pointer-events: none; }
+.lb-complete__disk .lb-floppy__img { width: 100%; height: 100%; object-fit: contain; }
+.lb-complete__text { font-size: 11px; font-weight: 700; letter-spacing: .18em; }
+.lb-complete--large { justify-content: center; gap: 22px; }
+.lb-complete--large .lb-complete__row { gap: 12px; }
+.lb-complete--large .lb-complete__disk { width: 58px !important; height: 58px !important; }
+.lb-complete--large .lb-complete__text { font-size: 22px; letter-spacing: .28em; color: hsl(var(--lb-cream)); }
+
+/* Download layout (off-screen) */
+.lb-dl-stage { position: fixed; left: -20000px; top: 0; pointer-events: none; }
+.lb-dl { width: 1080px; height: 1350px; background: hsl(var(--lb-panel)); color: hsl(var(--lb-cream)); padding: 28px; box-sizing: border-box; font-family: "DM Sans", sans-serif; }
+.lb-dl__inner { height: 100%; border: 4px dashed hsl(var(--lb-orange)); border-radius: 18px; padding: 44px 64px 36px; display: flex; flex-direction: column; align-items: center; text-align: center; box-sizing: border-box; }
+.lb-dl__wordmark { font-size: 18px; letter-spacing: .3em; font-weight: 700; opacity: .85; }
+.lb-dl__level { margin-top: 14px; font-family: "Fraunces", serif; font-weight: 900; font-size: 76px; line-height: 1; color: hsl(var(--lb-orange)); letter-spacing: .02em; }
+.lb-dl__avatar { margin-top: 26px; width: 150px; height: 150px; border-radius: 50%; object-fit: cover; background: hsl(var(--lb-cream)); color: hsl(var(--lb-ink)); display: flex; align-items: center; justify-content: center; font-family: "Fraunces", serif; font-weight: 700; font-size: 56px; border: 4px dashed hsl(var(--lb-orange)); flex-shrink: 0; }
+.lb-dl__name { margin-top: 18px; font-family: "Fraunces", serif; font-weight: 700; font-size: 54px; line-height: 1.05; }
+.lb-dl__dept { margin-top: 6px; font-size: 26px; opacity: .9; }
+.lb-dl__date { margin-top: 8px; font-size: 18px; letter-spacing: .12em; opacity: .85; }
+.lb-dl__rule { width: 100%; border: 0; border-top: 3px dashed hsl(var(--lb-cream) / .45); margin: 24px 0; }
+.lb-dl__crt { width: 620px; }
+.lb-dl__chips { margin-top: 18px; display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+.lb-dl__chips .lb-chip { font-size: 18px; padding: 6px 14px; }
+.lb-dl__url { margin-top: auto; padding-top: 20px; font-size: 20px; letter-spacing: .14em; opacity: .9; }

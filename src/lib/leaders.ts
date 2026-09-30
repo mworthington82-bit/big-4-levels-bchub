@@ -76,3 +76,25 @@ export const getSessionEmail = async () => {
   const { data } = await supabase.auth.getSession();
   return data.session?.user.email?.toLowerCase() ?? null;
 };
+
+/** "Completed Month Year" from when the sixth share was declared (falls back to the given date). */
+export const completedLabel = (iso?: string | null) =>
+  iso ? `Completed ${new Date(iso).toLocaleDateString("en-GB", { month: "long", year: "numeric" })}` : "";
+
+/** Map of lower-case email -> declared_at of their latest (sixth) approved share. */
+export const fetchCompletionDates = async (emails: string[]): Promise<Record<string, string>> => {
+  const list = Array.from(new Set(emails.filter(Boolean).map((e) => e.toLowerCase())));
+  if (!list.length) return {};
+  const { data } = await supabase.from("leader_shares").select("staff_email, declared_at").eq("approved", true).in("staff_email", list);
+  const out: Record<string, string> = {};
+  (data ?? []).forEach((r: any) => {
+    const k = String(r.staff_email).toLowerCase();
+    if (!out[k] || r.declared_at > out[k]) out[k] = r.declared_at;
+  });
+  return out;
+};
+
+export const cardFilename = (name: string) => {
+  const parts = name.trim().toLowerCase().replace(/[^a-z\s-]/g, "").split(/\s+/).filter(Boolean);
+  return `big4-leader-${[parts[0] ?? "leader", parts.length > 1 ? parts[parts.length - 1] : ""].filter(Boolean).join("-")}.png`;
+};

@@ -5,8 +5,8 @@ import AppShell from "@/components/AppShell";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 import { usePageTitle } from "@/lib/usePageTitle";
-import { AUDIENCES, BOARD_URL_TEXT, LEADER_TOOLS, LeaderCard, getSessionEmail, signPhotos } from "@/lib/leaders";
-import { Avatar, CrtMonitor } from "@/components/leaders/LeaderPieces";
+import { AUDIENCES, BOARD_URL_TEXT, LEADER_TOOLS, LeaderCard, getSessionEmail, signPhotos, completedLabel, fetchCompletionDates } from "@/lib/leaders";
+import { Avatar, CrtMonitor, CompletionMark, DownloadCardButton } from "@/components/leaders/LeaderPieces";
 
 type Reaction = { card_id: string; staff_email: string };
 
@@ -25,6 +25,7 @@ const LeadersBoard = () => {
   const [cards, setCards] = useState<LeaderCard[]>([]);
   const [reactions, setReactions] = useState<Reaction[]>([]);
   const [photos, setPhotos] = useState<Record<string, string>>({});
+  const [done, setDone] = useState<Record<string, string>>({});
   const [me, setMe] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [tool, setTool] = useState("all");
@@ -42,7 +43,9 @@ const LeadersBoard = () => {
       const list = (c ?? []) as LeaderCard[];
       setCards(list);
       setReactions((r ?? []) as Reaction[]);
-      setPhotos(await signPhotos(list.map((x) => x.photo_url!).filter(Boolean)));
+      const [ph, dt] = await Promise.all([signPhotos(list.map((x) => x.photo_url!).filter(Boolean)), fetchCompletionDates(list.map((x) => x.staff_email))]);
+      setPhotos(ph);
+      setDone(dt);
       setLoading(false);
     })();
   }, []);
@@ -119,16 +122,22 @@ const LeadersBoard = () => {
             <ul className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
               {shown.map((c) => {
                 const on = mine(c.id);
+                const completed = done[c.staff_email.toLowerCase()] ?? c.created_at;
+                const photo = c.photo_url ? photos[c.photo_url] : null;
+                const isMine = !!me && c.staff_email.toLowerCase() === me;
                 return (
                   <li key={c.id} id={`card-${c.id}`} className={`rounded-lg p-3 ${focusId === c.id ? "ring-4 ring-[hsl(var(--lb-orange))]" : ""}`}>
                     <CrtMonitor tool={c.tool} intent={c.intent} implementation={c.implementation} impact={c.impact} />
                     <div className="mt-4 flex items-center gap-3">
-                      <Avatar name={c.name} photo={c.photo_url ? photos[c.photo_url] : null} />
+                      <Avatar name={c.name} photo={photo} />
                       <div className="min-w-0">
+                        <p className="lb-level-title lb-level-title--onlight">Big 4 Leader</p>
                         <p className="font-display font-bold text-lg leading-tight">{c.name}</p>
                         {c.department && <p className="text-sm lb-muted">{c.department}</p>}
+                        <p className="lb-mono text-[11px] lb-muted">{completedLabel(completed)}</p>
                       </div>
                     </div>
+                    <div className="mt-3" style={{ color: "hsl(var(--lb-thread))" }}><CompletionMark /></div>
                     {c.audiences?.length > 0 && (
                       <div className="mt-2 flex flex-wrap gap-1.5" style={{ color: "hsl(var(--lb-thread))" }}>
                         {c.audiences.map((a) => <span key={a} className="lb-chip">{a}</span>)}
@@ -141,6 +150,11 @@ const LeadersBoard = () => {
                       </button>
                       <span className="text-sm lb-muted" aria-live="polite">{countFor(c.id)} will try it</span>
                     </div>
+                    {isMine && (
+                      <div className="mt-3">
+                        <DownloadCardButton card={{ name: c.name, department: c.department ?? "", tool: c.tool, intent: c.intent, implementation: c.implementation, impact: c.impact, audiences: c.audiences ?? [], photo, completed }} />
+                      </div>
+                    )}
                   </li>
                 );
               })}
