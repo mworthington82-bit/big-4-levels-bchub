@@ -117,6 +117,18 @@ export const CardPreview = (p: {
   </div>
 );
 
+/** Drawn fabric floppy (inline SVG) in the orange SAVED state — safe for PNG export. */
+export const DrawnFloppy = ({ label, size = 58 }: { label: string; size?: number }) => (
+  <svg width={size} height={size} viewBox="0 0 64 64" aria-hidden className="lb-drawn-floppy">
+    <path d="M4 4h46l10 10v46H4z" fill="hsl(var(--lb-orange))" stroke="hsl(var(--lb-deep))" strokeWidth="2" />
+    <path d="M8 8h40.5l7.5 7.5V56H8z" fill="none" stroke="hsl(var(--lb-cream))" strokeWidth="1.6" strokeDasharray="3 2.5" />
+    <rect x="18" y="8" width="26" height="16" rx="1.5" fill="hsl(var(--lb-deep))" />
+    <rect x="34" y="11" width="6" height="10" rx="1" fill="hsl(var(--lb-thread))" />
+    <rect x="13" y="32" width="38" height="20" rx="2" fill="hsl(var(--lb-cream))" />
+    <text x="32" y="45" textAnchor="middle" fontSize="7.5" fontWeight="700" fontFamily="DM Sans, sans-serif" fill="hsl(var(--lb-ink))">{label}</text>
+  </svg>
+);
+
 /** Six filled floppies with ALL SIX SHARED — proof of the whole journey. */
 export const CompletionMark = ({ large }: { large?: boolean }) => (
   <div className={`lb-complete ${large ? "lb-complete--large" : ""}`} role="img" aria-label="All six Padlets shared">
@@ -165,7 +177,12 @@ export const LeaderDownloadCard = forwardRef<HTMLDivElement, DownloadCardProps>(
         <div className="lb-dl__chips">{p.audiences.map((a) => <span key={a} className="lb-chip">{a}</span>)}</div>
       )}
       <hr className="lb-dl__rule" />
-      <CompletionMark large />
+      <div className="lb-complete lb-complete--large" role="img" aria-label="All six Padlets shared">
+        <span className="lb-complete__row">
+          {LEADER_TOOLS.map((t) => <DrawnFloppy key={t.key} label={toolShort(t.key).slice(0, 7)} size={72} />)}
+        </span>
+        <span className="lb-mono lb-complete__text">ALL SIX SHARED</span>
+      </div>
       <p className="lb-mono lb-dl__url">{BOARD_URL_TEXT}</p>
     </div>
   </div>

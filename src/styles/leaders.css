@@ -169,3 +169,13 @@ a.lb-floppy:focus-visible { outline: 3px solid hsl(var(--lb-cream)); outline-off
 .lb-dl__chips { margin-top: 18px; display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
 .lb-dl__chips .lb-chip { font-size: 18px; padding: 6px 14px; }
 .lb-dl__url { margin-top: auto; padding-top: 20px; font-size: 20px; letter-spacing: .14em; opacity: .9; }
+
+/* Download card rebalance: no dead space, left-aligned monitor copy, monitor depth */
+.lb-dl__inner { justify-content: space-between; }
+.lb-dl__url { margin-top: 0; padding-top: 0; }
+.lb-dl__rule { margin: 18px 0; }
+.lb-dl .lb-crt__screen { text-align: left; }
+.lb-dl .lb-crt__tag { text-align: center; }
+.lb-dl .lb-crt__body { box-shadow: 0 0 0 10px hsl(var(--lb-deep)), 0 18px 34px hsl(0 0% 0% / .45); }
+.lb-dl .lb-crt__screen { box-shadow: inset 0 0 0 6px hsl(var(--lb-thread) / .7), inset 0 4px 14px hsl(0 0% 0% / .35); }
+.lb-dl .lb-crt__stand { margin-top: 10px; }
