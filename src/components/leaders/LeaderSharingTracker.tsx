@@ -6,6 +6,16 @@ import { LEADER_TOOLS, LeaderShare, LeaderToolKey } from "@/lib/leaders";
 import { Floppy } from "./LeaderPieces";
 import CelebrationModal from "./CelebrationModal";
 
+// Existing college Padlets (restored from the previous Leader panel).
+const PADLET_URLS: Record<LeaderToolKey, string> = {
+  teams: "https://padlet.com/m_worthington1/ms-teams-microsoft-forms-leader-level-sharing-best-practice-gks2w9j29p4m30np",
+  forms: "https://padlet.com/m_worthington1/ms-teams-microsoft-forms-leader-level-sharing-best-practice-gks2w9j29p4m30np",
+  canva: "https://padlet.com/m_worthington1/canva-leader-level-sharing-best-practice-hedtqgi5d39rabrd",
+  edpuzzle: "https://padlet.com/m_worthington1/edpuzzle-leader-level-sharing-best-practice-spyzi6v7k5iepolu",
+  copilot: "https://padlet.com/m_worthington1/microsoft-copilot-leader-level-sharing-best-practice-vbbh9q3jed0zj0tf",
+  immersive: "https://padlet.com/m_worthington1/immersive-learning-leader-level-sharing-best-practice-h4686ht9wq9dpui7",
+};
+
 const flagKey = (email: string) => `b4-leader-celebrated:${email.toLowerCase()}`;
 
 const LeaderSharingTracker = ({ email }: { email: string }) => {
@@ -81,19 +91,29 @@ const LeaderSharingTracker = ({ email }: { email: string }) => {
         <p className="lb-mono font-bold text-lg" aria-live="polite">{savedCount} / 6 SAVED</p>
       </div>
 
-      <div className="mt-6 grid grid-cols-3 md:grid-cols-6 gap-3 md:gap-4">
-        {LEADER_TOOLS.map((t) => (
-          <Floppy
-            key={t.key}
-            name={t.short}
-            saved={!!byTool.get(t.key)?.approved}
-            selected={selected === t.key}
-            onClick={() => setSelected(t.key)}
-          />
-        ))}
-      </div>
+      <ul className="mt-6 grid grid-cols-3 md:grid-cols-6 gap-3 md:gap-4">
+        {LEADER_TOOLS.map((t) => {
+          const share = byTool.get(t.key);
+          return (
+            <li key={t.key} className="flex flex-col items-center gap-1">
+              <Floppy name={t.label} saved={!!share?.approved} href={PADLET_URLS[t.key]} />
+              {share?.approved && share.padlet_url && (
+                <a href={share.padlet_url} target="_blank" rel="noopener noreferrer" className="min-h-[44px] inline-flex items-center text-sm font-semibold underline underline-offset-4">
+                  View your post<span className="sr-only"> on {t.label}</span>
+                </a>
+              )}
+            </li>
+          );
+        })}
+      </ul>
 
       <form onSubmit={submit} className="mt-6 grid gap-2 md:grid-cols-[1fr_auto] md:items-end">
+        <div className="md:col-span-2">
+          <label htmlFor="padlet-tool" className="block text-sm font-semibold mb-1">Which Padlet did you post on?</label>
+          <select id="padlet-tool" className="lb-input md:max-w-sm" value={selected} onChange={(e) => setSelected(e.target.value as LeaderToolKey)}>
+            {LEADER_TOOLS.map((t) => <option key={t.key} value={t.key}>{t.label}</option>)}
+          </select>
+        </div>
         <div>
           <label htmlFor="padlet-url" className="block text-sm font-semibold mb-1">
             Paste the link to your {toolName} Padlet post
