@@ -4,6 +4,7 @@
 @import './styles/threadworks-cloth.css';
 @import './styles/threadworks-tag.css';
 @import './styles/level-line.css';
+@import './styles/leaders.css';
 
 @tailwind base;
 @tailwind components;
