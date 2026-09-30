@@ -21,6 +21,28 @@
   position: relative;
 }
 .lb-stitch-inset { outline: 2px dashed hsl(var(--lb-orange) / 0.85); outline-offset: -10px; }
+
+/* Homepage: "See our Big 4 Leaders" stitched band — its own thing, not a stacked button. */
+.home-leaders-strip {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 16px;
+  border: 3px dashed hsl(var(--lb-orange) / 0.75);
+  border-radius: 8px;
+  background: hsl(var(--lb-panel) / 0.9);
+  text-decoration: none;
+  transition: border-color 200ms ease;
+}
+.home-leaders-strip:hover { border-color: hsl(var(--lb-orange)); }
+.home-leaders-strip:focus-visible { outline: 3px solid hsl(var(--lb-cream)); outline-offset: 2px; }
+.home-leaders-strip__icon { flex-shrink: 0; color: hsl(var(--lb-orange)); }
+.home-leaders-strip__arrow {
+  flex-shrink: 0;
+  color: hsl(var(--lb-cream) / 0.85);
+  transition: transform 200ms ease;
+}
+.home-leaders-strip:hover .home-leaders-strip__arrow { transform: translateX(3px); }
 .lb-hero {
   border-bottom: 3px dashed hsl(var(--lb-orange));
   min-height: 320px;

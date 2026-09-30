@@ -51,6 +51,15 @@ const toolLevelInfo: Record<string, { explorer: string; practitioner: string; le
   },
 };
 
+/** Small orange fabric CRT monitor icon for the Leaders band on the homepage. */
+const LeadersStripIcon = () => (
+  <svg viewBox="0 0 24 24" className="home-leaders-strip__icon h-8 w-8" aria-hidden="true" fill="none">
+    <rect x="2.5" y="4" width="19" height="13" rx="2.5" fill="currentColor" />
+    <rect x="4.8" y="6.3" width="14.4" height="8.4" rx="1.2" fill="hsl(var(--lb-ink))" opacity="0.85" />
+    <path d="M12 17v2.5M8.5 19.5h7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+  </svg>
+);
+
 const isAllowedLoginEmail = (emailAddress: string) =>
   emailAddress.endsWith("@bradfordcollege.ac.uk");
 
