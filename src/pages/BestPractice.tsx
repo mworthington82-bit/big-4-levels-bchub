@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import AppShell from "@/components/AppShell";
 import { usePageTitle } from "@/lib/usePageTitle";
 import { IconExternalLink } from "@tabler/icons-react";
@@ -30,7 +31,13 @@ const BestPractice = () => {
               Best Practice
             </h1>
             <p className="text-b4-muted text-base md:text-lg">
-              Ideas and inspiration shared by our Big 4 Leaders — open to all staff.
+              The six Padlets, where every post staff have shared lives — open to all staff.
+            </p>
+            <p className="mt-3 text-base">
+              Want the highlights?{" "}
+              <Link to="/leaders" className="font-semibold underline underline-offset-4 inline-flex min-h-[44px] items-center">
+                See what our Big 4 Leaders recommend
+              </Link>
             </p>
           </header>
 
