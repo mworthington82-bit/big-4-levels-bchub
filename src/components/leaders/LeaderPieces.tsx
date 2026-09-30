@@ -1,43 +1,37 @@
 import { toolShort, BOARD_URL_TEXT } from "@/lib/leaders";
 import { getInitials } from "@/pages/Profile";
 
+import fabricFloppy from "@/assets/art/fabric-floppy.webp";
+
+/** Fabric floppy (same Canva render as the homepage). As a link when href is given. */
 export const Floppy = ({
   name,
   saved,
-  selected,
-  onClick,
+  href,
   mini,
 }: {
   name: string;
   saved: boolean;
-  selected?: boolean;
-  onClick?: () => void;
+  href?: string;
   mini?: boolean;
 }) => {
+  const cls = `lb-floppy ${saved ? "lb-floppy--saved" : "lb-floppy--empty"} ${mini ? "lb-floppy--mini" : ""}`;
   const inner = (
     <>
-      <span className="lb-floppy__shutter" aria-hidden />
+      <img src={fabricFloppy} alt="" className="lb-floppy__img" draggable={false} />
       {!mini && (
         <span className="lb-floppy__label">
           <span className="lb-floppy__name">{name}</span>
           <span className="lb-floppy__state lb-mono">{saved ? "SAVED" : "NOT YET"}</span>
         </span>
       )}
-      {mini && <span className="lb-floppy__label" aria-hidden />}
     </>
   );
-  const cls = `lb-floppy ${saved ? "lb-floppy--saved" : "lb-floppy--empty"} ${mini ? "lb-floppy--mini" : ""}`;
-  if (!onClick) return <div className={cls} aria-hidden={mini || undefined}>{inner}</div>;
+  if (!href) return <div className={cls} aria-hidden={mini || undefined}>{inner}</div>;
   return (
-    <button
-      type="button"
-      className={cls}
-      onClick={onClick}
-      aria-pressed={!!selected}
-      aria-label={`${name}: ${saved ? "saved" : "not yet shared"}. Select to add a link.`}
-    >
+    <a href={href} target="_blank" rel="noopener noreferrer" className={cls} aria-label={`Open the ${name} Padlet (${saved ? "saved" : "not yet shared"}, opens in a new tab)`}>
       {inner}
-    </button>
+    </a>
   );
 };
 
