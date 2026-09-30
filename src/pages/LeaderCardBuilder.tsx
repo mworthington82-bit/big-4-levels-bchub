@@ -8,7 +8,7 @@ import { usePageTitle } from "@/lib/usePageTitle";
 import {
   AUDIENCES, LEADER_TOOLS, LeaderCard, cardShareUrl, shareMessage, signPhotos, teamsShareHref,
 } from "@/lib/leaders";
-import { CardPreview } from "@/components/leaders/LeaderPieces";
+import { CardPreview, DownloadCardButton } from "@/components/leaders/LeaderPieces";
 
 const MAX = 140;
 
@@ -30,15 +30,17 @@ const LeaderCardBuilder = () => {
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
   const [photoFile, setPhotoFile] = useState<File | null>(null);
   const [busy, setBusy] = useState(false);
+  const [completed, setCompleted] = useState<string | null>(null);
 
   useEffect(() => {
     if (!email) return;
     (async () => {
       const [{ data: sh }, { data: card }] = await Promise.all([
-        supabase.from("leader_shares").select("tool").ilike("staff_email", email).eq("approved", true),
+        supabase.from("leader_shares").select("tool, declared_at").ilike("staff_email", email).eq("approved", true),
         supabase.from("leader_cards").select("*").ilike("staff_email", email).maybeSingle(),
       ]);
       setShareCount(new Set((sh ?? []).map((r: any) => r.tool)).size);
+      setCompleted((sh ?? []).reduce((m: string | null, r: any) => (!m || r.declared_at > m ? r.declared_at : m), null));
       if (card) {
         const c = card as LeaderCard;
         setExisting(c);
@@ -212,7 +214,10 @@ const LeaderCardBuilder = () => {
 
             <div className="lg:sticky lg:top-24">
               <p className="text-sm font-semibold mb-2">Live preview</p>
-              <CardPreview {...form} audiences={audiences} photo={photoPreview} />
+              <CardPreview {...form} audiences={audiences} photo={photoPreview} completed={completed} />
+              <div className="mt-4">
+                <DownloadCardButton card={{ ...form, audiences, photo: photoPreview, completed }} />
+              </div>
             </div>
           </div>
         </div>
