@@ -270,10 +270,11 @@ const Landing = () => {
                         </button>
                         <button
                           onClick={() => navigate("/leaders")}
-                          className="inline-flex h-14 items-center justify-center px-8 rounded-[4px] bg-transparent text-white font-bold text-[17px] border-2 border-dashed border-b4-flame hover:bg-white/10 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white w-full pill-95 pill-95--press"
+                          className="inline-flex h-14 items-center justify-center px-8 rounded-[4px] bg-transparent text-white font-bold text-[17px] border-2 border-white/40 hover:bg-white/10 hover:border-white/60 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white w-full pill-95 pill-95--press"
                         >
-                          See our Leaders
+                          See our Big 4 Leaders
                         </button>
+                        <p className="text-sm text-white/80">What worked for colleagues across the college.</p>
                       </>
                     ) : (
                       <button
