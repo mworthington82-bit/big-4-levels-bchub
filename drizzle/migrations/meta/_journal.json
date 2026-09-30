@@ -29,6 +29,13 @@
       "when": 1790691833770,
       "tag": "0003_set_module_progress_marks_signed_off",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1790804819338,
+      "tag": "0004_leaders_board",
+      "breakpoints": true
     }
   ]
 }

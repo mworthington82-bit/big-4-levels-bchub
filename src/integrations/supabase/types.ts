@@ -513,6 +513,80 @@ export type Database = {
         }
         Relationships: []
       }
+      leader_card_reactions: {
+        Row: {
+          card_id: string
+          created_at: string
+          id: string
+          staff_email: string
+        }
+        Insert: {
+          card_id: string
+          created_at?: string
+          id?: string
+          staff_email: string
+        }
+        Update: {
+          card_id?: string
+          created_at?: string
+          id?: string
+          staff_email?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "leader_card_reactions_card_id_fkey"
+            columns: ["card_id"]
+            isOneToOne: false
+            referencedRelation: "leader_cards"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      leader_cards: {
+        Row: {
+          audiences: string[]
+          created_at: string
+          department: string | null
+          id: string
+          impact: string
+          implementation: string
+          intent: string
+          name: string
+          photo_url: string | null
+          published: boolean
+          staff_email: string
+          tool: string
+        }
+        Insert: {
+          audiences?: string[]
+          created_at?: string
+          department?: string | null
+          id?: string
+          impact: string
+          implementation: string
+          intent: string
+          name: string
+          photo_url?: string | null
+          published?: boolean
+          staff_email: string
+          tool: string
+        }
+        Update: {
+          audiences?: string[]
+          created_at?: string
+          department?: string | null
+          id?: string
+          impact?: string
+          implementation?: string
+          intent?: string
+          name?: string
+          photo_url?: string | null
+          published?: boolean
+          staff_email?: string
+          tool?: string
+        }
+        Relationships: []
+      }
       leader_evidence: {
         Row: {
           case_study_how: string | null
@@ -570,6 +644,36 @@ export type Database = {
           updated_at?: string
           user_id?: string
           video_link?: string | null
+        }
+        Relationships: []
+      }
+      leader_shares: {
+        Row: {
+          approved: boolean
+          approved_by: string | null
+          declared_at: string
+          id: string
+          padlet_url: string | null
+          staff_email: string
+          tool: string
+        }
+        Insert: {
+          approved?: boolean
+          approved_by?: string | null
+          declared_at?: string
+          id?: string
+          padlet_url?: string | null
+          staff_email: string
+          tool: string
+        }
+        Update: {
+          approved?: boolean
+          approved_by?: string | null
+          declared_at?: string
+          id?: string
+          padlet_url?: string | null
+          staff_email?: string
+          tool?: string
         }
         Relationships: []
       }
@@ -1404,6 +1508,7 @@ export type Database = {
         }[]
       }
       apply_data_retention: { Args: never; Returns: undefined }
+      approved_share_count: { Args: { _email: string }; Returns: number }
       check_quiz_answer: {
         Args: { _choice: string; _question_id: string }
         Returns: {
