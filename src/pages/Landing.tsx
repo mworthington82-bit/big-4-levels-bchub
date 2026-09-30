@@ -214,14 +214,34 @@ const Landing = () => {
                 <StudentQuoteCarousel className="relative w-full" showCaption={false} />
               </div>
 
-              <div className="w-full max-w-[560px] justify-self-center self-center rounded-3xl bg-white/[0.06] p-7 text-left ring-1 ring-white/10 sm:p-12 min-[1100px]:col-start-2 min-[1100px]:row-start-2 min-[1100px]:justify-self-stretch min-[1100px]:max-w-none animate-fade-in" style={{ animationDelay: "150ms" }}>
+              <div className="w-full max-w-[560px] justify-self-center self-center rounded-3xl bg-white/[0.06] p-6 text-left ring-1 ring-white/10 sm:p-8 min-[1100px]:col-start-2 min-[1100px]:row-start-2 min-[1100px]:justify-self-stretch min-[1100px]:max-w-none animate-fade-in" style={{ animationDelay: "150ms" }}>
                 <h2 className="font-display text-[34px] sm:text-[40px] font-bold leading-[1.1] text-white">Build your digital confidence</h2>
-                <p className="mt-4 text-lg leading-[1.6] text-white/85">
+                <p className="mt-3 text-lg leading-[1.6] text-white/85">
                   Four tools you use every day, learned at your own level, with training sessions and support from the LDI team.
                 </p>
-                <ul className="mt-6 grid grid-cols-2 gap-3">
+
+                {/* Leaders band: its own stitched strip, not another stacked button */}
+                <a
+                  href="/leaders"
+                  onClick={(e) => { e.preventDefault(); navigate("/leaders"); }}
+                  className="home-leaders-strip mt-4"
+                  aria-label="See our Big 4 Leaders: what colleagues recommend"
+                >
+                  <LeadersStripIcon />
+                  <span className="min-w-0 flex-1">
+                    <span className="block font-display text-lg font-bold leading-tight" style={{ color: "hsl(var(--lb-cream))" }}>
+                      See what colleagues recommend
+                    </span>
+                    <span className="mt-0.5 block text-sm text-white/70">
+                      Our Big 4 Leaders share the one thing they'd try.
+                    </span>
+                  </span>
+                  <ArrowRight className="home-leaders-strip__arrow h-5 w-5" aria-hidden="true" />
+                </a>
+
+                <ul className="mt-5 grid grid-cols-2 gap-2.5">
                   {heroApps.map((app) => (
-                    <li key={app.name} className="flex items-center gap-3 rounded-xl border border-white/15 bg-white/[0.04] p-4 text-white">
+                    <li key={app.name} className="flex items-center gap-3 rounded-xl border border-white/15 bg-white/[0.04] p-3 text-white">
                       <img src={app.logo} alt="" className="h-8 w-8 shrink-0 rounded-lg bg-white p-1 object-contain" />
                       <span className="text-[17px] font-semibold leading-tight">{app.name}</span>
                     </li>
@@ -229,7 +249,7 @@ const Landing = () => {
                 </ul>
 
                 {!email && (
-                  <div className="mt-8 flex flex-col gap-4">
+                  <div className="mt-5 flex flex-col gap-3">
                     <button
                       onClick={handleSignIn}
                       disabled={signingIn}
@@ -253,7 +273,7 @@ const Landing = () => {
                 const lower = (email || "").toLowerCase();
                 const fullAccess = !MAINTENANCE_MODE || isAllowedDuringMaintenance(lower);
                 return (
-                  <div className="mt-8 flex flex-col gap-4 animate-fade-in" style={{ animationDelay: '300ms' }}>
+                  <div className="mt-5 flex flex-col gap-3 animate-fade-in" style={{ animationDelay: '300ms' }}>
                     {fullAccess ? (
                       <>
                         <button
@@ -268,13 +288,6 @@ const Landing = () => {
                         >
                           Open Activity Planner
                         </button>
-                        <button
-                          onClick={() => navigate("/leaders")}
-                          className="inline-flex h-14 items-center justify-center px-8 rounded-[4px] bg-transparent text-white font-bold text-[17px] border-2 border-white/40 hover:bg-white/10 hover:border-white/60 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white w-full pill-95 pill-95--press"
-                        >
-                          See our Big 4 Leaders
-                        </button>
-                        <p className="text-sm text-white/80">What worked for colleagues across the college.</p>
                       </>
                     ) : (
                       <button
