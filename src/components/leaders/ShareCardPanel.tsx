@@ -6,7 +6,7 @@ import { DownloadCardButton, type DownloadCardProps } from "@/components/leaders
 import { GO_DIGITAL_URL, LeaderCard, fetchCompletionDates, signPhotos, toolLabel } from "@/lib/leaders";
 
 export const suggestedMessage = (tool: string) =>
-  `I've finished my Big 4 journey and I'm now a Big 4 Leader. Here's the one thing I'd try — ${toolLabel(tool)}. Find the rest at bradfordbig4.online/leaders`;
+  `I've finished my Big 4 journey and I'm now a Big 4 Leader. Here's the one thing I'd try — ${toolLabel(tool)}. Find out more at bradfordbig4.online`;
 
 /** "Your card is ready" — download the PNG, open Go Digital, copy a suggested message. */
 export const ShareCardPanel = ({ card }: { card: DownloadCardProps }) => {
