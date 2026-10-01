@@ -48,7 +48,7 @@ const STATUS_BADGE: Record<string, { cls: string; label: string; tick: boolean }
   evidenced: { cls: "bg-white text-[#2A2118]", label: "Done", tick: true },
   completed: { cls: "bg-white text-[#2A2118]", label: "Done", tick: true },
   attended_pending: { cls: "bg-[#FFF1D6] text-[#7A4A00]", label: "Quiz to do", tick: false },
-  review_pending: { cls: "bg-white text-[#2A2118]", label: "Waiting for review", tick: false },
+  review_pending: { cls: "bg-white text-[#2A2118]", label: "Awaiting sign-off", tick: false },
   attendance_claimed: { cls: "bg-white text-[#2A2118]", label: "Checking LDI records", tick: false },
 };
 
@@ -62,7 +62,7 @@ const DESC_OVERRIDE: Record<string, string> = {
   evidenced: "Covered by your self-assessment",
   completed: "Done",
   attended_pending: "You came to the session. The quiz is still to do.",
-  review_pending: "Sent for review. You'll be emailed when it's signed off.",
+  review_pending: "Sent to the Digital team. They'll check all activities are complete and sign it off.",
   attendance_claimed: "Submitted to check LDI records. You'll be emailed when it's signed off.",
 };
 

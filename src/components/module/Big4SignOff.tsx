@@ -37,7 +37,8 @@ const Big4SignOff = ({ moduleId, onBack }: Props) => {
 
   const quizDone = !!justDone.quiz || !!status?.quizDone.includes(moduleId);
   const reflectionDone = !!justDone.reflection || !!status?.reflectionDone.includes(moduleId);
-  const signedOff = evidenced === true || (quizDone && reflectionDone);
+  const signedOff = evidenced === true;
+  const awaiting = !signedOff && quizDone && reflectionDone;
 
   const afterSubmit = async (part: "quiz" | "reflection") => {
     setJustDone((d) => ({ ...d, [part]: true }));
@@ -76,6 +77,26 @@ const Big4SignOff = ({ moduleId, onBack }: Props) => {
     );
   }
 
+  if (awaiting) {
+    return (
+      <div className="text-center py-6">
+        <div className="mx-auto mb-4 w-16 h-16 rounded-full bg-b4-flame-soft flex items-center justify-center">
+          <IconCheck size={36} stroke={2.5} className="text-b4-strong" aria-hidden />
+        </div>
+        <h3 className="font-bold text-b4-strong text-2xl mb-2">Sent for sign-off</h3>
+        <p className="text-b4-muted mb-6 max-w-xl mx-auto">
+          Thank you. Your knowledge check and reflection have been sent to the Digital team, who will check all activities are complete before signing this module off. It will show as "Awaiting sign-off" on My Journey until then.
+        </p>
+        <button
+          onClick={onBack}
+          className="inline-flex items-center gap-2 min-h-[44px] bg-[#185FA5] hover:bg-[#13497F] text-white font-semibold px-6 py-3 rounded-[4px] focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#185FA5]"
+        >
+          Back to My Journey <IconArrowRight size={18} stroke={2} aria-hidden />
+        </button>
+      </div>
+    );
+  }
+
   const Tile = ({ label, done, onClick }: { label: string; done: boolean; onClick: () => void }) => (
     <button
       onClick={onClick}
@@ -94,7 +115,8 @@ const Big4SignOff = ({ moduleId, onBack }: Props) => {
 
   return (
     <div className="space-y-5">
-      <p className="font-semibold text-b4-strong text-lg">Complete both to sign off this module.</p>
+      <p className="font-semibold text-b4-strong text-lg">Complete both the knowledge check and the reflection to finish this module.</p>
+      <p className="text-sm text-b4-muted">Once both are done, they're sent to the Digital team to check all activities are complete and sign the module off.</p>
       {error && (
         <p className="rounded-lg border-2 border-[#D97706] bg-b4-flame-soft p-3 text-sm text-b4-strong">{error}</p>
       )}

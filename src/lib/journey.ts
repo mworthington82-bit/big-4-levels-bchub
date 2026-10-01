@@ -4,7 +4,7 @@ import type { StaffProfile } from "@/hooks/useStaffProfile";
  * A task's status. Plain-English labels live in STATUS_LABEL below.
  * - todo              → "Not started"
  * - attended_pending  → "Quiz to do"      (came to the session, knowledge check outstanding)
- * - review_pending    → "Waiting for review" (online quiz done, sent for review)
+ * - review_pending    → "Awaiting sign-off" (online quiz done, sent for review)
  * - attendance_claimed → "Checking LDI records" (learner says they attended; LDI checks the register)
  * - evidenced         → "Done"            (already covered by the self-assessment)
  * - completed         → "Done"
@@ -15,7 +15,7 @@ export type LevelKey = "Explorer" | "Practitioner" | "Leader";
 export const STATUS_LABEL: Record<ModuleStatus, string> = {
   todo: "Not started",
   attended_pending: "Quiz to do",
-  review_pending: "Waiting for review",
+  review_pending: "Awaiting sign-off",
   attendance_claimed: "Checking LDI records",
   evidenced: "Done",
   completed: "Done",
