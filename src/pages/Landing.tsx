@@ -232,7 +232,7 @@ const Landing = () => {
                 <div className="mt-4 flex flex-col gap-3 animate-fade-in" role="status">
                   <p className="text-lg font-bold text-white">You're signed in. We're not quite ready for you yet.</p>
                   <p className="text-base leading-relaxed text-white/85">
-                    <strong className="text-white">Not done the self-assessment yet?</strong> Start it below. It takes about 10 minutes and is how we build your learning package.
+                    <strong className="text-white">Not done the self-assessment yet?</strong> Start it below. It is how we build your learning package.
                   </p>
                   <a
                     href="https://bradfordcollege-handsmisconducttraining.my.canva.site/final-24-03the-big-4-tools"
