@@ -1,7 +1,7 @@
 import { z } from "npm:zod@3";
 import { BIG4_KEY } from "../_shared/big4Key.ts";
 import {
-  corsFor, identify, json, toFlow, fetchStatus, postReflection, signOffIfComplete, FRIENDLY_ERROR,
+  corsFor, identify, json, toFlow, fetchStatus, postReflection, signOffIfComplete, markAwaiting, FRIENDLY_ERROR,
 } from "../_shared/big4.ts";
 
 const STAGES = ["launch", "establish", "apply", "demonstrate", "not_sure"] as const;
@@ -76,6 +76,7 @@ Deno.serve(async (req) => {
         });
       }
       const after = await signOffIfComplete(me.email, b.moduleId);
+      if (!after.signedOff) await markAwaiting(me.email, b.moduleId);
       return json(req, { ok: true, signedOff: after.signedOff });
     } catch {
       console.error("[big4-submit-reflection] flow failed");
