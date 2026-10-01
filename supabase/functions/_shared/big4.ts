@@ -82,7 +82,14 @@ export async function postReflection(payload: unknown) {
 }
 
 export async function fetchStatus(email: string): Promise<{ quizDone: string[]; reflectionDone: string[] }> {
-  const res = await postFlow("POWER_AUTOMATE_STATUS_FLOW_URL", { email });
+  let res: Response;
+  try {
+    res = await postFlow("POWER_AUTOMATE_STATUS_FLOW_URL", { email });
+  } catch {
+    // Status flow down: don't block staff; submissions still go through.
+    console.error("[big4] status flow unavailable");
+    return { quizDone: [], reflectionDone: [] };
+  }
   const body = await res.json().catch(() => ({}));
   const map = (arr: unknown) =>
     Array.from(new Set((Array.isArray(arr) ? arr : []).map((x: any) => fromFlow(x?.module, x?.level)).filter(Boolean) as string[]));

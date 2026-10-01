@@ -77,7 +77,7 @@ const FromTheClassroom = () => {
         ))}
       </div>
       <button
-        onClick={() => navigate("/leader?from=resources")}
+        onClick={() => navigate("/best-practice")}
         className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#185FA5] hover:underline"
       >
         See all examples <IconArrowRight size={14} stroke={2} />

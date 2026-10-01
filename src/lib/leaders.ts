@@ -23,7 +23,7 @@ export const AUDIENCES = [
   "Stretch and challenge",
 ] as const;
 
-export const BOARD_URL_TEXT = "bradfordbig4.online/leaders";
+export const BOARD_URL_TEXT = "bradfordbig4.online";
 
 export interface LeaderShare {
   id: string;

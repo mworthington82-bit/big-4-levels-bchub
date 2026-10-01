@@ -100,7 +100,7 @@ const Big4SignOff = ({ moduleId, onBack }: Props) => {
   const Tile = ({ label, done, onClick }: { label: string; done: boolean; onClick: () => void }) => (
     <button
       onClick={onClick}
-      disabled={done || !!error}
+      disabled={done}
       aria-label={`${label}: ${done ? "done" : "not started"}`}
       className={`flex-1 min-h-[120px] rounded-xl border-2 p-5 text-left transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#185FA5] ${
         done ? "border-[#7BA84D] bg-[#EAF3DE] cursor-default" : "border-b4-line bg-card hover:border-[#185FA5] hover:bg-[#F5F9FE]"
