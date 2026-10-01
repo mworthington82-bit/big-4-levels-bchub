@@ -120,27 +120,6 @@ const Landing = () => {
     };
   }, [email, navigate, toast]);
 
-  // Gate: if signed-in user has no matching staff_profiles row (not uploaded via CSV),
-  // sign them out — they're not on our system.
-  useEffect(() => {
-    if (!email || profileLoading) return;
-    if (profile) return;
-    let cancelled = false;
-    (async () => {
-      await supabase.auth.signOut();
-      if (cancelled) return;
-      toast({
-        title: "We can't find your self-assessment",
-        description:
-          "It looks like you haven't completed the Big 4 self-assessment yet. Please complete it using the 'Take the Self-Assessment' button, and then sign in again once your results have been processed.",
-        variant: "destructive",
-      });
-    })();
-    return () => {
-      cancelled = true;
-    };
-  }, [email, profile, profileLoading, toast]);
-
   const handleAlreadyAssessed = () => {
     if (profileLoading) return;
     if (!profile || !profile.assigned_level) {
@@ -248,6 +227,26 @@ const Landing = () => {
                     <p className="text-sm text-white/80">Use your Bradford College Microsoft account. New here? Start with the self-assessment.</p>
                   </div>
                 )}
+
+              {email && !profile && !profileLoading && (
+                <div className="mt-4 flex flex-col gap-3 animate-fade-in" role="status">
+                  <p className="text-lg font-bold text-white">You're signed in. We're not quite ready for you yet.</p>
+                  <p className="text-base leading-relaxed text-white/85">
+                    <strong className="text-white">Not done the self-assessment yet?</strong> Start it below. It is how we build your learning package.
+                  </p>
+                  <a
+                    href="https://bradfordcollege-handsmisconducttraining.my.canva.site/final-24-03the-big-4-tools"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex h-12 w-full items-center justify-center rounded-[4px] bg-b4-flame px-8 text-[17px] font-bold text-b4-on-flame transition-colors hover:bg-b4-flame/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white pill-95 pill-95--press"
+                  >
+                    Take the self-assessment
+                  </a>
+                  <p className="text-base leading-relaxed text-white/85">
+                    <strong className="text-white">Already done it?</strong> Your answers are being reviewed so we can create a bespoke package for you. We'll email you as soon as your package has been designed.
+                  </p>
+                </div>
+              )}
 
               {email && profile && (() => {
                 const lower = (email || "").toLowerCase();
