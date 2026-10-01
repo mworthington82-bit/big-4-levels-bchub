@@ -5,7 +5,7 @@
 // NOTE: The previous client-side admin bypass password ("1610") has been
 // removed. Admin access is now validated server-side via the user's
 // authenticated session (see RequireAdmin / public.is_admin()).
-export const MAINTENANCE_MODE = true;
+export const MAINTENANCE_MODE = false;
 
 import { DEMO_EMAILS } from "@/lib/demoAccess";
 
