@@ -103,5 +103,17 @@ export async function signOffIfComplete(email: string, moduleId: string) {
   return { ...status, signedOff };
 }
 
+/** Both parts sent but not yet signed off: queue for the Digital team ("Awaiting sign-off"). */
+export async function markAwaiting(email: string, moduleId: string) {
+  const db = admin();
+  const { data } = await db.from("module_completions").select("completed_via")
+    .eq("staff_email", email).eq("module_id", moduleId).maybeSingle();
+  if (data?.completed_via === "signed_off") return;
+  await db.from("module_completions").upsert(
+    { staff_email: email, module_id: moduleId, completed_at: new Date().toISOString(), completed_via: "quiz" },
+    { onConflict: "staff_email,module_id" },
+  );
+}
+
 export const FRIENDLY_ERROR =
   "We couldn't save that just now. Your answers are still here, so please try again in a moment.";

@@ -1,7 +1,7 @@
 import { z } from "npm:zod@3";
 import { BIG4_KEY } from "../_shared/big4Key.ts";
 import {
-  corsFor, identify, json, toFlow, fetchStatus, postQuiz, signOffIfComplete, FRIENDLY_ERROR,
+  corsFor, identify, json, toFlow, fetchStatus, postQuiz, signOffIfComplete, FRIENDLY_ERROR, markAwaiting,
 } from "../_shared/big4.ts";
 
 const Body = z.object({
@@ -39,6 +39,7 @@ Deno.serve(async (req) => {
         });
       }
       const after = await signOffIfComplete(me.email, moduleId);
+      if (!after.signedOff && after.reflectionDone.includes(moduleId)) await markAwaiting(me.email, moduleId);
       return json(req, { passed: true, results, signedOff: after.signedOff });
     } catch {
       console.error("[big4-mark-quiz] flow failed");
