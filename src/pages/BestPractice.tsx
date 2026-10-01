@@ -33,12 +33,6 @@ const BestPractice = () => {
             <p className="text-b4-muted text-base md:text-lg">
               The six Padlets, where every post staff have shared lives — open to all staff.
             </p>
-            <p className="mt-3 text-base">
-              Want the highlights?{" "}
-              <Link to="/leaders" className="font-semibold underline underline-offset-4 inline-flex min-h-[44px] items-center">
-                See what our Big 4 Leaders recommend
-              </Link>
-            </p>
           </header>
 
           <div className="grid gap-4 grid-cols-1 md:grid-cols-2">

@@ -229,25 +229,6 @@ const Landing = () => {
                   Four tools you use every day, learned at your own level, with training sessions and support from the LDI team.
                 </p>
 
-                {/* Leaders band: its own stitched strip, not another stacked button */}
-                <a
-                  href="/leaders"
-                  onClick={(e) => { e.preventDefault(); navigate("/leaders"); }}
-                  className="home-leaders-strip mt-3"
-                  aria-label="See our Big 4 Leaders: what colleagues recommend"
-                >
-                  <LeadersStripIcon />
-                  <span className="min-w-0 flex-1">
-                    <span className="block font-display text-lg font-bold leading-tight" style={{ color: "hsl(var(--lb-cream))" }}>
-                      See what colleagues recommend
-                    </span>
-                    <span className="mt-0.5 block text-sm text-white/70">
-                      Our Big 4 Leaders share the one thing they'd try.
-                    </span>
-                  </span>
-                  <ArrowRight className="home-leaders-strip__arrow h-5 w-5" aria-hidden="true" />
-                </a>
-
                 <ul className="mt-4 grid grid-cols-2 gap-2.5">
                   {heroApps.map((app) => (
                     <li key={app.name} className="flex items-center gap-3 rounded-xl border border-white/15 bg-white/[0.04] p-3 text-white">

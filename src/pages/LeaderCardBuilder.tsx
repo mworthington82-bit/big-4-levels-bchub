@@ -148,7 +148,6 @@ const LeaderCardBuilder = () => {
           {savedId && (
             <div className="mt-6 max-w-2xl">
               <ShareCardPanel card={{ ...form, audiences, photo: photoPreview, completed }} />
-              <button type="button" className="mt-3 underline underline-offset-4 font-semibold min-h-[44px]" onClick={() => navigate(`/leaders?card=${savedId}`)}>See your card on the board</button>
             </div>
           )}
 

@@ -33,7 +33,6 @@ const NAV_ITEMS = [
   { to: "/planner", label: "Activity Planner" },
   { to: "/bookings", label: "Book Training" },
   { to: "/best-practice", label: "Best Practice" },
-  { to: "/leaders", label: "Leaders" },
 ];
 
 const formatCountdown = (s: number) => {
