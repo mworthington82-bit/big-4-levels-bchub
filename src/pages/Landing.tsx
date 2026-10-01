@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { ArrowRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
@@ -50,15 +49,6 @@ const toolLevelInfo: Record<string, { explorer: string; practitioner: string; le
     leader: "Lead ethical AI discussions, pioneer innovative applications, and contribute to college AI strategy.",
   },
 };
-
-/** Small orange fabric CRT monitor icon for the Leaders band on the homepage. */
-const LeadersStripIcon = () => (
-  <svg viewBox="0 0 24 24" className="home-leaders-strip__icon h-8 w-8" aria-hidden="true" fill="none">
-    <rect x="2.5" y="4" width="19" height="13" rx="2.5" fill="currentColor" />
-    <rect x="4.8" y="6.3" width="14.4" height="8.4" rx="1.2" fill="hsl(var(--lb-ink))" opacity="0.85" />
-    <path d="M12 17v2.5M8.5 19.5h7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-  </svg>
-);
 
 const isAllowedLoginEmail = (emailAddress: string) =>
   emailAddress.endsWith("@bradfordcollege.ac.uk");
@@ -228,25 +218,6 @@ const Landing = () => {
                 <p className="mt-3 text-lg leading-[1.6] text-white/85">
                   Four tools you use every day, learned at your own level, with training sessions and support from the LDI team.
                 </p>
-
-                {/* Leaders band: its own stitched strip, not another stacked button */}
-                <a
-                  href="/leaders"
-                  onClick={(e) => { e.preventDefault(); navigate("/leaders"); }}
-                  className="home-leaders-strip mt-3"
-                  aria-label="See our Big 4 Leaders: what colleagues recommend"
-                >
-                  <LeadersStripIcon />
-                  <span className="min-w-0 flex-1">
-                    <span className="block font-display text-lg font-bold leading-tight" style={{ color: "hsl(var(--lb-cream))" }}>
-                      See what colleagues recommend
-                    </span>
-                    <span className="mt-0.5 block text-sm text-white/70">
-                      Our Big 4 Leaders share the one thing they'd try.
-                    </span>
-                  </span>
-                  <ArrowRight className="home-leaders-strip__arrow h-5 w-5" aria-hidden="true" />
-                </a>
 
                 <ul className="mt-4 grid grid-cols-2 gap-2.5">
                   {heroApps.map((app) => (

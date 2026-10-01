@@ -26,7 +26,6 @@ import Inclusion from "./pages/Inclusion";
 import Bookings from "./pages/Bookings";
 import Planner from "./pages/Planner";
 import Profile from "./pages/Profile";
-import LeadersBoard from "./pages/LeadersBoard";
 import LeaderCardBuilder from "./pages/LeaderCardBuilder";
 
 import NotFound from "./pages/NotFound";
@@ -63,7 +62,7 @@ const App = () => (
           <Route path="/planner" element={<RequireAuth><AppShell><Planner /></AppShell></RequireAuth>} />
           <Route path="/inclusion" element={<RequireAuth><AppShell><Inclusion /></AppShell></RequireAuth>} />
           <Route path="/bookings" element={<RequireAuth><AppShell><Bookings /></AppShell></RequireAuth>} />
-          <Route path="/leaders" element={<RequireAuth><LeadersBoard /></RequireAuth>} />
+          <Route path="/leaders" element={<Navigate to="/" replace />} />
           <Route path="/leaders/card" element={<RequireAuth><LeaderCardBuilder /></RequireAuth>} />
           <Route path="/profile" element={<RequireAuth><Profile /></RequireAuth>} />
 
