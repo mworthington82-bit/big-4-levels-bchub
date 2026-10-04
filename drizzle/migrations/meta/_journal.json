@@ -36,6 +36,13 @@
       "when": 1790804819338,
       "tag": "0004_leaders_board",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1791113639232,
+      "tag": "0005_allow_signed_off_completed_via",
+      "breakpoints": true
     }
   ]
 }

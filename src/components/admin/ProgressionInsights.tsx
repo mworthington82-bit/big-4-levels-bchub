@@ -24,6 +24,7 @@ const GREEN = "#5A7D2A";
 type Range = "month" | "30d" | "all";
 
 interface StaffRow {
+  assigned_level?: string | null;
   email: string;
   department: string | null;
   explorer_complete: boolean | null;
@@ -76,7 +77,7 @@ const ProgressionInsights = ({ refreshKey = 0 }: { refreshKey?: number } = {}) =
       const [{ data: s }, { data: c }, { data: e }, { data: b }] = await Promise.all([
         supabase
           .from("staff_profiles")
-          .select("email,department,explorer_complete,practitioner_unlocked,practitioner_complete,leader_unlocked"),
+          .select("email,department,assigned_level,explorer_complete,practitioner_unlocked,practitioner_complete,leader_unlocked"),
         supabase
           .from("module_completions")
           .select("staff_email,module_id,quiz_passed,completed_via,completed_at"),
@@ -157,6 +158,7 @@ const ProgressionInsights = ({ refreshKey = 0 }: { refreshKey?: number } = {}) =
       const withAny = rows.filter((r) => (completionsByEmail.get(r.email.toLowerCase())?.size ?? 0) > 0).length;
       const pracUnlocked = rows.filter((r) => !!r.practitioner_unlocked).length;
       const leaderUnlocked = rows.filter((r) => !!r.leader_unlocked).length;
+      const explorers = rows.filter((r) => !r.leader_unlocked && !r.practitioner_unlocked && !/practitioner|leader/i.test(r.assigned_level ?? "")).length;
       return {
         department: dept,
         total,
@@ -166,6 +168,8 @@ const ProgressionInsights = ({ refreshKey = 0 }: { refreshKey?: number } = {}) =
         pracCount: pracUnlocked,
         leaderPct: total ? Math.round((leaderUnlocked / total) * 100) : 0,
         leaderCount: leaderUnlocked,
+        explorerPct: total ? Math.round((explorers / total) * 100) : 0,
+        explorerCount: explorers,
         modulesInRange: modulesInRangeByDept.get(dept) ?? 0,
         bookingsInRange: bookingsInRangeByDept.get(dept) ?? 0,
       };
@@ -194,6 +198,17 @@ const ProgressionInsights = ({ refreshKey = 0 }: { refreshKey?: number } = {}) =
   }, [staff, completions, events, bookings, range]);
 
   const rangeLabel = range === "month" ? "This month" : range === "30d" ? "Last 30 days" : "All time";
+
+  const downloadMatrixCsv = () => {
+    const esc = (v: string | number) => `"${String(v).replace(/"/g, '""')}"`;
+    const head = ["Department", "Assessments completed", "Engaged", "Explorer", "Practitioner+", "Leader", `Modules (${rangeLabel})`, `Bookings (${rangeLabel})`];
+    const rows = stats.deptMatrix.map((d) => [d.department, d.total, d.engagedCount, d.explorerCount, d.pracCount, d.leaderCount, d.modulesInRange, d.bookingsInRange]);
+    const csv = [head, ...rows].map((r) => r.map(esc).join(",")).join("\n");
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(new Blob([csv], { type: "text/csv" }));
+    a.download = `department-matrix-${new Date().toISOString().slice(0, 10)}.csv`;
+    a.click();
+  };
 
   const handleDownload = async () => {
     if (!exportRef.current) return;
@@ -309,13 +324,21 @@ const ProgressionInsights = ({ refreshKey = 0 }: { refreshKey?: number } = {}) =
                 <h4 className="text-sm font-semibold text-b4-ink mb-2">
                   Department engagement matrix
                 </h4>
+                <button
+                  type="button"
+                  onClick={downloadMatrixCsv}
+                  className="mb-2 inline-flex min-h-[44px] items-center rounded-[4px] border border-border px-3 text-sm font-semibold text-b4-ink hover:bg-b4-wash"
+                >
+                  Download matrix (CSV)
+                </button>
                 <div className="border border-border rounded-lg overflow-x-auto">
                   <table className="w-full text-sm min-w-[720px]">
                     <thead className="bg-b4-wash text-muted-foreground">
                       <tr>
                         <th className="text-left px-3 py-2 font-medium">Department</th>
-                        <th className="text-right px-3 py-2 font-medium">Staff</th>
+                        <th className="text-right px-3 py-2 font-medium">Assessments completed</th>
                         <th className="text-right px-3 py-2 font-medium">Engaged</th>
+                        <th className="text-right px-3 py-2 font-medium">Explorer</th>
                         <th className="text-right px-3 py-2 font-medium">Practitioner+</th>
                         <th className="text-right px-3 py-2 font-medium">Leader</th>
                         <th className="text-right px-3 py-2 font-medium">Modules ({rangeLabel})</th>
@@ -330,6 +353,10 @@ const ProgressionInsights = ({ refreshKey = 0 }: { refreshKey?: number } = {}) =
                           <td className="px-3 py-2 text-right text-b4-ink">
                             <span className="font-semibold">{d.engagedPct}%</span>
                             <span className="text-muted-foreground/80 text-xs"> ({d.engagedCount})</span>
+                          </td>
+                          <td className="px-3 py-2 text-right text-b4-ink">
+                            <span className="font-semibold">{d.explorerPct}%</span>
+                            <span className="text-muted-foreground/80 text-xs"> ({d.explorerCount})</span>
                           </td>
                           <td className="px-3 py-2 text-right text-b4-ink">
                             <span className="font-semibold">{d.pracPct}%</span>
@@ -347,7 +374,7 @@ const ProgressionInsights = ({ refreshKey = 0 }: { refreshKey?: number } = {}) =
                   </table>
                 </div>
                 <p className="text-xs text-muted-foreground mt-2">
-                  Engaged = at least one module completed. Practitioner+ and Leader use current unlock status.
+                  Assessments completed = staff whose initial self-assessment has been uploaded. Engaged = at least one module completed. Explorer, Practitioner+ and Leader use current level.
                 </p>
               </div>
             </>
