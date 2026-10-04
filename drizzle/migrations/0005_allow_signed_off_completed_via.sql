@@ -1,0 +1,2 @@
+ALTER TABLE public.module_completions DROP CONSTRAINT module_completions_completed_via_check;
+ALTER TABLE public.module_completions ADD CONSTRAINT module_completions_completed_via_check CHECK (completed_via = ANY (ARRAY['quiz','in_person','attendance_claim','signed_off']));
