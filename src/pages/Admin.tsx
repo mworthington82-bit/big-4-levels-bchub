@@ -9,6 +9,7 @@ import DatabaseSummary from "@/components/admin/DatabaseSummary";
 import BookingsDashboard from "@/components/admin/BookingsDashboard";
 import ProgressionInsights from "@/components/admin/ProgressionInsights";
 import AlmostThere from "@/components/admin/AlmostThere";
+import FortnightlyExport from "@/components/admin/FortnightlyExport";
 import StaffJourneySearch from "@/components/admin/StaffJourneySearch";
 import PendingEvidencePanel from "@/components/admin/PendingEvidencePanel";
 import CompletionReviews from "@/components/admin/CompletionReviews";
@@ -205,6 +206,8 @@ const Admin = () => {
         </section>
 
         <ProgressionInsights refreshKey={refreshKey} />
+
+        <FortnightlyExport />
 
         <AlmostThere refreshKey={refreshKey} />
 
