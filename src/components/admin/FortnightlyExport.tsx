@@ -12,7 +12,8 @@ type Staff = {
 };
 type Ev = { staff_email: string; department: string | null; event: string; occurred_at: string };
 
-const isLdi = (d: string) => d.trim().toUpperCase() === "LDI";
+const EXCLUDED_DEPARTMENTS = new Set(["LDI", "TEST DEPARTMENT"]);
+const isExcluded = (d: string) => EXCLUDED_DEPARTMENTS.has(d.trim().toUpperCase());
 const currentLevel = (s: Staff) =>
   s.leader_unlocked ? "Leader"
   : s.practitioner_unlocked || /practitioner/i.test(s.assigned_level ?? "") ? "Practitioner"
@@ -46,7 +47,7 @@ const FortnightlyExport = () => {
 
   const data = useMemo(() => {
     const byEmail = new Map(staff.map((s) => [s.email.toLowerCase(), s]));
-    const depts = Array.from(new Set(staff.map((s) => s.department).filter((d): d is string => !!d && !isLdi(d)))).sort();
+    const depts = Array.from(new Set(staff.map((s) => s.department).filter((d): d is string => !!d && !isExcluded(d)))).sort();
     const start = new Date(`${from}T00:00:00`).getTime();
     const end = new Date(`${to}T23:59:59.999`).getTime();
     const detail = events
@@ -62,7 +63,7 @@ const FortnightlyExport = () => {
           ChangedAt: e.occurred_at,
         };
       })
-      .filter((r) => r.Department && !isLdi(r.Department))
+      .filter((r) => r.Department && !isExcluded(r.Department))
       .sort((a, b) => a.ChangedAt.localeCompare(b.ChangedAt));
     const exportDate = today();
     const summary = depts.map((d) => {
@@ -124,7 +125,7 @@ const FortnightlyExport = () => {
     <section className="space-y-4">
       <header>
         <h2 className="text-2xl font-bold text-b4-ink" style={{ fontFamily: "Fraunces, serif" }}>Fortnightly export</h2>
-        <p className="text-muted-foreground text-sm mt-1">For the Heads of Department update. LDI is excluded. The Excel file is read by Power Automate, so its layout never changes.</p>
+        <p className="text-muted-foreground text-sm mt-1">For the Heads of Department update. LDI and Test Department are excluded. The Excel file is read by Power Automate, so its layout never changes.</p>
       </header>
       <div className="bg-card border border-border rounded-2xl p-6 space-y-5">
         <div className="flex flex-wrap gap-4">
