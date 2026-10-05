@@ -513,6 +513,21 @@ export type Database = {
         }
         Relationships: []
       }
+      ldi_team_emails: {
+        Row: {
+          added_at: string
+          email: string
+        }
+        Insert: {
+          added_at?: string
+          email: string
+        }
+        Update: {
+          added_at?: string
+          email?: string
+        }
+        Relationships: []
+      }
       leader_card_reactions: {
         Row: {
           card_id: string

@@ -28,10 +28,18 @@ const today = () => new Date().toISOString().slice(0, 10);
 const FortnightlyExport = () => {
   const [from, setFrom] = useState("2026-09-01");
   const [to, setTo] = useState(today());
-  const [staff, setStaff] = useState<Staff[]>([]);
+  const [rawStaff, setStaff] = useState<Staff[]>([]);
   const [events, setEvents] = useState<Ev[]>([]);
+  const [ldiTeam, setLdiTeam] = useState<string[]>([]);
+  const [newEmail, setNewEmail] = useState("");
+  const [teamMsg, setTeamMsg] = useState("");
   const [busy, setBusy] = useState(false);
   const chartRef = useRef<HTMLDivElement>(null);
+
+  const loadTeam = async () => {
+    const { data: t } = await supabase.from("ldi_team_emails").select("email").order("email");
+    setLdiTeam((t ?? []).map((r) => r.email));
+  };
 
   useEffect(() => {
     (async () => {
@@ -43,14 +51,34 @@ const FortnightlyExport = () => {
       setStaff((s as Staff[]) ?? []);
       setEvents((e as Ev[]) ?? []);
     })();
+    loadTeam();
   }, []);
 
+  const addTeamEmails = async () => {
+    const emails = Array.from(new Set(newEmail.split(/[\s,;]+/).map((x) => x.trim().toLowerCase()).filter(Boolean)));
+    const bad = emails.filter((x) => !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(x));
+    if (!emails.length) return;
+    if (bad.length) { setTeamMsg(`Not a valid email: ${bad.join(", ")}`); return; }
+    const { error } = await supabase.from("ldi_team_emails").upsert(emails.map((email) => ({ email })), { onConflict: "email", ignoreDuplicates: true });
+    if (error) { setTeamMsg(`Couldn't save: ${error.message}`); return; }
+    setNewEmail(""); setTeamMsg(`Added ${emails.length}.`);
+    loadTeam();
+  };
+  const removeTeamEmail = async (email: string) => {
+    const { error } = await supabase.from("ldi_team_emails").delete().eq("email", email);
+    if (error) { setTeamMsg(`Couldn't remove: ${error.message}`); return; }
+    setTeamMsg(""); loadTeam();
+  };
+
   const data = useMemo(() => {
+    const team = new Set(ldiTeam);
+    const staff = rawStaff.filter((s) => !team.has(s.email.toLowerCase()));
     const byEmail = new Map(staff.map((s) => [s.email.toLowerCase(), s]));
     const depts = Array.from(new Set(staff.map((s) => s.department).filter((d): d is string => !!d && !isExcluded(d)))).sort();
     const start = new Date(`${from}T00:00:00`).getTime();
     const end = new Date(`${to}T23:59:59.999`).getTime();
     const detail = events
+      .filter((e) => !team.has(e.staff_email.toLowerCase()))
       .filter((e) => { const t = new Date(e.occurred_at).getTime(); return t >= start && t <= end; })
       .map((e) => {
         const s = byEmail.get(e.staff_email.toLowerCase());
@@ -81,7 +109,7 @@ const FortnightlyExport = () => {
       };
     });
     return { summary, detail };
-  }, [staff, events, from, to]);
+  }, [rawStaff, events, ldiTeam, from, to]);
 
   const downloadExcel = async () => {
     setBusy(true);
@@ -125,8 +153,28 @@ const FortnightlyExport = () => {
     <section className="space-y-4">
       <header>
         <h2 className="text-2xl font-bold text-b4-ink" style={{ fontFamily: "Fraunces, serif" }}>Fortnightly export</h2>
-        <p className="text-muted-foreground text-sm mt-1">For the Heads of Department update. LDI and Test Department are excluded. The Excel file is read by Power Automate, so its layout never changes.</p>
+        <p className="text-muted-foreground text-sm mt-1">For the Heads of Department update. LDI, Test Department and everyone on the LDI team list are excluded. The Excel file is read by Power Automate, so its layout never changes.</p>
       </header>
+      <details className="bg-card border border-border rounded-2xl p-4">
+        <summary className="cursor-pointer font-semibold text-b4-ink min-h-[44px] flex items-center">LDI team list ({ldiTeam.length})</summary>
+        <p className="text-sm text-muted-foreground mt-2">Anyone listed here is left out of the chart and the Excel file, whatever department their profile shows.</p>
+        <div className="flex flex-wrap gap-2 mt-3">
+          <input value={newEmail} onChange={(e) => setNewEmail(e.target.value)} onKeyDown={(e) => e.key === "Enter" && addTeamEmails()}
+            placeholder="name@bradfordcollege.ac.uk (separate several with commas)" aria-label="LDI team email"
+            className="flex-1 min-w-[260px] min-h-[44px] rounded-[4px] border border-border bg-background px-2 text-sm" />
+          <button onClick={addTeamEmails} className="min-h-[44px] px-4 rounded-[4px] bg-b4-ink text-white text-sm font-semibold">Add</button>
+        </div>
+        {teamMsg && <p className="text-sm mt-2 text-muted-foreground">{teamMsg}</p>}
+        <ul className="mt-3 divide-y divide-border">
+          {ldiTeam.map((em) => (
+            <li key={em} className="flex items-center justify-between py-1 text-sm">
+              <span>{em}</span>
+              <button onClick={() => removeTeamEmail(em)} className="min-h-[44px] px-3 text-sm underline" aria-label={`Remove ${em}`}>Remove</button>
+            </li>
+          ))}
+          {!ldiTeam.length && <li className="py-1 text-sm text-muted-foreground">No one on the list yet.</li>}
+        </ul>
+      </details>
       <div className="bg-card border border-border rounded-2xl p-6 space-y-5">
         <div className="flex flex-wrap gap-4">
           <label className="text-sm font-semibold text-b4-ink">From
