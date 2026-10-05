@@ -43,6 +43,13 @@
       "when": 1791113639232,
       "tag": "0005_allow_signed_off_completed_via",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1791219114177,
+      "tag": "0006_ldi_team_emails",
+      "breakpoints": true
     }
   ]
 }
