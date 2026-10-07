@@ -1182,8 +1182,10 @@ const Training = () => {
                       </Button>
                 }
                     {selectedTool === 'copilot' && selectedLevel === 'practitioner' &&
-                <Button disabled className="flex-1">
-                        Coming soon
+                <Button asChild className="flex-1 text-white" style={{ backgroundColor: currentBrandColor }}>
+                        <a href="https://edpuzzle.com/professional/join/6ac5fe861e5dc7f01bf2171c?schoolCode=bnc9r6" target="_blank" rel="noopener noreferrer">
+                          Class Profiles in Copilot <ArrowRight className="ml-2 h-4 w-4" />
+                        </a>
                       </Button>
                 }
                   </div>
