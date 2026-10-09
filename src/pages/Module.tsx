@@ -576,7 +576,7 @@ const Module = () => {
                   onClick={() => { setAttendedDialogOpen(false); setVisited(new Set([1, 2, 3, 4, 5])); setCurrentStep(5); }}
                   className="inline-flex items-center gap-1.5 bg-b4-deep hover:bg-b4-deep-hover text-white font-semibold px-5 py-2.5 rounded-[4px] pill-95 pill-95--press"
                 >
-                  Do the knowledge check
+                  Do the knowledge check and reflection
                 </button>
               </div>
             </div>
