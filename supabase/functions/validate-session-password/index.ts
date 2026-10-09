@@ -62,8 +62,9 @@ Deno.serve(async (req) => {
       return json({ success: false, error: "Incorrect password" }, 200);
     }
 
-    // Progress only (never quiz_passed): sets the module's progress and runs level-up logic.
-    const { error: upErr } = await admin.rpc("set_module_progress", { _email: staffEmail, _module_id: moduleId });
+    // Attendance = content covered (in_person, quiz_passed false), never a sign-off.
+    // Immersive Room is the exception and is handled inside record_attendance.
+    const { error: upErr } = await admin.rpc("record_attendance", { _email: staffEmail, _module_id: moduleId });
     if (!upErr) await admin.rpc("progression_core", { _email: staffEmail });
 
     if (upErr) {

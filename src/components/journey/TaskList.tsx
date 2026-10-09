@@ -26,7 +26,7 @@ type Action = { label: string; to: string; loading: string } | null;
 const actionFor = (t: ModuleCardSpec): Action => {
   if (t.status === "review_pending" || t.status === "attendance_claimed") return null;
   if (t.status === "attended_pending")
-    return { label: "Do the quiz", to: knowledgeCheckPath(t.id), loading: `Opening the ${t.name} quiz…` };
+    return { label: "Do the knowledge check", to: knowledgeCheckPath(t.id), loading: `Opening the ${t.name} knowledge check…` };
   if (t.toolKey === "immersive") {
     if (isDone(t.status)) return null;
     return { label: "Book a session", to: "/bookings", loading: "Opening Book Training…" };
@@ -90,9 +90,9 @@ export const NextStepCard = ({ tasks, level }: { tasks: ModuleCardSpec[]; level:
 
   if (next) {
     action = actionFor(next);
-    title = next.status === "attended_pending" ? `Do the quiz: ${next.name}` : next.toolKey === "immersive" ? "Book an Immersive Room session" : `Start: ${next.name}`;
+    title = next.status === "attended_pending" ? `Content covered: ${next.name}` : next.toolKey === "immersive" ? "Book an Immersive Room session" : `Start: ${next.name}`;
     body = next.status === "attended_pending"
-      ? "You came to the session. Do the short quiz to get this ticked off."
+      ? "You've been to the training, so the content is covered. Complete the knowledge check and reflection to sign off this module."
       : next.toolKey === "immersive"
       ? "The Immersive Room is the last part of Practitioner. Book a session to take part."
       : next.description;
@@ -224,7 +224,7 @@ export const TaskList = ({ tasks, heading, onChanged }: { tasks: ModuleCardSpec[
                     : t.status === "attendance_claimed"
                     ? "Submitted to check LDI records. You'll be emailed when it's signed off."
                     : t.status === "attended_pending"
-                    ? "You came to the session. The quiz is still to do."
+                    ? "You've been to the training, so the content is covered. Complete the knowledge check and reflection to sign off this module."
                     : t.description}
                 </p>
                 {t.status === "todo" && t.toolKey !== "immersive" && (

@@ -60,10 +60,19 @@ const CompletionReviews = () => {
   // A ready-to-send email in the admin's own mail app, so "you'll be emailed" is one click.
   const draftEmail = (item: Item, accepted: boolean) => {
     const name = staff[item.email]?.name?.split(" ")[0] ?? "there";
-    const subject = accepted
+    const subject = accepted && item.kind === "attended"
+      ? `The Big 4: ${item.module} content covered`
+      : accepted
       ? `The Big 4: ${item.module} signed off`
       : `The Big 4: ${item.module}`;
-    const body = accepted
+    const body = accepted && item.kind === "attended"
+      ? `Hi ${name},
+
+We've checked the register and confirmed you attended the ${item.module} (${item.level}) training, so the content is covered. To sign the module off, please complete the knowledge check and reflection from My Journey: https://bradfordbig4.online/new/journey
+
+Thanks,
+LDI team`
+      : accepted
       ? `Hi ${name},
 
 Your ${item.module} (${item.level}) module has been reviewed and signed off. You'll see it ticked off on My Journey: https://bradfordbig4.online/new/journey
@@ -119,14 +128,17 @@ LDI team`;
     setMessage(null);
     setEmailLink(null);
     for (const id of item.ids) {
-      const { error } = await supabase.rpc("admin_mark_module_complete", { _emails: [item.email], _module_id: id });
+      // LDI register = content covered only (in_person), never a sign-off.
+      const { error } = item.kind === "attended"
+        ? await supabase.rpc("admin_record_attendance", { _emails: [item.email], _module_id: id })
+        : await supabase.rpc("admin_mark_module_complete", { _emails: [item.email], _module_id: id });
       if (error) {
         setMessage(`Couldn't accept ${item.module} for ${item.email}: ${error.message}`);
         setBusy(null);
         return;
       }
     }
-    setMessage(`Accepted: ${item.module} (${item.level}) for ${staff[item.email]?.name ?? item.email}.`);
+    setMessage(`${item.kind === "attended" ? "Attendance confirmed (content covered)" : "Accepted"}: ${item.module} (${item.level}) for ${staff[item.email]?.name ?? item.email}.`);
     draftEmail(item, true);
     setBusy(null);
     load();

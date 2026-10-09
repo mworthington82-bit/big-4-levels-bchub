@@ -60,7 +60,7 @@ const BulkPanel = () => {
     }
     setBusy(true);
     const { data, error: rpcErr } = await supabase.rpc(
-      "admin_mark_module_complete" as any,
+      "admin_record_attendance" as any,
       { _emails: list, _module_id: moduleId },
     );
     setBusy(false);
@@ -203,7 +203,7 @@ const IndividualPanel = () => {
     );
     if (!ok) return;
     setPendingId(moduleId);
-    const { error } = await supabase.rpc("admin_mark_module_complete" as any, {
+    const { error } = await supabase.rpc("admin_record_attendance" as any, {
       _emails: [selected.email],
       _module_id: moduleId,
     });
