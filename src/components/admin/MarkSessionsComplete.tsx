@@ -60,7 +60,7 @@ const BulkPanel = () => {
     }
     setBusy(true);
     const { data, error: rpcErr } = await supabase.rpc(
-      "admin_mark_module_complete" as any,
+      "admin_record_attendance" as any,
       { _emails: list, _module_id: moduleId },
     );
     setBusy(false);
@@ -84,7 +84,7 @@ const BulkPanel = () => {
         </h3>
         <p className="text-sm text-muted-foreground">
           Paste a list of staff emails who attended a Big 4 Day session and mark them all as
-          having completed that module.
+          having attended that module (content covered — they still need the knowledge check and reflection to sign off).
         </p>
       </div>
 
@@ -197,13 +197,13 @@ const IndividualPanel = () => {
   const markOne = async (moduleId: string) => {
     if (!selected) return;
     const ok = window.confirm(
-      `Mark ${selected.name ?? selected.email} as having completed ${moduleLabel(
+      `Mark ${selected.name ?? selected.email} as having attended ${moduleLabel(
         moduleId,
       )}? This cannot be undone.`,
     );
     if (!ok) return;
     setPendingId(moduleId);
-    const { error } = await supabase.rpc("admin_mark_module_complete" as any, {
+    const { error } = await supabase.rpc("admin_record_attendance" as any, {
       _emails: [selected.email],
       _module_id: moduleId,
     });

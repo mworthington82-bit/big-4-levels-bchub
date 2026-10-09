@@ -1515,6 +1515,10 @@ export type Database = {
         Returns: Json
       }
       admin_progression_for: { Args: { _email: string }; Returns: Json }
+      admin_record_attendance: {
+        Args: { _emails: string[]; _module_id: string }
+        Returns: Json
+      }
       admin_upsert_staff: {
         Args: { payload: Json }
         Returns: {
@@ -1552,6 +1556,10 @@ export type Database = {
       }
       progression_core: { Args: { _email: string }; Returns: Json }
       recalc_progression: { Args: never; Returns: Json }
+      record_attendance: {
+        Args: { _email: string; _module_id: string }
+        Returns: undefined
+      }
       set_module_progress: {
         Args: { _email: string; _module_id: string }
         Returns: undefined

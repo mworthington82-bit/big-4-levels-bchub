@@ -566,21 +566,17 @@ const Module = () => {
                 className="text-xl md:text-2xl font-bold text-b4-strong mb-3"
                 style={{ fontFamily: "Fraunces, serif" }}
               >
-                You attended the face-to-face session
+                Content covered
               </h3>
-              <p className="text-b4-strong mb-2">
-                Well done for attending. Your attendance is recorded.
-              </p>
               <p className="text-b4-strong mb-6">
-                To complete this module and move up a level, please still take
-                the short end-of-module test at the end of this pathway.
+                You've been to the training, so the content is covered. Complete the knowledge check and reflection to sign off this module.
               </p>
               <div className="flex justify-end">
                 <button
-                  onClick={() => setAttendedDialogOpen(false)}
+                  onClick={() => { setAttendedDialogOpen(false); setVisited(new Set([1, 2, 3, 4, 5])); setCurrentStep(5); }}
                   className="inline-flex items-center gap-1.5 bg-b4-deep hover:bg-b4-deep-hover text-white font-semibold px-5 py-2.5 rounded-[4px] pill-95 pill-95--press"
                 >
-                  Got it
+                  Do the knowledge check
                 </button>
               </div>
             </div>
