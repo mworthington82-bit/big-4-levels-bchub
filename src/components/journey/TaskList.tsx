@@ -26,7 +26,7 @@ type Action = { label: string; to: string; loading: string } | null;
 const actionFor = (t: ModuleCardSpec): Action => {
   if (t.status === "review_pending" || t.status === "attendance_claimed") return null;
   if (t.status === "attended_pending")
-    return { label: "Do the knowledge check", to: knowledgeCheckPath(t.id), loading: `Opening the ${t.name} knowledge check…` };
+    return { label: "Do the knowledge check and reflection", to: knowledgeCheckPath(t.id), loading: `Opening the ${t.name} knowledge check…` };
   if (t.toolKey === "immersive") {
     if (isDone(t.status)) return null;
     return { label: "Book a session", to: "/bookings", loading: "Opening Book Training…" };

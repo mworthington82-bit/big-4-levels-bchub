@@ -99,7 +99,7 @@ const ModuleCard = ({ card }: Props) => {
   const isImmersiveTodo = card.toolKey === "immersive" && card.status === "todo";
   const isAttendedPending = card.status === "attended_pending";
   const ctaLabel = isAttendedPending
-    ? "Do the knowledge check"
+    ? "Do the knowledge check and reflection"
     : card.status === "todo"
     ? "Start"
     : "Look again";
