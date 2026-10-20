@@ -47,16 +47,16 @@ const quadMatrix = (q: number[][], w: number, h: number) => {
 
 export const StudentVoicesCaption = ({ className = "" }: { className?: string }) => (
   <div className={`text-left ${className}`}>
-    <p className="uppercase text-b4-flame font-semibold tracking-wide" style={{ fontSize: 12 }}>
+    <p className="uppercase text-b4-flame font-semibold tracking-wide" style={{ fontSize: "0.75rem" }}>
       How students see digital learning
     </p>
-    <p className="mt-1 max-w-[60ch] leading-snug text-white/70" style={{ fontSize: 15 }}>
+    <p className="mt-1 max-w-[60ch] leading-snug text-white/70" style={{ fontSize: "0.9375rem" }}>
       We asked Bradford College students why digital innovation matters to them. Here's what they said, in their own words.
     </p>
   </div>
 );
 
-const StudentQuoteCarousel = ({ className = "max-w-[640px] mx-auto mt-8", showCaption = true }: { className?: string; showCaption?: boolean }) => {
+const StudentQuoteCarousel = ({ className = "max-w-[40rem] mx-auto mt-8", showCaption = true }: { className?: string; showCaption?: boolean }) => {
   const boxRef = useRef<HTMLDivElement>(null);
   const [transform, setTransform] = useState<string>("none");
   const [flat, setFlat] = useState({ w: 300, h: 262 });
@@ -93,7 +93,7 @@ const StudentQuoteCarousel = ({ className = "max-w-[640px] mx-auto mt-8", showCa
     <div className={`text-left ${className}`}>
       {showCaption && <StudentVoicesCaption />}
 
-      <div ref={boxRef} className="student-pc relative mx-auto mt-4 w-full max-w-[720px] aspect-[900/927]">
+      <div ref={boxRef} className="student-pc relative mx-auto mt-4 w-full max-w-[45rem] aspect-[900/927]">
         <img src={fabricPc} alt="" className="absolute inset-0 h-full w-full select-none" draggable={false} />
         {/* The quotes, laid out flat then projected onto the angled grey screen */}
         <div

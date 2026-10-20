@@ -139,37 +139,37 @@ const ActivityIdeasWall = () => {
       </div>
 
       {filtered.length > 0 ? (
-        <ScrollArea className="max-h-[640px]">
+        <ScrollArea className="max-h-[min(40rem,70dvh)]">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pr-2">
             {filtered.map((idea) => {
               const ideaLead = idea.lead_stage || (idea.lead_stages && idea.lead_stages[0]) || null;
               return (
                 <div key={idea.id} className="bg-card rounded-2xl border border-border shadow-[var(--shadow-card)] p-5 hover:shadow-md transition-shadow">
                   <div className="flex items-center gap-2 mb-3 flex-wrap">
-                    <span className={`text-[10px] px-2 py-0.5 rounded-[4px] font-bold ${TOOL_BADGE[idea.primary_tool]} pill-95`}>
+                    <span className={`text-[0.625rem] px-2 py-0.5 rounded-[4px] font-bold ${TOOL_BADGE[idea.primary_tool]} pill-95`}>
                       {TOOL_LABELS[idea.primary_tool]}
                     </span>
                     {ideaLead && LEAD_LABELS[ideaLead] && (
-                      <span className={`text-[10px] px-2 py-0.5 rounded-[4px] font-bold ${LEAD_BADGE[ideaLead]} pill-95`}>{LEAD_LABELS[ideaLead]}</span>
+                      <span className={`text-[0.625rem] px-2 py-0.5 rounded-[4px] font-bold ${LEAD_BADGE[ideaLead]} pill-95`}>{LEAD_LABELS[ideaLead]}</span>
                     )}
                     {idea.blooms_level && BLOOMS_LABELS[idea.blooms_level] && (
-                      <span className={`text-[10px] px-2 py-0.5 rounded-[4px] font-bold border ${BLOOMS_BADGE[idea.blooms_level]} pill-95`}>
+                      <span className={`text-[0.625rem] px-2 py-0.5 rounded-[4px] font-bold border ${BLOOMS_BADGE[idea.blooms_level]} pill-95`}>
                         {BLOOMS_LABELS[idea.blooms_level]}
                       </span>
                     )}
-                    <span className={`text-[10px] px-2 py-0.5 rounded-[4px] font-semibold border ${RATING_BADGE[idea.inclusion_rating]} pill-95`}>
+                    <span className={`text-[0.625rem] px-2 py-0.5 rounded-[4px] font-semibold border ${RATING_BADGE[idea.inclusion_rating]} pill-95`}>
                       {RATING_LABELS[idea.inclusion_rating]}
                     </span>
                   </div>
                   <p className="text-sm text-foreground leading-relaxed mb-3">{idea.activity_text}</p>
                   <div className="flex items-center justify-between flex-wrap gap-2">
                     <div className="flex items-center gap-2 flex-wrap">
-                      <span className="text-[10px] px-2 py-0.5 rounded-[4px] bg-muted text-muted-foreground border border-border pill-95">{idea.department}</span>
-                      <span className="text-[10px] text-muted-foreground/70">
+                      <span className="text-[0.625rem] px-2 py-0.5 rounded-[4px] bg-muted text-muted-foreground border border-border pill-95">{idea.department}</span>
+                      <span className="text-[0.625rem] text-muted-foreground/70">
                         Shared by {idea.show_name && idea.staff_name ? idea.staff_name : "anonymous colleague"}
                       </span>
                     </div>
-                    <span className="text-[10px] text-muted-foreground/60">Shared {timeAgo(idea.created_at)}</span>
+                    <span className="text-[0.625rem] text-muted-foreground/60">Shared {timeAgo(idea.created_at)}</span>
                   </div>
                 </div>
               );

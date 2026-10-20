@@ -89,7 +89,7 @@ const OnboardingModal = ({ profile, email, onClose }: Props) => {
 
   return (
     <Dialog open={open} onOpenChange={(next) => { if (!next && !saving) handleCta(); }}>
-      <DialogContent className="max-w-[520px] p-0 overflow-hidden border-0">
+      <DialogContent className="max-w-[32.5rem] p-0 overflow-hidden border-0">
         <div className="h-[6px] bg-b4-deep w-full" />
         <div className="p-8">
           <span
@@ -100,13 +100,13 @@ const OnboardingModal = ({ profile, email, onClose }: Props) => {
           </span>
 
           <DialogTitle
-            className="text-[20px] font-medium text-b4-strong mt-4 leading-tight"
+            className="text-[1.25rem] font-medium text-b4-strong mt-4 leading-tight"
             style={{ fontWeight: 500 }}
           >
             {heading}
           </DialogTitle>
           <DialogDescription
-            className="text-[15px] text-muted-foreground mt-3"
+            className="text-[0.9375rem] text-muted-foreground mt-3"
             style={{ lineHeight: 1.7 }}
           >
             {body}
@@ -115,7 +115,7 @@ const OnboardingModal = ({ profile, email, onClose }: Props) => {
           <button
             onClick={handleCta}
             disabled={saving}
-            className="w-full mt-7 bg-b4-deep hover:bg-b4-deep-hover disabled:opacity-70 text-white font-bold text-[15px] rounded-[4px] py-[14px] transition-colors pill-95 pill-95--press"
+            className="w-full mt-7 bg-b4-deep hover:bg-b4-deep-hover disabled:opacity-70 text-white font-bold text-[0.9375rem] rounded-[4px] py-[14px] transition-colors pill-95 pill-95--press"
           >
             {saving ? "Opening your modules…" : "See my modules"}
           </button>

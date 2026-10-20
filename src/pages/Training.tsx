@@ -527,21 +527,21 @@ const Training = () => {
             </div>
             
             {/* Thought Bubbles */}
-            <div className="hidden lg:block absolute top-4 left-4 bg-card/95 backdrop-blur-sm rounded-2xl px-4 py-3 shadow-lg max-w-[200px] animate-fade-in" style={{
+            <div className="hidden lg:block absolute top-4 left-4 bg-card/95 backdrop-blur-sm rounded-2xl px-4 py-3 shadow-lg max-w-[12.5rem] animate-fade-in" style={{
             animationDelay: '300ms'
           }}>
               <p className="text-sm text-foreground italic">"I don't have time to learn new tech..."</p>
               <div className="absolute -bottom-2 left-6 w-4 h-4 bg-card/95 rotate-45"></div>
             </div>
             
-            <div className="hidden lg:block absolute top-20 right-8 bg-card/95 backdrop-blur-sm rounded-2xl px-4 py-3 shadow-lg max-w-[220px] animate-fade-in" style={{
+            <div className="hidden lg:block absolute top-20 right-8 bg-card/95 backdrop-blur-sm rounded-2xl px-4 py-3 shadow-lg max-w-[13.75rem] animate-fade-in" style={{
             animationDelay: '500ms'
           }}>
               <p className="text-sm text-foreground italic">"My students know more than me!"</p>
               <div className="absolute -bottom-2 right-8 w-4 h-4 bg-card/95 rotate-45"></div>
             </div>
             
-            <div className="hidden md:block lg:hidden absolute top-2 right-4 bg-card/95 backdrop-blur-sm rounded-2xl px-3 py-2 shadow-lg max-w-[180px] animate-fade-in" style={{
+            <div className="hidden md:block lg:hidden absolute top-2 right-4 bg-card/95 backdrop-blur-sm rounded-2xl px-3 py-2 shadow-lg max-w-[11.25rem] animate-fade-in" style={{
             animationDelay: '400ms'
           }}>
               <p className="text-xs text-foreground italic">"Is this really worth it?"</p>
@@ -550,7 +550,7 @@ const Training = () => {
             
             <div style={{
             animationDelay: '700ms'
-          }} className="hidden lg:block absolute bottom-8 left-12 bg-card/95 backdrop-blur-sm rounded-2xl px-4 py-3 shadow-lg max-w-[240px] animate-fade-in my-0">
+          }} className="hidden lg:block absolute bottom-8 left-12 bg-card/95 backdrop-blur-sm rounded-2xl px-4 py-3 shadow-lg max-w-[15rem] animate-fade-in my-0">
               <p className="text-sm text-foreground italic">"What if I make a mistake in front of my class?"</p>
               <div className="absolute -bottom-2 left-10 w-4 h-4 bg-card/95 rotate-45"></div>
             </div>
@@ -951,7 +951,7 @@ const Training = () => {
                 </div>
               </CardHeader>
               <CardContent className="space-y-6">
-                <p className="text-[15px] leading-[1.75] text-[#52526E]">
+                <p className="text-[0.9375rem] leading-[1.75] text-[#52526E]">
                   {pathway.intro.description}
                 </p>
 
@@ -1047,7 +1047,7 @@ const Training = () => {
                 </div>
               </CardHeader>
               <CardContent className="space-y-6">
-                <p className="text-[15px] leading-[1.75] text-[#52526E]">
+                <p className="text-[0.9375rem] leading-[1.75] text-[#52526E]">
                   {pathway.mainContent.howToUse}
                 </p>
 
@@ -1262,7 +1262,7 @@ const Training = () => {
                 </div>
               </CardHeader>
               <CardContent className="space-y-6">
-                <p className="text-[15px] leading-[1.75] text-[#52526E]">
+                <p className="text-[0.9375rem] leading-[1.75] text-[#52526E]">
                   How {getToolDisplayName(selectedTool!)} benefits students, staff, and Bradford College
                 </p>
 

@@ -71,10 +71,13 @@ const SelfAssessment = () => {
               </CardDescription>
             </CardHeader>
             <CardContent>
+              {/* 16:9 embed, never taller than the screen below the header:
+                  on short screens it narrows instead (height-aware) */}
               <div 
-                className="relative w-full overflow-hidden rounded-lg will-change-transform"
+                className="relative mx-auto w-full overflow-hidden rounded-lg will-change-transform"
                 style={{ 
-                  paddingTop: '56.2225%', 
+                  aspectRatio: '16 / 9',
+                  maxWidth: 'max(20rem, calc((100dvh - 11rem) * 16 / 9))', 
                   boxShadow: '0 2px 8px 0 rgba(63,69,81,0.16)',
                   marginTop: '1.6em',
                   marginBottom: '0.9em'
@@ -129,10 +132,10 @@ const SelfAssessment = () => {
               <Button 
                 size="lg"
                 onClick={() => navigate("/training")}
-                className="w-full bg-primary hover:bg-primary/90 text-primary-foreground py-6 text-lg rounded-[4px] transition-all duration-300 font-semibold group pill-95 pill-95--press"
+                className="w-full h-auto min-h-11 whitespace-normal text-center bg-primary hover:bg-primary/90 text-primary-foreground py-4 sm:py-6 text-lg rounded-[4px] transition-all duration-300 font-semibold group pill-95 pill-95--press"
               >
                 I've Completed the Assessment - Continue
-                <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                <ArrowRight className="ml-2 h-5 w-5 shrink-0 group-hover:translate-x-1 transition-transform" />
               </Button>
             </CardContent>
           </Card>

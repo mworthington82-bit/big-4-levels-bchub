@@ -126,34 +126,34 @@ const ModuleCard = ({ card }: Props) => {
             {toolLabel}
           </span>
         </div>
-        <span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-[4px] text-[11px] font-semibold ${status.cls} pill-95`}>
+        <span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-[4px] text-[0.6875rem] font-semibold ${status.cls} pill-95`}>
           {status.tick && <IconCheck size={12} stroke={3} />}
           {status.label}
         </span>
       </div>
       {card.status === "completed" && card.completedVia === "in_person" && (
         <div className="px-4 pt-2 -mb-1 bg-card">
-          <span className="text-[11px] italic text-muted-foreground">Completed in person</span>
+          <span className="text-[0.6875rem] italic text-muted-foreground">Completed in person</span>
         </div>
       )}
 
       {/* Body */}
       <div className={`p-5 flex-1 flex flex-col gap-3 ${isAttendedPending ? "bg-[#FFF9EF]" : "bg-card"}`}>
         <div className="flex-1">
-          <h3 className="font-display font-bold text-[15px] text-b4-strong leading-tight">
+          <h3 className="font-display font-bold text-[0.9375rem] text-b4-strong leading-tight">
             {card.name}
           </h3>
-          <p className="text-[13px] text-muted-foreground mt-1.5 leading-snug">
+          <p className="text-[0.8125rem] text-muted-foreground mt-1.5 leading-snug">
             {description}
           </p>
           {isImmersiveTodo && (
-            <span className="inline-block mt-2 px-2 py-1 rounded-md text-[11px] font-semibold bg-gold-light text-gold-dark">
+            <span className="inline-block mt-2 px-2 py-1 rounded-md text-[0.6875rem] font-semibold bg-gold-light text-gold-dark">
               Required to complete Practitioner
             </span>
           )}
         </div>
         <div className="flex items-center justify-between gap-2 pt-1">
-          <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-[4px] text-[11px] font-semibold ${LEVEL_PILL[level]} pill-95`}>
+          <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-[4px] text-[0.6875rem] font-semibold ${LEVEL_PILL[level]} pill-95`}>
             {LEVEL_EMBLEM[level] && (
               <img src={LEVEL_EMBLEM[level]} alt="" aria-hidden className="h-3.5 w-3.5" />
             )}

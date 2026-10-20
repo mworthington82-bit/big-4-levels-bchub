@@ -58,7 +58,7 @@ const ProgressTracker = ({ currentStep, steps, onStepClick, brandColor = 'hsl(va
                 <div className="mt-1.5 flex flex-col items-center">
                   <span
                     className={cn(
-                      "text-[11px] font-medium text-center whitespace-nowrap",
+                      "text-[0.6875rem] font-medium text-center whitespace-nowrap",
                       isCompleted && "text-[#1DA462]",
                       !isCompleted && !isActive && "text-muted-foreground"
                     )}

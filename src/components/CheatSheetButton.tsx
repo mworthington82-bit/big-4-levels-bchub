@@ -398,7 +398,7 @@ const CheatSheetButton = ({ toolId, className, children }: CheatSheetButtonProps
                 </h3>
                 <ul className="mt-3 space-y-2">
                   {section.points.map((point, i) => (
-                    <li key={i} className="flex gap-3 text-[13px] md:text-sm leading-relaxed" style={{ color: "#222" }}>
+                    <li key={i} className="flex gap-3 text-[0.8125rem] md:text-sm leading-relaxed" style={{ color: "#222" }}>
                       <span
                         className="mt-2 h-1.5 w-1.5 rounded-full flex-shrink-0"
                         style={{ backgroundColor: content.accentHex }}

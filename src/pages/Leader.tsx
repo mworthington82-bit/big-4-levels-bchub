@@ -46,7 +46,7 @@ type Tab = "contributions" | "gallery" | "directory";
 const ToolPill = ({ tool, small }: { tool: ToolName; small?: boolean }) => (
   <span
     className={`inline-flex items-center rounded-md font-semibold text-white ${
-      small ? "px-1.5 py-0.5 text-[10px]" : "px-2 py-0.5 text-[11px]"
+      small ? "px-1.5 py-0.5 text-[0.625rem]" : "px-2 py-0.5 text-[0.6875rem]"
     }`}
     style={{ backgroundColor: TOOL_COLOUR[tool] ?? "hsl(var(--b4-deep))" }}
   >
@@ -73,33 +73,33 @@ const EvidenceCard = ({
     <div className="p-4 flex-1 flex flex-col gap-2">
       <div className="flex items-center gap-2 flex-wrap">
         <ToolPill tool={post.tool} />
-        <h3 className="font-bold text-[16px] text-b4-strong leading-tight">{post.title}</h3>
+        <h3 className="font-bold text-[1rem] text-b4-strong leading-tight">{post.title}</h3>
       </div>
-      <p className="text-[13px] text-b4-muted">
+      <p className="text-[0.8125rem] text-b4-muted">
         {post.staff_name ?? "Bradford College Leader"}
         {post.department ? ` · ${post.department}` : ""}
       </p>
-      <p className="text-[14px] text-b4-strong leading-relaxed whitespace-pre-line">
+      <p className="text-[0.875rem] text-b4-strong leading-relaxed whitespace-pre-line">
         {post.what_i_did}
       </p>
-      <p className="text-[14px] text-b4-strong leading-relaxed flex gap-1.5">
+      <p className="text-[0.875rem] text-b4-strong leading-relaxed flex gap-1.5">
         <IconHeartFilled size={14} className="text-[#27AE60] mt-1 flex-shrink-0" />
         <span>{post.learner_impact}</span>
       </p>
       {post.inclusion_focus && (
-        <p className="text-[12px] italic text-[#5B2D8E] leading-snug">
+        <p className="text-[0.75rem] italic text-[#5B2D8E] leading-snug">
           {post.inclusion_focus}
         </p>
       )}
     </div>
     {!hideLike && (
       <div className="flex items-center justify-between px-4 py-3 border-t border-b4-wash-2">
-        <span className="text-[12px] text-b4-muted">{formatDateUK(post.created_at)}</span>
+        <span className="text-[0.75rem] text-b4-muted">{formatDateUK(post.created_at)}</span>
         <button
           onClick={onToggleLike}
           aria-label={liked ? "Unlike this post" : "Like this post"}
           aria-pressed={liked ? "true" : "false"}
-          className="inline-flex items-center gap-1.5 min-h-11 px-2 py-1 rounded-md hover:bg-b4-wash text-[13px] font-semibold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-b4-flame"
+          className="inline-flex items-center gap-1.5 min-h-11 px-2 py-1 rounded-md hover:bg-b4-wash text-[0.8125rem] font-semibold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-b4-flame"
         >
           {liked ? (
             <IconHeartFilled size={16} className="text-b4-flame-text" aria-hidden="true" />
@@ -112,7 +112,7 @@ const EvidenceCard = ({
     )}
     {hideLike && (
       <div className="px-4 py-3 border-t border-b4-wash-2">
-        <span className="text-[12px] text-b4-muted">{formatDateUK(post.created_at)}</span>
+        <span className="text-[0.75rem] text-b4-muted">{formatDateUK(post.created_at)}</span>
       </div>
     )}
   </article>
@@ -202,7 +202,7 @@ const MyContributions = ({
                   <p className="text-xs text-b4-muted mt-1">Submitted {formatDateUK(p.created_at)}</p>
                 </div>
                 <span
-                  className="text-[11px] font-bold uppercase tracking-wide px-2.5 py-1 rounded-[4px] pill-95"
+                  className="text-[0.6875rem] font-bold uppercase tracking-wide px-2.5 py-1 rounded-[4px] pill-95"
                   style={
                     p.is_published
                       ? { backgroundColor: "#EAF3DE", color: "#3B6D11" }
@@ -533,7 +533,7 @@ const Field = ({
   <label className="block">
     <div className="flex items-center justify-between mb-1">
       <span className="text-xs font-semibold text-b4-strong">{label}</span>
-      {hint && <span className="text-[11px] text-[#9AA3B0]">{hint}</span>}
+      {hint && <span className="text-[0.6875rem] text-[#9AA3B0]">{hint}</span>}
     </div>
     {children}
   </label>
@@ -743,17 +743,17 @@ const MentorDirectoryTab = () => {
                 <div className="w-1 bg-[#27AE60]" />
                 <div className="p-4 flex-1 flex flex-col gap-3">
                   <div className="flex items-start gap-3">
-                    <div className="w-9 h-9 rounded-full bg-b4-deep text-white font-bold flex items-center justify-center text-[13px]">
+                    <div className="w-9 h-9 rounded-full bg-b4-deep text-white font-bold flex items-center justify-center text-[0.8125rem]">
                       {initialsOf(m.staff_name)}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="font-bold text-[15px] text-b4-strong truncate">
+                      <p className="font-bold text-[0.9375rem] text-b4-strong truncate">
                         {m.staff_name ?? "Bradford College Leader"}
                       </p>
                       {m.department && (
-                        <p className="text-[13px] text-b4-muted truncate">{m.department}</p>
+                        <p className="text-[0.8125rem] text-b4-muted truncate">{m.department}</p>
                       )}
-                      <span className="inline-flex items-center mt-1 px-2 py-0.5 rounded-[4px] text-[10px] font-bold bg-[#EAF3DE] text-[#3B6D11] pill-95">
+                      <span className="inline-flex items-center mt-1 px-2 py-0.5 rounded-[4px] text-[0.625rem] font-bold bg-[#EAF3DE] text-[#3B6D11] pill-95">
                         Leader
                       </span>
                     </div>
@@ -764,7 +764,7 @@ const MentorDirectoryTab = () => {
                     ))}
                   </div>
                   {m.mentor_bio && (
-                    <p className="text-[13px] italic text-b4-muted">{m.mentor_bio}</p>
+                    <p className="text-[0.8125rem] italic text-b4-muted">{m.mentor_bio}</p>
                   )}
                   <a
                     href={mailto}

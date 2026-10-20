@@ -168,9 +168,9 @@ const ActivityPlanner = () => {
     <div className="bg-card rounded-2xl border border-border shadow-[var(--shadow-card)] overflow-hidden">
       {/* Hero */}
       <div className="relative bg-gradient-to-br from-b4-deep via-b4-deep-hover to-b4-flame-ink p-6 md:p-8 text-white">
-        <div className="absolute top-4 right-4 flex items-center gap-1.5 bg-white/15 backdrop-blur px-3 py-1 rounded-[4px] border border-white/30 pill-95">
+        <div className="mb-4 inline-flex md:absolute md:top-4 md:right-4 md:mb-0 items-center gap-1.5 bg-white/15 backdrop-blur px-3 py-1 rounded-[4px] border border-white/30 pill-95">
           <Sparkles className="w-3.5 h-3.5" aria-hidden="true" />
-          <span className="text-[11px] font-semibold tracking-wide uppercase">AI-Powered</span>
+          <span className="text-[0.6875rem] font-semibold tracking-wide uppercase">AI-Powered</span>
         </div>
         <div className="flex items-start gap-4 max-w-3xl">
           <div className="p-3 rounded-xl bg-white/15 backdrop-blur">
@@ -234,12 +234,12 @@ const ActivityPlanner = () => {
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 mb-0.5">
                           {isNotSure ? (
-                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-[4px] text-[10px] font-bold bg-b4-wash-3 text-foreground border border-b4-line pill-95">
+                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-[4px] text-[0.625rem] font-bold bg-b4-wash-3 text-foreground border border-b4-line pill-95">
                               <HelpCircle className="w-3 h-3" aria-hidden="true" />
                               Not sure
                             </span>
                           ) : (
-                            <span className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded-[4px] text-[10px] font-bold ${LEAD_BADGE[opt.value]} pill-95`}>
+                            <span className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded-[4px] text-[0.625rem] font-bold ${LEAD_BADGE[opt.value]} pill-95`}>
                               <span className="inline-block w-1.5 h-1.5 rounded-full bg-card/90" aria-hidden="true" />
                               {opt.label}
                             </span>
@@ -357,7 +357,7 @@ const PlanResult = ({ plan, shared, onReset, onDownload }: { plan: ActivityPlan;
             {LEAD_LABELS[leadKey]} — {LEAD_DESCRIPTIONS[leadKey]}
           </span>
           {plan.lead_was_suggested && (
-            <span className="text-[10px] font-semibold uppercase tracking-wide px-2 py-0.5 rounded-[4px] bg-b4-wash-3 text-foreground pill-95">
+            <span className="text-[0.625rem] font-semibold uppercase tracking-wide px-2 py-0.5 rounded-[4px] bg-b4-wash-3 text-foreground pill-95">
               AI-suggested
             </span>
           )}

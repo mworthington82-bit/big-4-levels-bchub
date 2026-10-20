@@ -127,7 +127,7 @@ const ActivityPlanner = () => {
         <button
           onClick={generate}
           disabled={!canSubmit}
-          className="mt-5 w-full bg-b4-deep hover:bg-b4-deep-hover disabled:opacity-60 disabled:cursor-not-allowed text-white font-bold text-[15px] rounded-[4px] py-3 transition-colors pill-95 pill-95--press"
+          className="mt-5 w-full bg-b4-deep hover:bg-b4-deep-hover disabled:opacity-60 disabled:cursor-not-allowed text-white font-bold text-[0.9375rem] rounded-[4px] py-3 transition-colors pill-95 pill-95--press"
         >
           {loading ? "Generating ideas…" : result?.ideas ? "Generate again" : "Generate ideas"}
         </button>
@@ -224,22 +224,22 @@ const ResourceCard = ({
         onClick={handleOpen}
         className="flex-1 text-left p-4 flex flex-col gap-2 hover:bg-[#F8FAFD] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#185FA5]"
       >
-        <span className="self-start inline-flex items-center px-2 py-0.5 rounded-[4px] text-[10px] font-semibold uppercase tracking-wide bg-b4-wash-2 text-[#4F5969] pill-95">
+        <span className="self-start inline-flex items-center px-2 py-0.5 rounded-[4px] text-[0.625rem] font-semibold uppercase tracking-wide bg-b4-wash-2 text-[#4F5969] pill-95">
           {r.resource_type}
         </span>
-        <h3 className="font-bold text-[15px] text-b4-strong leading-tight">{r.title}</h3>
-        <p className="text-[13px] text-b4-muted leading-snug line-clamp-2">{r.description}</p>
+        <h3 className="font-bold text-[0.9375rem] text-b4-strong leading-tight">{r.title}</h3>
+        <p className="text-[0.8125rem] text-b4-muted leading-snug line-clamp-2">{r.description}</p>
         <div className="flex flex-wrap gap-1.5 mt-1">
-          <span className="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-semibold bg-b4-wash-2 text-b4-strong">
+          <span className="inline-flex items-center px-2 py-0.5 rounded-md text-[0.6875rem] font-semibold bg-b4-wash-2 text-b4-strong">
             {r.tool}
           </span>
-          <span className={`inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-semibold ${stageStyle[r.lead_stage] ?? stageStyle.All}`}>
+          <span className={`inline-flex items-center px-2 py-0.5 rounded-md text-[0.6875rem] font-semibold ${stageStyle[r.lead_stage] ?? stageStyle.All}`}>
             {r.lead_stage}
           </span>
         </div>
       </button>
       <div className="flex items-center justify-between px-4 py-3 border-t border-b4-wash-2">
-        <span className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-[4px] text-[11px] font-bold ${lvl.bg} ${lvl.text} pill-95`}>
+        <span className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-[4px] text-[0.6875rem] font-bold ${lvl.bg} ${lvl.text} pill-95`}>
           {r.level}
         </span>
         <button

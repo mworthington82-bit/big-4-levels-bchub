@@ -78,16 +78,15 @@ const AppShell = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <header className="sticky top-0 z-40 border-b border-b4-line tw-cloth text-b4-strong shadow-card">
-        <div
-          className="container mx-auto px-4 py-3 flex items-center gap-4 min-h-[64px]"
-          style={{ flexWrap: "nowrap" }}
-        >
+      <header className="b4-header sticky top-0 z-40 border-b border-b4-line tw-cloth text-b4-strong shadow-card">
+        {/* One row when everything fits; on laptops the nav drops to its own
+            centred row instead of pushing the page sideways (index.css). */}
+        <div className="b4-header__bar mx-auto w-full max-w-[120rem] px-4 lg:px-[var(--space-gutter)] py-3 min-h-[64px]">
           {/* Brand lockup (left): tile, threaded wordmark, college logo */}
           <B4Brand to="/new/journey" />
 
           {/* Center nav */}
-          <nav className="hidden lg:flex items-center gap-1 mx-auto" style={{ flexWrap: "nowrap" }}>
+          <nav className="b4-header__nav hidden lg:flex items-center gap-1" style={{ flexWrap: "nowrap" }}>
             {NAV_ITEMS.map((item) => (
               <NavLink key={item.to} to={item.to} onClick={(e) => weaveBooking(e, item.to)} className={navLinkClass} style={{ minWidth: "fit-content" }}>
                 {item.label}
@@ -96,10 +95,10 @@ const AppShell = ({ children }: { children: React.ReactNode }) => {
           </nav>
 
           {/* Right cluster: pill + avatar + sign out (never shares space with nav) */}
-          <div className="flex items-center gap-2 shrink-0 ml-auto lg:ml-0" style={{ minWidth: "fit-content", flexWrap: "nowrap" }}>
+          <div className="b4-header__end flex items-center gap-2 shrink-0" style={{ minWidth: "fit-content", flexWrap: "nowrap" }}>
             <AccessibilityPanel inline />
             {showPill && (
-              <span className="hidden md:inline-flex tw-tag shrink-0" style={{ minWidth: "fit-content" }}>
+              <span className="hidden lg:inline-flex tw-tag shrink-0" style={{ minWidth: "fit-content" }}>
                 {pillLabel}
               </span>
             )}
@@ -145,7 +144,7 @@ const AppShell = ({ children }: { children: React.ReactNode }) => {
         </div>
 
         {showPill && (
-          <div className="md:hidden flex justify-center pb-3 px-4">
+          <div className="lg:hidden flex justify-center pb-3 px-4">
             <span className="tw-tag">{pillLabel}</span>
           </div>
         )}

@@ -49,28 +49,28 @@ const FromTheClassroom = () => {
             <div className="h-1" style={{ backgroundColor: TOOL_COLOUR[p.tool] ?? "hsl(var(--b4-deep))" }} />
             <div className="p-4 flex-1 flex flex-col gap-2">
               <span
-                className="self-start inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-semibold text-white"
+                className="self-start inline-flex items-center px-2 py-0.5 rounded-md text-[0.6875rem] font-semibold text-white"
                 style={{ backgroundColor: TOOL_COLOUR[p.tool] ?? "hsl(var(--b4-deep))" }}
               >
                 {p.tool}
               </span>
-              <h3 className="font-bold text-[15px] text-b4-strong leading-tight">{p.title}</h3>
-              <p className="text-[12px] text-b4-muted">
+              <h3 className="font-bold text-[0.9375rem] text-b4-strong leading-tight">{p.title}</h3>
+              <p className="text-[0.75rem] text-b4-muted">
                 {p.staff_name ?? "Bradford College Leader"}
                 {p.department ? ` · ${p.department}` : ""}
               </p>
-              <p className="text-[13px] text-b4-strong line-clamp-3">{p.what_i_did}</p>
-              <p className="text-[13px] text-b4-strong line-clamp-2 flex gap-1.5">
+              <p className="text-[0.8125rem] text-b4-strong line-clamp-3">{p.what_i_did}</p>
+              <p className="text-[0.8125rem] text-b4-strong line-clamp-2 flex gap-1.5">
                 <IconHeartFilled size={12} className="text-[#27AE60] mt-1 flex-shrink-0" />
                 <span>{p.learner_impact}</span>
               </p>
               {p.inclusion_focus && (
-                <p className="text-[11px] italic text-[#5B2D8E] line-clamp-2">
+                <p className="text-[0.6875rem] italic text-[#5B2D8E] line-clamp-2">
                   {p.inclusion_focus}
                 </p>
               )}
             </div>
-            <div className="px-4 py-2 border-t border-b4-wash-2 text-[11px] text-b4-muted">
+            <div className="px-4 py-2 border-t border-b4-wash-2 text-[0.6875rem] text-b4-muted">
               {formatDateUK(p.created_at)}
             </div>
           </article>

@@ -162,7 +162,7 @@ const DatabaseSummary = ({ refreshKey }: { refreshKey: number }) => {
           <div key={lvl} className={`rounded-lg p-3 ${levelTint[lvl]}`}>
             <div className="text-xs opacity-80">{lvl}</div>
             <div className="text-2xl font-bold">{s.byEffectiveLevel[lvl]}</div>
-            <div className="text-[11px] opacity-70 mt-0.5">
+            <div className="text-[0.6875rem] opacity-70 mt-0.5">
               CSV-assigned: {s.byAssignedLevel[lvl]}
             </div>
           </div>

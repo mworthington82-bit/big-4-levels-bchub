@@ -72,7 +72,7 @@ const LeadCallout = ({ tool }: LeadCalloutProps) => {
       style={{ borderLeft: "4px solid #2563eb" }}
     >
       <div className="absolute top-4 right-4">
-        <span className="inline-flex items-center gap-1 rounded-[4px] bg-[#2563eb] px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-white pill-95">
+        <span className="inline-flex items-center gap-1 rounded-[4px] bg-[#2563eb] px-2.5 py-1 text-[0.625rem] font-bold uppercase tracking-wider text-white pill-95">
           LEAD
         </span>
       </div>
@@ -85,7 +85,7 @@ const LeadCallout = ({ tool }: LeadCalloutProps) => {
         {stageOrder.map((key) => {
           const stage = stages[key];
           return (
-            <p key={key} className="text-[15px] leading-relaxed text-foreground">
+            <p key={key} className="text-[0.9375rem] leading-relaxed text-foreground">
               <span
                 className={`inline-flex items-center gap-1 rounded-md px-2 py-0.5 text-xs font-bold mr-2 ${stage.bg} ${stage.text}`}
               >

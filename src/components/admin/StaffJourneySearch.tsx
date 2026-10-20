@@ -219,11 +219,11 @@ const StaffJourneySearch = () => {
                 />
               ))}
             </div>
-            <div className="text-[11px] text-muted-foreground mt-3">
+            <div className="text-[0.6875rem] text-muted-foreground mt-3">
               Onboarding seen: {selected.onboarding_shown ? "Yes" : "No"} · Leader unlocked:{" "}
               {selected.leader_unlocked ? "Yes" : "No"}
             </div>
-            <div className="text-[11px] text-muted-foreground mt-3">
+            <div className="text-[0.6875rem] text-muted-foreground mt-3">
               CSV uploaded:{" "}
               {selected.data_uploaded_at
                 ? new Date(selected.data_uploaded_at).toLocaleString("en-GB")
@@ -259,7 +259,7 @@ const StaffJourneySearch = () => {
 
 const Stat = ({ label, value }: { label: string; value: string }) => (
   <div className="bg-card rounded-md px-3 py-2 border border-border">
-    <div className="text-[10px] uppercase tracking-wide text-muted-foreground">{label}</div>
+    <div className="text-[0.625rem] uppercase tracking-wide text-muted-foreground">{label}</div>
     <div className="text-sm font-semibold text-b4-strong">{value}</div>
   </div>
 );
@@ -289,7 +289,7 @@ const ModuleList = ({
               <div className="font-medium text-b4-strong text-sm">{c.name}</div>
               <div className="text-xs text-muted-foreground truncate">{c.description}</div>
               {completion && (
-                <div className="text-[11px] text-muted-foreground mt-1">
+                <div className="text-[0.6875rem] text-muted-foreground mt-1">
                   Completed{" "}
                   {new Date(completion.completed_at).toLocaleString("en-GB")}
                   {!isDoneCompletion(completion as any) && " (not yet signed off)"}

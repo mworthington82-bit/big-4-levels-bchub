@@ -210,7 +210,7 @@ const InclusionEmbed = ({ tool, level, brandColor }: InclusionEmbedProps) => {
             {relevantSkills.map((skill) => (
               <div key={skill.id}>
                 <div className="mb-2">
-                  <span className="text-[10px] font-semibold text-inclusion uppercase tracking-wider">{skill.category}</span>
+                  <span className="text-[0.625rem] font-semibold text-inclusion uppercase tracking-wider">{skill.category}</span>
                   <p className="text-sm text-foreground leading-relaxed">{skill.text}</p>
                 </div>
                 <div className="flex gap-2">
@@ -243,7 +243,7 @@ const InclusionEmbed = ({ tool, level, brandColor }: InclusionEmbedProps) => {
           <CheckCircle2 className="w-4 h-4" />
           {saved ? "Responses Saved ✓" : "Save Inclusion Responses"}
         </Button>
-        <p className="text-[10px] text-muted-foreground mt-2">Your responses contribute to the Bradford College inclusion averages</p>
+        <p className="text-[0.625rem] text-muted-foreground mt-2">Your responses contribute to the Bradford College inclusion averages</p>
       </div>
     </div>
   );

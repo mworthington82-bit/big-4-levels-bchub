@@ -44,7 +44,7 @@ const Profile = () => {
   return (
     <AppShell>
       <div className="min-h-[calc(100vh-64px)] bg-muted/20 py-10 px-4">
-        <div className="max-w-[480px] mx-auto bg-card rounded-2xl border border-border shadow-sm p-8">
+        <div className="max-w-[30rem] mx-auto bg-card rounded-2xl border border-border shadow-sm p-8">
           {loading ? (
             <div className="text-center"><WeavingLoader variant="inline" label="Finding your profile…" /></div>
           ) : (

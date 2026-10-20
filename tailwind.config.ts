@@ -8,11 +8,25 @@ export default {
     container: {
       center: true,
       padding: "2rem",
+      // rem, so the container widens with the fluid root on big screens (index.css)
       screens: {
-        "2xl": "1400px",
+        "2xl": "87.5rem",
       },
     },
     extend: {
+      // Fluid tokens from index.css ("Fit any screen"): clamp() values reused site-wide
+      fontSize: {
+        hero: ["var(--text-hero)", { lineHeight: "1.05" }],
+        title: ["var(--text-title)", { lineHeight: "1.15" }],
+        heading: ["var(--text-heading)", { lineHeight: "1.2" }],
+      },
+      spacing: {
+        gutter: "var(--space-gutter)",
+        section: "var(--space-section)",
+      },
+      maxWidth: {
+        measure: "var(--measure)",
+      },
       fontFamily: {
         // ThreadWorks house faces; Calibri/Carlito stay as fallbacks. The accessibility
         // panel's Arial / OpenDyslexic / Calibri choices override these (index.css).

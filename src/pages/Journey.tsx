@@ -55,7 +55,7 @@ const QuickCard = ({ Icon, title, desc, to, accent }: { Icon: any; title: string
         <Icon size={22} stroke={1.75} className="text-b4-strong" />
       </div>
       <div className="flex-1">
-        <h3 className="font-display font-bold text-[15px] text-b4-strong">{title}</h3>
+        <h3 className="font-display font-bold text-[0.9375rem] text-b4-strong">{title}</h3>
         <p className="text-sm text-muted-foreground mt-1">{desc}</p>
       </div>
       <span className="text-b4-strong text-sm font-semibold mt-1 inline-flex items-center gap-1">

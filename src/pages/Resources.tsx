@@ -149,10 +149,10 @@ const Resources = () => {
       <div className="flex">
         <div className="w-1 bg-b4-flame" aria-hidden />
         <div className="p-4 flex-1">
-          <span className="inline-block text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-[4px] bg-b4-flame text-b4-on-flame mb-2 pill-95">
+          <span className="inline-block text-[0.625rem] font-bold uppercase tracking-wider px-2 py-0.5 rounded-[4px] bg-b4-flame text-b4-on-flame mb-2 pill-95">
             AI-Powered
           </span>
-          <h3 className="font-display text-[15px] font-bold text-foreground mb-1">Activity Planner</h3>
+          <h3 className="font-display text-[0.9375rem] font-bold text-foreground mb-1">Activity Planner</h3>
           <p className="text-xs text-muted-foreground leading-relaxed mb-3 line-clamp-2">
             Tell us what you want learners to achieve and we will suggest the right Big 4 tool and how to use it.
           </p>
@@ -172,7 +172,7 @@ const Resources = () => {
     <div ref={leadCardRef} className="bg-card rounded-xl border border-border shadow-sm overflow-hidden">
       <div className="h-1 bg-b4-deep" aria-hidden />
       <div className="p-4">
-        <span className="inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-[4px] bg-b4-deep text-white mb-2 pill-95">
+        <span className="inline-flex items-center gap-1 text-[0.625rem] font-bold uppercase tracking-wider px-2 py-0.5 rounded-[4px] bg-b4-deep text-white mb-2 pill-95">
           <Pin className="h-3 w-3" /> Pinned
         </span>
         <h3 className="font-display text-sm font-bold text-foreground mb-1">Big 4 × LEAD Model</h3>
@@ -197,9 +197,9 @@ const Resources = () => {
         <div className="p-4 flex-1">
           <div className="flex items-center gap-2 mb-2">
             <Heart className="h-4 w-4 text-[#5B2D8E]" />
-            <h3 className="font-display text-[15px] font-bold text-b4-strong">Inclusion Hub</h3>
+            <h3 className="font-display text-[0.9375rem] font-bold text-b4-strong">Inclusion Hub</h3>
           </div>
-          <p className="text-[12px] text-muted-foreground leading-relaxed mb-3">
+          <p className="text-[0.75rem] text-muted-foreground leading-relaxed mb-3">
             Practical tips and guides for making the Big 4 tools work for every learner.
           </p>
           <Button
@@ -217,7 +217,7 @@ const Resources = () => {
   const FilterControls = () => (
     <>
       <div>
-        <p className="text-[11px] uppercase tracking-wide text-muted-foreground font-semibold mb-2">
+        <p className="text-[0.6875rem] uppercase tracking-wide text-muted-foreground font-semibold mb-2">
           Filter by tool
         </p>
         <div className="grid grid-cols-2 gap-2">
@@ -236,7 +236,7 @@ const Resources = () => {
                     ? <img src={tool.logo} alt="" className="h-full w-full object-contain" />
                     : <span className="w-3 h-3 rounded-full bg-b4-flame" />}
                 </div>
-                <span className={`text-[12px] font-medium truncate ${active ? 'text-b4-flame-text' : 'text-foreground'}`}>
+                <span className={`text-[0.75rem] font-medium truncate ${active ? 'text-b4-flame-text' : 'text-foreground'}`}>
                   {tool.name}
                 </span>
               </button>
@@ -246,7 +246,7 @@ const Resources = () => {
       </div>
 
       <div>
-        <p className="text-[11px] uppercase tracking-wide text-muted-foreground font-semibold mb-2">
+        <p className="text-[0.6875rem] uppercase tracking-wide text-muted-foreground font-semibold mb-2">
           Filter by level
         </p>
         <div className="flex flex-wrap gap-2">
@@ -306,7 +306,7 @@ const Resources = () => {
             >
               <div style={{ width: 4, background: "hsl(var(--b4-flame))" }} aria-hidden />
               <div className="flex-1 flex items-center gap-3 px-3 py-2 min-w-0">
-                <span className="text-[11px] uppercase tracking-wide text-muted-foreground font-semibold shrink-0 whitespace-nowrap">Your progress</span>
+                <span className="text-[0.6875rem] uppercase tracking-wide text-muted-foreground font-semibold shrink-0 whitespace-nowrap">Your progress</span>
                 <div className="flex-1 h-1.5 rounded-full bg-muted overflow-hidden">
                   <div className="h-full rounded-full" style={{ width: `${bannerPct}%`, background: "hsl(var(--b4-flame))" }} />
                 </div>
@@ -321,8 +321,8 @@ const Resources = () => {
             >
               <Calendar className="h-4 w-4 shrink-0" />
               <div className="flex flex-col min-w-0">
-                <span className="text-[13px] font-medium whitespace-nowrap">Book Big 4 Day</span>
-                <span className="text-[11px] text-white/70 whitespace-nowrap">29th June</span>
+                <span className="text-[0.8125rem] font-medium whitespace-nowrap">Book Big 4 Day</span>
+                <span className="text-[0.6875rem] text-white/70 whitespace-nowrap">29th June</span>
               </div>
             </button>
           </div>
@@ -425,10 +425,10 @@ const Resources = () => {
                         <div className="h-6 w-6 rounded bg-muted p-0.5 flex items-center justify-center shrink-0">
                           <img src={toolLogo} alt="" className="h-full w-full object-contain" />
                         </div>
-                        <span className="text-[14px] font-bold text-b4-strong truncate">{resource.title}</span>
+                        <span className="text-[0.875rem] font-bold text-b4-strong truncate">{resource.title}</span>
                       </div>
                       <div className="flex items-center gap-2 shrink-0">
-                        <span className={`text-[11px] font-semibold px-2 py-0.5 rounded-[4px] whitespace-nowrap ${badge.color} pill-95`}>{badge.label}</span>
+                        <span className={`text-[0.6875rem] font-semibold px-2 py-0.5 rounded-[4px] whitespace-nowrap ${badge.color} pill-95`}>{badge.label}</span>
                         <ChevronDown
                           className="h-4 w-4 text-muted-foreground transition-transform duration-200"
                           style={{ transform: isOpen ? "rotate(180deg)" : "rotate(0deg)" }}

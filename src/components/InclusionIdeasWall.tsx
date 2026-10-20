@@ -146,7 +146,7 @@ const InclusionIdeasWall = () => {
 
       {/* Ideas grid */}
       {filtered.length > 0 ? (
-        <ScrollArea className="max-h-[600px]">
+        <ScrollArea className="max-h-[min(37.5rem,70dvh)]">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pr-2">
             {filtered.map((idea) => {
               const badge = ratingBadge[idea.inclusion_rating];
@@ -160,11 +160,11 @@ const InclusionIdeasWall = () => {
                     {toolLogos[idea.tool_name] && (
                       <img src={toolLogos[idea.tool_name]} alt={idea.tool_name} className="w-6 h-6 rounded object-contain" />
                     )}
-                    <span className={`text-[10px] px-2 py-0.5 rounded-full font-semibold capitalize ${levelBadge[idea.level] || ""}`}>
+                    <span className={`text-[0.625rem] px-2 py-0.5 rounded-full font-semibold capitalize ${levelBadge[idea.level] || ""}`}>
                       {idea.level}
                     </span>
                     {badge && (
-                      <span className={`text-[10px] px-2 py-0.5 rounded-[4px] font-semibold border ${badge.color} pill-95`}>
+                      <span className={`text-[0.625rem] px-2 py-0.5 rounded-[4px] font-semibold border ${badge.color} pill-95`}>
                         {badge.label}
                       </span>
                     )}
@@ -176,14 +176,14 @@ const InclusionIdeasWall = () => {
                   {/* Footer */}
                   <div className="flex items-center justify-between flex-wrap gap-2">
                     <div className="flex items-center gap-2 flex-wrap">
-                      <span className="text-[10px] px-2 py-0.5 rounded-[4px] bg-muted text-muted-foreground border border-border pill-95">
+                      <span className="text-[0.625rem] px-2 py-0.5 rounded-[4px] bg-muted text-muted-foreground border border-border pill-95">
                         {idea.department}
                       </span>
-                      <span className="text-[10px] text-muted-foreground/60">
+                      <span className="text-[0.625rem] text-muted-foreground/60">
                         {idea.show_name && idea.staff_name ? idea.staff_name : "Anonymous"}
                       </span>
                     </div>
-                    <span className="text-[10px] text-muted-foreground/50">
+                    <span className="text-[0.625rem] text-muted-foreground/50">
                       Shared {timeAgo(idea.created_at)}
                     </span>
                   </div>

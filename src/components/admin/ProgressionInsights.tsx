@@ -389,7 +389,7 @@ const StatCard = ({ label, value, hint }: { label: string; value: string | numbe
   <div className="rounded-lg border border-border p-3 bg-b4-wash">
     <div className="text-xs uppercase tracking-wide text-muted-foreground">{label}</div>
     <div className="text-2xl font-bold text-b4-ink mt-1">{value}</div>
-    {hint && <div className="text-[11px] text-muted-foreground mt-0.5">{hint}</div>}
+    {hint && <div className="text-[0.6875rem] text-muted-foreground mt-0.5">{hint}</div>}
   </div>
 );
 

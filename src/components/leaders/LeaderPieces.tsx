@@ -95,14 +95,14 @@ export const CardPreview = (p: {
   <div className="lb-panel lb-stitch-inset rounded-lg p-5 grid grid-cols-[1.1fr_1fr] gap-5 items-center" style={{ aspectRatio: "1.91 / 1" }}>
     <CrtMonitor tool={p.tool} intent={p.intent} implementation={p.implementation} impact={p.impact} />
     <div className="min-w-0">
-      <p className="lb-mono text-[11px] font-bold" style={{ color: "hsl(var(--lb-orange))" }}>THE ONE THING I'D TRY</p>
+      <p className="lb-mono text-[0.6875rem] font-bold" style={{ color: "hsl(var(--lb-orange))" }}>THE ONE THING I'D TRY</p>
       <div className="mt-3 flex items-center gap-3">
         <Avatar name={p.name} photo={p.photo} />
         <div className="min-w-0">
           <p className="lb-level-title">Big 4 Leader</p>
           <p className="font-display font-bold text-lg leading-tight truncate">{p.name || "Your name"}</p>
           <p className="text-sm opacity-85 truncate">{p.department || "Department"}</p>
-          {p.completed && <p className="lb-mono text-[11px] opacity-85">{completedLabel(p.completed)}</p>}
+          {p.completed && <p className="lb-mono text-[0.6875rem] opacity-85">{completedLabel(p.completed)}</p>}
         </div>
       </div>
       {p.audiences.length > 0 && (

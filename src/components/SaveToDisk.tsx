@@ -88,7 +88,7 @@ const SaveToDiskDialog = ({
 
   return (
     <div className="s2d-backdrop" role="dialog" aria-modal="true" aria-labelledby="s2d-title">
-      <FabricWindow title={title} titleId="s2d-title" onClose={saving ? undefined : onClose} className="w-full max-w-[460px]">
+      <FabricWindow title={title} titleId="s2d-title" onClose={saving ? undefined : onClose} className="w-full max-w-[28.75rem]">
         <div className={`s2d ${saving ? "is-saving" : "is-saved"}`}>
           <div className="s2d__pc" aria-hidden="true">
             <img src={fabricPc} alt="" className="s2d__pc-img" draggable={false} />

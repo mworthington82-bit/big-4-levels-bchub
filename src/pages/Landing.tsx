@@ -171,15 +171,16 @@ const Landing = () => {
       <main>
         {/* Hero: one headline, then the fabric PC (student voices) beside sign-in */}
         <section className="relative bg-b4-deep overflow-hidden">
-          <div className="relative z-10 mx-auto w-full max-w-[1440px] px-4 py-6 md:px-8 md:py-8 min-[1100px]:px-16">
+          <div className="relative z-10 mx-auto w-full max-w-[90rem] px-4 py-6 md:px-8 md:py-8 min-[1100px]:px-16">
             <div className="text-center">
               <p className="mb-3 text-xs font-semibold uppercase tracking-[0.14em] text-white/70 animate-fade-in">LDI Digital Skills Programme</p>
-              <h1 className="font-display text-5xl md:text-7xl min-[1600px]:text-8xl font-bold text-white animate-fade-in leading-[1.02] tracking-tight">
+              <h1 className="font-display text-hero font-bold text-white animate-fade-in tracking-tight">
                 The Big 4: <span className="text-b4-flame">Level Up</span>
               </h1>
             </div>
 
             <div className="mt-5 grid gap-y-5 lg:mt-6 min-[1100px]:grid-cols-[minmax(0,58fr)_minmax(0,42fr)] min-[1100px]:gap-x-24">
+              {/* Stacked (under 1100px): sign-in comes first so it is on screen at once */}
               <StudentVoicesCaption className="min-[1100px]:col-start-1" />
 
               {/* The PC, grounded on a soft orange glow */}
@@ -192,17 +193,17 @@ const Landing = () => {
                 <StudentQuoteCarousel className="relative w-full" showCaption={false} />
               </div>
 
-              <div className="w-full max-w-[560px] justify-self-center self-center rounded-3xl bg-white/[0.06] p-6 text-left ring-1 ring-white/10 sm:p-8 min-[1100px]:col-start-2 min-[1100px]:row-start-2 min-[1100px]:justify-self-stretch min-[1100px]:max-w-none animate-fade-in" style={{ animationDelay: "150ms" }}>
-                <h2 className="font-display text-[34px] sm:text-[40px] font-bold leading-[1.1] text-white">Build your digital confidence</h2>
+              <div className="w-full max-w-[35rem] justify-self-center self-center max-[1099px]:order-first rounded-3xl bg-white/[0.06] p-6 text-left ring-1 ring-white/10 sm:p-8 min-[1100px]:col-start-2 min-[1100px]:row-start-2 min-[1100px]:justify-self-stretch min-[1100px]:max-w-none animate-fade-in" style={{ animationDelay: "150ms" }}>
+                <h2 className="font-display text-[2.125rem] sm:text-[2.5rem] font-bold leading-[1.1] text-white">Build your digital confidence</h2>
                 <p className="mt-3 text-lg leading-[1.6] text-white/85">
                   Four tools you use every day, learned at your own level, with training sessions and support from the LDI team.
                 </p>
 
-                <ul className="mt-4 grid grid-cols-2 gap-2.5">
+                <ul className="b4-hero-apps mt-4 grid grid-cols-2 gap-2.5">
                   {heroApps.map((app) => (
                     <li key={app.name} className="flex items-center gap-3 rounded-xl border border-white/15 bg-white/[0.04] p-3 text-white">
                       <img src={app.logo} alt="" className="h-8 w-8 shrink-0 rounded-lg bg-white p-1 object-contain" />
-                      <span className="text-[17px] font-semibold leading-tight">{app.name}</span>
+                      <span className="text-[1.0625rem] font-semibold leading-tight">{app.name}</span>
                     </li>
                   ))}
                 </ul>
@@ -212,7 +213,7 @@ const Landing = () => {
                     <button
                       onClick={handleSignIn}
                       disabled={signingIn}
-                      className="inline-flex h-12 w-full items-center justify-center rounded-[4px] bg-b4-flame px-8 text-[17px] font-bold text-b4-on-flame transition-colors hover:bg-b4-flame/90 disabled:opacity-60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white pill-95 pill-95--press"
+                      className="inline-flex h-12 w-full items-center justify-center rounded-[4px] bg-b4-flame px-8 text-[1.0625rem] font-bold text-b4-on-flame transition-colors hover:bg-b4-flame/90 disabled:opacity-60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white pill-95 pill-95--press"
                     >
                       {signingIn ? "Redirecting…" : "Sign in with Microsoft"}
                     </button>
@@ -220,7 +221,7 @@ const Landing = () => {
                       href="https://bradfordcollege-handsmisconducttraining.my.canva.site/final-24-03the-big-4-tools"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex h-12 w-full items-center justify-center rounded-[4px] border-2 border-white/40 px-8 text-[17px] font-bold text-white transition-colors hover:border-white/60 hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white pill-95 pill-95--press"
+                      className="inline-flex h-12 w-full items-center justify-center rounded-[4px] border-2 border-white/40 px-8 text-[1.0625rem] font-bold text-white transition-colors hover:border-white/60 hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white pill-95 pill-95--press"
                     >
                       Take the self-assessment
                     </a>
@@ -238,7 +239,7 @@ const Landing = () => {
                     href="https://bradfordcollege-handsmisconducttraining.my.canva.site/final-24-03the-big-4-tools"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex h-12 w-full items-center justify-center rounded-[4px] bg-b4-flame px-8 text-[17px] font-bold text-b4-on-flame transition-colors hover:bg-b4-flame/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white pill-95 pill-95--press"
+                    className="inline-flex h-12 w-full items-center justify-center rounded-[4px] bg-b4-flame px-8 text-[1.0625rem] font-bold text-b4-on-flame transition-colors hover:bg-b4-flame/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white pill-95 pill-95--press"
                   >
                     Take the self-assessment
                   </a>
@@ -257,13 +258,13 @@ const Landing = () => {
                       <>
                         <button
                           onClick={() => navigate("/new/journey")}
-                          className="inline-flex h-12 items-center justify-center px-8 rounded-[4px] bg-b4-flame text-b4-on-flame font-bold text-[17px] hover:bg-b4-flame/90 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white w-full pill-95 pill-95--press"
+                          className="inline-flex h-12 items-center justify-center px-8 rounded-[4px] bg-b4-flame text-b4-on-flame font-bold text-[1.0625rem] hover:bg-b4-flame/90 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white w-full pill-95 pill-95--press"
                         >
                           Go to My Journey
                         </button>
                         <button
                           onClick={() => navigate("/planner")}
-                          className="inline-flex h-12 items-center justify-center px-8 rounded-[4px] bg-transparent text-white font-bold text-[17px] border-2 border-white/40 hover:bg-white/10 hover:border-white/60 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white w-full pill-95 pill-95--press"
+                          className="inline-flex h-12 items-center justify-center px-8 rounded-[4px] bg-transparent text-white font-bold text-[1.0625rem] border-2 border-white/40 hover:bg-white/10 hover:border-white/60 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white w-full pill-95 pill-95--press"
                         >
                           Open Activity Planner
                         </button>
@@ -271,7 +272,7 @@ const Landing = () => {
                     ) : (
                       <button
                         onClick={() => weaveTo("/bookings", "Opening Book Training…")}
-                        className="inline-flex h-12 items-center justify-center px-8 rounded-[4px] bg-b4-flame text-b4-on-flame font-bold text-[17px] hover:bg-b4-flame/90 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white w-full pill-95 pill-95--press"
+                        className="inline-flex h-12 items-center justify-center px-8 rounded-[4px] bg-b4-flame text-b4-on-flame font-bold text-[1.0625rem] hover:bg-b4-flame/90 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white w-full pill-95 pill-95--press"
                       >
                         Go to my bookings
                       </button>
@@ -285,7 +286,7 @@ const Landing = () => {
         </section>
 
         {/* Below the hero: the four tools, then how it works */}
-        <div className="container mx-auto max-w-6xl px-4 py-12 md:py-16 space-y-16">
+        <div className="container mx-auto max-w-6xl px-4 py-section space-y-16">
           <ToolsSection />
           <SignOffSteps />
         </div>

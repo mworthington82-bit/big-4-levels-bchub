@@ -75,7 +75,7 @@ export const ToolsSection = () => (
         <li key={t.name} className="flex flex-col items-center">
           {/* The disk: name printed on the red band, the line written on the stitched label */}
           <FabricFloppy title={t.name} line={t.line} logo={t.logo} tilt={[-2, 1.5, -1, 2][i]} />
-          <details className="group mt-4 w-full max-w-[300px] rounded-[4px] bg-b4-deep px-4 py-3 text-white pill-95 pill-95--press">
+          <details className="group mt-4 w-full max-w-[18.75rem] rounded-[4px] bg-b4-deep px-4 py-3 text-white pill-95 pill-95--press">
             <summary className="flex min-h-[40px] cursor-pointer list-none items-center justify-between font-semibold text-white">
               What you'll learn
               <span className="text-xl leading-none transition-transform group-open:rotate-45" aria-hidden="true">+</span>
