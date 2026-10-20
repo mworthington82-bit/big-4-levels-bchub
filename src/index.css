@@ -896,3 +896,43 @@ html[data-reduce-motion] .pill-95--press:hover, html[data-reduce-motion] .pill-9
   main > section > div.z-10 { padding-top: 0.5rem; padding-bottom: 0.75rem; }
   header > div.container { padding-top: 0.5rem; padding-bottom: 0.5rem; }
 }
+
+/* =====================================================================
+   PHONE LOOK PASS (2026-10-20): flat grounds, nothing overlapping,
+   dialogs that fit, text that can be read. Every rule below is inside the
+   phone query (or a strict subset of it), so laptops, desktops and TVs are
+   untouched. To undo: delete this block (and the inert b4-modhero hooks).
+   ===================================================================== */
+@media screen and (max-width: 900px), screen and (max-height: 500px) and (pointer: coarse) {
+  /* Flat ground: the woven linen sits behind every line of text, so on phones the page,
+     header and footer are one calm apricot (same colour, no weave) */
+  body, .tw-cloth { background-image: none; }
+
+  /* Dialogs: one column that can shrink, so a nowrap button cannot push the card
+     wider than the screen (Confirm Level was cut off at the right edge) */
+  [role="dialog"][data-state="open"], [role="alertdialog"][data-state="open"] { grid-template-columns: minmax(0, 1fr); }
+  [role="dialog"] button.h-auto, [role="alertdialog"] button.h-auto { white-space: normal; text-align: left; }
+
+  /* No blur or glass effects */
+  [class*="backdrop-blur"] { -webkit-backdrop-filter: none !important; backdrop-filter: none !important; }
+
+  /* Cookie notice flows into the page (top of the page, scrolls away) instead of sitting
+     over the Sign in button and the content */
+  [aria-label="Cookie notice"] {
+    position: relative !important; inset: auto !important; z-index: auto !important;
+    margin: 0.5rem 0.75rem 0; box-shadow: none !important;
+  }
+
+  /* Floating Activity Planner button: it sat over cards and buttons on every page.
+     The menu, My Journey and Resources all link to the planner. */
+  button[aria-label="Open Activity Planner"] { display: none !important; }
+
+  /* text-accent is a very pale peach in the light theme: icons, tool names and links
+     vanished on the cream cards. On phones it takes the readable orange text colour. */
+  .text-accent { color: hsl(var(--b4-flame-text)); }
+
+  /* Footer: inline links keep the line height of the sentence around them */
+  footer p a { display: inline; min-height: 0; padding: 0.35rem 0; }
+  footer p { line-height: 1.6; }
+
+}
