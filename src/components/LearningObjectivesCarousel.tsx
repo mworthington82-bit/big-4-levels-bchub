@@ -1,5 +1,6 @@
 import { CheckCircle } from 'lucide-react';
 import { Tool, Level } from '@/types/learning';
+import { usePhone } from '@/hooks/usePhone';
 import { learningObjectives } from '@/data/learningObjectives';
 import {
   Tooltip,
@@ -14,6 +15,7 @@ interface LearningObjectivesCarouselProps {
 }
 
 const LearningObjectivesCarousel = ({ tool, level }: LearningObjectivesCarouselProps) => {
+  const phone = usePhone();
   // Get relevant objectives for this tool
   const allLevelObjectives = learningObjectives[level] || [];
   
@@ -34,6 +36,33 @@ const LearningObjectivesCarousel = ({ tool, level }: LearningObjectivesCarouselP
       toolName: toolObj.toolName
     }))
   );
+
+  // Phones and small tablets cannot hover: show every objective and its
+  // description as plain text instead of a strip with tooltips.
+  if (phone) {
+    return (
+      <div className="mb-4">
+        <p className="mb-2 text-sm font-semibold text-muted-foreground">What You'll Learn</p>
+        <ul className="m-0 flex list-none flex-col gap-2 p-0">
+          {allObjectives.map((objective) => (
+            <li key={objective.id} className="flex items-start gap-2 rounded-[4px] border border-accent/20 bg-accent/5 p-3">
+              <CheckCircle className="mt-0.5 h-4 w-4 flex-shrink-0 text-accent" aria-hidden="true" />
+              <div className="min-w-0">
+                <p className="text-base font-semibold text-card-foreground">
+                  {objective.icon && <span className="mr-1">{objective.icon}</span>}
+                  {objective.text}
+                </p>
+                {objective.description && (
+                  <p className="mt-1 text-sm text-muted-foreground">{objective.description}</p>
+                )}
+                <p className="mt-1 text-sm italic text-accent">{objective.toolName}</p>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
+    );
+  }
 
   return (
     <TooltipProvider delayDuration={200}>

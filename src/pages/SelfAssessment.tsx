@@ -7,9 +7,11 @@ import { useNavigate } from "react-router-dom";
 import NavigationButtons from "@/components/NavigationButtons";
 import AssessmentIntroDialog from "@/components/dialogs/AssessmentIntroDialog";
 import flairImage from "@/assets/self-assessment-flair.png";
+import { usePhone } from "@/hooks/usePhone";
 
 const SelfAssessment = () => {
   const navigate = useNavigate();
+  const phone = usePhone();
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -28,6 +30,14 @@ const SelfAssessment = () => {
             alt="Welcome to The Big 4 Self Assessment — instructions: click the link below, add your name and email, complete all questions honestly, and click Submit at the end."
             className="w-full h-auto rounded-xl shadow-[var(--shadow-card)]"
           />
+          {phone && (
+            <ol className="mt-6 list-decimal space-y-2 pl-6 text-base text-foreground">
+              <li>Tap the big button below to open the self-assessment.</li>
+              <li>Add your name and email.</li>
+              <li>Answer every question honestly.</li>
+              <li>Tap <strong>Submit</strong> at the end.</li>
+            </ol>
+          )}
           <div className="mt-6 text-center">
             <p className="text-lg md:text-xl font-semibold text-foreground">
               To start your Self-Assessment,{" "}
@@ -71,6 +81,26 @@ const SelfAssessment = () => {
               </CardDescription>
             </CardHeader>
             <CardContent>
+              {phone && (
+                <div className="b4-sa-phone text-center">
+                  <p className="mb-4 text-base text-foreground">
+                    The self-assessment opens on its own page so you can read it and fill it in comfortably.
+                  </p>
+                  <a
+                    href="https://bradfordcollege-handsmisconducttraining.my.canva.site/final-24-03the-big-4-tools"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex min-h-[56px] w-full items-center justify-center gap-2 rounded-[4px] bg-b4-flame px-6 py-3 text-lg font-bold text-b4-on-flame hover:bg-b4-flame/90 pill-95 pill-95--press"
+                  >
+                    <ExternalLink className="h-5 w-5 shrink-0" aria-hidden="true" />
+                    Open the self-assessment
+                  </a>
+                  <p className="mt-3 text-sm text-muted-foreground">
+                    It opens in a new tab. When you have pressed Submit, come back to this tab to carry on.
+                  </p>
+                </div>
+              )}
+              {!phone && (<>
               {/* 16:9 embed, never taller than the screen below the header:
                   on short screens it narrows instead (height-aware) */}
               <div 
@@ -110,6 +140,7 @@ const SelfAssessment = () => {
                   Please return to this page after completing the assessment to continue your training.
                 </p>
               </div>
+              </>)}
             </CardContent>
           </Card>
         </div>

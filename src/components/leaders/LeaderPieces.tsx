@@ -5,6 +5,7 @@ import { toolShort, BOARD_URL_TEXT, LEADER_TOOLS, completedLabel, cardFilename }
 import { getInitials } from "@/pages/Profile";
 
 import fabricFloppy from "@/assets/art/fabric-floppy.webp";
+import { isPhoneNow } from "@/hooks/usePhone";
 
 /** Fabric floppy (same Canva render as the homepage). As a link when href is given. */
 export const Floppy = ({
@@ -201,7 +202,7 @@ export const DownloadCardButton = ({ card, className }: { card: DownloadCardProp
       const imgs = Array.from(ref.current.querySelectorAll("img"));
       await Promise.all(imgs.map((i) => (i.complete && i.naturalWidth ? Promise.resolve() : new Promise((r) => { i.onload = r; i.onerror = r; }))));
       await Promise.all(imgs.map((i) => i.decode?.().catch(() => undefined)));
-      const opts = { pixelRatio: 2, width: 1080, height: 1350, cacheBust: false };
+      const opts = { pixelRatio: isPhoneNow() ? 1 : 2, width: 1080, height: 1350, cacheBust: false };
       await toPng(ref.current, opts); // warm-up pass so fonts/images are embedded
       const url = await toPng(ref.current, opts);
       const a = document.createElement("a");
