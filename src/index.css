@@ -970,4 +970,15 @@ html[data-reduce-motion] .pill-95--press:hover, html[data-reduce-motion] .pill-9
   main [class~="text-[#0078D4]"] { color: #0a63ad; }
   .b4-flipcard span[class*="text-muted-foreground/60"] { color: hsl(var(--muted-foreground)); }
 
+  /* Self-assessment: the picture of instructions is unreadable at phone size; the numbered list says the same */
+  img[src*="self-assessment-flair"] { display: none; }
+
+  /* Landing: no glow behind the PC */
+  [aria-hidden="true"].pointer-events-none[style*="radial-gradient"] { display: none; }
+
+  /* Cheat-sheet floppy disks: smaller, so five of them are not 2000px of scrolling */
+  .b4-cheat-grid > * { max-width: 15rem !important; }
+
+  /* Training lesson cards: tighter padding so nested boxes keep a readable line length */
+  main .rounded-3xl > div { padding-left: 1rem; padding-right: 1rem; }
 }

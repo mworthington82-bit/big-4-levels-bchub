@@ -2,6 +2,7 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { IconPlayerPause, IconPlayerPlay } from "@tabler/icons-react";
 import fabricPc from "@/assets/art/fabric-pc.webp";
+import { isPhoneNow } from "@/hooks/usePhone";
 
 const quotes = [
   "Technology makes learning more engaging and practical. Digital skills help us collaborate, stay organised and build skills we'll actually use in the future.",
@@ -86,7 +87,8 @@ const StudentQuoteCarousel = ({ className = "max-w-[40rem] mx-auto mt-8", showCa
     const reduce =
       document.documentElement.hasAttribute("data-reduce-motion") ||
       window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
-    if (reduce) setPaused(true);
+    // Phones start paused: a calm still screen, and a button to play the quotes.
+    if (reduce || isPhoneNow()) setPaused(true);
   }, []);
 
   return (
