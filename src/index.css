@@ -935,4 +935,39 @@ html[data-reduce-motion] .pill-95--press:hover, html[data-reduce-motion] .pill-9
   footer p a { display: inline; min-height: 0; padding: 0.35rem 0; }
   footer p { line-height: 1.6; }
 
+  /* Training module banner: flat colour, readable keyword, less height */
+  .b4-modhero__deco { display: none; }
+  .b4-modhero__gold { color: #fff !important; }
+  .b4-modhero__pad { padding-top: 1.25rem; padding-bottom: 1.25rem; }
+  .b4-modhero h2 { margin-bottom: 0.75rem; }
+  .b4-modhero p { color: #fff; }
+
+  /* Flip cards: flat dark colours so the white text passes contrast */
+  .b4-flipcard [class*="bg-gradient-to-br"] { background-image: none; }
+  .b4-flip-row > div:nth-child(6n+1) .b4-flipcard [class*="bg-gradient-to-br"] { background-color: #1d4ed8; }
+  .b4-flip-row > div:nth-child(6n+2) .b4-flipcard [class*="bg-gradient-to-br"] { background-color: #047857; }
+  .b4-flip-row > div:nth-child(6n+3) .b4-flipcard [class*="bg-gradient-to-br"] { background-color: #6d28d9; }
+  .b4-flip-row > div:nth-child(6n+4) .b4-flipcard [class*="bg-gradient-to-br"] { background-color: #b45309; }
+  .b4-flip-row > div:nth-child(6n+5) .b4-flipcard [class*="bg-gradient-to-br"] { background-color: #be123c; }
+  .b4-flip-row > div:nth-child(6n+6) .b4-flipcard [class*="bg-gradient-to-br"] { background-color: #0e7490; }
+  .b4-flipcard [class*="bg-gradient-to-br"] span { opacity: 1 !important; }
+
+  /* Edpuzzle sky blue is too light for white text or a label on cream */
+  .b4-toolcard__cta button[class*="1DA1F2"] { background-color: #0b6fb3; }
+  main [class~="text-[#1DA1F2]"] { color: #0b6fb3; }
+
+  /* Tool cards, Learning Summary and Immersive Learning: the title row may wrap its badge */
+  main div.flex.items-center.gap-3.mb-1:has(> h3) { flex-wrap: wrap; row-gap: 0.25rem; }
+  main .rounded-2xl > div.flex.items-center.gap-4.md\:gap-6.p-6 { padding: 1rem; }
+
+  /* Activity planner header: flat dark panel, not a dark-to-orange gradient under white text */
+  [class*="from-b4-deep"][class*="bg-gradient-to-br"] { background-image: none; background-color: hsl(var(--b4-deep)); }
+
+  /* Pale gold labels ("0/4 modules complete", "Beginner") and faint helper text on cards */
+  main span[class*="text-[#B8860B]"] { color: hsl(17 89% 28%); }
+  main span.bg-rose-200.text-rose-700 { color: #9f1239; }
+  .b4-toolcard p[class*="text-muted-foreground/70"] { color: hsl(var(--muted-foreground)); }
+  main [class~="text-[#0078D4]"] { color: #0a63ad; }
+  .b4-flipcard span[class*="text-muted-foreground/60"] { color: hsl(var(--muted-foreground)); }
+
 }

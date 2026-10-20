@@ -41,14 +41,14 @@ const ModuleHeroBanner = ({ tool, level, brandColor, duration = '~15 min' }: Mod
 
   return (
     <div
-      className="relative rounded-2xl overflow-hidden mb-6"
+      className="b4-modhero relative rounded-2xl overflow-hidden mb-6"
       style={{ backgroundColor: brandColor }}
     >
       {/* Decorative circles */}
-      <div className="absolute top-[-40px] right-[-40px] w-40 h-40 rounded-full bg-white/[0.06]" />
-      <div className="absolute bottom-[-30px] left-[20%] w-28 h-28 rounded-full bg-white/[0.04]" />
+      <div className="b4-modhero__deco absolute top-[-40px] right-[-40px] w-40 h-40 rounded-full bg-white/[0.06]" />
+      <div className="b4-modhero__deco absolute bottom-[-30px] left-[20%] w-28 h-28 rounded-full bg-white/[0.04]" />
 
-      <div className="relative z-10 flex items-center justify-between px-6 md:px-10 py-8 md:py-10">
+      <div className="b4-modhero__pad relative z-10 flex items-center justify-between px-6 md:px-10 py-8 md:py-10">
         {/* Left content */}
         <div className="flex-1 min-w-0">
           {/* Eyebrow */}
@@ -59,7 +59,7 @@ const ModuleHeroBanner = ({ tool, level, brandColor, duration = '~15 min' }: Mod
           {/* Heading with gold keyword */}
           <h2 className="font-display text-3xl md:text-4xl font-bold text-white mb-4">
             {names.rest && <>{names.rest}</>}
-            <span style={{ color: 'hsl(var(--b4-flame))' }}>{names.goldWord}</span>
+            <span className="b4-modhero__gold" style={{ color: 'hsl(var(--b4-flame))' }}>{names.goldWord}</span>
           </h2>
 
           {/* Info chips */}
