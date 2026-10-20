@@ -150,7 +150,7 @@ const AppShell = ({ children }: { children: React.ReactNode }) => {
         )}
 
         {mobileOpen && (
-          <nav className="lg:hidden border-t border-border px-4 pb-3 pt-2 flex flex-col gap-1">
+          <nav className="b4-mobile-nav lg:hidden border-t border-border px-4 pb-3 pt-2 flex flex-col gap-1">
             {NAV_ITEMS.map((item) => (
               <NavLink
                 key={item.to}
@@ -184,6 +184,13 @@ const AppShell = ({ children }: { children: React.ReactNode }) => {
               className="inline-flex items-center gap-2 px-4 min-h-[44px] rounded-[4px] text-sm font-semibold text-b4-muted hover:text-b4-strong hover:bg-muted pill-95"
             >
               <LogOut className="w-4 h-4" /> Sign out
+            </button>
+            <button
+              type="button"
+              onClick={() => setMobileOpen(false)}
+              className="b4-mobile-nav__close hidden items-center justify-center gap-2 px-4 min-h-[44px] rounded-[4px] text-sm font-semibold bg-b4-wash border border-b4-line text-b4-strong pill-95"
+            >
+              Close menu
             </button>
           </nav>
         )}

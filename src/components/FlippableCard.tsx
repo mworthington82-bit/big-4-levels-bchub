@@ -23,7 +23,7 @@ const FlippableCard = ({ title, content, index, brandColor, isFlipped, onFlip }:
 
   return (
     <div
-      className="w-[280px] h-[220px] flex-shrink-0 cursor-pointer"
+      className="b4-flipcard w-[280px] h-[220px] flex-shrink-0 cursor-pointer"
       style={{ perspective: '1000px' }}
       onClick={onFlip}
     >

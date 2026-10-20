@@ -297,7 +297,7 @@ const Resources = () => {
       {/* Two-part banner: progress + Big 4 Day */}
       <div className="border-b border-border bg-card">
         <div className="container mx-auto px-4">
-          <div className="grid w-full overflow-hidden" style={{ gridTemplateColumns: "minmax(0,70fr) minmax(0,30fr)" }}>
+          <div className="b4-banner-grid grid w-full overflow-hidden" style={{ gridTemplateColumns: "minmax(0,70fr) minmax(0,30fr)" }}>
             <button
               onClick={() => navigate('/journey')}
               className="text-left flex items-stretch min-h-[48px] hover:bg-muted/30 transition"
@@ -524,7 +524,7 @@ const Resources = () => {
                 </p>
               </div>
               {/* Each cheat sheet is a fabric floppy disk: click to save the one-page PDF */}
-              <div className="grid grid-cols-2 gap-x-4 gap-y-6 sm:grid-cols-3 lg:grid-cols-5">
+              <div className="b4-cheat-grid grid grid-cols-2 gap-x-4 gap-y-6 sm:grid-cols-3 lg:grid-cols-5">
                 {[
                   { id: 'teams', name: 'MS Teams', logo: teamsLogo },
                   { id: 'forms', name: 'MS Forms', logo: formsLogo },

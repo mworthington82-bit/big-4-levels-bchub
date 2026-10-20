@@ -16,7 +16,7 @@ const ProgressTracker = ({ currentStep, steps, onStepClick, brandColor = 'hsl(va
   };
 
   return (
-    <div className="w-full py-4 overflow-x-auto scrollbar-hide">
+    <div className="b4-progress w-full py-4 overflow-x-auto scrollbar-hide">
       <div className="flex items-center justify-between min-w-[500px]">
         {steps.map((step, index) => {
           const isClickable = index <= currentStep && onStepClick;
@@ -77,7 +77,7 @@ const ProgressTracker = ({ currentStep, steps, onStepClick, brandColor = 'hsl(va
               {index < steps.length - 1 && (
                 <div
                   className={cn(
-                    "h-0.5 flex-1 mx-2",
+                    "b4-progress__line h-0.5 flex-1 mx-2",
                     isCompleted ? "bg-[#1DA462]" : "bg-muted"
                   )}
                 />

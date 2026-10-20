@@ -1062,7 +1062,7 @@ const Training = () => {
                   <p className="text-sm text-[#52526E] mb-4 italic">
                     Tap each card to reveal the example. You must flip all cards before continuing.
                   </p>
-                  <div className="flex gap-4 overflow-x-auto pb-4 -mx-2 px-2 snap-x snap-mandatory">
+                  <div className="b4-flip-row flex gap-4 overflow-x-auto pb-4 -mx-2 px-2 snap-x snap-mandatory">
                     {pathway.mainContent.examples.map((example, index) => {
                       const colonIndex = example.indexOf(':');
                       const title = colonIndex > -1 ? example.substring(0, colonIndex) : `Example ${index + 1}`;

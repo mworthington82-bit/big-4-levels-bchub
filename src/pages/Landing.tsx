@@ -179,7 +179,7 @@ const Landing = () => {
               </h1>
             </div>
 
-            <div className="mt-5 grid gap-y-5 lg:mt-6 min-[1100px]:grid-cols-[minmax(0,58fr)_minmax(0,42fr)] min-[1100px]:gap-x-24">
+            <div className="b4-hero-grid mt-5 grid gap-y-5 lg:mt-6 min-[1100px]:grid-cols-[minmax(0,58fr)_minmax(0,42fr)] min-[1100px]:gap-x-24">
               {/* Stacked (under 1100px): sign-in comes first so it is on screen at once */}
               <StudentVoicesCaption className="min-[1100px]:col-start-1" />
 
@@ -193,7 +193,7 @@ const Landing = () => {
                 <StudentQuoteCarousel className="relative w-full" showCaption={false} />
               </div>
 
-              <div className="w-full max-w-[35rem] justify-self-center self-center max-[1099px]:order-first rounded-3xl bg-white/[0.06] p-6 text-left ring-1 ring-white/10 sm:p-8 min-[1100px]:col-start-2 min-[1100px]:row-start-2 min-[1100px]:justify-self-stretch min-[1100px]:max-w-none animate-fade-in" style={{ animationDelay: "150ms" }}>
+              <div className="b4-hero-card w-full max-w-[35rem] justify-self-center self-center max-[1099px]:order-first rounded-3xl bg-white/[0.06] p-6 text-left ring-1 ring-white/10 sm:p-8 min-[1100px]:col-start-2 min-[1100px]:row-start-2 min-[1100px]:justify-self-stretch min-[1100px]:max-w-none animate-fade-in" style={{ animationDelay: "150ms" }}>
                 <h2 className="font-display text-[2.125rem] sm:text-[2.5rem] font-bold leading-[1.1] text-white">Build your digital confidence</h2>
                 <p className="mt-3 text-lg leading-[1.6] text-white/85">
                   Four tools you use every day, learned at your own level, with training sessions and support from the LDI team.

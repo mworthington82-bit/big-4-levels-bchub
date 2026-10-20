@@ -767,3 +767,132 @@ html[data-reduce-motion] .pill-95--press:hover, html[data-reduce-motion] .pill-9
 .stitch-close--sm { width: 22px; height: 22px; margin-left: 2px; }
 .fw__close { padding: 0; }
 @media (prefers-reduced-motion: reduce) { .stitch-close:active { transform: none; } }
+
+/* =====================================================================
+   PHONE LAYOUT (phones, small tablets up to 900px, phones turned sideways)
+   Appended last on purpose. Everything here is inside the phone query, so
+   laptops, desktops and TVs are not affected at all. Screen only, so
+   nothing leaks into print. Values that live in inline styles or fixed
+   utility classes are overridden with !important inside the query.
+   ===================================================================== */
+
+/* ---- Forms, taps, small text, dialogs ---- */
+@media screen and (max-width: 900px), screen and (max-height: 500px) and (pointer: coarse) {
+  /* 16px fields so iPhones do not zoom in on focus */
+  textarea,
+  select,
+  input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]) { font-size: 16px !important; }
+  textarea { min-height: 9rem; }
+
+  /* 44px tap targets */
+  summary, select, main input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),
+  main button:not([role="switch"]):not([role="checkbox"]):not([role="radio"]),
+  main [role="button"], main a[class*="inline-flex"], header button,
+  .stitch-close { min-height: 44px !important; }
+  header button { min-width: 44px; }
+  header button[aria-label="Sign out"] { min-width: 44px !important; }
+  header button[aria-label="Open profile"] { width: 44px !important; height: 44px !important; }
+  a[href="/voices"] { display: inline-flex; align-items: center; min-height: 44px; }
+  .b4-progress button { min-width: 44px !important; width: 44px !important; height: 44px !important; }
+  .stitch-close { min-width: 44px; width: 44px; height: 44px; }
+  .stitch-close--sm { min-width: 0; width: 22px; height: 22px; min-height: 0 !important; }
+  footer a { display: inline-flex; align-items: center; min-height: 44px; }
+
+  /* nothing under 12px */
+  [class*="text-[0.6875rem]"], [class*="text-[0.625rem]"], [class*="text-[10px]"], [class*="text-[11px]"] { font-size: 0.75rem !important; }
+
+  /* dialogs: fit the visible screen (dvh), scroll inside themselves, keep a close button in reach */
+  [role="dialog"][data-state="open"], [role="alertdialog"][data-state="open"] { max-height: calc(100dvh - 2rem) !important; }
+  [role="dialog"][data-state="open"] > .stitch-close {
+    position: sticky !important; top: 0.5rem; right: auto; justify-self: end; order: -1; grid-row: 1;
+    margin: 0 0 -44px; z-index: 5;
+  }
+  [aria-labelledby="welcome-modal-heading"] > div { max-height: 92dvh !important; }
+  [aria-labelledby="welcome-modal-heading"] [style*="px 40px"] { padding-left: 20px !important; padding-right: 20px !important; }
+  [aria-labelledby="welcome-modal-heading"] [style*="font-size: 28px"] { font-size: 22px !important; }
+
+  /* cookie notice: smaller, and it steps aside while a dialog is open */
+  [aria-label="Cookie notice"] { padding: 0.75rem !important; bottom: max(0.5rem, env(safe-area-inset-bottom)) !important; }
+  [aria-label="Cookie notice"] p { font-size: 0.8125rem; line-height: 1.4; }
+  [aria-label="Cookie notice"] button { min-height: 44px; }
+  body[style*="pointer-events: none"] [aria-label="Cookie notice"] { display: none; }
+
+  /* floating Activity Planner button: a compact round button (the menu has the full label) */
+  button[aria-label="Open Activity Planner"] {
+    font-size: 0 !important; gap: 0 !important; justify-content: center;
+    width: 48px; height: 48px; min-height: 48px; padding: 0 !important; border-radius: 9999px !important;
+    bottom: max(1rem, env(safe-area-inset-bottom)) !important; right: max(1rem, env(safe-area-inset-right)) !important;
+  }
+  button[aria-label="Open Activity Planner"] svg { width: 1.25rem; height: 1.25rem; }
+
+  /* open menu: scrolls inside itself and always ends in a Close button */
+  .b4-mobile-nav { max-height: calc(100dvh - 8rem); min-height: 0; overflow-y: auto; overscroll-behavior: contain; }
+  .b4-mobile-nav .b4-mobile-nav__close { display: inline-flex !important; position: sticky; bottom: 0; margin-top: 0.25rem; }
+
+  /* Tools: module cards stack so the module name is readable */
+  .b4-toolcard { display: grid; grid-template-columns: 6px 3.5rem minmax(0, 1fr); align-items: center; }
+  .b4-toolcard > :first-child { grid-row: 1 / span 2; align-self: stretch; }
+  .b4-toolcard > :nth-child(2) { grid-column: 2; grid-row: 1; }
+  .b4-toolcard__body { grid-column: 3; grid-row: 1; padding-right: 1rem; }
+  .b4-toolcard__title { white-space: normal; overflow: visible; text-overflow: clip; }
+  .b4-toolcard__body p.line-clamp-1 { display: block; overflow: visible; -webkit-line-clamp: unset; }
+  .b4-toolcard__cta { grid-column: 2 / -1; grid-row: 2; padding: 0 1rem 1rem 0; }
+  .b4-toolcard__cta > * { width: 100%; justify-content: center; }
+
+  /* Training: flip cards stack, no sideways scrolling */
+  .b4-flip-row { flex-direction: column; align-items: center; overflow: visible; margin-left: 0; margin-right: 0; padding-left: 0; padding-right: 0; }
+  .b4-flip-row > div { width: 100%; max-width: 22rem; }
+  .b4-flipcard { width: 100% !important; height: auto !important; min-height: 220px; }
+  .b4-flipcard > div { display: grid; height: auto !important; min-height: 220px; }
+  .b4-flipcard > div > div { position: relative !important; inset: auto !important; grid-area: 1 / 1; overflow: visible !important; }
+  .b4-progress { overflow: visible; }
+  .b4-progress [class*="min-w-[500px]"] { min-width: 0 !important; }
+  .b4-progress__line { margin-left: 2px; margin-right: 2px; }
+  .b4-step-nav { flex-wrap: wrap; overflow: visible; }
+
+  /* Ideas walls: the cards flow with the page, no scroll box inside the page */
+  [class*="max-h-[min(37.5rem,70dvh)]"], [class*="max-h-[min(40rem,70dvh)]"] { max-height: none !important; overflow: visible !important; }
+  [class*="max-h-[min(37.5rem,70dvh)]"] > [data-radix-scroll-area-viewport], [class*="max-h-[min(40rem,70dvh)]"] > [data-radix-scroll-area-viewport] { overflow: visible !important; height: auto !important; max-height: none !important; }
+
+  /* Resources: long titles wrap instead of being cut off */
+  span.truncate[class*="text-[0.875rem]"] { white-space: normal; overflow: visible; text-overflow: clip; }
+}
+
+/* ---- Narrow phones: stack side-by-side parts ---- */
+@media screen and (max-width: 639px) {
+  .b4-banner-grid { grid-template-columns: minmax(0, 1fr) !important; }
+}
+@media screen and (max-width: 599px) {
+  .b4-cheat-grid { grid-template-columns: minmax(0, 1fr) !important; }
+  .b4-cheat-grid > * { max-width: 22rem; margin-left: auto; margin-right: auto; }
+}
+@media screen and (min-width: 600px) and (max-width: 900px) {
+  .b4-cheat-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+}
+
+/* ---- Phones turned sideways: short screens ---- */
+@media screen and (max-height: 500px) and (pointer: coarse) {
+  .b4-header { position: static !important; }
+  .b4-hero-apps { display: none; }
+  .student-pc { max-width: min(100%, 60dvh); }
+  [aria-label="Cookie notice"] { display: flex; align-items: center; gap: 0.75rem; }
+  [aria-label="Cookie notice"] > div { margin-top: 0; flex-shrink: 0; }
+}
+
+/* ---- Short phone screens (sideways): the open menu leaves room for the page ---- */
+@media screen and (max-width: 900px) and (max-height: 500px), screen and (max-height: 500px) and (pointer: coarse) {
+  .b4-mobile-nav { max-height: calc(100dvh - 12rem); }
+}
+
+/* ---- Landing on a phone turned sideways: sign-in beside the picture, so it is on screen at once ---- */
+@media screen and (max-height: 500px) and (pointer: coarse) {
+  .b4-hero-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: 1.25rem; align-items: center; }
+  .b4-hero-grid > * { grid-column: 1; }
+  .b4-hero-grid > .b4-hero-card { grid-column: 2; grid-row: 1 / span 2; order: 0; max-width: none; padding: 1rem; }
+  .b4-hero-card h2 { font-size: 1.5rem; }
+  .b4-hero-card > p.text-lg { display: none; }
+  .b4-hero-card .mt-4 { margin-top: 0.75rem; }
+  main > section h1 { font-size: 1.75rem; }
+  main > section > div.z-10 { padding-top: 0.5rem; padding-bottom: 0.75rem; }
+  header > div.container { padding-top: 0.5rem; padding-bottom: 0.5rem; }
+}

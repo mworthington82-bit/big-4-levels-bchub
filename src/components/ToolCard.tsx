@@ -48,7 +48,7 @@ const ToolCard = ({
 
   return (
     <div
-      className="group flex items-center gap-4 md:gap-6 bg-card rounded-2xl border border-border shadow-sm hover:shadow-[var(--shadow-hover)] transition-all duration-300 cursor-pointer overflow-hidden"
+      className="b4-toolcard group flex items-center gap-4 md:gap-6 bg-card rounded-2xl border border-border shadow-sm hover:shadow-[var(--shadow-hover)] transition-all duration-300 cursor-pointer overflow-hidden"
       onClick={onSelect}
     >
       {/* Colored left stripe */}
@@ -62,17 +62,17 @@ const ToolCard = ({
       </div>
 
       {/* Content */}
-      <div className="flex-1 py-4 min-w-0">
+      <div className="b4-toolcard__body flex-1 py-4 min-w-0">
         <p className={`text-xs font-semibold uppercase tracking-wider ${colors.text} mb-1`}>
           Module {moduleNum}
         </p>
-        <h3 className="font-display text-lg md:text-xl font-bold text-foreground mb-1 truncate">{title}</h3>
+        <h3 className="font-display text-lg md:text-xl font-bold text-foreground mb-1 truncate b4-toolcard__title">{title}</h3>
         <p className="text-sm text-muted-foreground line-clamp-1">{description}</p>
         <p className="text-xs text-muted-foreground/70 mt-1">{duration}</p>
       </div>
 
       {/* CTA Button */}
-      <div className="flex-shrink-0 pr-4 py-4">
+      <div className="b4-toolcard__cta flex-shrink-0 pr-4 py-4">
         {isCompleted ? (
           <div className="flex items-center gap-2 text-green-600 font-semibold text-sm px-5">
             <CheckCircle className="h-5 w-5" />

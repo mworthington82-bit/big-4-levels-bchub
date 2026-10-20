@@ -370,7 +370,7 @@ const Module = () => {
         {/* Step navigator */}
         <div className="sticky top-0 z-10 bg-b4-wash border-b border-b4-line">
           <div className="container mx-auto px-4 py-3 max-w-5xl">
-            <div className="flex items-center gap-2 overflow-x-auto">
+            <div className="b4-step-nav flex items-center gap-2 overflow-x-auto">
               {STEP_LABELS.map((label, i) => {
                 const n = i + 1;
                 const isActive = currentStep === n;
