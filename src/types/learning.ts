@@ -45,6 +45,8 @@ export type Department =
   | '14-16 Provision'
   | 'Early Years, Education and Social Care'
   | 'Professional & Creative'
+  | 'Professional services'
+  | 'CPS'
   | 'LDI'
   | 'Other';
 
