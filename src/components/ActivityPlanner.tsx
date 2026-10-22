@@ -27,6 +27,7 @@ const DEPARTMENTS = [
   "Art & Design", "Music & Performing Arts", "Sport", "Public Services",
   "Travel & Tourism", "Childcare & Early Years", "Access to HE", "Foundation Learning",
   "SEND / Inclusive Learning", "Higher Education", "Apprenticeships", "Other",
+  "Professional services", "CPS",
 ];
 
 const TOOL_BADGE: Record<string, string> = {

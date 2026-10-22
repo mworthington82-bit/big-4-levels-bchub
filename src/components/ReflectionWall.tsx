@@ -35,6 +35,8 @@ const DEPARTMENTS: Department[] = [
   '14-16 Provision',
   'Early Years, Education and Social Care',
   'Professional & Creative',
+  'Professional services',
+  'CPS',
   'LDI',
   'Other'
 ];
@@ -49,6 +51,8 @@ const departmentColors: Record<string, string> = {
   '14-16 Provision': 'from-pink-400/20 to-pink-500/10 border-pink-300',
   'Early Years, Education and Social Care': 'from-teal-400/20 to-teal-500/10 border-teal-300',
   'Professional & Creative': 'from-violet-400/20 to-violet-500/10 border-violet-300',
+  'Professional services': 'from-violet-400/20 to-violet-500/10 border-violet-300',
+  'CPS': 'from-violet-400/20 to-violet-500/10 border-violet-300',
   'LDI': 'from-orange-400/20 to-orange-500/10 border-orange-300',
   'Other': 'from-gray-400/20 to-gray-500/10 border-gray-300',
 };

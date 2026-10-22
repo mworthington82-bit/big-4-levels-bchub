@@ -14,6 +14,8 @@ export const EXPECTED_DEPARTMENTS = [
   "Adult Skills",
   "Apprenticeships",
   "Professional & Creative",
+  "Professional services",
+  "CPS",
   "Engineering & Motor Vehicle",
   "Construction",
   "PLW (Pathways to Learning & Work)",
