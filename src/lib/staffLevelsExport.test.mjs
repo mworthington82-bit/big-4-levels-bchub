@@ -1,7 +1,7 @@
 import { expect, test } from "bun:test";
-import { buildStaffLevelsExport, exportCurrentLevel, normaliseCollegeEmail, staffLevelsWorkbook, type ExportStaff, type StaffLevelsSource } from "./staffLevelsExport";
-const staff = (overrides: Partial<ExportStaff> = {}): ExportStaff => ({ email: "person@bradfordcollege.ac.uk", name: "Example Staff", department: "CPS", assigned_level: "Explorer", ...overrides } as ExportStaff);
-const source = (people: ExportStaff[]): StaffLevelsSource => ({ staff: people, completions: [], history: [], activity: [] });
+import { buildStaffLevelsExport, exportCurrentLevel, normaliseCollegeEmail, staffLevelsWorkbook } from "./staffLevelsExport";
+const staff = (overrides = {}) => ({ email: "person@bradfordcollege.ac.uk", name: "Example Staff", department: "CPS", assigned_level: "Explorer", ...overrides });
+const source = (people) => ({ staff: people, completions: [], history: [], activity: [] });
 test("college emails are lowercased without spaces; non-college and invalid records are listed separately", () => {
   expect(normaliseCollegeEmail(" A.Person @BradfordCollege.ac.uk ")).toBe("a.person@bradfordcollege.ac.uk");
   const data = buildStaffLevelsExport(source([staff(), staff({ email: "" }), staff({ email: "guest@example.org" }), staff({ email: "a@bradfordcollege.ac.uk.fake" })]));
