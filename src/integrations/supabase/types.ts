@@ -1519,6 +1519,7 @@ export type Database = {
         Args: { _emails: string[]; _module_id: string }
         Returns: Json
       }
+      admin_staff_levels_export_source: { Args: never; Returns: Json }
       admin_upsert_staff: {
         Args: { payload: Json }
         Returns: {
