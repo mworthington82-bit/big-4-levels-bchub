@@ -61,7 +61,7 @@ const BookingsDashboard = ({ refreshKey }: { refreshKey: number }) => {
 
   const stats = useMemo(() => {
     if (!bookings) return null;
-    // Build email → department lookup (CSV wins, fall back to staff_profiles)
+    // Report against current staff departments; retain booking values as a fallback.
     const staffByEmail = new Map<string, string | null>();
     for (const s of staff) staffByEmail.set(s.email.toLowerCase(), s.department);
 
@@ -80,7 +80,7 @@ const BookingsDashboard = ({ refreshKey }: { refreshKey: number }) => {
 
     for (const b of bookings) {
       const email = b.email.toLowerCase();
-      const dept = b.department || staffByEmail.get(email) || "Unknown";
+      const dept = staffByEmail.get(email) || b.department || "Unknown";
       if (!peopleByDept.has(dept)) peopleByDept.set(dept, new Set());
       peopleByDept.get(dept)!.add(email);
       bookingsByDept.set(dept, (bookingsByDept.get(dept) ?? 0) + 1);

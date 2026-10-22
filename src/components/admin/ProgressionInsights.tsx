@@ -109,7 +109,7 @@ const ProgressionInsights = ({ refreshKey = 0 }: { refreshKey?: number } = {}) =
     const uniqueLevelUpPeople = new Set<string>();
     for (const ev of eventsInRange) {
       if (ev.event !== "practitioner_unlocked" && ev.event !== "leader_unlocked") continue;
-      const dept = ev.department || deptByEmail.get(ev.staff_email.toLowerCase()) || "Unknown";
+      const dept = deptByEmail.get(ev.staff_email.toLowerCase()) || ev.department || "Unknown";
       if (!levelUpByDept.has(dept)) levelUpByDept.set(dept, { practitioner: 0, leader: 0 });
       const bucket = levelUpByDept.get(dept)!;
       if (ev.event === "practitioner_unlocked") bucket.practitioner++;
@@ -149,7 +149,7 @@ const ProgressionInsights = ({ refreshKey = 0 }: { refreshKey?: number } = {}) =
     }
     const bookingsInRangeByDept = new Map<string, number>();
     for (const b of bookingsInRange) {
-      const d = b.department || deptByEmail.get(b.email.toLowerCase()) || "Unknown";
+      const d = deptByEmail.get(b.email.toLowerCase()) || b.department || "Unknown";
       bookingsInRangeByDept.set(d, (bookingsInRangeByDept.get(d) ?? 0) + 1);
     }
 
@@ -188,7 +188,7 @@ const ProgressionInsights = ({ refreshKey = 0 }: { refreshKey?: number } = {}) =
       activeDepartments: new Set(
         [
           ...modulesCompletedInRange.map((c) => deptByEmail.get(c.staff_email.toLowerCase()) ?? "Unknown"),
-          ...bookingsInRange.map((b) => b.department || deptByEmail.get(b.email.toLowerCase()) || "Unknown"),
+          ...bookingsInRange.map((b) => deptByEmail.get(b.email.toLowerCase()) || b.department || "Unknown"),
         ].filter(Boolean),
       ).size,
       bookings: bookingsInRange.length,
