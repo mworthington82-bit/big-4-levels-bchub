@@ -15,3 +15,6 @@ verify_jwt = false
 
 [functions.leader-card]
 verify_jwt = false
+
+[functions.tapestry-export]
+verify_jwt = false
