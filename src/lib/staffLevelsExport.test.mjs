@@ -41,7 +41,7 @@ test("Excel has Levels sheet and LevelUps table at A1 with the exact eight heade
   const ExcelJS = (await import("exceljs")).default;
   const wb = new ExcelJS.Workbook(); await wb.xlsx.load(buffer);
   const sheet = wb.getWorksheet("Levels");
-  expect(sheet?.getRow(1).values).toEqual([undefined, "name", "email", "department", "current_level", "previous_level", "level_reached_at", "modules_completed", "last_activity_at"]);
+  expect(sheet?.getRow(1).values).toEqual([undefined, "name", "email", "department", "current_level", "previous_level", "level_reached_at", "modules_completed", "last_activity_at", "starting_level", "started_at", "practitioner_reached_at", "leader_reached_at", "levels_gained"]);
   expect(sheet?.getTable("LevelUps").table.totalsRow).toBe(false);
   expect(sheet?.rowCount).toBe(2);
 });test("starting level, start date, dated level-ups and levels gained", () => {
