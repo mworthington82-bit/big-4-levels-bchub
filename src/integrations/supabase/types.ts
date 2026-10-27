@@ -1565,6 +1565,7 @@ export type Database = {
         Args: { _email: string; _module_id: string }
         Returns: undefined
       }
+      staff_levels_export_data: { Args: never; Returns: Json }
     }
     Enums: {
       evidence_type: "video_link" | "file_upload" | "case_study"
