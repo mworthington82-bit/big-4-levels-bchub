@@ -1,3 +1,4 @@
+import { NamesLine } from "@/components/NamesLine";
 import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import {
@@ -210,6 +211,7 @@ const ReflectionForm = ({ moduleId, onSubmitted, onCancel }: Props) => {
         {error && <p className="mt-2 rounded-lg border-2 border-[#D97706] bg-b4-flame-soft p-3 text-sm text-b4-strong">{error}</p>}
       </div>
 
+      <NamesLine className="text-right" />
       <div className="flex flex-wrap justify-end gap-3">
         <button onClick={onCancel} className={`${btn} text-[#185FA5]`}>Back</button>
         <button onClick={submit} disabled={busy} className={`${btn} bg-[#185FA5] hover:bg-[#13497F] disabled:opacity-50 text-white`}>

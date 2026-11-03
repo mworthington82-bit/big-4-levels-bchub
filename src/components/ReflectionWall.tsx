@@ -1,3 +1,4 @@
+import { NamesLine } from "@/components/NamesLine";
 import { useState, useEffect, useCallback } from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -256,6 +257,7 @@ const ReflectionWall = ({ toolName, level, onComplete }: ReflectionWallProps) =>
             />
           </div>
 
+          <NamesLine />
           <Button
             onClick={handleSubmit}
             disabled={isSubmitting}

@@ -1,3 +1,4 @@
+import { NamesLine } from "@/components/NamesLine";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -388,6 +389,7 @@ const ImmersiveSessionForm = ({ sessionNumber, onSuccess, userId, existingSessio
             />
           </div>
 
+          <NamesLine />
           <Button 
             type="submit" 
             className="w-full bg-b4-flame hover:bg-b4-flame/90 text-b4-on-flame"
