@@ -6,7 +6,7 @@ import { toast } from "@/hooks/use-toast";
 import { useStaffProfile } from "@/hooks/useStaffProfile";
 import { usePageTitle } from "@/lib/usePageTitle";
 import {
-  AUDIENCES, LEADER_TOOLS, LeaderCard, signPhotos,
+  AUDIENCES, LEADER_TOOLS, LeaderCard,
 } from "@/lib/leaders";
 import { CardPreview } from "@/components/leaders/LeaderPieces";
 import { ShareCardPanel } from "@/components/leaders/ShareCardPanel";
@@ -27,9 +27,6 @@ const LeaderCardBuilder = () => {
   const [existing, setExisting] = useState<LeaderCard | null>(null);
   const [form, setForm] = useState({ name: "", department: "", tool: "teams", intent: "", implementation: "", impact: "" });
   const [audiences, setAudiences] = useState<string[]>([]);
-  const [photoPath, setPhotoPath] = useState<string | null>(null);
-  const [photoPreview, setPhotoPreview] = useState<string | null>(null);
-  const [photoFile, setPhotoFile] = useState<File | null>(null);
   const [busy, setBusy] = useState(false);
   const [completed, setCompleted] = useState<string | null>(null);
   const [savedId, setSavedId] = useState<string | null>(null);
@@ -48,11 +45,6 @@ const LeaderCardBuilder = () => {
         setExisting(c);
         setForm({ name: c.name, department: c.department ?? "", tool: c.tool, intent: c.intent, implementation: c.implementation, impact: c.impact });
         setAudiences(c.audiences ?? []);
-        if (c.photo_url) {
-          setPhotoPath(c.photo_url);
-          const m = await signPhotos([c.photo_url]);
-          setPhotoPreview(m[c.photo_url] ?? null);
-        }
       }
     })();
   }, [email]);
@@ -65,16 +57,6 @@ const LeaderCardBuilder = () => {
   const toggleAudience = (a: string) =>
     setAudiences((cur) => (cur.includes(a) ? cur.filter((x) => x !== a) : cur.length >= 3 ? cur : [...cur, a]));
 
-  const onPhoto = (f: File | null) => {
-    if (!f) return;
-    if (!f.type.startsWith("image/") || f.size > 5 * 1024 * 1024) {
-      toast({ title: "Photo not added", description: "Use an image under 5 MB.", variant: "destructive" });
-      return;
-    }
-    setPhotoFile(f);
-    setPhotoPreview(URL.createObjectURL(f));
-  };
-
   const save = async () => {
     if (!email) return;
     if (!form.name.trim() || !form.intent.trim() || !form.implementation.trim() || !form.impact.trim()) {
@@ -83,14 +65,6 @@ const LeaderCardBuilder = () => {
     }
     setBusy(true);
     try {
-      let path = photoPath;
-      if (photoFile) {
-        const { data: u } = await supabase.auth.getUser();
-        const ext = photoFile.name.split(".").pop() || "jpg";
-        path = `${u.user?.id}/photo-${Date.now()}.${ext}`;
-        const { error: upErr } = await supabase.storage.from("leader-photos").upload(path, photoFile, { upsert: true });
-        if (upErr) throw upErr;
-      }
       const row = {
         staff_email: email.toLowerCase(),
         name: form.name.trim(),
@@ -100,7 +74,7 @@ const LeaderCardBuilder = () => {
         implementation: form.implementation.trim(),
         impact: form.impact.trim(),
         audiences,
-        photo_url: path,
+        photo_url: null, // cards use initials; no photos are taken or kept
       };
       const res = existing
         ? await supabase.from("leader_cards").update(row).eq("id", existing.id).select().single()
@@ -108,8 +82,6 @@ const LeaderCardBuilder = () => {
       if (res.error) throw res.error;
       const card = res.data as LeaderCard;
       setExisting(card);
-      setPhotoPath(path);
-      setPhotoFile(null);
       setSavedId(card.id);
       toast({ title: "Your card is on the board" });
       window.scrollTo({ top: 0, behavior: "smooth" });
@@ -147,7 +119,7 @@ const LeaderCardBuilder = () => {
 
           {savedId && (
             <div className="mt-6 max-w-2xl">
-              <ShareCardPanel card={{ ...form, audiences, photo: photoPreview, completed }} />
+              <ShareCardPanel card={{ ...form, audiences, photo: null, completed }} />
             </div>
           )}
 
@@ -204,12 +176,6 @@ const LeaderCardBuilder = () => {
                 </div>
               </fieldset>
 
-              <div>
-                <label htmlFor="c-photo" className="block text-sm font-semibold mb-1">Photo (optional)</label>
-                <input id="c-photo" type="file" accept="image/*" className="lb-input" onChange={(e) => onPhoto(e.target.files?.[0] ?? null)} aria-describedby="c-photo-note" />
-                <p id="c-photo-note" className="text-xs lb-muted mt-1">No photo? Your initials are used instead.</p>
-              </div>
-
               <div className="flex flex-wrap gap-3 pt-2">
                 <button type="button" className="lb-btn" disabled={busy} onClick={save}>Add to the board</button>
               </div>
@@ -217,7 +183,7 @@ const LeaderCardBuilder = () => {
 
             <div className="lg:sticky lg:top-24">
               <p className="text-sm font-semibold mb-2">Live preview</p>
-              <CardPreview {...form} audiences={audiences} photo={photoPreview} completed={completed} />
+              <CardPreview {...form} audiences={audiences} photo={null} completed={completed} />
             </div>
           </div>
         </div>
