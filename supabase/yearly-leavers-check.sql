@@ -3,6 +3,11 @@
 -- Deletes the records of people who no longer work at the College, as the
 -- DPIA says. Run once a year in this project's Supabase SQL editor.
 --
+-- 12-MONTH GRACE: someone missing from the staff list for the first time is only
+-- noted (table yearly_missing); nothing of theirs is deleted. If they are missing
+-- again at the next yearly check, their records are deleted. If they come back
+-- (a returner), they are taken off yearly_missing and nothing is lost.
+--
 -- HOW TO RUN (three separate runs)
 --   RUN 1  Paste the College's current staff emails (one per line, straight
 --          from Excel) between the two $staff$ lines below, and any accounts
@@ -18,6 +23,9 @@
 -- ---------------------------------------------------------------- SETUP
 CREATE TABLE IF NOT EXISTS public.yearly_staff_list (email text PRIMARY KEY);
 CREATE TABLE IF NOT EXISTS public.yearly_keep_list  (email text PRIMARY KEY);
+CREATE TABLE IF NOT EXISTS public.yearly_missing    (email text PRIMARY KEY, first_missing date NOT NULL DEFAULT current_date);
+ALTER TABLE public.yearly_missing    ENABLE ROW LEVEL SECURITY;
+REVOKE ALL ON public.yearly_missing FROM anon, authenticated;
 ALTER TABLE public.yearly_staff_list ENABLE ROW LEVEL SECURITY;   -- no policies: only the SQL editor can read them
 ALTER TABLE public.yearly_keep_list  ENABLE ROW LEVEL SECURITY;
 REVOKE ALL ON public.yearly_staff_list, public.yearly_keep_list FROM anon, authenticated;
@@ -81,9 +89,18 @@ BEGIN
   DELETE FROM _leavers WHERE email IN (SELECT lower(trim(email)) FROM public.yearly_staff_list)
                           OR email IN (SELECT lower(trim(email)) FROM public.yearly_keep_list)
                           OR email = '';
+  -- 12-month grace: only people already missing at an earlier yearly check are deleted.
+  CREATE TEMP TABLE IF NOT EXISTS _missing (email text PRIMARY KEY) ON COMMIT DROP;
+  TRUNCATE _missing;
+  INSERT INTO _missing SELECT email FROM _leavers;
+  DELETE FROM _leavers WHERE email NOT IN (
+    SELECT email FROM public.yearly_missing WHERE first_missing <= current_date - 300);
   INSERT INTO _leaver_ids SELECT id FROM auth.users WHERE lower(email) IN (SELECT email FROM _leavers) ON CONFLICT DO NOTHING;
 
-  step := 'leavers'; target := 'people found who are not on the staff list'; affected := (SELECT count(*) FROM _leavers); note := NULL; RETURN NEXT;
+  step := 'missing'; target := 'not on the staff list this year'; affected := (SELECT count(*) FROM _missing); note := NULL; RETURN NEXT;
+  step := 'kept (grace)'; target := 'missing for the first time: noted, nothing deleted'; affected := (SELECT count(*) FROM _missing WHERE email NOT IN (SELECT email FROM _leavers)); note := NULL; RETURN NEXT;
+  step := 'returned'; target := 'missing last year, back on the list now: nothing deleted'; affected := (SELECT count(*) FROM public.yearly_missing WHERE email NOT IN (SELECT email FROM _missing)); note := NULL; RETURN NEXT;
+  step := 'leavers'; target := 'missing at two yearly checks: their records go'; affected := (SELECT count(*) FROM _leavers); note := NULL; RETURN NEXT;
 
   -- Site-specific steps that must happen first (unlinking shared records).
 
@@ -153,6 +170,10 @@ BEGIN
   RETURN NEXT;
 
   IF p_delete THEN
+    -- Update the grace record: returners off, new absences on, deleted people off.
+    DELETE FROM public.yearly_missing WHERE email NOT IN (SELECT email FROM _missing);
+    INSERT INTO public.yearly_missing (email) SELECT email FROM _missing ON CONFLICT DO NOTHING;
+    DELETE FROM public.yearly_missing WHERE email IN (SELECT email FROM _leavers);
     TRUNCATE public.yearly_staff_list;
     step := 'finished'; target := 'staff list cleared'; affected := NULL; note := 'Re-run RUN 2 next year with the new list.'; RETURN NEXT;
   END IF;

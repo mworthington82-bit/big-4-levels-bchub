@@ -19,6 +19,41 @@ const FALLBACK =
 
 const TOOLS = ["teams", "forms", "canva", "edpuzzle", "copilot"] as const;
 
+const TOOL_LABELS: Record<string, string> = {
+  teams: "MS Teams",
+  forms: "MS Forms",
+  canva: "Canva",
+  edpuzzle: "Edpuzzle",
+  copilot: "Microsoft Copilot",
+};
+
+/** "A", "A and B", "A, B and C". */
+const listOf = (ids: string[]) => {
+  const names = ids.map((t) => TOOL_LABELS[t] ?? t);
+  return names.length <= 1 ? names.join("") : `${names.slice(0, -1).join(", ")} and ${names[names.length - 1]}`;
+};
+
+/**
+ * The welcome summary, worked out from the person's own record with fixed
+ * wording (no AI): what they have already shown, and what is left for their level.
+ */
+function welcomeSummary(level: string, evidenced: string[], toDo: string[], immersiveDone: boolean): string {
+  const parts: string[] = [`Welcome to The Big 4: Level Up. You are at ${level} level.`];
+  if (level === "Leader") {
+    parts.push("You have shown all of the Big 4 tools, so your next step is to share what works with colleagues on the Leaders board.");
+    return parts.join(" ");
+  }
+  if (evidenced.length) parts.push(`Well done: you have already shown ${listOf(evidenced)}.`);
+  if (toDo.length) parts.push(`To move on, work through ${listOf(toDo)} in your learning journey.`);
+  else parts.push(`You have shown every tool at ${level} level.`);
+  if (level === "Practitioner") {
+    parts.push(immersiveDone
+      ? "You have completed your Immersive Room Practitioner session."
+      : "The Immersive Room Practitioner session is the final step to unlock Leader, so book it when you are ready.");
+  }
+  return parts.join(" ");
+}
+
 const LEVEL_META = {
   Explorer: { color: "#4A90D9", emblem: emblemExplorer },
   Practitioner: { color: "#E08A00", emblem: emblemPractitioner },
@@ -62,7 +97,7 @@ const WelcomeCompletionModal = ({ profile }: Props) => {
 
 
   useEffect(() => {
-    if (!open) return; // already seen: don't call the AI summary at all
+    if (!open) return; // already seen: nothing to work out
     let cancelled = false;
     const controller = new AbortController();
     const t = setTimeout(() => controller.abort(), 12000);
@@ -79,21 +114,10 @@ const WelcomeCompletionModal = ({ profile }: Props) => {
           immersiveDone = !!comp;
         } catch { /* ignore */ }
 
-        const { data, error } = await supabase.functions.invoke("welcome-summary", {
-          body: { level, evidenced, toDo, immersiveDone },
-        });
         if (cancelled) return;
-        if (error) {
-          console.error("welcome-summary invoke error", error);
-          setAiText(FALLBACK);
-        } else if (!data?.text) {
-          console.warn("welcome-summary returned no text", data);
-          setAiText(FALLBACK);
-        } else {
-          setAiText(data.text);
-        }
+        setAiText(welcomeSummary(level, evidenced, toDo, immersiveDone));
       } catch (err) {
-        console.error("welcome-summary threw", err);
+        console.error("welcome summary failed", err);
         if (!cancelled) setAiText(FALLBACK);
       } finally {
         clearTimeout(t);
@@ -225,7 +249,7 @@ const WelcomeCompletionModal = ({ profile }: Props) => {
               and <strong>receive badges</strong> as you progress.
             </p>
             <p style={{ marginTop: 14 }}>
-              Your learning journey, resources, reflections and the Activity Planner are available now.
+              Your learning journey, resources, and reflections are available now.
               Face-to-face sessions are still available if you want extra support with a tool.
             </p>
             <p style={{ marginTop: 14 }}>

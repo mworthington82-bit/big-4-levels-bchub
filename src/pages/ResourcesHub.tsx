@@ -5,7 +5,6 @@ import PageError from "@/components/PageError";
 import { usePageTitle } from "@/lib/usePageTitle";
 import { supabase } from "@/integrations/supabase/client";
 import FromTheClassroom from "@/components/resources/FromTheClassroom";
-import Big4ActivityPlanner from "@/components/ActivityPlanner";
 import {
   IconBookmark,
   IconBookmarkFilled,
@@ -55,119 +54,6 @@ const STAGE_LABEL: Record<string, string> = {
   Demonstrate: "Demonstrate — showing evidence of learning",
 };
 
-// ───────── Activity Planner ─────────
-const ActivityPlanner = () => {
-  const [tool, setTool] = useState<ResourceRow["tool"] | "">("");
-  const [level, setLevel] = useState<"Explorer" | "Practitioner" | "">("");
-  const [stage, setStage] = useState<ResourceRow["lead_stage"] | "">("");
-  const [challenge, setChallenge] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [result, setResult] = useState<{ ideas?: string; error?: string; tool?: string; level?: string; stage?: string } | null>(null);
-
-  const canSubmit = tool && level && stage && stage !== "All" && !loading;
-
-  const generate = async () => {
-    if (!canSubmit) return;
-    setLoading(true);
-    setResult(null);
-    try {
-      const { data, error } = await supabase.functions.invoke("generate-activity-ideas", {
-        body: { tool, level, lead_stage: stage, challenge: challenge.trim() || null },
-      });
-      if (error) throw error;
-      if (data?.error) {
-        setResult({ error: data.error });
-      } else {
-        setResult({ ideas: data?.ideas, tool: tool as string, level: level as string, stage: stage as string });
-      }
-    } catch {
-      setResult({ error: "We could not generate ideas right now — please try again in a moment." });
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  return (
-    <div
-      id="activity-planner"
-      className="relative bg-card rounded-2xl shadow-sm overflow-hidden"
-      style={{ borderLeft: "4px solid hsl(var(--b4-flame))" }}
-    >
-      <div className="p-6 md:p-8">
-        <div className="flex items-start gap-3 mb-1">
-          <div className="w-9 h-9 rounded-lg bg-b4-flame-soft flex items-center justify-center">
-            <IconSparkles size={20} stroke={1.75} className="text-b4-flame-ink" />
-          </div>
-          <div>
-            <h2 className="font-bold text-b4-strong text-lg md:text-xl">Activity Planner</h2>
-            <p className="text-sm text-b4-muted">
-              Tell us about your learners and we will suggest practical ideas for your session.
-            </p>
-          </div>
-        </div>
-
-        <div className="grid gap-3 md:grid-cols-3 mt-5">
-          <Select label="Which tool?" value={tool} onChange={(v) => setTool(v as any)} options={TOOL_OPTIONS} />
-          <Select label="Which level?" value={level} onChange={(v) => setLevel(v as any)} options={["Explorer","Practitioner"]} />
-          <Select label="LEAD stage" value={stage} onChange={(v) => setStage(v as any)} options={STAGE_OPTIONS} renderLabel={(o) => STAGE_LABEL[o] ?? o} />
-        </div>
-
-        <label className="block mt-4">
-          <span className="text-xs font-semibold text-b4-strong">Learner challenge or focus (optional)</span>
-          <input
-            type="text"
-            maxLength={200}
-            value={challenge}
-            onChange={(e) => setChallenge(e.target.value)}
-            placeholder="e.g. ESOL learners, low confidence with technology, mixed ability group, SEND support"
-            className="mt-1 w-full rounded-lg border border-b4-line bg-card px-3 py-2.5 text-sm text-b4-strong focus:border-[#185FA5] focus:outline-none focus:ring-2 focus:ring-[#185FA5]/20"
-          />
-        </label>
-
-        <button
-          onClick={generate}
-          disabled={!canSubmit}
-          className="mt-5 w-full bg-b4-deep hover:bg-b4-deep-hover disabled:opacity-60 disabled:cursor-not-allowed text-white font-bold text-[0.9375rem] rounded-[4px] py-3 transition-colors pill-95 pill-95--press"
-        >
-          {loading ? "Generating ideas…" : result?.ideas ? "Generate again" : "Generate ideas"}
-        </button>
-
-        {loading && (
-          <div className="mt-6 tw-skeleton">
-            <div className="h-3 bg-b4-wash-2 rounded w-2/3 mb-2" />
-            <div className="h-3 bg-b4-wash-2 rounded w-5/6 mb-2" />
-            <div className="h-3 bg-b4-wash-2 rounded w-3/4" />
-            <p className="text-sm text-b4-muted mt-3">Generating ideas…</p>
-          </div>
-        )}
-
-        {!loading && result?.error && (
-          <div className="mt-5 rounded-lg bg-b4-flame-soft border border-[#F0D8A4] px-4 py-3 text-sm text-b4-flame-ink">
-            {result.error}
-          </div>
-        )}
-
-        {!loading && result?.ideas && (
-          <div className="mt-6">
-            <p className="text-xs font-semibold uppercase tracking-wide text-b4-muted mb-2">
-              Suggested ideas for {result.tool} at {result.level} — {result.stage} stage
-            </p>
-            <div className="prose prose-sm max-w-none text-b4-strong leading-relaxed whitespace-pre-line">
-              {result.ideas}
-            </div>
-            <button
-              onClick={generate}
-              className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-[#185FA5] hover:underline"
-            >
-              <IconRefresh size={14} stroke={2} />
-              Generate again
-            </button>
-          </div>
-        )}
-      </div>
-    </div>
-  );
-};
 
 // ───────── Reusable Select ─────────
 const Select = ({
@@ -380,7 +266,6 @@ const Resources = () => {
             </div>
           </header>
 
-          <Big4ActivityPlanner />
 
           {tab === "ideas" ? (
             <>

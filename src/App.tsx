@@ -24,7 +24,6 @@ import Training from "./pages/Training";
 import Resources from "./pages/Resources";
 import Inclusion from "./pages/Inclusion";
 import Bookings from "./pages/Bookings";
-import Planner from "./pages/Planner";
 import Profile from "./pages/Profile";
 import LeaderCardBuilder from "./pages/LeaderCardBuilder";
 
@@ -32,7 +31,6 @@ import NotFound from "./pages/NotFound";
 import Privacy from "./pages/Privacy";
 import RequireAuth from "./components/RequireAuth";
 import RequireAdmin from "./components/RequireAdmin";
-import FloatingPlannerButton from "./components/FloatingPlannerButton";
 import CookieBanner from "./components/CookieBanner";
 
 const queryClient = new QueryClient();
@@ -44,7 +42,6 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <WeaveTransitionProvider>
-        <FloatingPlannerButton />
         <CookieBanner />
         <Routes>
           {/* Entry — public landing with sign-in */}
@@ -59,7 +56,7 @@ const App = () => (
           <Route path="/self-assessment" element={<RequireAuth><AppShell><SelfAssessment /></AppShell></RequireAuth>} />
           <Route path="/training" element={<RequireAuth><AppShell><Training /></AppShell></RequireAuth>} />
           <Route path="/resources" element={<RequireAuth><Resources /></RequireAuth>} />
-          <Route path="/planner" element={<RequireAuth><AppShell><Planner /></AppShell></RequireAuth>} />
+          <Route path="/planner" element={<Navigate to="/new/journey" replace />} />
           <Route path="/inclusion" element={<RequireAuth><AppShell><Inclusion /></AppShell></RequireAuth>} />
           <Route path="/bookings" element={<RequireAuth><AppShell><Bookings /></AppShell></RequireAuth>} />
           <Route path="/leaders" element={<Navigate to="/" replace />} />

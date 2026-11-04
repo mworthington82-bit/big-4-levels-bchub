@@ -262,12 +262,6 @@ const Landing = () => {
                         >
                           Go to My Journey
                         </button>
-                        <button
-                          onClick={() => navigate("/planner")}
-                          className="inline-flex h-12 items-center justify-center px-8 rounded-[4px] bg-transparent text-white font-bold text-[1.0625rem] border-2 border-white/40 hover:bg-white/10 hover:border-white/60 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white w-full pill-95 pill-95--press"
-                        >
-                          Open Activity Planner
-                        </button>
                       </>
                     ) : (
                       <button

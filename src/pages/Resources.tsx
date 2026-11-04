@@ -12,7 +12,6 @@ import { resources, searchResources, toolDisplayNames, Resource } from '@/data/r
 import CheatSheetButton from '@/components/CheatSheetButton';
 import FabricFloppy from '@/components/FabricFloppy';
 import StitchedCross from '@/components/StitchedCross';
-import ActivityPlanner from '@/components/ActivityPlanner';
 import AppShell from '@/components/AppShell';
 import { useStaffProfile } from '@/hooks/useStaffProfile';
 import { buildModuleCards, countCompleteOrEvidenced, totalForLevel } from '@/lib/journey';
@@ -78,7 +77,6 @@ const Resources = () => {
   const [filteredResources, setFilteredResources] = useState<Resource[]>(resources);
   const [bookmarks, setBookmarks] = useState<Set<string>>(new Set());
   const [showBookmarksOnly, setShowBookmarksOnly] = useState(false);
-  const [plannerOpen, setPlannerOpen] = useState(false);
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const { profile, completedModuleIds } = useStaffProfile();
@@ -105,14 +103,7 @@ const Resources = () => {
 
   useEffect(() => { window.scrollTo(0, 0); }, []);
 
-  // Auto-open planner via ?planner=1
   useEffect(() => {
-    if (searchParams.get('planner') === '1') {
-      setPlannerOpen(true);
-      const next = new URLSearchParams(searchParams);
-      next.delete('planner');
-      setSearchParams(next, { replace: true });
-    }
     if (searchParams.get('pinned') === 'lead' && leadCardRef.current) {
       setTimeout(() => leadCardRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' }), 200);
     }
@@ -144,30 +135,6 @@ const Resources = () => {
   const hasActiveFilters = selectedTool !== 'all' || selectedLevel !== 'all' || searchQuery || showBookmarksOnly;
 
   // ───────────────────────── Sidebar pieces ─────────────────────────
-  const PlannerCard = () => (
-    <div className="bg-card rounded-xl border border-border shadow-sm overflow-hidden">
-      <div className="flex">
-        <div className="w-1 bg-b4-flame" aria-hidden />
-        <div className="p-4 flex-1">
-          <span className="inline-block text-[0.625rem] font-bold uppercase tracking-wider px-2 py-0.5 rounded-[4px] bg-b4-flame text-b4-on-flame mb-2 pill-95">
-            AI-Powered
-          </span>
-          <h3 className="font-display text-[0.9375rem] font-bold text-foreground mb-1">Activity Planner</h3>
-          <p className="text-xs text-muted-foreground leading-relaxed mb-3 line-clamp-2">
-            Tell us what you want learners to achieve and we will suggest the right Big 4 tool and how to use it.
-          </p>
-          <Button
-            onClick={() => setPlannerOpen(true)}
-            className="w-full bg-b4-flame hover:bg-b4-flame/90 text-b4-on-flame font-semibold rounded-[4px] pill-95 pill-95--press"
-            size="sm"
-          >
-            Open Planner <ChevronRight className="h-4 w-4 ml-1" />
-          </Button>
-        </div>
-      </div>
-    </div>
-  );
-
   const LeadCard = () => (
     <div ref={leadCardRef} className="bg-card rounded-xl border border-border shadow-sm overflow-hidden">
       <div className="h-1 bg-b4-deep" aria-hidden />
@@ -337,14 +304,12 @@ const Resources = () => {
         <div className="grid gap-6" style={{ gridTemplateColumns: "260px minmax(0,1fr)" }} data-resources-grid>
           {/* ───── Sidebar (desktop) ───── */}
           <aside className="hidden lg:flex lg:flex-col gap-4 min-w-0">
-            <PlannerCard />
             <LeadCard />
             <InclusionCard />
           </aside>
 
           <section className="min-w-0 mx-auto w-full" style={{ maxWidth: 800 }}>
             <div className="lg:hidden grid grid-cols-1 gap-3 mb-4">
-              <PlannerCard />
               <LeadCard />
               <InclusionCard />
             </div>
@@ -555,17 +520,6 @@ const Resources = () => {
         </div>
       </main>
 
-      <Dialog open={plannerOpen} onOpenChange={setPlannerOpen}>
-        <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto p-0 gap-0">
-          <DialogHeader className="sr-only">
-            <DialogTitle>Big 4 Activity Planner</DialogTitle>
-            <DialogDescription>
-              Tell us what you want learners to achieve and we will recommend the right Big 4 tool, show you how to set it up, and check it for inclusion.
-            </DialogDescription>
-          </DialogHeader>
-          {plannerOpen && <ActivityPlanner />}
-        </DialogContent>
-      </Dialog>
 
       <style>{`
         @media (max-width: 1023px) {

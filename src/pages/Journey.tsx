@@ -201,7 +201,6 @@ const Journey = () => {
           <section>
             <h2 className="font-display font-bold text-b4-strong text-xl mb-4">Other things you can do</h2>
             <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
-              <QuickCard accent={QUICK_ACCENTS[0]} Icon={IconWand} title="Activity Planner" desc="Get lesson activity ideas for your learners" to="/planner" />
               <QuickCard accent={QUICK_ACCENTS[2]} Icon={IconBulb} title="Best Practice" desc="Ideas shared by Big 4 Leaders" to="/best-practice" />
             </div>
           </section>
