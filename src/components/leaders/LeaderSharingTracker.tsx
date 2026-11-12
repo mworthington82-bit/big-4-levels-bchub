@@ -69,6 +69,7 @@ const LeaderSharingTracker = ({ email }: { email: string }) => {
     const rows = await load();
     const now = rows.filter((r) => r.approved).length;
     toast({ title: "Saved", description: `${toolName} marked as shared.` });
+    window.dispatchEvent(new CustomEvent("b4-tags-maybe-earned"));
     if (now >= 6 && !localStorage.getItem(flagKey(email))) setCelebrate(true);
     const next = LEADER_TOOLS.find((t) => !rows.some((r) => r.tool === t.key));
     if (next) setSelected(next.key);

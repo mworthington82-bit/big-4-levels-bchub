@@ -84,6 +84,7 @@ const LeaderCardBuilder = () => {
       setExisting(card);
       setSavedId(card.id);
       toast({ title: "Your card is on the board" });
+      window.dispatchEvent(new CustomEvent("b4-tags-maybe-earned"));
       window.scrollTo({ top: 0, behavior: "smooth" });
     } catch (e: any) {
       toast({ title: "Could not save your card", description: e.message, variant: "destructive" });

@@ -5,6 +5,7 @@ import { flagSessionExpired } from "@/lib/sessionExpiry";
 import { MAINTENANCE_MODE, isAllowedDuringMaintenance } from "@/lib/maintenanceMode";
 import { WeavingLoader } from "@/components/threadworks";
 import { rememberReturnTo } from "@/lib/returnTo";
+import TagSender from "@/components/TagSender";
 
 interface RequireAuthProps {
   children: React.ReactNode;
@@ -63,7 +64,12 @@ const RequireAuth = ({ children }: RequireAuthProps) => {
     }
   }
 
-  return <>{children}</>;
+  return (
+    <>
+      <TagSender />
+      {children}
+    </>
+  );
 };
 
 export default RequireAuth;
