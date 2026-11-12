@@ -982,3 +982,25 @@ html[data-reduce-motion] .pill-95--press:hover, html[data-reduce-motion] .pill-9
   /* Training lesson cards: tighter padding so nested boxes keep a readable line length */
   main .rounded-3xl > div { padding-left: 1rem; padding-right: 1rem; }
 }
+
+/* The Year of Belonging cloth: sign-in screen and its "checking" state only.
+   One picture per width band, so a phone never loads the big ones. */
+.belonging-cloth {
+  background-color: #efe3cf;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+@media (max-width: 900px) {
+  .belonging-cloth { background-image: url(/assets/year-of-belonging-phone.jpg); background-position: 62% center; }
+}
+@media (min-width: 901px) and (max-width: 1280px) {
+  .belonging-cloth { background-image: url(/assets/year-of-belonging-small.jpg); }
+}
+@media (min-width: 1281px) {
+  .belonging-cloth { background-image: url(/assets/year-of-belonging.jpg); }
+}
+.belonging-words { display: none; }
+@media (max-width: 900px) {
+  .belonging-words { display: block; }
+}

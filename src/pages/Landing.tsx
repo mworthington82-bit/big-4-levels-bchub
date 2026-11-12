@@ -169,7 +169,7 @@ const Landing = () => {
 
   if (auth === "checking") {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="belonging-cloth min-h-screen flex items-center justify-center">
         <WeavingLoader variant="page" label="Checking your sign-in…" />
       </div>
     );
