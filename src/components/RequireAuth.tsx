@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { flagSessionExpired } from "@/lib/sessionExpiry";
 import { MAINTENANCE_MODE, isAllowedDuringMaintenance } from "@/lib/maintenanceMode";
 import { WeavingLoader } from "@/components/threadworks";
+import { rememberReturnTo } from "@/lib/returnTo";
 
 interface RequireAuthProps {
   children: React.ReactNode;
@@ -48,7 +49,12 @@ const RequireAuth = ({ children }: RequireAuthProps) => {
       </div>
     );
   }
-  if (status === "out") return <Navigate to="/" replace />;
+  if (status === "out") {
+    // Remember where they were going (e.g. a ThreadWorks hub link to one
+    // resource) so the landing page can send them there after sign-in.
+    rememberReturnTo(location.pathname + location.search);
+    return <Navigate to="/" replace />;
+  }
 
   // Pre-launch gate: non-allowlisted users can only see /bookings
   if (MAINTENANCE_MODE && !isAllowedDuringMaintenance(email)) {

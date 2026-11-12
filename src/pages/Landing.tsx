@@ -26,6 +26,7 @@ import copilotLogo from "@/assets/copilot-logo.png";
 import emblemExplorer from "@/assets/art/rope/knot-explorer.webp";
 import emblemPractitioner from "@/assets/art/rope/knot-practitioner.webp";
 import emblemLeader from "@/assets/art/rope/knot-leader.webp";
+import { takeReturnTo } from "@/lib/returnTo";
 
 const toolLevelInfo: Record<string, { explorer: string; practitioner: string; leader: string }> = {
   "MS Teams": {
@@ -114,6 +115,9 @@ const Landing = () => {
       } catch {
         /* non-fatal */
       }
+      // Back to the page they asked for before signing in (e.g. a hub link).
+      const back = takeReturnTo();
+      if (back && !cancelled) navigate(back, { replace: true });
     })();
     return () => {
       cancelled = true;

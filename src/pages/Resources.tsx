@@ -6,9 +6,9 @@ import { Switch } from '@/components/ui/switch';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import {
   Search, ArrowLeft, Bookmark, BookmarkCheck,
-  ChevronRight, ChevronDown, Download, SlidersHorizontal, Pin, Calendar, Heart,
+  ChevronRight, ChevronDown, Download, SlidersHorizontal, Pin, Calendar, Heart, MonitorSmartphone, Users,
 } from 'lucide-react';
-import { resources, searchResources, toolDisplayNames, Resource } from '@/data/resources';
+import { resources, searchResources, toolDisplayNames, Resource, DIGITAL_CATEGORIES } from '@/data/resources';
 import CheatSheetButton from '@/components/CheatSheetButton';
 import FabricFloppy from '@/components/FabricFloppy';
 import StitchedCross from '@/components/StitchedCross';
@@ -27,6 +27,7 @@ import emblemPractitioner from '@/assets/art/rope/knot-practitioner.webp';
 import emblemLeader from '@/assets/art/rope/knot-leader.webp';
 
 type ToolFilter = 'all' | 'teams' | 'forms' | 'canva' | 'edpuzzle' | 'copilot' | 'notebook' | 'immersive';
+type ResourceTab = 'big4' | 'digital';
 type LevelFilter = 'all' | 'explorer' | 'practitioner' | 'leader';
 
 const toolLogos: Record<string, string> = {
@@ -42,6 +43,7 @@ const toolBrandColors: Record<string, { header: string; text: string }> = {
   copilot: { header: "bg-[#0078D4]", text: "text-white" },
   notebook: { header: "bg-[#5B5FC7]", text: "text-white" },
   immersive: { header: "bg-accent", text: "text-accent-foreground" },
+  digital: { header: "bg-b4-deep", text: "text-white" },
 };
 
 const getTypeBadge = (type: string) => {
@@ -79,6 +81,14 @@ const Resources = () => {
   const [showBookmarksOnly, setShowBookmarksOnly] = useState(false);
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const [expandedId, setExpandedId] = useState<string | null>(null);
+  // ?tab=digital opens the Digital resources tab; ?r=<id> opens that resource
+  // (the ThreadWorks hub links straight to a single resource this way).
+  const linkedId = searchParams.get('r');
+  const linkedResource = linkedId ? resources.find((r) => r.id === linkedId) : undefined;
+  const [tab, setTab] = useState<ResourceTab>(
+    linkedResource ? (linkedResource.tool === 'digital' ? 'digital' : 'big4')
+      : searchParams.get('tab') === 'digital' ? 'digital' : 'big4'
+  );
   const { profile, completedModuleIds } = useStaffProfile();
 
   // Progress for banner
@@ -104,20 +114,46 @@ const Resources = () => {
   useEffect(() => { window.scrollTo(0, 0); }, []);
 
   useEffect(() => {
+    if (!linkedResource) return;
+    setExpandedId(linkedResource.id);
+    // The page scrolls to the top on load, so wait for that before scrolling down.
+    const t = setTimeout(() => {
+      document.getElementById(`resource-${linkedResource.id}`)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 600);
+    return () => clearTimeout(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [linkedId]);
+
+  const switchTab = (next: ResourceTab) => {
+    setTab(next);
+    setExpandedId(null);
+    const params = new URLSearchParams(searchParams);
+    params.delete('r');
+    if (next === 'digital') params.set('tab', 'digital'); else params.delete('tab');
+    setSearchParams(params, { replace: true });
+  };
+
+  useEffect(() => {
     if (searchParams.get('pinned') === 'lead' && leadCardRef.current) {
       setTimeout(() => leadCardRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' }), 200);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams]);
 
   useEffect(() => {
-    let result = resources;
-    if (searchQuery.trim()) result = searchResources(searchQuery);
-    if (selectedTool !== 'all') result = result.filter((r) => r.tool === selectedTool);
-    if (selectedLevel !== 'all') result = result.filter((r) => r.level === selectedLevel || r.level === 'all');
+    let result = searchQuery.trim() ? searchResources(searchQuery) : resources;
+    result = result.filter((r) => (tab === 'digital') === (r.tool === 'digital'));
+    if (tab === 'big4') {
+      if (selectedTool !== 'all') result = result.filter((r) => r.tool === selectedTool);
+      if (selectedLevel !== 'all') result = result.filter((r) => r.level === selectedLevel || r.level === 'all');
+    }
     if (showBookmarksOnly) result = result.filter((r) => bookmarks.has(r.id));
     setFilteredResources(result);
-  }, [searchQuery, selectedTool, selectedLevel, showBookmarksOnly, bookmarks]);
+  }, [searchQuery, selectedTool, selectedLevel, showBookmarksOnly, bookmarks, tab]);
+
+  // Search matches in the other tab, so nobody misses a result that lives there.
+  const otherTabMatches = searchQuery.trim()
+    ? searchResources(searchQuery).filter((r) => (tab === 'digital') !== (r.tool === 'digital')).length
+    : 0;
 
   const toggleBookmark = (id: string) => {
     setBookmarks((prev) => {
@@ -132,7 +168,7 @@ const Resources = () => {
     setSearchQuery(''); setSelectedTool('all'); setSelectedLevel('all'); setShowBookmarksOnly(false);
   };
 
-  const hasActiveFilters = selectedTool !== 'all' || selectedLevel !== 'all' || searchQuery || showBookmarksOnly;
+  const hasActiveFilters = (tab === 'big4' && (selectedTool !== 'all' || selectedLevel !== 'all')) || searchQuery || showBookmarksOnly;
 
   // ───────────────────────── Sidebar pieces ─────────────────────────
   const LeadCard = () => (
@@ -183,6 +219,7 @@ const Resources = () => {
 
   const FilterControls = () => (
     <>
+      {tab === 'big4' && (<>
       <div>
         <p className="text-[0.6875rem] uppercase tracking-wide text-muted-foreground font-semibold mb-2">
           Filter by tool
@@ -237,6 +274,7 @@ const Resources = () => {
           })}
         </div>
       </div>
+      </>)}
 
       <div className="flex items-center justify-between gap-3 p-3 rounded-lg border border-border bg-card">
         <label htmlFor="fav-toggle" className="flex items-center gap-2 text-sm font-medium text-foreground cursor-pointer">
@@ -256,6 +294,130 @@ const Resources = () => {
       </div>
     </>
   );
+
+  const renderResource = (resource: Resource) => {
+    const brand = toolBrandColors[resource.tool] || toolBrandColors.immersive;
+    const badge = getTypeBadge(resource.type);
+    const isOpen = expandedId === resource.id;
+    const toolLogo = resource.tool === 'digital' ? null : (toolLogos[resource.tool] || toolLogos.teams);
+
+    return (
+      <div
+        key={resource.id}
+        id={`resource-${resource.id}`}
+        className="bg-card rounded-lg border border-border shadow-sm overflow-hidden transition-all duration-200"
+        style={{ borderWidth: "0.5px" }}
+      >
+        <button
+          onClick={() => setExpandedId(isOpen ? null : resource.id)}
+          className="w-full flex items-center justify-between gap-3 px-4 min-h-[56px] text-left hover:bg-muted/30 transition"
+          aria-expanded={isOpen}
+        >
+          <div className="flex items-center gap-3 min-w-0">
+            <div className="h-6 w-6 rounded bg-muted p-0.5 flex items-center justify-center shrink-0">
+              {toolLogo ? <img src={toolLogo} alt="" className="h-full w-full object-contain" /> : <MonitorSmartphone className="h-full w-full text-b4-deep" aria-hidden />}
+            </div>
+            <span className="text-[0.875rem] font-bold text-b4-strong truncate">{resource.title}</span>
+          </div>
+          <div className="flex items-center gap-2 shrink-0">
+            <span className={`text-[0.6875rem] font-semibold px-2 py-0.5 rounded-[4px] whitespace-nowrap ${badge.color} pill-95`}>{badge.label}</span>
+            <ChevronDown
+              className="h-4 w-4 text-muted-foreground transition-transform duration-200"
+              style={{ transform: isOpen ? "rotate(180deg)" : "rotate(0deg)" }}
+            />
+          </div>
+        </button>
+
+        {isOpen && (
+          <div className="border-t border-border animate-fade-in">
+            <div className={`${brand.header} px-4 py-3 flex items-center justify-between`}>
+              <div className="flex items-center gap-2 min-w-0">
+                <div className="h-6 w-6 rounded bg-white/20 p-0.5 flex-shrink-0">
+                  {toolLogo ? <img src={toolLogo} alt="" className="h-full w-full object-contain" /> : <MonitorSmartphone className="h-full w-full text-white" aria-hidden />}
+                </div>
+                <span className={`text-sm font-semibold ${brand.text} truncate`}>{resource.category ?? toolDisplayNames[resource.tool]}</span>
+              </div>
+              <div className="flex items-center gap-2 shrink-0">
+                <span className={`text-xs font-semibold px-2 py-1 rounded-[4px] whitespace-nowrap ${badge.color} pill-95`}>{badge.label}</span>
+                <button
+                  onClick={(e) => { e.stopPropagation(); toggleBookmark(resource.id); }}
+                  className="p-1 rounded hover:bg-white/20 transition-colors"
+                  aria-label={bookmarks.has(resource.id) ? "Remove from favourites" : "Add to favourites"}
+                >
+                  {bookmarks.has(resource.id)
+                    ? <BookmarkCheck className="h-4 w-4 text-white" />
+                    : <Bookmark className="h-4 w-4 text-white" />}
+                </button>
+              </div>
+            </div>
+            <div className="p-5">
+              <p className="text-sm text-muted-foreground mb-3">{resource.description}</p>
+          {resource.forLearners && (
+            <p className="inline-flex items-center gap-1.5 text-xs font-semibold text-b4-strong bg-b4-wash-2 px-2 py-1 rounded-[4px] mb-3">
+              <Users className="h-3.5 w-3.5" aria-hidden /> Written for learners: share it with your class
+            </p>
+          )}
+          {resource.tags.length > 0 && (
+            <div className="mb-3">
+              <p className="text-[0.6875rem] uppercase tracking-wide text-muted-foreground font-semibold mb-1.5">Use it when you want to</p>
+              <ul className="flex flex-wrap gap-1.5">
+                {resource.tags.slice(0, 5).map((t) => (
+                  <li key={t}>
+                    <button
+                      type="button"
+                      onClick={(e) => { e.stopPropagation(); setSearchQuery(t); }}
+                      className="text-xs px-2 py-0.5 rounded-[4px] border border-border bg-card text-foreground hover:border-b4-flame"
+                      title="Search for this"
+                    >
+                      {t}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+              <div className="flex items-center justify-between gap-2 flex-wrap">
+                <div className="flex items-center gap-2 flex-wrap">
+                  <span className="text-xs text-muted-foreground bg-muted px-2 py-1 rounded whitespace-nowrap">{resource.function}</span>
+                  {resource.level && resource.level !== 'all' && (
+                    <span className={`text-xs px-2 py-1 rounded capitalize whitespace-nowrap ${
+                      resource.level === 'explorer' ? 'bg-b4-flame/20 text-[#B8860B]' :
+                      resource.level === 'practitioner' ? 'bg-[#5B5FC7]/20 text-[#5B5FC7]' :
+                      'bg-green-500/20 text-green-700'
+                    }`}>{resource.level}</span>
+                  )}
+                </div>
+                <div className="flex items-center gap-1.5 flex-wrap" style={{ minWidth: "fit-content" }}>
+                  {resource.pdfUrl && resource.type === 'link' && (
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      className="rounded-[4px] px-3 text-xs font-semibold border-primary/30 hover:bg-primary/10 whitespace-nowrap pill-95 pill-95--press"
+                      style={{ minWidth: "fit-content" }}
+                      onClick={(e) => { e.stopPropagation(); window.open(resource.pdfUrl, '_blank'); }}
+                    >
+                      <Download className="h-3 w-3 mr-1" /> PDF
+                    </Button>
+                  )}
+                  <Button
+                    size="sm"
+                    className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-[4px] px-4 text-xs font-semibold whitespace-nowrap pill-95 pill-95--press"
+                    style={{ minWidth: "fit-content" }}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      window.open(resource.pdfUrl && resource.type !== 'link' ? resource.pdfUrl : resource.url, '_blank');
+                    }}
+                  >
+                    {resource.type === 'video' ? 'Watch Video' : resource.type === 'pdf' ? 'Download PDF' : 'Open Guide'}
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    );
+  };
 
   // ───────────────────────── Render ─────────────────────────
   return (
@@ -298,6 +460,34 @@ const Resources = () => {
 
       <div className="container mx-auto px-4 pt-6">
         <h1 className="font-display text-xl md:text-2xl font-bold text-foreground">Training Resources</h1>
+        <div role="tablist" aria-label="Resource type" className="mt-4 flex flex-wrap gap-2">
+          {([
+            { id: 'big4', label: 'Big 4 tools', icon: null },
+            { id: 'digital', label: 'Digital resources', icon: MonitorSmartphone },
+          ] as const).map((t) => {
+            const active = tab === t.id;
+            const Icon = t.icon;
+            return (
+              <button
+                key={t.id}
+                role="tab"
+                aria-selected={active}
+                onClick={() => switchTab(t.id)}
+                className={`inline-flex items-center gap-1.5 min-h-11 px-4 py-2 rounded-[4px] border-2 text-sm font-semibold pill-95 pill-95--press ${
+                  active ? 'border-b4-deep bg-b4-deep text-white' : 'border-border bg-card text-foreground hover:border-b4-flame'
+                }`}
+              >
+                {Icon && <Icon className="h-4 w-4" aria-hidden />}
+                {t.label}
+              </button>
+            );
+          })}
+        </div>
+        <p className="text-sm text-muted-foreground mt-2">
+          {tab === 'big4'
+            ? 'Guides and videos for Teams, Forms, Canva, Edpuzzle, Copilot and the Immersive Room, by level.'
+            : 'Helpsheets beyond the Big 4 tools: getting learners logged on, scaffolding, planning and feedback.'}
+        </p>
       </div>
 
       <main className="container mx-auto px-4 py-6 md:py-8">
@@ -365,109 +555,40 @@ const Resources = () => {
 
             <p className="text-sm text-muted-foreground mb-4">
               {filteredResources.length} resource{filteredResources.length !== 1 ? 's' : ''} found
+              {otherTabMatches > 0 && (
+                <>
+                  {' · '}
+                  <button
+                    type="button"
+                    onClick={() => switchTab(tab === 'big4' ? 'digital' : 'big4')}
+                    className="font-semibold text-b4-flame-text hover:underline"
+                  >
+                    {otherTabMatches} more in {tab === 'big4' ? 'Digital resources' : 'Big 4 tools'}
+                  </button>
+                </>
+              )}
             </p>
 
             {/* Resource list — single column, expandable */}
-            <div className="flex flex-col gap-2">
-              {filteredResources.map((resource) => {
-                const brand = toolBrandColors[resource.tool] || toolBrandColors.immersive;
-                const badge = getTypeBadge(resource.type);
-                const isOpen = expandedId === resource.id;
-                const toolLogo = toolLogos[resource.tool] || toolLogos.teams;
-
-                return (
-                  <div
-                    key={resource.id}
-                    className="bg-card rounded-lg border border-border shadow-sm overflow-hidden transition-all duration-200"
-                    style={{ borderWidth: "0.5px" }}
-                  >
-                    <button
-                      onClick={() => setExpandedId(isOpen ? null : resource.id)}
-                      className="w-full flex items-center justify-between gap-3 px-4 min-h-[56px] text-left hover:bg-muted/30 transition"
-                      aria-expanded={isOpen}
-                    >
-                      <div className="flex items-center gap-3 min-w-0">
-                        <div className="h-6 w-6 rounded bg-muted p-0.5 flex items-center justify-center shrink-0">
-                          <img src={toolLogo} alt="" className="h-full w-full object-contain" />
-                        </div>
-                        <span className="text-[0.875rem] font-bold text-b4-strong truncate">{resource.title}</span>
-                      </div>
-                      <div className="flex items-center gap-2 shrink-0">
-                        <span className={`text-[0.6875rem] font-semibold px-2 py-0.5 rounded-[4px] whitespace-nowrap ${badge.color} pill-95`}>{badge.label}</span>
-                        <ChevronDown
-                          className="h-4 w-4 text-muted-foreground transition-transform duration-200"
-                          style={{ transform: isOpen ? "rotate(180deg)" : "rotate(0deg)" }}
-                        />
-                      </div>
-                    </button>
-
-                    {isOpen && (
-                      <div className="border-t border-border animate-fade-in">
-                        <div className={`${brand.header} px-4 py-3 flex items-center justify-between`}>
-                          <div className="flex items-center gap-2 min-w-0">
-                            <div className="h-6 w-6 rounded bg-white/20 p-0.5 flex-shrink-0">
-                              <img src={toolLogo} alt="" className="h-full w-full object-contain" />
-                            </div>
-                            <span className={`text-sm font-semibold ${brand.text} truncate`}>{toolDisplayNames[resource.tool]}</span>
-                          </div>
-                          <div className="flex items-center gap-2 shrink-0">
-                            <span className={`text-xs font-semibold px-2 py-1 rounded-[4px] whitespace-nowrap ${badge.color} pill-95`}>{badge.label}</span>
-                            <button
-                              onClick={(e) => { e.stopPropagation(); toggleBookmark(resource.id); }}
-                              className="p-1 rounded hover:bg-white/20 transition-colors"
-                              aria-label={bookmarks.has(resource.id) ? "Remove from favourites" : "Add to favourites"}
-                            >
-                              {bookmarks.has(resource.id)
-                                ? <BookmarkCheck className="h-4 w-4 text-white" />
-                                : <Bookmark className="h-4 w-4 text-white" />}
-                            </button>
-                          </div>
-                        </div>
-                        <div className="p-5">
-                          <p className="text-sm text-muted-foreground mb-3">{resource.description}</p>
-                          <div className="flex items-center justify-between gap-2 flex-wrap">
-                            <div className="flex items-center gap-2 flex-wrap">
-                              <span className="text-xs text-muted-foreground bg-muted px-2 py-1 rounded whitespace-nowrap">{resource.function}</span>
-                              {resource.level && resource.level !== 'all' && (
-                                <span className={`text-xs px-2 py-1 rounded capitalize whitespace-nowrap ${
-                                  resource.level === 'explorer' ? 'bg-b4-flame/20 text-[#B8860B]' :
-                                  resource.level === 'practitioner' ? 'bg-[#5B5FC7]/20 text-[#5B5FC7]' :
-                                  'bg-green-500/20 text-green-700'
-                                }`}>{resource.level}</span>
-                              )}
-                            </div>
-                            <div className="flex items-center gap-1.5 flex-wrap" style={{ minWidth: "fit-content" }}>
-                              {resource.pdfUrl && resource.type === 'link' && (
-                                <Button
-                                  size="sm"
-                                  variant="outline"
-                                  className="rounded-[4px] px-3 text-xs font-semibold border-primary/30 hover:bg-primary/10 whitespace-nowrap pill-95 pill-95--press"
-                                  style={{ minWidth: "fit-content" }}
-                                  onClick={(e) => { e.stopPropagation(); window.open(resource.pdfUrl, '_blank'); }}
-                                >
-                                  <Download className="h-3 w-3 mr-1" /> PDF
-                                </Button>
-                              )}
-                              <Button
-                                size="sm"
-                                className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-[4px] px-4 text-xs font-semibold whitespace-nowrap pill-95 pill-95--press"
-                                style={{ minWidth: "fit-content" }}
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  window.open(resource.pdfUrl && resource.type !== 'link' ? resource.pdfUrl : resource.url, '_blank');
-                                }}
-                              >
-                                {resource.type === 'video' ? 'Watch Video' : resource.type === 'pdf' ? 'Download PDF' : 'Open Guide'}
-                              </Button>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                );
-              })}
-            </div>
+            {tab === 'big4' ? (
+              <div className="flex flex-col gap-2">
+                {filteredResources.map(renderResource)}
+              </div>
+            ) : (
+              <div className="flex flex-col gap-6">
+                {DIGITAL_CATEGORIES.map((cat) => {
+                  const items = filteredResources.filter((r) => r.category === cat.id);
+                  if (items.length === 0) return null;
+                  return (
+                    <section key={cat.id} aria-labelledby={`cat-${cat.id}`}>
+                      <h2 id={`cat-${cat.id}`} className="font-display text-base font-bold text-b4-strong">{cat.id}</h2>
+                      <p className="text-xs text-muted-foreground mb-2">{cat.blurb}</p>
+                      <div className="flex flex-col gap-2">{items.map(renderResource)}</div>
+                    </section>
+                  );
+                })}
+              </div>
+            )}
 
             {filteredResources.length === 0 && (
               <div className="text-center py-12">
