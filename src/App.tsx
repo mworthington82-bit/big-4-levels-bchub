@@ -26,6 +26,7 @@ import Inclusion from "./pages/Inclusion";
 import Bookings from "./pages/Bookings";
 import Profile from "./pages/Profile";
 import LeaderCardBuilder from "./pages/LeaderCardBuilder";
+import Tags from "./pages/Tags";
 
 import NotFound from "./pages/NotFound";
 import Privacy from "./pages/Privacy";
@@ -62,6 +63,7 @@ const App = () => (
           <Route path="/leaders" element={<Navigate to="/" replace />} />
           <Route path="/leaders/card" element={<RequireAuth><LeaderCardBuilder /></RequireAuth>} />
           <Route path="/profile" element={<RequireAuth><Profile /></RequireAuth>} />
+          <Route path="/tags" element={<RequireAuth><AppShell><Tags /></AppShell></RequireAuth>} />
 
           {/* New pages — kept in background under /new/* */}
           <Route path="/new/journey" element={<RequireAuth><Journey /></RequireAuth>} />

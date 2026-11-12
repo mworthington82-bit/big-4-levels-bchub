@@ -1,0 +1,325 @@
+/* Copied from the Bradford ThreadWorks hub (app/src/styles/tagcard.css) so a tag
+   looks the same here as on the hub. Do not restyle it here: change the hub and
+   copy it across. The two font variables are the hub's own fonts. */
+.tc, .tcb {
+  --font-display: "Space Grotesk", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+}
+/* ==========================================================================
+   The tag card (src/year/TagCard.tsx).
+   Everything is sized in cqw, a hundredth of the card's own width, so one
+   design hangs on the line at about a hundred pixels and opens up at four
+   hundred. The card is 1 : 1.6. Colours are the tag's own and do not follow
+   the hub's theme: a tag is a printed card.
+   ========================================================================== */
+
+.tc {
+  --tc-paper: #d4c4a1;
+  --tc-edge: #c6b48d;
+  --tc-ink: #2a221b;
+  --tc-ink-soft: #5a4c3c;
+  --tc-rust: #8e3209;
+  --tc-rust-hi: #c2622b;
+  --tc-rust-lo: #6f2706;
+  --tc-band-ink: #ecd9b8;
+  --tc-hole: #3a2c1c;
+
+  container-type: inline-size;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background-color: var(--tc-paper);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .35 0 0 0 0 .28 0 0 0 0 .18 0 0 0 .09 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  color: var(--tc-ink);
+  font-family: var(--font-display);
+  clip-path: polygon(9% 0, 91% 0, 100% 6.5%, 100% 100%, 0 100%, 0 6.5%);
+  box-shadow: inset 0 0 0 1px var(--tc-edge);
+  text-align: left;
+  user-select: none;
+}
+
+.tc__eye {
+  position: absolute;
+  left: 50%;
+  top: 4.2cqw;
+  width: 9cqw;
+  height: 9cqw;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #f1d27a, #8a6a1e 70%);
+  box-shadow: 0 0.4cqw 0.8cqw rgb(0 0 0 / 0.35);
+}
+.tc__eye::after {
+  content: "";
+  position: absolute;
+  inset: 27%;
+  border-radius: 50%;
+  background: var(--tc-hole);
+  box-shadow: inset 0 0.4cqw 0.6cqw rgb(0 0 0 / 0.8);
+}
+
+.tc__band {
+  flex: none;
+  margin-top: 15cqw;
+  background: var(--tc-rust);
+  color: var(--tc-band-ink);
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 4.3cqw;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  padding: 2.4cqw 7cqw;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: clip;
+}
+
+.tc__body {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 4.5cqw 7cqw 5cqw;
+}
+
+.tc__meta {
+  font-family: var(--font-mono);
+  font-size: 2.7cqw;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  line-height: 1.35;
+}
+
+.tc__steps {
+  display: flex;
+  gap: 2cqw;
+  margin-top: 3cqw;
+}
+.tc__steps i {
+  width: 14cqw;
+  height: 2.2cqw;
+  border: 0.3cqw solid var(--tc-rust);
+}
+.tc__steps i.on {
+  background: linear-gradient(90deg, var(--tc-rust-lo), var(--tc-rust-hi), var(--tc-rust-lo));
+  border-color: var(--tc-rust-lo);
+}
+
+.tc__title {
+  margin: 3.5cqw 0 0;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+  overflow-wrap: anywhere;
+}
+.tc__title[data-size="s"] { font-size: 13cqw; }
+.tc__title[data-size="m"] { font-size: 10.5cqw; }
+.tc__title[data-size="l"] { font-size: 9cqw; }
+.tc__title[data-size="xl"] { font-size: 7.8cqw; }
+
+.tc__rule {
+  width: 33cqw;
+  height: 0.35cqw;
+  background: var(--tc-rust);
+  margin-top: 4cqw;
+}
+
+.tc__ind {
+  display: flex;
+  align-items: stretch;
+  gap: 4cqw;
+  margin-top: 4.5cqw;
+  min-height: 19cqw;
+}
+.tc__sep {
+  width: 0.3cqw;
+  background: var(--tc-rust);
+  flex: none;
+}
+.tc__cell {
+  flex: 1 1 0;
+  min-width: 0;
+  display: grid;
+  align-content: end;
+  gap: 1.5cqw;
+}
+.tc__lab {
+  font-family: var(--font-mono);
+  font-size: 2.3cqw;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  line-height: 1.25;
+}
+
+.tc__letters {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 8cqw;
+  line-height: 1;
+  letter-spacing: 0.05em;
+}
+.tc__letters[data-n="long"] { font-size: 6.2cqw; }
+.tc__letters span {
+  color: transparent;
+  -webkit-text-stroke: 0.25cqw var(--tc-rust-hi);
+}
+.tc__letters span.on {
+  background: linear-gradient(160deg, var(--tc-rust-hi), var(--tc-rust-lo));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-stroke: 0;
+}
+
+.tc__bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 1.1cqw;
+  height: 8cqw;
+}
+.tc__bars i {
+  flex: 0 1 4cqw;
+  min-width: 1.4cqw;
+  border: 0.25cqw solid var(--tc-rust-hi);
+  opacity: 0.85;
+}
+.tc__bars i.on {
+  background: linear-gradient(160deg, var(--tc-rust-hi), var(--tc-rust-lo));
+  border-color: var(--tc-rust-lo);
+  opacity: 1;
+}
+
+.tc__stamp {
+  justify-self: start;
+  max-width: 100%;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 3.6cqw;
+  letter-spacing: 0.08em;
+  line-height: 1.2;
+  text-transform: uppercase;
+  color: var(--tc-rust);
+  border: 0.35cqw solid var(--tc-rust);
+  padding: 1.2cqw 1.8cqw;
+  transform: rotate(-3deg);
+  overflow-wrap: anywhere;
+}
+
+.tc__k {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 2.7cqw;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--tc-rust);
+  margin-top: 5cqw;
+}
+.tc__k--2 { margin-top: 3.8cqw; }
+.tc__p {
+  margin: 1.2cqw 0 0;
+  font-size: 4.6cqw;
+  line-height: 1.22;
+  font-weight: 500;
+  text-wrap: pretty;
+}
+
+.tc__foot {
+  margin-top: auto;
+  padding-top: 3cqw;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2cqw;
+  font-family: var(--font-mono);
+  font-size: 2.6cqw;
+  letter-spacing: 0.08em;
+}
+.tc__logos {
+  display: flex;
+  align-items: center;
+  gap: 2cqw;
+  flex: none;
+}
+.tc__logo {
+  flex: none;
+  width: 12cqw;
+  height: 12cqw;
+  border-radius: 2.8cqw;
+  box-shadow: 0 0.5cqw 1cqw rgb(40 28 12 / 0.3);
+}
+.tc__foot > span {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 2cqw;
+}
+.tc__foot > span::before {
+  content: "";
+  width: 6cqw;
+  height: 0.3cqw;
+  background: var(--tc-rust);
+}
+
+/* ---- the BTW: its own small tag, hung from the yarn on a short loop ---- */
+
+.tcb {
+  container-type: inline-size;
+  position: relative;
+  width: 100%;
+  color: #2a221b;
+  background-color: #d4c4a1;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .35 0 0 0 0 .28 0 0 0 0 .18 0 0 0 .09 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  clip-path: polygon(16% 0, 84% 0, 100% 9%, 100% 100%, 0 100%, 0 9%);
+  box-shadow: inset 0 0 0 1px #c6b48d;
+  font-family: var(--font-display);
+  text-align: left;
+}
+.tcb__eye {
+  position: absolute;
+  left: 50%;
+  top: 6cqw;
+  width: 12cqw;
+  height: 12cqw;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #f1d27a, #8a6a1e 70%);
+}
+.tcb__eye::after {
+  content: "";
+  position: absolute;
+  inset: 27%;
+  border-radius: 50%;
+  background: #3a2c1c;
+}
+.tcb__in {
+  padding: 24cqw 9cqw 10cqw;
+  display: grid;
+  gap: 4.5cqw;
+}
+.tcb__head {
+  font-weight: 700;
+  font-style: italic;
+  font-size: 17cqw;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: #8e3209;
+}
+.tcb__rule {
+  height: 0.8cqw;
+  width: 40cqw;
+  background: #8e3209;
+}
+.tcb__text {
+  margin: 0;
+  font-size: 8.4cqw;
+  line-height: 1.28;
+  font-weight: 500;
+}
+.tcb__cite {
+  font-style: normal;
+  font-size: 7cqw;
+  color: #5a4c3c;
+}

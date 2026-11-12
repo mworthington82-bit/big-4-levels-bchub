@@ -1,0 +1,450 @@
+{
+ "_comment": "Copied word for word from the Bradford ThreadWorks hub, BradfordThreadWorks app/src/year/tags.json (12 Nov 2026): every tag with site \"big4\" or earnIn \"big4\", leaving out held-back (off) ones. Do not edit tags here. If the hub changes a tag, copy these entries across again.",
+ "tags": [
+  {
+   "id": "b4-explorer",
+   "site": "big4",
+   "route": "auto",
+   "by": "Big 4",
+   "band": "Level complete",
+   "ctx": "Explorer",
+   "title": "Big 4 Explorer",
+   "line": "Every Explorer module signed off. Your digital toolkit is up and running.",
+   "can": "Use the core digital platforms with confidence",
+   "learners": "Get smoother lessons and easier access to learning",
+   "earn": "Every Explorer module signed off: all knowledge-check questions right plus the written reflection.",
+   "a": {
+    "k": "stamp",
+    "l": "Explorer",
+    "v": "Signed off"
+   },
+   "steps": [
+    1,
+    3
+   ]
+  },
+  {
+   "id": "b4-practitioner",
+   "site": "big4",
+   "route": "auto",
+   "by": "Big 4",
+   "band": "Level complete",
+   "ctx": "Practitioner",
+   "title": "Big 4 Practitioner",
+   "line": "Every Practitioner module signed off. That is real digital confidence.",
+   "can": "Use the platforms to give feedback and collaborate",
+   "learners": "Get feedback, teamwork and independent learning",
+   "earn": "Every Practitioner module signed off.",
+   "a": {
+    "k": "stamp",
+    "l": "Practitioner",
+    "v": "Signed off"
+   },
+   "steps": [
+    2,
+    3
+   ]
+  },
+  {
+   "id": "b4-leader",
+   "site": "big4",
+   "route": "auto",
+   "by": "Big 4",
+   "band": "Leader",
+   "ctx": "Leader",
+   "title": "Big 4 Leader",
+   "line": "You are a Big 4 Leader. Colleagues can learn from you.",
+   "can": "Help colleagues use digital tools well",
+   "learners": "Benefit from digital confidence across the whole team",
+   "earn": "Six approved Leader shares and a Leader card.",
+   "a": {
+    "k": "bars",
+    "l": "Shares",
+    "n": 6,
+    "on": 6,
+    "cap": "6 approved"
+   },
+   "steps": [
+    3,
+    3
+   ]
+  },
+  {
+   "id": "b4-teams-e",
+   "site": "big4",
+   "route": "auto",
+   "by": "Big 4",
+   "band": "Module passed",
+   "ctx": "MS Teams · Explorer",
+   "title": "MS Teams",
+   "line": "Teams Explorer signed off. Your digital classroom is open.",
+   "can": "Run a tidy Teams class for your learners",
+   "learners": "Keep organised and connected between lessons",
+   "earn": "Teams module signed off at Explorer level.",
+   "a": {
+    "k": "stamp",
+    "l": "Explorer",
+    "v": "Signed off"
+   },
+   "steps": [
+    1,
+    3
+   ],
+   "name": "MS Teams Explorer"
+  },
+  {
+   "id": "b4-teams-p",
+   "site": "big4",
+   "route": "auto",
+   "by": "Big 4",
+   "band": "Module passed",
+   "ctx": "MS Teams · Practitioner",
+   "title": "MS Teams",
+   "line": "Teams Practitioner signed off. Your Teams class does real work.",
+   "can": "Build Teams spaces that learners use on their own",
+   "learners": "Learn and catch up wherever they are",
+   "earn": "Teams module signed off at Practitioner level.",
+   "a": {
+    "k": "stamp",
+    "l": "Practitioner",
+    "v": "Signed off"
+   },
+   "steps": [
+    2,
+    3
+   ],
+   "name": "MS Teams Practitioner"
+  },
+  {
+   "id": "b4-forms-e",
+   "site": "big4",
+   "route": "auto",
+   "by": "Big 4",
+   "band": "Module passed",
+   "ctx": "MS Forms · Explorer",
+   "title": "MS Forms",
+   "line": "Forms Explorer signed off. You can find the gaps before you teach.",
+   "can": "Find the gaps before you teach, with a quiz that marks itself",
+   "learners": "Practise recall and see straight away what to work on",
+   "earn": "Forms module signed off at Explorer level.",
+   "a": {
+    "k": "stamp",
+    "l": "Explorer",
+    "v": "Signed off"
+   },
+   "steps": [
+    1,
+    3
+   ],
+   "lead": {
+    "on": 1,
+    "name": "Launch"
+   },
+   "bloom": {
+    "on": 1,
+    "name": "Remember"
+   },
+   "btw": {
+    "t": "Recalling learning from memory strengthens long-term retention more than re-reading it.",
+    "c": "Roediger and Karpicke, 2006"
+   },
+   "name": "MS Forms Explorer"
+  },
+  {
+   "id": "b4-forms-p",
+   "site": "big4",
+   "route": "auto",
+   "by": "Big 4",
+   "band": "Module passed",
+   "ctx": "MS Forms · Practitioner",
+   "title": "MS Forms",
+   "line": "Forms Practitioner signed off. Your checks show you what to do next.",
+   "can": "Build checks that show you what to teach next",
+   "learners": "Get teaching shaped by what they know now",
+   "earn": "Forms module signed off at Practitioner level.",
+   "a": {
+    "k": "stamp",
+    "l": "Practitioner",
+    "v": "Signed off"
+   },
+   "steps": [
+    2,
+    3
+   ],
+   "btw": {
+    "t": "Regular checks of understanding, used to adjust teaching, raise achievement.",
+    "c": "Black and Wiliam, 1998"
+   },
+   "name": "MS Forms Practitioner"
+  },
+  {
+   "id": "b4-canva-e",
+   "site": "big4",
+   "route": "auto",
+   "by": "Big 4",
+   "band": "Module passed",
+   "ctx": "Canva · Explorer",
+   "title": "Canva",
+   "line": "Canva Explorer signed off. Your resources look the part.",
+   "can": "Make clear, attractive resources quickly",
+   "learners": "Focus on what matters instead of clutter",
+   "earn": "Canva module signed off at Explorer level.",
+   "a": {
+    "k": "stamp",
+    "l": "Explorer",
+    "v": "Signed off"
+   },
+   "steps": [
+    1,
+    3
+   ],
+   "name": "Canva Explorer"
+  },
+  {
+   "id": "b4-canva-p",
+   "site": "big4",
+   "route": "auto",
+   "by": "Big 4",
+   "band": "Module passed",
+   "ctx": "Canva · Practitioner",
+   "title": "Canva",
+   "line": "Canva Practitioner signed off. Your resources work for every learner.",
+   "can": "Design resources that are clear and accessible",
+   "learners": "Get materials they can all read and use",
+   "earn": "Canva module signed off at Practitioner level.",
+   "a": {
+    "k": "stamp",
+    "l": "Practitioner",
+    "v": "Signed off"
+   },
+   "steps": [
+    2,
+    3
+   ],
+   "name": "Canva Practitioner"
+  },
+  {
+   "id": "b4-edpuzzle-e",
+   "site": "big4",
+   "route": "auto",
+   "by": "Big 4",
+   "band": "Module passed",
+   "ctx": "Edpuzzle · Explorer",
+   "title": "Edpuzzle",
+   "line": "Edpuzzle Explorer signed off. Your first video lesson is ready.",
+   "can": "Turn a video into a lesson with questions in it",
+   "learners": "Learn at their own pace and rewatch what they missed",
+   "earn": "Edpuzzle module signed off at Explorer level.",
+   "a": {
+    "k": "stamp",
+    "l": "Explorer",
+    "v": "Signed off"
+   },
+   "steps": [
+    1,
+    3
+   ],
+   "name": "Edpuzzle Explorer"
+  },
+  {
+   "id": "b4-edpuzzle-p",
+   "site": "big4",
+   "route": "auto",
+   "by": "Big 4",
+   "band": "Module passed",
+   "ctx": "Edpuzzle · Practitioner",
+   "title": "Edpuzzle",
+   "line": "Edpuzzle Practitioner signed off. You can see where learners get stuck.",
+   "can": "Use video results to see where learners get stuck",
+   "learners": "Get help exactly where the video lost them",
+   "earn": "Edpuzzle module signed off at Practitioner level.",
+   "a": {
+    "k": "stamp",
+    "l": "Practitioner",
+    "v": "Signed off"
+   },
+   "steps": [
+    2,
+    3
+   ],
+   "name": "Edpuzzle Practitioner"
+  },
+  {
+   "id": "b4-copilot-e",
+   "site": "big4",
+   "route": "auto",
+   "by": "Big 4",
+   "band": "Module passed",
+   "ctx": "Copilot · Explorer",
+   "title": "Microsoft Copilot",
+   "line": "Copilot Explorer signed off. You have a helper for the routine jobs.",
+   "can": "Use Copilot for the routine jobs safely",
+   "learners": "Get more of your time in the lesson itself",
+   "earn": "Copilot module signed off at Explorer level.",
+   "a": {
+    "k": "stamp",
+    "l": "Explorer",
+    "v": "Signed off"
+   },
+   "steps": [
+    1,
+    3
+   ],
+   "name": "Microsoft Copilot Explorer"
+  },
+  {
+   "id": "b4-copilot-p",
+   "site": "big4",
+   "route": "auto",
+   "by": "Big 4",
+   "band": "Module passed",
+   "ctx": "Copilot · Practitioner",
+   "title": "Microsoft Copilot",
+   "line": "Copilot Practitioner signed off. Your AI use is thoughtful and safe.",
+   "can": "Use AI to plan and give feedback with care",
+   "learners": "Get time back for the parts only you can do",
+   "earn": "Copilot module signed off at Practitioner level.",
+   "a": {
+    "k": "stamp",
+    "l": "Practitioner",
+    "v": "Signed off"
+   },
+   "steps": [
+    2,
+    3
+   ],
+   "btw": {
+    "t": "Technology helps most when it supports good teaching rather than replacing it.",
+    "c": "EEF, 2019"
+   },
+   "name": "Microsoft Copilot Practitioner"
+  },
+  {
+   "id": "b4-immersive-p",
+   "site": "big4",
+   "route": "auto",
+   "by": "Big 4",
+   "band": "Module passed",
+   "ctx": "Immersive Room · Practitioner",
+   "title": "Immersive Room",
+   "line": "Immersive Room Practitioner signed off. You can open up new places for learning.",
+   "can": "Plan a session that puts learners inside the topic",
+   "learners": "Meet ideas they could never see in a normal room",
+   "earn": "Immersive Room module signed off at Practitioner level.",
+   "a": {
+    "k": "stamp",
+    "l": "Practitioner",
+    "v": "Signed off"
+   },
+   "steps": [
+    2,
+    3
+   ],
+   "name": "Immersive Room Practitioner"
+  },
+  {
+   "id": "b4-digital-mentor",
+   "site": "big4",
+   "route": "lead",
+   "by": "Digital team",
+   "band": "Mentor",
+   "ctx": "Digital mentor",
+   "title": "Digital mentor",
+   "line": "Digital mentor for 2026/27. Thank you for helping colleagues along.",
+   "can": "Help colleagues get going with the Big 4 tools",
+   "learners": "Get teachers who use digital tools well",
+   "earn": "A Digital mentor sign-up and colleagues helped through the year. Counted only when the role is new or expanded this year.",
+   "a": {
+    "k": "bars",
+    "l": "Terms",
+    "n": 3,
+    "on": 3,
+    "cap": "All year"
+   }
+  },
+  {
+   "id": "tw-training-led",
+   "site": "big4",
+   "route": "lead",
+   "by": "Innovation",
+   "band": "Training led",
+   "ctx": "Delivered training",
+   "title": "Delivered training",
+   "line": "You led training for colleagues: {title|a session}.",
+   "can": "Lead training colleagues can use the next day",
+   "learners": "Gain from better teaching across the college",
+   "earn": "Led a CPD session, whole-college webinar or LEAD deck session. Attending is never a tag.",
+   "a": {
+    "k": "stamp",
+    "l": "You",
+    "v": "Led it"
+   },
+   "group": "leading",
+   "team": true
+  },
+  {
+   "id": "tw-event",
+   "site": "big4",
+   "route": "lead",
+   "by": "Innovation",
+   "band": "Event run",
+   "ctx": "Staff learning",
+   "title": "Ran an event for staff",
+   "line": "You organised {event|an event} for colleagues to learn from each other.",
+   "can": "Bring colleagues together to learn from each other",
+   "learners": "Gain as good practice spreads fast",
+   "earn": "Organised an event (a TeachMeet, a staff fair, a Teach In) where staff learned from each other.",
+   "a": {
+    "k": "stamp",
+    "l": "You",
+    "v": "Organised"
+   },
+   "group": "leading",
+   "team": true
+  },
+  {
+   "id": "tw-immersive-session",
+   "site": "big4",
+   "route": "lead",
+   "by": "Digital team",
+   "band": "Session designed",
+   "ctx": "Immersive Room",
+   "title": "Immersive Room session",
+   "line": "You designed and taught an Immersive Room session.",
+   "can": "Design a session that puts learners inside a topic",
+   "learners": "Remember ideas they could step inside",
+   "earn": "Designed and taught a session in the Immersive Room. Attendance alone never counts.",
+   "a": {
+    "k": "stamp",
+    "l": "You",
+    "v": "Designed"
+   },
+   "group": "digital",
+   "team": true
+  },
+  {
+   "id": "tw-ai-trial",
+   "site": "big4",
+   "route": "self",
+   "by": "You",
+   "band": "AI trialled",
+   "ctx": "AI with learners",
+   "title": "Trialled an AI tool",
+   "line": "You trialled {tool|an AI tool} with learners and shared what you found.",
+   "can": "Trial an AI tool and write up what happened",
+   "learners": "Gain as the college learns to use AI well",
+   "earn": "Ran a trial of an AI tool in teaching with a written reflection.",
+   "a": {
+    "k": "stamp",
+    "l": "You",
+    "v": "Trialled"
+   },
+   "group": "digital",
+   "btw": {
+    "t": "Technology helps most when it supports good teaching rather than replacing it.",
+    "c": "EEF, 2019"
+   },
+   "team": true
+  }
+ ]
+}

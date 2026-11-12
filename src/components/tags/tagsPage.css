@@ -1,0 +1,13 @@
+/* The Tags page grid (src/pages/Tags.tsx). One column on phones, upright or
+   on their side; two, then three, on wider screens. The cards themselves are
+   styled in tagcard.css, copied from the hub. */
+.b4-tags-grid { grid-template-columns: minmax(0, 1fr); }
+@media screen and (min-width: 901px) {
+  .b4-tags-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media screen and (min-width: 1100px) {
+  .b4-tags-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media screen and (max-height: 500px) and (pointer: coarse) {
+  .b4-tags-grid { grid-template-columns: minmax(0, 1fr); }
+}
