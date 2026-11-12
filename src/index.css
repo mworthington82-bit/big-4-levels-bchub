@@ -984,23 +984,22 @@ html[data-reduce-motion] .pill-95--press:hover, html[data-reduce-motion] .pill-9
 }
 
 /* The Year of Belonging cloth: sign-in screen and its "checking" state only.
-   One picture per width band, so a phone never loads the big ones. */
+   Clean cloth everywhere; the baked-in-words picture only on large wide screens,
+   where the centred card keeps clear of the words. */
 .belonging-cloth {
   background-color: #efe3cf;
+  background-image: url(/assets/year-of-belonging-phone.jpg);
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
 }
 @media (max-width: 900px) {
-  .belonging-cloth { background-image: url(/assets/year-of-belonging-phone.jpg); background-position: 62% center; }
+  .belonging-cloth { background-position: 62% center; }
 }
-@media (min-width: 901px) and (max-width: 1280px) {
-  .belonging-cloth { background-image: url(/assets/year-of-belonging-small.jpg); }
-}
-@media (min-width: 1281px) {
+@media (min-width: 1600px) and (min-aspect-ratio: 8/5) {
   .belonging-cloth { background-image: url(/assets/year-of-belonging.jpg); }
 }
-.belonging-words { display: none; }
-@media (max-width: 900px) {
-  .belonging-words { display: block; }
+.belonging-words { display: block; }
+@media (min-width: 1600px) and (min-aspect-ratio: 8/5) {
+  .belonging-words { display: none; }
 }
