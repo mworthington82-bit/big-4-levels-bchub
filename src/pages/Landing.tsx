@@ -27,6 +27,8 @@ import emblemExplorer from "@/assets/art/rope/knot-explorer.webp";
 import emblemPractitioner from "@/assets/art/rope/knot-practitioner.webp";
 import emblemLeader from "@/assets/art/rope/knot-leader.webp";
 import { takeReturnTo } from "@/lib/returnTo";
+import SignInGate from "@/components/SignInGate";
+import { WeavingLoader } from "@/components/threadworks";
 
 const toolLevelInfo: Record<string, { explorer: string; practitioner: string; leader: string }> = {
   "MS Teams": {
@@ -63,6 +65,20 @@ const Landing = () => {
   const isDemo = useIsDemoUser();
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [signingIn, setSigningIn] = useState(false);
+  // Nothing on Big 4 shows until Microsoft has confirmed a college account.
+  const [auth, setAuth] = useState<"checking" | "in" | "out">("checking");
+
+  useEffect(() => {
+    const { data: sub } = supabase.auth.onAuthStateChange((_e, session) => {
+      const e = session?.user.email?.toLowerCase();
+      setAuth(e && isAllowedLoginEmail(e) ? "in" : "out");
+    });
+    supabase.auth.getSession().then(({ data }) => {
+      const e = data.session?.user.email?.toLowerCase();
+      setAuth(e && isAllowedLoginEmail(e) ? "in" : "out");
+    });
+    return () => sub.subscription.unsubscribe();
+  }, []);
 
 
   const handleSignIn = async () => {
@@ -150,6 +166,15 @@ const Landing = () => {
     { logo: edpuzzleLogo, name: "Edpuzzle" },
     { logo: copilotLogo, name: "Copilot" },
   ];
+
+  if (auth === "checking") {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <WeavingLoader variant="page" label="Checking your sign-in…" />
+      </div>
+    );
+  }
+  if (auth === "out") return <SignInGate onSignIn={handleSignIn} busy={signingIn} />;
 
   return (
     <>
