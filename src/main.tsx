@@ -1,3 +1,6 @@
+// Before anything creates the Supabase client: keep people signed in when a
+// sign-in renewal is refused for being busy (see the file).
+import "./lib/authBusyGuard";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import App from "./App.tsx";

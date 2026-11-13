@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
@@ -29,6 +29,15 @@ import emblemLeader from "@/assets/art/rope/knot-leader.webp";
 import { takeReturnTo } from "@/lib/returnTo";
 import SignInGate from "@/components/SignInGate";
 import { WeavingLoader } from "@/components/threadworks";
+import BusyNeedle from "@/components/BusyNeedle";
+import {
+  BUSY_DEMO,
+  clearSignInReturn,
+  isBusyError,
+  readSignInReturn,
+  retryWhileBusy,
+  type BusyWaitOptions,
+} from "@/lib/authBusy";
 
 const toolLevelInfo: Record<string, { explorer: string; practitioner: string; leader: string }> = {
   "MS Teams": {
@@ -81,12 +90,48 @@ const Landing = () => {
   }, []);
 
 
-  const handleSignIn = async () => {
+  // "Threading the needle": shown instead of an error while the sign-in
+  // service is busy. Each wait is one run; starting another stops the last.
+  const [busy, setBusy] = useState<{ nextAt: number | null; gaveUp: boolean } | null>(null);
+  // Back from Microsoft with a sign-in still to finish: hold the door until it has.
+  const [returning, setReturning] = useState(() => {
+    const r = readSignInReturn();
+    return !!r.tokens || r.busyError;
+  });
+  const busyRun = useRef<AbortController | null>(null);
+  const newBusyRun = () => {
+    busyRun.current?.abort();
+    busyRun.current = new AbortController();
+    return busyRun.current;
+  };
+  const busyOptions = (run: AbortController): BusyWaitOptions => ({
+    signal: run.signal,
+    onWait: (nextAt) => setBusy({ nextAt, gaveUp: false }),
+    // ?busydemo (development only): a 10-second countdown, giving up after about 30 seconds.
+    ...(BUSY_DEMO ? { minWait: 10_000, maxWait: 10_000, maxTotal: 35_000 } : {}),
+  });
+
+  // Start the Microsoft sign-in. If the service is busy, wait and start it again.
+  const startSignIn = async (alreadyBusy = false) => {
+    const run = newBusyRun();
     setSigningIn(true);
-    const { data, error } = await supabase.auth.signInWithSSO({
-      domain: "bradfordcollege.ac.uk",
-      options: { redirectTo: `${window.location.origin}/` },
-    });
+    const outcome = await retryWhileBusy(
+      () =>
+        supabase.auth.signInWithSSO({
+          domain: "bradfordcollege.ac.uk",
+          options: { redirectTo: `${window.location.origin}/` },
+        }),
+      { ...busyOptions(run), alreadyBusy },
+    );
+    if (outcome.kind === "stopped") return;
+    if (outcome.kind === "gave-up") {
+      setSigningIn(false);
+      setBusy({ nextAt: null, gaveUp: true });
+      return;
+    }
+    const { data, error } = outcome.result;
+    setBusy(null);
+    setReturning(false);
     if (error) {
       setSigningIn(false);
       toast({ title: "Sign-in failed", description: error.message, variant: "destructive" });
@@ -94,6 +139,71 @@ const Landing = () => {
     }
     if (data?.url) window.location.href = data.url;
   };
+  const handleSignIn = () => void startSignIn();
+
+  const runBusyDemo = () => {
+    const run = newBusyRun();
+    void retryWhileBusy(async () => ({ error: { status: 429 } }), { ...busyOptions(run), alreadyBusy: true }).then(
+      (o) => o.kind === "gave-up" && setBusy({ nextAt: null, gaveUp: true }),
+    );
+  };
+
+  // After 20 minutes still busy: "Try again" starts the whole sign-in again.
+  const handleBusyTryAgain = () => {
+    if (BUSY_DEMO) return runBusyDemo();
+    clearSignInReturn();
+    setBusy(null);
+    void startSignIn();
+  };
+
+  // The return from Microsoft. The sign-in library finishes it on start-up
+  // (reading the new sign-in from the address and checking it once); if that
+  // check was refused for being busy, the sign-in it brought back is still
+  // good, so it is tried again in place, then the page starts afresh with it.
+  useEffect(() => {
+    if (BUSY_DEMO) {
+      runBusyDemo();
+      return () => busyRun.current?.abort();
+    }
+    const back = readSignInReturn();
+    if (!back.tokens && !back.busyError) return;
+    const run = newBusyRun();
+    (async () => {
+      const { error } = await supabase.auth.initialize();
+      if (run.signal.aborted) return;
+      if (back.busyError) {
+        // Refused before it reached us: Microsoft's one-off answer is spent,
+        // so wait, then start the sign-in again from the beginning.
+        clearSignInReturn();
+        void startSignIn(true);
+        return;
+      }
+      if (!back.tokens || !isBusyError(error)) {
+        setReturning(false);
+        return;
+      }
+      const tokens = back.tokens;
+      const outcome = await retryWhileBusy(() => supabase.auth.setSession(tokens), {
+        ...busyOptions(run),
+        alreadyBusy: true,
+      });
+      if (outcome.kind === "stopped") return;
+      if (outcome.kind === "gave-up") {
+        setBusy({ nextAt: null, gaveUp: true });
+        return;
+      }
+      clearSignInReturn();
+      if (!outcome.result.error) {
+        window.location.reload();
+        return;
+      }
+      setBusy(null);
+      setReturning(false);
+    })();
+    return () => run.abort();
+    // Runs once per page load.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -167,7 +277,8 @@ const Landing = () => {
     { logo: copilotLogo, name: "Copilot" },
   ];
 
-  if (auth === "checking") {
+  if (busy) return <BusyNeedle nextAt={busy.nextAt} gaveUp={busy.gaveUp} onTryAgain={handleBusyTryAgain} />;
+  if (auth === "checking" || (auth === "out" && returning)) {
     return (
       <div className="belonging-cloth min-h-screen flex items-center justify-center">
         <WeavingLoader variant="page" label="Checking your sign-in…" />
