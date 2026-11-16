@@ -1222,6 +1222,33 @@ export type Database = {
         }
         Relationships: []
       }
+      tag_claims: {
+        Row: {
+          awarded_on: string
+          code: string
+          email: string
+          issued_at: string
+          sent_at: string | null
+          tag_id: string
+        }
+        Insert: {
+          awarded_on?: string
+          code?: string
+          email: string
+          issued_at?: string
+          sent_at?: string | null
+          tag_id: string
+        }
+        Update: {
+          awarded_on?: string
+          code?: string
+          email?: string
+          issued_at?: string
+          sent_at?: string | null
+          tag_id?: string
+        }
+        Relationships: []
+      }
       training_bookings: {
         Row: {
           booking_url: string
@@ -1537,6 +1564,7 @@ export type Database = {
           explanation: string
         }[]
       }
+      claim_my_tags: { Args: never; Returns: Json }
       create_evidence_notification: {
         Args: { _evidence_id: string; _message: string; _type: string }
         Returns: string
@@ -1551,6 +1579,10 @@ export type Database = {
       }
       is_admin: { Args: never; Returns: boolean }
       is_leader: { Args: never; Returns: boolean }
+      mark_tag_claims_sent: {
+        Args: { p_tag_ids: string[] }
+        Returns: undefined
+      }
       module_done_for: {
         Args: { _email: string; _module_id: string }
         Returns: boolean
@@ -1561,11 +1593,19 @@ export type Database = {
         Args: { _email: string; _module_id: string }
         Returns: undefined
       }
+      redeem_tag_claim: { Args: { p_code: string }; Returns: Json }
       set_module_progress: {
         Args: { _email: string; _module_id: string }
         Returns: undefined
       }
       staff_levels_export_data: { Args: never; Returns: Json }
+      tags_earned: {
+        Args: { p_email: string }
+        Returns: {
+          awarded_on: string
+          tag_id: string
+        }[]
+      }
     }
     Enums: {
       evidence_type: "video_link" | "file_upload" | "case_study"
