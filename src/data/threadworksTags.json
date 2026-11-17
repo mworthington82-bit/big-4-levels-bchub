@@ -12,7 +12,7 @@
    "line": "Every Explorer module signed off. Your digital toolkit is up and running.",
    "can": "Use the core digital platforms with confidence",
    "learners": "Get smoother lessons and easier access to learning",
-   "earn": "Every Explorer module signed off: all knowledge-check questions right plus the written reflection.",
+   "earn": "Every Explorer module done: signed off (all knowledge-check questions right plus the written reflection) or shown in your self-assessment.",
    "a": {
     "k": "stamp",
     "l": "Explorer",
@@ -34,7 +34,7 @@
    "line": "Every Practitioner module signed off. That is real digital confidence.",
    "can": "Use the platforms to give feedback and collaborate",
    "learners": "Get feedback, teamwork and independent learning",
-   "earn": "Every Practitioner module signed off.",
+   "earn": "Every Practitioner module done: signed off or shown in your self-assessment.",
    "a": {
     "k": "stamp",
     "l": "Practitioner",
@@ -80,7 +80,7 @@
    "line": "Teams Explorer signed off. Your digital classroom is open.",
    "can": "Run a tidy Teams class for your learners",
    "learners": "Keep organised and connected between lessons",
-   "earn": "Teams module signed off at Explorer level.",
+   "earn": "Teams done at Explorer level: signed off, shown in your self-assessment, or done at Practitioner level.",
    "a": {
     "k": "stamp",
     "l": "Explorer",
@@ -103,7 +103,7 @@
    "line": "Teams Practitioner signed off. Your Teams class does real work.",
    "can": "Build Teams spaces that learners use on their own",
    "learners": "Learn and catch up wherever they are",
-   "earn": "Teams module signed off at Practitioner level.",
+   "earn": "Teams done at Practitioner level: signed off or shown in your self-assessment.",
    "a": {
     "k": "stamp",
     "l": "Practitioner",
@@ -126,7 +126,7 @@
    "line": "Forms Explorer signed off. You can find the gaps before you teach.",
    "can": "Find the gaps before you teach, with a quiz that marks itself",
    "learners": "Practise recall and see straight away what to work on",
-   "earn": "Forms module signed off at Explorer level.",
+   "earn": "Forms done at Explorer level: signed off, shown in your self-assessment, or done at Practitioner level.",
    "a": {
     "k": "stamp",
     "l": "Explorer",
@@ -161,7 +161,7 @@
    "line": "Forms Practitioner signed off. Your checks show you what to do next.",
    "can": "Build checks that show you what to teach next",
    "learners": "Get teaching shaped by what they know now",
-   "earn": "Forms module signed off at Practitioner level.",
+   "earn": "Forms done at Practitioner level: signed off or shown in your self-assessment.",
    "a": {
     "k": "stamp",
     "l": "Practitioner",
@@ -188,7 +188,7 @@
    "line": "Canva Explorer signed off. Your resources look the part.",
    "can": "Make clear, attractive resources quickly",
    "learners": "Focus on what matters instead of clutter",
-   "earn": "Canva module signed off at Explorer level.",
+   "earn": "Canva done at Explorer level: signed off, shown in your self-assessment, or done at Practitioner level.",
    "a": {
     "k": "stamp",
     "l": "Explorer",
@@ -211,7 +211,7 @@
    "line": "Canva Practitioner signed off. Your resources work for every learner.",
    "can": "Design resources that are clear and accessible",
    "learners": "Get materials they can all read and use",
-   "earn": "Canva module signed off at Practitioner level.",
+   "earn": "Canva done at Practitioner level: signed off or shown in your self-assessment.",
    "a": {
     "k": "stamp",
     "l": "Practitioner",
@@ -234,7 +234,7 @@
    "line": "Edpuzzle Explorer signed off. Your first video lesson is ready.",
    "can": "Turn a video into a lesson with questions in it",
    "learners": "Learn at their own pace and rewatch what they missed",
-   "earn": "Edpuzzle module signed off at Explorer level.",
+   "earn": "Edpuzzle done at Explorer level: signed off, shown in your self-assessment, or done at Practitioner level.",
    "a": {
     "k": "stamp",
     "l": "Explorer",
@@ -257,7 +257,7 @@
    "line": "Edpuzzle Practitioner signed off. You can see where learners get stuck.",
    "can": "Use video results to see where learners get stuck",
    "learners": "Get help exactly where the video lost them",
-   "earn": "Edpuzzle module signed off at Practitioner level.",
+   "earn": "Edpuzzle done at Practitioner level: signed off or shown in your self-assessment.",
    "a": {
     "k": "stamp",
     "l": "Practitioner",
@@ -280,7 +280,7 @@
    "line": "Copilot Explorer signed off. You have a helper for the routine jobs.",
    "can": "Use Copilot for the routine jobs safely",
    "learners": "Get more of your time in the lesson itself",
-   "earn": "Copilot module signed off at Explorer level.",
+   "earn": "Copilot done at Explorer level: signed off, shown in your self-assessment, or done at Practitioner level.",
    "a": {
     "k": "stamp",
     "l": "Explorer",
@@ -303,7 +303,7 @@
    "line": "Copilot Practitioner signed off. Your AI use is thoughtful and safe.",
    "can": "Use AI to plan and give feedback with care",
    "learners": "Get time back for the parts only you can do",
-   "earn": "Copilot module signed off at Practitioner level.",
+   "earn": "Copilot done at Practitioner level: signed off or shown in your self-assessment.",
    "a": {
     "k": "stamp",
     "l": "Practitioner",
@@ -330,7 +330,7 @@
    "line": "Immersive Room Practitioner signed off. You can open up new places for learning.",
    "can": "Plan a session that puts learners inside the topic",
    "learners": "Meet ideas they could never see in a normal room",
-   "earn": "Immersive Room module signed off at Practitioner level.",
+   "earn": "Immersive Room session attended at Practitioner level.",
    "a": {
     "k": "stamp",
     "l": "Practitioner",
