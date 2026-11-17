@@ -90,26 +90,28 @@ export const SITE_NAMES: Record<TagSite, string> = {
 
 export const ROUTE_LABEL: Record<Route, string> = {
   auto: "Counted from",
-  self: "Added by",
-  two: "Confirmed by",
-  lead: "Given by",
-  flow: "Counted from",
+  self: "Approved by",
+  two: "Approved by",
+  lead: "Approved by",
+  flow: "Approved by",
 };
+
+/**
+ * Can a person ask for this tag? Every tag no site counts by itself. They ask on the
+ * ThreadWorks hub (Your year, "Ask for a tag"), answer two multiple-choice questions,
+ * and the Learning, Development & Innovation team approves it (17 November 2026).
+ */
+export const isRequestable = (t: CatalogueTag): boolean => t.route !== "auto" && !t.off;
+
+/** The hub opens "Ask for a tag" with this tag chosen. */
+export const askTagUrl = (id: string): string => `https://bradfordthreadworks.online/#ask:${id}`;
 
 /** One line on how a tag was recorded: every tag shows this, so nobody has to guess. */
 export function routeKind(t: CatalogueTag): string {
-  switch (t.route) {
-    case "auto":
-      return t.by === "ThreadWorks" ? "Counted from your other tags" : `Counted from your activity in ${t.by}`;
-    case "self":
-      return "Added by you, with your own note";
-    case "two":
-      return `Confirmed with ${t.by.toLowerCase()}`;
-    case "lead":
-      return `Given by ${t.by === "Innovation" ? "the innovation team" : t.by}`;
-    case "flow":
-      return "Counted from a College record";
+  if (t.route === "auto") {
+    return t.by === "ThreadWorks" ? "Counted from your other tags" : `Counted from your activity in ${t.by}`;
   }
+  return "Asked for by you, approved by the Learning, Development & Innovation team";
 }
 
 /** Fill {slot|fallback} from the person's own note; with none, the fallback reads on its own. */

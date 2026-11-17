@@ -1,7 +1,7 @@
 import { ExternalLink } from "lucide-react";
 import { HUB_URL } from "@/components/threadworks";
 import { TagCard, BtwTag } from "@/components/tags/TagCard";
-import { LIVE, ROUTE_LABEL, todayIso, type CatalogueTag } from "@/components/tags/tagCatalogue";
+import { LIVE, ROUTE_LABEL, askTagUrl, isRequestable, todayIso, type CatalogueTag } from "@/components/tags/tagCatalogue";
 import "@/components/tags/tagsPage.css";
 
 /**
@@ -103,6 +103,17 @@ export default function Tags() {
                     <p className="text-xs text-muted-foreground">
                       {ROUTE_LABEL[t.route]} {t.by}
                     </p>
+                    {isRequestable(t) && (
+                      <a
+                        href={askTagUrl(t.id)}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="inline-flex min-h-[44px] items-center rounded-full bg-[#0e7470] px-4 py-2 text-sm font-semibold text-white hover:bg-[#0a5d5a] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+                        data-testid={`ask-${t.id}`}
+                      >
+                        Ask for this tag<span className="sr-only"> (opens the ThreadWorks hub in a new tab)</span>
+                      </a>
+                    )}
                   </div>
                 </li>
               ))}
