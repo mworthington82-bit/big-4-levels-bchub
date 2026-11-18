@@ -1,4 +1,5 @@
 import { isDoneCompletion } from "@/lib/moduleDone";
+import { nameFromSignIn } from "@/lib/signInName";
 import { useCallback, useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { isDemoEmail } from "@/lib/demoAccess";
@@ -132,6 +133,11 @@ export const useStaffProfile = () => {
         }
 
         let profile = (data as unknown as StaffProfile) ?? null;
+        // Microsoft's own name for them comes first: the uploaded staff list often
+        // holds an initial and a surname ("M Smith"). Only what is shown changes;
+        // the staff list itself is left as it is.
+        const signInName = nameFromSignIn(sessionData.session?.user);
+        if (profile && signInName) profile = { ...profile, name: signInName };
 
         // Demo accounts: UI-only bypass. Unlock flags are privileged columns —
         // the DB trigger blocks non-admin writes, so we no longer attempt to

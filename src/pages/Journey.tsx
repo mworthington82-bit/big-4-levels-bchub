@@ -22,6 +22,7 @@ import { IconWand, IconBulb, IconArrowRight } from "@tabler/icons-react";
 import emblemExplorer from "@/assets/art/rope/knot-explorer.webp";
 import emblemPractitioner from "@/assets/art/rope/knot-practitioner.webp";
 import emblemLeader from "@/assets/art/rope/knot-leader.webp";
+import { firstNameOf } from "@/lib/signInName";
 
 const LEVEL_EMBLEM = {
   Explorer: emblemExplorer,
@@ -151,7 +152,10 @@ const Journey = () => {
         <div className="container mx-auto px-4 py-8 md:py-10 max-w-5xl space-y-6">
           {/* Where am I: one heading, one line of status, one progress bar */}
           <header className="rounded-2xl border border-border bg-card p-6 md:p-8 shadow-sm">
-            <p className="text-base text-muted-foreground">{greeting()}</p>
+            <p className="text-base text-muted-foreground">
+              {greeting()}
+              {firstNameOf(profile?.name) ? `, ${firstNameOf(profile?.name)}` : ""}
+            </p>
             <h1 className="mt-1 font-display text-3xl md:text-4xl font-bold text-b4-strong">My Journey</h1>
             <p className="mt-3 inline-flex items-center gap-2 text-lg font-semibold text-b4-strong">
               <img src={LEVEL_EMBLEM[effective]} alt="" aria-hidden className="h-7 w-7 object-contain" />

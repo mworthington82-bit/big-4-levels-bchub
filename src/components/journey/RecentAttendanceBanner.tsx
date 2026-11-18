@@ -4,6 +4,7 @@ import { IconSparkles, IconArrowRight } from "@tabler/icons-react";
 import StitchedCross from "@/components/StitchedCross";
 import { toolLabel, formatList, listToDoToolNames, normaliseLevel } from "@/lib/journey";
 import type { StaffProfile } from "@/hooks/useStaffProfile";
+import { firstNameOf } from "@/lib/signInName";
 
 interface Props {
   email: string;
@@ -27,11 +28,8 @@ const moduleIdToSessionName = (id: string): string => {
   return `${tool} ${level}`;
 };
 
-const firstName = (name: string | null | undefined): string => {
-  if (!name) return "there";
-  const t = name.trim().split(/\s+/)[0];
-  return t || "there";
-};
+// never a bare initial ("M Smith" on the staff list): "Well done, there" reads better than "Well done, M"
+const firstName = (name: string | null | undefined): string => firstNameOf(name) || "there";
 
 const RecentAttendanceBanner = ({ email, profile, completedModuleIds }: Props) => {
   const [rows, setRows] = useState<RecentRow[]>([]);
