@@ -9,7 +9,7 @@
  */
 
 export const HUB_AWARD_URL = "https://fqfnzyiubhzhhlgvjcpu.supabase.co/functions/v1/award-site-tags";
-export const HUB_YEAR_URL = "https://bradfordthreadworks.lovable.app/#year";
+export const HUB_YEAR_URL = "https://bradfordthreadworks.online/#year";
 export const SITE = "big4";
 export const THROTTLE_MS = 5 * 60 * 1000;
 

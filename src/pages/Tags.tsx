@@ -1,5 +1,4 @@
 import { ExternalLink } from "lucide-react";
-import { HUB_URL } from "@/components/threadworks";
 import { TagCard, BtwTag } from "@/components/tags/TagCard";
 import { LIVE, ROUTE_LABEL, askTagUrl, isRequestable, todayIso, type CatalogueTag } from "@/components/tags/tagCatalogue";
 import "@/components/tags/tagsPage.css";
@@ -45,7 +44,7 @@ const SECTIONS: Section[] = ORDER.map((title) => ({ title, tags: LIVE.filter((t)
 
 const HubLink = () => (
   <a
-    href={HUB_URL}
+    href="https://bradfordthreadworks.online/#year"
     target="_blank"
     rel="noreferrer"
     className="inline-flex min-h-[44px] items-center gap-1.5 text-sm font-semibold text-b4-strong underline-offset-2 hover:underline"
