@@ -1228,6 +1228,7 @@ export type Database = {
           code: string
           email: string
           issued_at: string
+          send_request: number | null
           sent_at: string | null
           tag_id: string
         }
@@ -1236,6 +1237,7 @@ export type Database = {
           code?: string
           email: string
           issued_at?: string
+          send_request?: number | null
           sent_at?: string | null
           tag_id: string
         }
@@ -1244,6 +1246,7 @@ export type Database = {
           code?: string
           email?: string
           issued_at?: string
+          send_request?: number | null
           sent_at?: string | null
           tag_id?: string
         }
@@ -1594,6 +1597,7 @@ export type Database = {
         Returns: undefined
       }
       redeem_tag_claim: { Args: { p_code: string }; Returns: Json }
+      send_tags_to_hub: { Args: never; Returns: string }
       set_module_progress: {
         Args: { _email: string; _module_id: string }
         Returns: undefined
