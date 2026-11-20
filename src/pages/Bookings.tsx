@@ -189,6 +189,12 @@ const Bookings = () => {
                 All training sessions are practical and hands-on. Please ensure you bring a laptop and charger with you.
               </p>
             </div>
+            <div className="mb-6 p-4 rounded-lg border border-border bg-muted/40">
+              <p className="text-sm text-foreground leading-relaxed">
+                <span className="font-semibold">Joining a session: </span>
+                All of these sessions can be joined directly from the MS Teams Go Digital page.
+              </p>
+            </div>
             <section aria-label="Upcoming training sessions" className="grid gap-5 md:grid-cols-2">
             {visible.map((s) => (
               <Card key={s.id} className="border-border flex flex-col">
