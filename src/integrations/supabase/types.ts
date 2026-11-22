@@ -1527,6 +1527,13 @@ export type Database = {
     }
     Functions: {
       admin_insert_new_staff: { Args: { payload: Json }; Returns: Json }
+      admin_level_tag_counts: {
+        Args: never
+        Returns: {
+          staff_count: number
+          tag_id: string
+        }[]
+      }
       admin_list_training_sessions: {
         Args: never
         Returns: {

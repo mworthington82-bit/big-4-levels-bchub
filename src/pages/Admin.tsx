@@ -9,6 +9,7 @@ import DatabaseSummary from "@/components/admin/DatabaseSummary";
 import BookingsDashboard from "@/components/admin/BookingsDashboard";
 import ProgressionInsights from "@/components/admin/ProgressionInsights";
 import AlmostThere from "@/components/admin/AlmostThere";
+import BadgeForecast from "@/components/admin/BadgeForecast";
 import FortnightlyExport from "@/components/admin/FortnightlyExport";
 import StaffLevelsExport from "@/components/admin/StaffLevelsExport";
 import StaffJourneySearch from "@/components/admin/StaffJourneySearch";
@@ -212,6 +213,7 @@ const Admin = () => {
         <StaffLevelsExport refreshKey={refreshKey} />
 
         <AlmostThere refreshKey={refreshKey} />
+        <BadgeForecast refreshKey={refreshKey} />
 
 
         <StaffJourneySearch />
