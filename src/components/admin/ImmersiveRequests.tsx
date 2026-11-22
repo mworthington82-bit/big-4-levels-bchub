@@ -77,9 +77,10 @@ const ImmersiveRequests = ({ refreshKey }: { refreshKey?: number }) => {
   return (
     <section className="bg-card border border-border rounded-2xl p-6">
       <header className="mb-4 flex flex-wrap items-center justify-between gap-3">
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 flex-wrap">
           <Sparkles className="w-5 h-5 text-b4-strong" />
           <h2 className="text-xl font-semibold text-b4-strong">Immersive Room requests</h2>
+          <p className="basis-full text-sm text-muted-foreground">Staff who have asked to book a session in the Immersive Room.</p>
         </div>
         <div className="flex gap-2">
           <Button size="sm" variant="outline" onClick={downloadCsv} disabled={rows.length === 0}>

@@ -51,12 +51,13 @@ const AttendanceUploadHistory = ({ refreshKey }: { refreshKey: number }) => {
   return (
     <details className="bg-card rounded-xl border border-border group">
       <summary className="cursor-pointer list-none p-6 flex items-center justify-between gap-2">
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 flex-wrap">
           <ClipboardList className="w-5 h-5 text-b4-strong" />
           <h2 className="text-lg font-semibold text-b4-strong">
             Session attendance upload history{" "}
             <span className="text-muted-foreground/80 font-normal">({batches.length})</span>
           </h2>
+          <p className="basis-full text-sm text-muted-foreground font-normal">Past attendance uploads and who was included in each.</p>
         </div>
         <ChevronDown className="w-5 h-5 text-muted-foreground/80 transition-transform group-open:rotate-180" />
       </summary>

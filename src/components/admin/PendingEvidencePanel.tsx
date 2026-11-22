@@ -45,6 +45,7 @@ const PendingEvidencePanel = () => {
   return (
     <section className="space-y-4">
       <h2 className="text-xl font-bold text-b4-strong">Pending evidence posts</h2>
+      <p className="text-sm text-muted-foreground">Evidence posts staff have written that need publishing or removing.</p>
       {loading ? (
         <WeavingLoader variant="inline" label="Finding pending evidence…" />
       ) : posts.length === 0 ? (

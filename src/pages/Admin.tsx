@@ -9,10 +9,7 @@ import DatabaseSummary from "@/components/admin/DatabaseSummary";
 import BookingsDashboard from "@/components/admin/BookingsDashboard";
 import ProgressionInsights from "@/components/admin/ProgressionInsights";
 import AlmostThere from "@/components/admin/AlmostThere";
-import BadgeForecast from "@/components/admin/BadgeForecast";
 import MonthlyEmails from "@/components/admin/MonthlyEmails";
-import FortnightlyExport from "@/components/admin/FortnightlyExport";
-import StaffLevelsExport from "@/components/admin/StaffLevelsExport";
 import StaffJourneySearch from "@/components/admin/StaffJourneySearch";
 import PendingEvidencePanel from "@/components/admin/PendingEvidencePanel";
 import CompletionReviews from "@/components/admin/CompletionReviews";
@@ -37,6 +34,8 @@ import { computeProcessed } from "@/lib/csv/calculate";
 import { ProcessedRow, RemovalStats, Warning } from "@/lib/csv/types";
 import { supabase } from "@/integrations/supabase/client";
 import { AlertTriangle } from "lucide-react";
+import AdminTabs, { type AdminTab } from "@/components/admin/AdminTabs";
+import { useReviewCount } from "@/components/admin/useReviewCount";
 
 const STEP_LABELS = [
   "Reading file...",
@@ -153,49 +152,35 @@ const Admin = () => {
     }
   };
 
-  return (
-    <AppShell>
-      <div className="container mx-auto px-4 py-10 max-w-6xl space-y-8">
-        <header>
-          <h1 className="text-3xl font-bold text-b4-strong">Admin · CSV upload</h1>
-          <p className="text-muted-foreground mt-1">
-            Upload the latest self-assessment export. Cleaning, level
-            calculation, and database writes run automatically.
-          </p>
-        </header>
+  const reviewCount = useReviewCount(refreshKey + bookingsRefreshKey);
 
-        <section className="bg-b4-wash rounded-2xl p-6">
-          <UploadZone onFile={handleFile} disabled={busy} />
-        </section>
-
-        {error && (
-          <div className="flex items-start gap-3 bg-red-50 border border-red-200 text-red-900 rounded-lg p-4">
-            <AlertTriangle className="w-5 h-5 mt-0.5 text-red-600" />
-            <div>{error}</div>
-          </div>
-        )}
-
-        {file && steps.length > 0 && (
-          <ProcessingStatus fileName={file.name} fileSize={file.size} steps={steps} />
-        )}
-
-        {result && (
-          <UploadSummary
-            totalInCsv={result.totalInCsv}
-            removalStats={result.removalStats}
-            warnings={result.warnings}
-            added={result.added}
-            skippedExisting={result.skippedExisting}
-            skippedInvalid={result.skippedInvalid}
-            skippedExistingEmails={result.skippedExistingEmails}
-            skippedInvalidEmails={result.skippedInvalidEmails}
-          />
-        )}
-
-
-        <UploadHistory refreshKey={refreshKey} />
+  const tabs: AdminTab[] = [
+    { id: "overview", label: "Overview", content: (
+      <>
+        <ProgressionInsights refreshKey={refreshKey} />
+        <AlmostThere refreshKey={refreshKey} />
         <DatabaseSummary refreshKey={refreshKey} />
-
+      </>
+    ) },
+    { id: "to-review", label: reviewCount > 0 ? `To review (${reviewCount})` : "To review", content: (
+      <>
+        <CompletionReviews />
+        <PendingEvidencePanel />
+        <LeaderSignOff />
+      </>
+    ) },
+    { id: "attendance", label: "Attendance", content: (
+      <>
+        <BulkAttendanceUpload />
+        <KnowledgeCheckUpload />
+        <MarkSessionsComplete />
+        <ManualImmersiveAttendance />
+        <AttendanceUploadHistory refreshKey={refreshKey + bookingsRefreshKey} />
+      </>
+    ) },
+    { id: "sessions", label: "Sessions & bookings", content: (
+      <>
+        <TrainingSessions />
         <section className="space-y-4">
           <header>
             <h2 className="text-2xl font-bold text-b4-ink" style={{ fontFamily: "Fraunces, serif" }}>
@@ -207,31 +192,61 @@ const Admin = () => {
           </header>
           <BookingsDashboard refreshKey={bookingsRefreshKey} />
         </section>
-
-        <ProgressionInsights refreshKey={refreshKey} />
-
-        <FortnightlyExport />
-        <StaffLevelsExport refreshKey={refreshKey} />
-
-        <AlmostThere refreshKey={refreshKey} />
-        <BadgeForecast refreshKey={refreshKey} />
-        <MonthlyEmails refreshKey={refreshKey} />
-
-
-        <StaffJourneySearch />
-        <CompletionReviews />
-        <PendingEvidencePanel />
         <AddBookingForm />
         <ImmersiveRequests refreshKey={refreshKey} />
-        <LeaderSignOff />
-        <ManualImmersiveAttendance />
+      </>
+    ) },
+    { id: "staff", label: "Staff & comms", content: (
+      <>
+        <StaffJourneySearch />
+        <MonthlyEmails refreshKey={refreshKey} />
         <ReflectionsPanel />
-        <BulkAttendanceUpload />
-        <KnowledgeCheckUpload />
-        <AttendanceUploadHistory refreshKey={refreshKey + bookingsRefreshKey} />
-        <TrainingSessions />
-        <MarkSessionsComplete />
+        <section className="space-y-4">
+          <header>
+            <h2 className="text-2xl font-bold text-b4-ink" style={{ fontFamily: "Fraunces, serif" }}>Self-assessment CSV upload</h2>
+            <p className="text-muted-foreground text-sm mt-1">
+              Upload the latest self-assessment export. Cleaning, level
+              calculation, and database writes run automatically.
+            </p>
+          </header>
+          <div className="bg-b4-wash rounded-2xl p-6">
+            <UploadZone onFile={handleFile} disabled={busy} />
+          </div>
+          {error && (
+            <div className="flex items-start gap-3 bg-red-50 border border-red-200 text-red-900 rounded-lg p-4">
+              <AlertTriangle className="w-5 h-5 mt-0.5 text-red-600" />
+              <div>{error}</div>
+            </div>
+          )}
+          {file && steps.length > 0 && (
+            <ProcessingStatus fileName={file.name} fileSize={file.size} steps={steps} />
+          )}
+          {result && (
+            <UploadSummary
+              totalInCsv={result.totalInCsv}
+              removalStats={result.removalStats}
+              warnings={result.warnings}
+              added={result.added}
+              skippedExisting={result.skippedExisting}
+              skippedInvalid={result.skippedInvalid}
+              skippedExistingEmails={result.skippedExistingEmails}
+              skippedInvalidEmails={result.skippedInvalidEmails}
+            />
+          )}
+        </section>
+        <UploadHistory refreshKey={refreshKey} />
+      </>
+    ) },
+  ];
 
+  return (
+    <AppShell>
+      <div className="container mx-auto px-4 py-10 max-w-6xl space-y-8">
+        <header>
+          <h1 className="text-3xl font-bold text-b4-strong">Admin</h1>
+          <p className="text-muted-foreground mt-1">Big 4 admin for the LDI team.</p>
+        </header>
+        <AdminTabs tabs={tabs} />
       </div>
     </AppShell>
   );

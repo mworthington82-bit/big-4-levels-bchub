@@ -30,6 +30,7 @@ const UploadHistory = ({ refreshKey }: { refreshKey: number }) => {
         <h2 className="text-lg font-semibold text-b4-strong">
           Self-assessment upload history{" "}
           <span className="text-muted-foreground/80 font-normal">({rows.length})</span>
+          <span className="block text-sm text-muted-foreground font-normal mt-1">Past self-assessment uploads and how many staff each added.</span>
         </h2>
         <svg className="w-5 h-5 text-muted-foreground/80 transition-transform group-open:rotate-180" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.06l3.71-3.83a.75.75 0 111.08 1.04l-4.25 4.39a.75.75 0 01-1.08 0L5.21 8.27a.75.75 0 01.02-1.06z" clipRule="evenodd" /></svg>
       </summary>
