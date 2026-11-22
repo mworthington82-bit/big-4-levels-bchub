@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
 import OnboardingModal from "@/components/journey/OnboardingModal";
+import DailyNudgeModal, { ukToday } from "@/components/journey/DailyNudgeModal";
 import MilestoneBanner from "@/components/journey/MilestoneBanner";
 import CompletedLevelStrip from "@/components/journey/CompletedLevelStrip";
 import AppShell from "@/components/AppShell";
@@ -101,6 +103,8 @@ const Journey = () => {
   const navigate = useNavigate();
   const { profile, email, loading, notFound, error, completedModuleIds, completions, attendedPendingIds, reviewPendingIds, attendanceClaimIds, refresh } = useStaffProfile();
   const [showOnboarding, setShowOnboarding] = useState(false);
+  const [showNudge, setShowNudge] = useState(false);
+  const nudgeDecided = useRef(false);
   const progressionRan = useRef(false);
 
   // Run progression check once per load
@@ -114,10 +118,21 @@ const Journey = () => {
   }, [loading, profile, email, completedModuleIds, refresh]);
 
   useEffect(() => {
-    if (!loading && profile && profile.onboarding_shown === false) {
+    if (loading || !profile || nudgeDecided.current) return;
+    nudgeDecided.current = true;
+    if (profile.onboarding_shown === false) {
+      // Onboarding takes the day; never stack the daily nudge on top of it.
       setShowOnboarding(true);
+      if (email) {
+        supabase.from("staff_profiles")
+          .update({ journey_nudge_last_shown: ukToday() } as never)
+          .ilike("email", email)
+          .then(() => undefined);
+      }
+    } else if (profile.journey_nudge_last_shown !== ukToday()) {
+      setShowNudge(true);
     }
-  }, [loading, profile]);
+  }, [loading, profile, email]);
 
   useEffect(() => {
     if (!loading && notFound) navigate("/not-yet", { replace: true });
@@ -216,6 +231,9 @@ const Journey = () => {
           email={email}
           onClose={() => setShowOnboarding(false)}
         />
+      )}
+      {showNudge && !showOnboarding && email && (
+        <DailyNudgeModal level={effective} tasks={cards} email={email} onClose={() => setShowNudge(false)} />
       )}
     </AppShell>
   );

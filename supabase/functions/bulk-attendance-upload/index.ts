@@ -108,12 +108,22 @@ Deno.serve(async (req) => {
       .select("staff_email,module_id,quiz_passed,completed_via")
       .in("staff_email", emails);
     const completedByEmail = new Map<string, Set<string>>();
+    const passedByEmail = new Map<string, Set<string>>();
     for (const c of existingComps ?? []) {
       const e = String(c.staff_email).toLowerCase();
       if (!completedByEmail.has(e)) completedByEmail.set(e, new Set());
       const done = c.completed_via === "signed_off" ||
         (c.module_id === "immersive_practitioner" && (c.completed_via === "in_person" || c.quiz_passed));
       if (done) completedByEmail.get(e)!.add(c.module_id);
+      // Already passed or signed off: attendance must leave the row exactly as it is.
+      if (c.quiz_passed === true || c.completed_via === "signed_off") {
+        if (!passedByEmail.has(e)) passedByEmail.set(e, new Set());
+        passedByEmail.get(e)!.add(c.module_id);
+      }
+    }
+    const alreadyPassed = new Set<string>();
+    for (const r of knownRows) {
+      if (passedByEmail.get(r.email)?.has(r.module_id)) alreadyPassed.add(`${r.email}::${r.module_id}`);
     }
 
     // Compute progression preview
@@ -165,7 +175,7 @@ Deno.serve(async (req) => {
         const key = `${r.email}::${r.module_id}`;
         // Progress only: quiz_passed is never written. Immersive attendance
         // (completed_via = in_person) counts as done; tool attendance does not.
-        const already = completedByEmail.get(r.email)?.has(r.module_id);
+        const already = completedByEmail.get(r.email)?.has(r.module_id) || alreadyPassed.has(key);
         if (already) continue; // never downgrade a signed-off module
         upsertMap.set(key, {
           staff_email: r.email,
@@ -181,7 +191,7 @@ Deno.serve(async (req) => {
           .upsert(upserts, { onConflict: "staff_email,module_id" });
         if (mcErr) throw mcErr;
       }
-      marked = knownRows.length;
+      marked = knownRows.length - alreadyPassed.size;
 
       // Tool attendance no longer sets *_evidenced (that now means signed off).
       for (const [email, rs] of rowsByEmail) {
@@ -272,7 +282,8 @@ Deno.serve(async (req) => {
 
     return json({
       dryRun,
-      marked: dryRun ? knownRows.length : marked,
+      marked: dryRun ? knownRows.length - alreadyPassed.size : marked,
+      alreadyPassed: alreadyPassed.size,
       reflectionsSaved,
       skippedUnknownEmail: unknownEmailRows.map((r) => ({ email: r.email, module_id: r.module_id })),
       skippedInvalidRows: invalidRows,

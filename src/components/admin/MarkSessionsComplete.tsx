@@ -43,6 +43,7 @@ const BulkPanel = () => {
   const [busy, setBusy] = useState(false);
   const [result, setResult] = useState<{
     marked: number;
+    alreadyPassed: number;
     notFound: string[];
   } | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -71,6 +72,7 @@ const BulkPanel = () => {
     const payload = (data as any) ?? {};
     setResult({
       marked: Number(payload.marked ?? 0),
+      alreadyPassed: Number(payload.already_passed ?? 0),
       notFound: (payload.not_found as string[]) ?? [],
     });
     setEmails("");
@@ -129,8 +131,8 @@ const BulkPanel = () => {
       {result && (
         <div className="text-sm bg-b4-wash border border-border rounded-lg p-4 space-y-2">
           <div className="font-semibold text-b4-strong">
-            {result.marked} staff marked complete. {result.notFound.length} emails not found in
-            the system.
+            {result.marked} staff marked complete. {result.alreadyPassed} already passed – left as
+            is. {result.notFound.length} emails not found in the system.
           </div>
           {result.notFound.length > 0 && (
             <details>

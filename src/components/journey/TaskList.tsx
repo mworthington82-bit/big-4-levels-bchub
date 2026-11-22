@@ -23,7 +23,7 @@ const levelSlug = (id: string) => (id.endsWith("_practitioner") ? "practitioner"
 
 type Action = { label: string; to: string; loading: string } | null;
 
-const actionFor = (t: ModuleCardSpec): Action => {
+export const actionFor = (t: ModuleCardSpec): Action => {
   if (t.status === "review_pending" || t.status === "attendance_claimed") return null;
   if (t.status === "attended_pending")
     return { label: "Do the knowledge check and reflection", to: knowledgeCheckPath(t.id), loading: `Opening the ${t.name} knowledge check…` };

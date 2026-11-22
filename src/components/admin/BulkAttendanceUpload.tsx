@@ -7,6 +7,7 @@ import { MODULE_LABEL, parseWorkbook, type BulkFormat, type ModuleId, type Parse
 
 interface DryRunResult {
   marked: number;
+  alreadyPassed?: number;
   reflectionsSaved: number;
   skippedUnknownEmail: { email: string; module_id: string }[];
   skippedInvalidRows: any[];
@@ -353,6 +354,7 @@ const BulkAttendanceUpload = () => {
           </div>
           <ul className="text-emerald-900 space-y-0.5">
             <li>{done.marked} module completion{done.marked === 1 ? "" : "s"} written.</li>
+            <li>{done.alreadyPassed ?? 0} already passed – left as is.</li>
             <li>{done.reflectionsSaved} reflection{done.reflectionsSaved === 1 ? "" : "s"} recorded.</li>
             {done.unlockedPractitioner.length > 0 && (
               <li>{done.unlockedPractitioner.length} staff unlocked Practitioner.</li>

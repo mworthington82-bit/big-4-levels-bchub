@@ -1135,6 +1135,7 @@ export type Database = {
           forms_explorer_evidenced: boolean
           forms_practitioner_evidenced: boolean
           forms_score: number | null
+          journey_nudge_last_shown: string | null
           leader_unlocked: boolean
           module_popups_shown: string[]
           name: string | null
@@ -1170,6 +1171,7 @@ export type Database = {
           forms_explorer_evidenced?: boolean
           forms_practitioner_evidenced?: boolean
           forms_score?: number | null
+          journey_nudge_last_shown?: string | null
           leader_unlocked?: boolean
           module_popups_shown?: string[]
           name?: string | null
@@ -1205,6 +1207,7 @@ export type Database = {
           forms_explorer_evidenced?: boolean
           forms_practitioner_evidenced?: boolean
           forms_score?: number | null
+          journey_nudge_last_shown?: string | null
           leader_unlocked?: boolean
           module_popups_shown?: string[]
           name?: string | null

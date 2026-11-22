@@ -12,6 +12,7 @@ export interface StaffProfile {
   explorer_evidenced_count: number;
   practitioner_evidenced_count: number;
   onboarding_shown: boolean;
+  journey_nudge_last_shown?: string | null;
   explorer_complete: boolean;
   practitioner_unlocked: boolean;
   practitioner_complete: boolean;
@@ -49,7 +50,7 @@ interface State {
 
 const PROFILE_COLUMNS = [
   "email","name","department","assigned_level","data_uploaded_at",
-  "explorer_evidenced_count","practitioner_evidenced_count","onboarding_shown",
+  "explorer_evidenced_count","practitioner_evidenced_count","onboarding_shown","journey_nudge_last_shown",
   "explorer_complete","practitioner_unlocked","practitioner_complete","leader_unlocked",
   "teams_explorer_evidenced","forms_explorer_evidenced","canva_explorer_evidenced",
   "edpuzzle_explorer_evidenced","copilot_explorer_evidenced",
