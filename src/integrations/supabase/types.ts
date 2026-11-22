@@ -810,6 +810,7 @@ export type Database = {
       modules: {
         Row: {
           created_at: string
+          email_benefit: string | null
           estimated_minutes: number
           is_published: boolean
           level: string
@@ -821,6 +822,7 @@ export type Database = {
         }
         Insert: {
           created_at?: string
+          email_benefit?: string | null
           estimated_minutes?: number
           is_published?: boolean
           level: string
@@ -832,6 +834,7 @@ export type Database = {
         }
         Update: {
           created_at?: string
+          email_benefit?: string | null
           estimated_minutes?: number
           is_published?: boolean
           level?: string
@@ -839,6 +842,33 @@ export type Database = {
           module_subtitle?: string | null
           module_title?: string
           tool_name?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      monthly_email_focus: {
+        Row: {
+          booking_link: string | null
+          dates_text: string
+          id: number
+          month: string
+          topic: string
+          updated_at: string
+        }
+        Insert: {
+          booking_link?: string | null
+          dates_text: string
+          id?: number
+          month: string
+          topic: string
+          updated_at?: string
+        }
+        Update: {
+          booking_link?: string | null
+          dates_text?: string
+          id?: number
+          month?: string
+          topic?: string
           updated_at?: string
         }
         Relationships: []
