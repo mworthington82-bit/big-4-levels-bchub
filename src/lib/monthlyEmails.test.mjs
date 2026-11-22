@@ -31,3 +31,10 @@ test("workbook has a table named Emails", async () => {
   const wb = new ExcelJS.Workbook(); await wb.xlsx.load(await emailsWorkbook(run([st()])));
   expect(wb.worksheets[0].getTable("Emails")).toBeTruthy();
 });
+import { buildEmailRows as coreBuild } from "../../supabase/functions/_shared/monthlyEmailsCore.ts";
+test("edge function path produces identical rows to admin path", () => {
+  const input = { staff: [st({ user_id: null }), st({ email: "b@bradfordcollege.ac.uk" }), st({ email: "c@bradfordcollege.ac.uk", leader_unlocked: true })],
+    completions: [{ staff_email: "b@bradfordcollege.ac.uk", module_id: "canva_explorer", quiz_passed: false, completed_via: "in_person" }],
+    shares: [], events: [], modules, focus: { month: "December 2026", topic: "Edpuzzle", dates_text: "Tue 1 Dec", booking_link: "https://x" }, now: Date.parse("2026-11-22") };
+  const a = buildEmailRows(input); expect(a.length).toBe(3); expect(coreBuild(input)).toEqual(a);
+});

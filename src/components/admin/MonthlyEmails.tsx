@@ -1,11 +1,11 @@
 import { useEffect, useMemo, useState } from "react";
 import { FileSpreadsheet, Save, Trash2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
-import { buildEmailRows, emailsWorkbook, type EmailFocus, type EmailModule } from "@/lib/monthlyEmails";
+import { buildEmailRows, emailsWorkbook, MONTHLY_EMAIL_STAFF_COLS, type EmailFocus, type EmailModule } from "@/lib/monthlyEmails";
 import { downloadStaffLevels } from "@/lib/staffLevelsExport";
+import MonthlyEmailsApi from "./MonthlyEmailsApi";
 
 const INK = "hsl(var(--b4-ink))";
-const STAFF_COLS = "email,name,user_id,assigned_level,practitioner_unlocked,leader_unlocked,teams_explorer_evidenced,forms_explorer_evidenced,canva_explorer_evidenced,edpuzzle_explorer_evidenced,copilot_explorer_evidenced,teams_practitioner_evidenced,forms_practitioner_evidenced,canva_practitioner_evidenced,edpuzzle_practitioner_evidenced,copilot_practitioner_evidenced";
 const input = "w-full rounded-lg border border-border bg-background px-3 py-2 text-sm";
 const db = supabase as any;
 
@@ -22,7 +22,7 @@ const MonthlyEmails = ({ refreshKey = 0 }: { refreshKey?: number }) => {
   useEffect(() => { (async () => {
     setLoading(true);
     const [s, c, l, ev, m, f] = await Promise.all([
-      supabase.from("staff_profiles").select(STAFF_COLS),
+      supabase.from("staff_profiles").select(MONTHLY_EMAIL_STAFF_COLS),
       supabase.from("module_completions").select("staff_email,module_id,quiz_passed,completed_via"),
       supabase.from("leader_shares").select("staff_email,tool,approved"),
       supabase.from("progression_events").select("staff_email,event,occurred_at"),
@@ -112,6 +112,8 @@ const MonthlyEmails = ({ refreshKey = 0 }: { refreshKey?: number }) => {
               {counts.map(([t, n]) => <div key={t} className="flex justify-between px-4 py-1.5 text-sm"><span>{t}</span><span className="font-semibold">{n}</span></div>)}
             </div>
           </div>
+
+          <MonthlyEmailsApi />
 
           <div className="space-y-3">
             <h4 className="font-semibold" style={{ color: INK }}>Preview</h4>

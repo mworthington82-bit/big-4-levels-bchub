@@ -92,6 +92,33 @@ export type Database = {
         }
         Relationships: []
       }
+      api_call_log: {
+        Row: {
+          called_at: string
+          endpoint: string
+          id: string
+          mode: string | null
+          row_count: number | null
+          success: boolean
+        }
+        Insert: {
+          called_at?: string
+          endpoint?: string
+          id?: string
+          mode?: string | null
+          row_count?: number | null
+          success: boolean
+        }
+        Update: {
+          called_at?: string
+          endpoint?: string
+          id?: string
+          mode?: string | null
+          row_count?: number | null
+          success?: boolean
+        }
+        Relationships: []
+      }
       bookmarks: {
         Row: {
           bookmarked_at: string
@@ -842,6 +869,30 @@ export type Database = {
           module_subtitle?: string | null
           module_title?: string
           tool_name?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      monthly_email_api: {
+        Row: {
+          id: number
+          key_created_at: string | null
+          key_hash: string | null
+          paused: boolean
+          updated_at: string
+        }
+        Insert: {
+          id?: number
+          key_created_at?: string | null
+          key_hash?: string | null
+          paused?: boolean
+          updated_at?: string
+        }
+        Update: {
+          id?: number
+          key_created_at?: string | null
+          key_hash?: string | null
+          paused?: boolean
           updated_at?: string
         }
         Relationships: []
