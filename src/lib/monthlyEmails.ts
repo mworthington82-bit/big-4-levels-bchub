@@ -93,7 +93,7 @@ export function buildEmailRows(input: {
       }
       rows.push({ Email: email, FirstName: fn, EmailType: "welcome", Subject: "Your Big 4 journey is ready", BodyHtml: [hi,
         p("The Big 4 is the college's digital teaching programme, covering MS Teams, MS Forms, Copilot, Canva and Edpuzzle. Each module is short and practical, and focuses on tools that save time and help learners take part."),
-        p(step), p("Each level you complete comes with a Big 4 pin badge."),
+        p(step), p("Every module you complete adds a new tag to your Bradford ThreadWorks profile for your collection, and each level you complete comes with a Big 4 pin badge."),
         p("Your journey is at bradfordbig4.online. Sign in with your college account to get started."), ...CLOSING].join("") });
       continue;
     }
@@ -122,7 +122,7 @@ export function buildEmailRows(input: {
       else { type = "modules_to_go"; para = `You've completed ${x} of ${total} at ${level} level. Next up is ${escapeHtml(n.name)}, ${n.time}, which shows you how to ${n.benefit}.`; }
     }
     const body = [hi, p(para!), p(focusLine(input.focus))];
-    if (type! !== "leader_complete") body.push(p("Each level you complete comes with a Big 4 pin badge, as well as a new tag on your ThreadWorks profile."));
+    if (type! !== "leader_complete") body.push(p("Every module you complete adds a new tag to your Bradford ThreadWorks profile for your collection, and each level you complete comes with a Big 4 pin badge."));
     body.push(p("Your journey is at bradfordbig4.online. Sign in with your college account and your next step will be the first thing you see."), ...CLOSING);
     rows.push({ Email: email, FirstName: fn, EmailType: `monthly:${type!}`, Subject: subject!, BodyHtml: body.join("") });
   }
