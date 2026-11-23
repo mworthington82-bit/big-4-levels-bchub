@@ -96,7 +96,7 @@ export function buildEmailRows(input: {
       }
       rows.push({ Email: email, FirstName: fn, EmailType: "welcome", Subject: "Your Big 4 journey is ready", BodyHtml: [hi,
         p("The Big 4 is the college's digital teaching programme, covering MS Teams, MS Forms, Copilot, Canva and Edpuzzle. Each module is short and practical, and focuses on tools that save time and help learners take part."),
-        p(step), p("Every module you complete adds a new tag to your Bradford ThreadWorks profile for your collection, and each level you complete comes with a Big 4 pin badge."),
+        p(step), p('Every module you complete adds a new tag to your Bradford ThreadWorks collection, and every level you move up adds a level tag and a Big 4 pin badge. You can see your tags on your <a href="https://bradfordthreadworks.online/">Bradford ThreadWorks profile</a>.'),
         p("Your journey is at bradfordbig4.online. Sign in with your college account to get started."), ...CLOSING].join("") });
       continue;
     }
@@ -120,12 +120,12 @@ export function buildEmailRows(input: {
       const waiting = outstanding.find((c) => c.status === "attended_pending");
       const n = next(s, d, waiting ?? outstanding[0]);
       subject = `Your Big 4 next step: ${n.name}`;
-      if (waiting) { type = "check_waiting"; para = `Thank you for attending ${escapeHtml(n.name)}. There's one quick step left: the knowledge check takes about 5 minutes and signs the module off. That puts you at ${x + 1} of ${total} for ${level}.`; }
+      if (waiting) { type = "check_waiting"; para = `Thank you for attending ${escapeHtml(n.name)}. There's one quick step left: the knowledge check takes about 5 minutes, signs the module off and adds the ${escapeHtml(n.name)} tag to your <a href="https://bradfordthreadworks.online/">Bradford ThreadWorks profile</a>. That puts you at ${x + 1} of ${total} for ${level}.`; }
       else if (outstanding.length === 1) { type = "one_away"; para = `You're one module away from your ${level} badge. ${escapeHtml(n.name)} takes ${n.time} and shows you how to ${n.benefit}.`; }
       else { type = "modules_to_go"; para = `You've completed ${x} of ${total} at ${level} level. Next up is ${escapeHtml(n.name)}, ${n.time}, which shows you how to ${n.benefit}.`; }
     }
     const body = [hi, p(para!), p(focusLine(input.focus))];
-    if (type! !== "leader_complete") body.push(p("Every module you complete adds a new tag to your Bradford ThreadWorks profile for your collection, and each level you complete comes with a Big 4 pin badge."));
+    if (type! !== "leader_complete") body.push(p('Every module you complete adds a new tag to your Bradford ThreadWorks collection, and every level you move up adds a level tag and a Big 4 pin badge. You can see your tags on your <a href="https://bradfordthreadworks.online/">Bradford ThreadWorks profile</a>.'));
     body.push(p("Your journey is at bradfordbig4.online. Sign in with your college account and your next step will be the first thing you see."), ...CLOSING);
     rows.push({ Email: email, FirstName: fn, EmailType: `monthly:${type!}`, Subject: subject!, BodyHtml: body.join("") });
   }
