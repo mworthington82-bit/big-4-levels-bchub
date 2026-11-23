@@ -15,3 +15,6 @@ verify_jwt = false
 
 [functions.monthly-emails]
 verify_jwt = false
+
+[functions.hub-attendance]
+verify_jwt = false
