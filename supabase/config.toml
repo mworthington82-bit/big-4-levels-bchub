@@ -12,3 +12,6 @@ verify_jwt = false
 
 [functions.tapestry-export]
 verify_jwt = false
+
+[functions.monthly-emails]
+verify_jwt = false
