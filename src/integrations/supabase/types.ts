@@ -336,6 +336,54 @@ export type Database = {
         }
         Relationships: []
       }
+      hub_attendance_api: {
+        Row: {
+          id: number
+          key_hash: string | null
+          paused: boolean
+        }
+        Insert: {
+          id?: number
+          key_hash?: string | null
+          paused?: boolean
+        }
+        Update: {
+          id?: number
+          key_hash?: string | null
+          paused?: boolean
+        }
+        Relationships: []
+      }
+      hub_attendance_log: {
+        Row: {
+          at: string
+          attended_at: string
+          dry_run: boolean
+          id: number
+          marked: number
+          module_id: string
+          sent: number
+        }
+        Insert: {
+          at?: string
+          attended_at: string
+          dry_run: boolean
+          id?: never
+          marked: number
+          module_id: string
+          sent: number
+        }
+        Update: {
+          at?: string
+          attended_at?: string
+          dry_run?: boolean
+          id?: never
+          marked?: number
+          module_id?: string
+          sent?: number
+        }
+        Relationships: []
+      }
       immersive_requests: {
         Row: {
           created_at: string
